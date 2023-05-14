@@ -105,10 +105,10 @@ const ControlCenter = () => {
           </Grid>
         ) : (
           <Stack
-            spacing={path === "/" ? 4 : 2}
+            spacing={1}
             sx={{
               height: "100%",
-              justifyContent: path === "/" ? "flex-end" : "space-between",
+              justifyContent: "space-between",
             }}
           >
             <SpotifyPlayerTile />

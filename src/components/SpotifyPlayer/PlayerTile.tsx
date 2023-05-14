@@ -96,7 +96,7 @@ const SpotifyPlayerTile = () => {
         gap: 1.5,
         width: "100%",
         height: "100%",
-        maxHeight: "8rem",
+        maxHeight: "5rem",
         p: 1,
         backgroundColor: "backgroundColor.main",
         backdropFilter: "blur(15px)",

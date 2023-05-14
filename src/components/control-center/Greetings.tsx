@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, TextField, Tooltip } from "@mui/material";
 import { toast } from "react-toastify";
-import { Info } from "@mui/icons-material";
 const Greetings = () => {
   const [name, setName] = useState<string>("");
 
@@ -37,13 +36,12 @@ const Greetings = () => {
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
         gap: 1,
         width: "100%",
-        alignItems: "flex-start",
+        alignItems: "center",
         height: "100%",
         justifyContent: "center",
-        maxHeight: "8rem",
+        maxHeight: "5rem",
       }}
     >
       <Typography
@@ -109,31 +107,6 @@ const Greetings = () => {
           placeholder="Anonymous"
         />
       </Tooltip>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          opacity: 0.5,
-          gap: 1,
-          width: "100%",
-        }}
-      >
-        <Info
-          sx={{
-            fontSize: "0.7rem",
-          }}
-        />
-        <Typography
-          variant="caption"
-          sx={{
-            color: "white",
-            fontFamily: "monospace",
-          }}
-        >
-          Click on the text to edit
-        </Typography>
-      </Box>
     </Box>
   );
 };
