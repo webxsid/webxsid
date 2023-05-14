@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev && cp ./pages/api/spotify/refreshToken.txt ./.next/server/pages/api/spotify/refreshToken.txt",
-    "build": "next build && cp ./pages/api/spotify/refreshToken.txt ./.next/server/pages/api/spotify/refreshToken.txt",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
