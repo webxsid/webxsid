@@ -17,6 +17,7 @@ export default async function handler(
 
     try {
       const filePath = path.join(__dirname, "refreshToken.txt");
+      console.log(filePath);
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
       } else {
@@ -38,6 +39,7 @@ export default async function handler(
   } else if (req.method === "GET") {
     try {
       const filePath = path.join(__dirname, "refreshToken.txt");
+      console.log(filePath);
       if (!fs.existsSync(filePath)) {
         res.status(404).end(
           JSON.stringify({
@@ -46,6 +48,7 @@ export default async function handler(
         );
       } else {
         const refreshToken = fs.readFileSync(filePath, "utf8");
+        console.log(refreshToken);
         res.status(200).end(
           JSON.stringify({
             refreshToken,
