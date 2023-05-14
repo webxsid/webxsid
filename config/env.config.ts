@@ -5,6 +5,8 @@ const getEnv = (): IEnv => ({
   spotifyClientId: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
   spotifyClientSecret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
   spotifyRedirectUri: process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI,
+  server_url: process.env.NEXT_PUBLIC_SERVER_URL,
+  app_version: process.env.NEXT_PUBLIC_APP_VERSION,
 });
 
 const generateConfig = (env: IEnv): IConfig => {

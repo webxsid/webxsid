@@ -25,4 +25,10 @@ declare module "@mui/material" {
     backgroundColor: true;
     textColor: true;
   }
+
+  interface SliderPropsColorOverrides {
+    accent: true;
+    backgroundColor: true;
+    textColor: true;
+  }
 }

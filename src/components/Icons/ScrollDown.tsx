@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/system";
 
 const ScrollDown = () => {
-  return <Box class="scroll-icon" />;
+  return <Box className="scroll-icon" />;
 };
 
 export default ScrollDown;

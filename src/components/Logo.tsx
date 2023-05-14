@@ -3,9 +3,9 @@ import { Box, Typography } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
 interface IProps {
-  scale: number;
+  scale?: number;
 }
-const Logo = ({ scale = 1 }) => {
+const Logo: FC<IProps> = ({ scale = 1 }) => {
   return (
     <Box
       component={"div"}

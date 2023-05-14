@@ -35,6 +35,6 @@
       "@sagas/*": ["store/sagas/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "*.d.ts", "**/*.d.ts"],
   "exclude": ["node_modules"]
 }

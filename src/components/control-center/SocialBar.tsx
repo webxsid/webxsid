@@ -1,8 +1,7 @@
 import React, { FC } from "react";
-import { Box, Typography, Grid, Button } from "@mui/material";
+import { Box, Grid, Button, useTheme } from "@mui/material";
 import Link from "next/link";
 import { Instagram, GitHub, LinkedIn, Twitter } from "@mui/icons-material";
-import { useTheme } from "@emotion/react";
 import { useDeviceType } from "@/hooks/useDeviceType";
 interface NavButtonProps {
   href: string;

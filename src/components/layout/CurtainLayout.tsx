@@ -1,15 +1,12 @@
 import React, { FC, useState, useEffect, useRef } from "react";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import { IChildrenProps } from "@interfaces/components";
 import Logo from "../Logo";
-import ScrollDown from "../Icons/ScrollDown";
-import { useTheme } from "@emotion/react";
-import { Close, ExpandMore, Menu } from "@mui/icons-material";
+import { Menu } from "@mui/icons-material";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleControlCenter } from "@store/actions";
 import { IStore } from "@interfaces/store.interface";
-import Link from "next/link";
 import CurtainClose from "../Icons/CurtainClose";
 interface IProps extends IChildrenProps {
   liftThreshold: number;
@@ -25,17 +22,14 @@ const CurtainLayout: FC<IProps> = ({
   const [liftAmount, setLiftAmount] = useState<number>(0);
   const [lastScrollY, setLastScrollY] = useState<number>(0);
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
-  const [isMainContentScrolled, setIsMainContentScrolled] =
-    useState<boolean>(false);
   const curtainRef = useRef<HTMLDivElement>(null);
-  const [paddingTop, setPaddingTop] = useState<number>(0);
 
   const { open: controlCenterOpen } = useSelector(
     (state: IStore) => state.controlCenter
   );
   const dispatch = useDispatch();
 
-  const { isMobile, isDesktop } = useDeviceType();
+  const { isDesktop } = useDeviceType();
   const theme = useTheme();
   const handleClose = () => {
     dispatch(toggleControlCenter(false));
@@ -48,11 +42,11 @@ const CurtainLayout: FC<IProps> = ({
   useEffect(() => {
     const threshold = !isDesktop ? 0.93 : 0.4;
     setMaxLift(window.innerHeight * threshold);
-    setPaddingTop(window.innerHeight * (1 - threshold));
   }, [isDesktop]);
 
   useEffect(() => {
     const ref = curtainRef?.current;
+    if (!ref) return;
     const handleWheel = (e: WheelEvent) => {
       const { deltaY } = e;
       if (deltaY === -0) return;
@@ -72,7 +66,7 @@ const CurtainLayout: FC<IProps> = ({
 
   useEffect(() => {
     const ref = curtainRef?.current;
-
+    if (!ref) return;
     const handleTouchStart = (e: TouchEvent) => {
       const { clientY } = e.touches[0];
       setTouchStartY(clientY);
@@ -107,6 +101,7 @@ const CurtainLayout: FC<IProps> = ({
 
   useEffect(() => {
     const ref = curtainRef?.current;
+    if (!ref) return;
     if (controlCenterOpen) {
       setLiftAmount(maxLift);
       const scrollViewEl = document.getElementById("scroll-view-display");

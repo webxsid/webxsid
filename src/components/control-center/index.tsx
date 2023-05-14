@@ -1,23 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Dialog,
-  DialogContent,
-  Typography,
-  Collapse,
-  Button,
-  Fade,
-  Grid,
-  useTheme,
-  Stack,
-} from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
+import { Box, Grid, Stack } from "@mui/material";
 import { useRouter } from "next/router";
-import { IStore } from "@interfaces/store.interface";
-import { toggleControlCenter } from "@store/actions";
 import { useDeviceType } from "@/hooks/useDeviceType";
-import ThemeWrapper from "../ThemeWrapper";
-import Logo from "../Logo";
 import SpotifyPlayerTile from "../SpotifyPlayer/PlayerTile";
 import Navigate from "./Navigate";
 import SocialBar from "./SocialBar";
@@ -27,22 +11,9 @@ import Greetings from "./Greetings";
 const ControlCenter = () => {
   const [paddingTop, setPaddingTop] = useState<number>(0);
   const [path, setPath] = useState<string>("");
-  const dispatch = useDispatch();
   const router = useRouter();
 
-  const { isDesktop, isMobile } = useDeviceType();
-  const theme = useTheme();
-
-  const handleClose = () => {
-    dispatch(toggleControlCenter(false));
-  };
-
-  const handleNavOpen = () => {
-    setNavOpen(true);
-  };
-  const handleNavClose = () => {
-    setNavOpen(false);
-  };
+  const { isDesktop } = useDeviceType();
 
   useEffect(() => {
     const threshold = !isDesktop ? 0.08 : 0.6;

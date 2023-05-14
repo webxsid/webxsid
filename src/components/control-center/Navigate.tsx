@@ -1,5 +1,12 @@
 import React, { FC, useEffect, useState } from "react";
-import { Box, Typography, Grid, Button, IconButton } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  Button,
+  IconButton,
+  useTheme,
+} from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -10,7 +17,6 @@ import {
   Article,
   Home,
 } from "@mui/icons-material";
-import { useTheme } from "@emotion/react";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import { useSelector, useDispatch } from "react-redux";
 import { IStore } from "@interfaces/store.interface";
@@ -32,7 +38,7 @@ const NavButton: FC<NavButtonProps> = ({ href, text, icon, index, active }) => {
   );
   const dispatch = useDispatch();
   const handleClick = () => {
-    if (controlCenterOpen) dispatch(toggleControlCenter());
+    if (controlCenterOpen) dispatch(toggleControlCenter(false));
   };
   return (
     <Link href={href} passHref onClick={handleClick}>

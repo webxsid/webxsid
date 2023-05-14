@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, TextField, Tooltip } from "@mui/material";
 import { toast } from "react-toastify";
-import { useDeviceType } from "@/hooks/useDeviceType";
 
 const Greetings = () => {
   const [name, setName] = useState<string>("");
-  const { isMobile } = useDeviceType();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);

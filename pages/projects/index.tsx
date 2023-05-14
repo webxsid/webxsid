@@ -1,13 +1,11 @@
 import React from "react";
 import ThemeWrapper from "@components/ThemeWrapper";
-import Navigation from "@/components/navigation";
 import { Box, Typography, Grid, useMediaQuery } from "@mui/material";
 import ProjectHero from "@components/projects/Hero";
 const Projects = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   return (
     <ThemeWrapper>
-      <Navigation />
       <Box
         component={"main"}
         sx={{

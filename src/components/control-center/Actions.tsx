@@ -4,18 +4,15 @@ import {
   Box,
   Grid,
   Menu,
-  MenuItem,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Popover,
   Dialog,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   toggleControlCenter,
-  toggleDarkMode,
   toggleSystemDefault,
   setDarkMode,
 } from "@store/actions";
@@ -27,7 +24,7 @@ import {
   SettingsBrightness,
   Terminal as TerminalIcon,
 } from "@mui/icons-material";
-import { useTheme } from "@emotion/react";
+import { useTheme } from "@mui/material";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import Terminal from "../terminal";
 
@@ -142,7 +139,7 @@ const ThemeToggle = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = (type: string) => {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
@@ -308,11 +305,16 @@ const Actions = () => {
         >
           <ThemeToggle />
         </Grid>
-        {isDesktop && (
-          <Grid item xs={3}>
-            <TerminalButton />
-          </Grid>
-        )}
+        <Grid
+          item
+          xs={3}
+          sx={{
+            transform: isMobile ? "scale(0.8)" : "scale(1)",
+          }}
+        >
+          <TerminalButton />
+        </Grid>
+        {isDesktop && <></>}
       </Grid>
     </Box>
   );

@@ -3,6 +3,7 @@ interface ITermOutput {
   type: "input" | "output";
   color: string;
   size: number;
+  link?: string;
 }
 
 enum CommandList {
@@ -12,7 +13,6 @@ enum CommandList {
   goto = ".goto",
   whoami = ".whoami",
   connect = ".connect",
-  fullscreen = ".fullscreen",
   exit = ".exit",
   name = ".name",
 }
@@ -37,7 +37,9 @@ const handleCommands = (
     if (Object.keys(CommandList).includes(cmd)) {
       output = [
         {
-          text: `Command ${cmd} not found. Did you mean ${CommandList[cmd]}?`,
+          text: `Command ${cmd} not found. Did you mean ${
+            CommandList[cmd as keyof typeof CommandList]
+          }?`,
           type: "output",
           color: "#f80",
           size: 1,
@@ -228,9 +230,6 @@ const handleCommands = (
           link: "mailto:siddharthmittal2101@gmail.com",
         },
       ];
-      break;
-    case CommandList.fullscreen:
-      action = "fullscreen";
       break;
     case CommandList.exit:
       console.log("exit");

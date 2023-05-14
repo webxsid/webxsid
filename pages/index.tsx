@@ -1,34 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ThemeWrapper from "@/components/ThemeWrapper";
-import Navigation from "@components/navigation";
 import Head from "next/head";
-import { Box, Typography, Grid, Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Smile from "@/assets/Images/Memoji/Smile.png";
 import Image from "next/image";
 import Link from "next/link";
-import styles from "../styles/Home.module.scss";
-import Logo from "@/components/Logo";
-import { detectScrollUp } from "@functions/helper.functions";
-import { useDeviceType } from "@/hooks/useDeviceType";
-import HomeGrid from "@/components/home/Grid";
 import CurtainLayout from "@/components/layout/CurtainLayout";
-import { useDispatch } from "react-redux";
-import { toggleControlCenter } from "@store/actions";
+import { useDeviceType } from "@/hooks/useDeviceType";
 export default function Home() {
-  const [currentYear, setCurrentYear] = useState<number>(
-    new Date().getFullYear()
-  );
-  const { isDesktop, isMobile } = useDeviceType();
-
-  const dispatch = useDispatch();
-
-  const handleDIveIn = () => {
-    dispatch(toggleControlCenter(true));
-  };
+  const { isMobile } = useDeviceType();
 
   return (
     <ThemeWrapper>
-      {/* <Navigation /> */}
       <Head>
         <title>Web x Sid</title>
       </Head>
@@ -46,7 +29,7 @@ export default function Home() {
             id="scroll-view-display"
             sx={{
               height: "fit-content",
-              width: "clamp(300px, 100%, 500px)",
+              width: "clamp(300px, 100%, 600px)",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
@@ -104,16 +87,23 @@ export default function Home() {
                   full-stack developer
                 </Typography>{" "}
                 &amp;{" "}
-                <Typography
-                  component="span"
-                  sx={{
-                    color: "accent.main",
-                    fontFamily: "inherit",
-                    fontSize: "inherit",
-                  }}
+                <Link
+                  href="https://www.instagram.com/webxsid/"
+                  passHref
+                  target="_blank"
                 >
-                  content creator
-                </Typography>
+                  <Typography
+                    component="span"
+                    sx={{
+                      color: "accent.main",
+                      fontFamily: "inherit",
+                      fontSize: "inherit",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    content creator
+                  </Typography>
+                </Link>
                 , based in India.
               </Typography>
               <Typography

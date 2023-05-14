@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import CurtainLayout from "@/components/layout/CurtainLayout";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box } from "@mui/material";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import ThemeWrapper from "@/components/ThemeWrapper";
 import Head from "next/head";
-import Link from "next/link";
 
 const Connect = () => {
   const [paddingTop, setPaddingTop] = useState<number>(0);
-  const { isDesktop, isMobile } = useDeviceType();
+  const { isMobile } = useDeviceType();
 
   useEffect(() => {
     const threshold = isMobile ? 0.65 : 0.6;
@@ -20,7 +19,9 @@ const Connect = () => {
       <Head>
         <title>Connect x Sid</title>
       </Head>
-      <CurtainLayout liftThreshold={isMobile ? 0.4 : 0.5}></CurtainLayout>
+      <CurtainLayout liftThreshold={isMobile ? 0.4 : 0.5}>
+        <></>
+      </CurtainLayout>
       <Box
         id="main-content"
         component={"main"}

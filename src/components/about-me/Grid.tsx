@@ -3,11 +3,11 @@ import { Box, Collapse, Slider, Typography } from "@mui/material";
 import styles from "./about-me-styles.module.scss";
 import Image from "next/image";
 import Smile from "@/assets/Images/Memoji/Smile.png";
-import ProfessionalExperience from "./ProfessionalExperience";
+
 const AboutMeGrid = () => {
   const [year, setYear] = useState<number>(2023);
   const [showYearSlider, setShowYearSlider] = useState<boolean>(false);
-  const [openSection, setOpenSection] = useState<string>("");
+
   return (
     <Box
       component={"main"}
@@ -94,10 +94,6 @@ const AboutMeGrid = () => {
         understanding of UI methodologies and trends, have enabled me to create
         engaging and user-friendly websites and web applications.
       </Box>
-      <ProfessionalExperience
-        open={openSection === "professional-exp"}
-        onClick={() => setOpenSection("professional-exp")}
-      />
     </Box>
   );
 };

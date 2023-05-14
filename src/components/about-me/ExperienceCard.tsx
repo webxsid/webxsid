@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 
 interface Props {
   isCompleted: boolean;
@@ -6,7 +6,7 @@ interface Props {
   title: string;
   idx: number;
 }
-const ExperienceCard = () => {
+const ExperienceCard: FC<Props> = () => {
   return <div>ExperienceCard</div>;
 };
 

@@ -7,7 +7,6 @@ import type { AppProps } from "next/app";
 import { wrapper } from "@store/index";
 import { Provider as StoreProvider } from "react-redux";
 import ControlCenter from "@/components/control-center";
-import ControlCenterFAB from "@/components/control-center/FAB";
 import ThemeWrapper from "@/components/ThemeWrapper";
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {

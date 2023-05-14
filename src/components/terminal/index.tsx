@@ -14,12 +14,7 @@ interface ITermOutput {
   link?: string;
 }
 
-interface IProps {
-  navOpen: boolean;
-  setNavOpen: (open: boolean) => void;
-}
-
-const Terminal: FC<IProps> = ({ navOpen, setNavOpen }) => {
+const Terminal: FC = () => {
   const [output, setOutput] = useState<ITermOutput[]>([]);
   const [input, setInput] = useState<string>("");
   const [name, setName] = useState<string>("anon");
@@ -54,30 +49,6 @@ const Terminal: FC<IProps> = ({ navOpen, setNavOpen }) => {
         if (action === "clear") {
           setOutput([]);
         }
-        if (action === "fullscreen") {
-          if (!navOpen) {
-            setOutput((prev) => [
-              ...prev,
-              {
-                text: "Exiting fullscreen...",
-                type: "output",
-                color: "#0ff",
-                size: 1,
-              },
-            ]);
-          } else {
-            setOutput((prev) => [
-              ...prev,
-              {
-                text: "Entering fullscreen...",
-                type: "output",
-                color: "#0ff",
-                size: 1,
-              },
-            ]);
-          }
-          setNavOpen((prev) => !prev);
-        }
         if (action.startsWith("name")) {
           const name = action.split(" ")[1];
           setName(name);
@@ -110,6 +81,7 @@ const Terminal: FC<IProps> = ({ navOpen, setNavOpen }) => {
       e.preventDefault();
       if (scrollingThroughHistory > 1) {
         const lastInput = inputHistory.at(-scrollingThroughHistory + 1);
+        if (!lastInput) return;
         setInput(lastInput);
         setScrollingThroughHistory((prev) => prev - 1);
       } else {
