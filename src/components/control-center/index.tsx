@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Grid, Stack } from "@mui/material";
-import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { IStore } from "@interfaces/store.interface";
 import { useDeviceType } from "@/hooks/useDeviceType";
@@ -11,15 +10,9 @@ import Actions from "./Actions";
 import Greetings from "./Greetings";
 
 const ControlCenter = () => {
-  const [path, setPath] = useState<string>("");
-  const router = useRouter();
   const { open } = useSelector((state: IStore) => state.controlCenter);
 
   const { isDesktop } = useDeviceType();
-
-  useEffect(() => {
-    setPath(router?.pathname);
-  }, [router.pathname]);
 
   return (
     <Box
