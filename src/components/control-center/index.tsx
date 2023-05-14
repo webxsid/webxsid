@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Box, Grid, Stack } from "@mui/material";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { IStore } from "@interfaces/store.interface";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import SpotifyPlayerTile from "../SpotifyPlayer/PlayerTile";
 import Navigate from "./Navigate";
@@ -9,16 +11,11 @@ import Actions from "./Actions";
 import Greetings from "./Greetings";
 
 const ControlCenter = () => {
-  const [paddingTop, setPaddingTop] = useState<number>(0);
   const [path, setPath] = useState<string>("");
   const router = useRouter();
+  const { open } = useSelector((state: IStore) => state.controlCenter);
 
   const { isDesktop } = useDeviceType();
-
-  useEffect(() => {
-    const threshold = !isDesktop ? 0.08 : 0.6;
-    setPaddingTop(window.innerHeight * threshold);
-  }, [isDesktop]);
 
   useEffect(() => {
     setPath(router?.pathname);
@@ -34,7 +31,8 @@ const ControlCenter = () => {
         width: "100vw",
         height: "100vh",
         zIndex: 9,
-        paddingTop: `calc(${paddingTop}px)`,
+        paddingTop: open ? (isDesktop ? "60vh" : "8vh") : "0",
+        pb: 3,
       }}
     >
       <Box
@@ -64,12 +62,12 @@ const ControlCenter = () => {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: path === "/" ? "flex-end" : "space-between",
+                justifyContent: "space-between",
                 pt: 2,
                 alignItems: "flex-start",
               }}
             >
-              {path !== "/" && <Greetings />}
+              <Greetings />
               <Box sx={{ width: "clamp(300px, 60%, 360px)" }}>
                 <Actions />
               </Box>
@@ -94,12 +92,12 @@ const ControlCenter = () => {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: path === "/" ? "flex-end" : "space-between",
+                justifyContent: "space-between",
                 alignItems: "flex-end",
                 pt: 2,
               }}
             >
-              {path !== "/" && <SpotifyPlayerTile />}
+              <SpotifyPlayerTile />
               <Box sx={{ width: "clamp(300px, 60%, 360px)" }}>
                 <SocialBar />
               </Box>
@@ -113,8 +111,8 @@ const ControlCenter = () => {
               justifyContent: path === "/" ? "flex-end" : "space-between",
             }}
           >
-            {path !== "/" && <SpotifyPlayerTile />}
-            {path !== "/" && <Greetings />}
+            <SpotifyPlayerTile />
+            <Greetings />
             <Navigate />
             <SocialBar />
             <Actions />

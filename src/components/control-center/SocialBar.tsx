@@ -50,26 +50,50 @@ const SocialBar = () => {
         justifyContent: "space-between",
         gap: 1,
         transformOrigin: isMobile ? "center" : "right",
-        transform: isMobile ? "scale(0.7)" : "scale(0.8)",
+        transform: isMobile ? "scale(1)" : "scale(0.8)",
       }}
     >
       <Grid container spacing={1}>
-        <Grid item xs={3}>
+        <Grid
+          item
+          xs={3}
+          sx={{
+            transform: isMobile ? "scale(0.7)" : "scale(1)",
+          }}
+        >
           <NavButton
             href="https://www.instagram.com/webxsid/"
             icon={<Instagram />}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid
+          item
+          xs={3}
+          sx={{
+            transform: isMobile ? "scale(0.7)" : "scale(1)",
+          }}
+        >
           <NavButton href="https://www.github.com/sm2101/" icon={<GitHub />} />
         </Grid>
-        <Grid item xs={3}>
+        <Grid
+          item
+          xs={3}
+          sx={{
+            transform: isMobile ? "scale(0.7)" : "scale(1)",
+          }}
+        >
           <NavButton
             href="https://www.linkedin.com/in/webxsid"
             icon={<LinkedIn />}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid
+          item
+          xs={3}
+          sx={{
+            transform: isMobile ? "scale(0.7)" : "scale(1)",
+          }}
+        >
           <NavButton
             href="https://www.twitter.com/webxsid/"
             icon={<Twitter />}

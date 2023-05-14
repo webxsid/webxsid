@@ -114,7 +114,7 @@ export const saveRefreshToken = async (refreshToken: string) => {
 
 export const getRefreshToken = async () => {
   const authOptions = {
-    url: `/api/spotify/data`,
+    url: `${config.server_url}/api/spotify`,
     method: "GET",
     json: true,
   };

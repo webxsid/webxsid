@@ -237,12 +237,8 @@ const Navigate = () => {
     >
       <Grid container spacing={isMobile ? 1 : 2}>
         {pages.map((page, index) => (
-          <>
-            <Grid
-              item
-              xs={[2, 3].includes(index) ? 5 : 6}
-              key={`nav-button-${index}`}
-            >
+          <React.Fragment key={`nav-button-${index}`}>
+            <Grid item xs={[2, 3].includes(index) ? 5 : 6}>
               <NavButton
                 href={page.href}
                 text={page.title}
@@ -277,7 +273,7 @@ const Navigate = () => {
                 />
               </Grid>
             )}
-          </>
+          </React.Fragment>
         ))}
       </Grid>
     </Box>

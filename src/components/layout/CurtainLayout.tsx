@@ -18,8 +18,6 @@ const CurtainLayout: FC<IProps> = ({
   children,
   ...rest
 }) => {
-  const [maxLift, setMaxLift] = useState<number>(0);
-  const [liftAmount, setLiftAmount] = useState<number>(0);
   const [lastScrollY, setLastScrollY] = useState<number>(0);
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
@@ -38,11 +36,6 @@ const CurtainLayout: FC<IProps> = ({
   const handleOpen = () => {
     dispatch(toggleControlCenter(true));
   };
-
-  useEffect(() => {
-    const threshold = !isDesktop ? 0.93 : 0.4;
-    setMaxLift(window.innerHeight * threshold);
-  }, [isDesktop]);
 
   useEffect(() => {
     const ref = curtainRef?.current;
@@ -103,7 +96,6 @@ const CurtainLayout: FC<IProps> = ({
     const ref = curtainRef?.current;
     if (!ref) return;
     if (controlCenterOpen) {
-      setLiftAmount(maxLift);
       const scrollViewEl = document.getElementById("scroll-view-display");
       if (scrollViewEl) {
         const currentScrollY = ref.scrollTop;
@@ -117,7 +109,6 @@ const CurtainLayout: FC<IProps> = ({
         };
       }
     } else {
-      setLiftAmount(0);
       const timeout = setTimeout(() => {
         ref?.scrollTo({
           top: lastScrollY,
@@ -130,7 +121,7 @@ const CurtainLayout: FC<IProps> = ({
         clearTimeout(timeout);
       };
     }
-  }, [controlCenterOpen, maxLift, lastScrollY]);
+  }, [controlCenterOpen, lastScrollY]);
 
   return (
     <>
@@ -148,23 +139,24 @@ const CurtainLayout: FC<IProps> = ({
           zIndex: 10,
           transition: "all 0.5s ease-in-out",
           backgroundColor: "backgroundColor.main",
-          borderRadius: liftAmount > 0 ? "0 0 3rem 3rem" : "0px",
+          borderRadius: controlCenterOpen ? "0 0 3rem 3rem" : "0px",
           ...rest,
         }}
       >
         <Box
           ref={curtainRef}
+          role="scroll-view"
           sx={{
-            height: `calc(100vh - ${liftAmount}px)`,
+            height: controlCenterOpen ? (isDesktop ? "60vh" : "7vh") : "100vh",
             transition: "all 1s ease-in-out",
             width: "100%",
-            overflow: liftAmount > 0 ? "hidden" : "auto",
+            overflow: controlCenterOpen ? "hidden" : "auto",
             position: "relative",
           }}
         >
           <Box
             sx={{
-              height: liftAmount > 0 ? "7vh" : "10vh",
+              height: controlCenterOpen ? "7vh" : "10vh",
               width: "100%",
               position: "absolute",
               py: 1,
@@ -179,7 +171,7 @@ const CurtainLayout: FC<IProps> = ({
               alignItems: "center",
             }}
           >
-            <Logo scale={liftAmount > 0 ? 0.8 : 1} />
+            <Logo scale={controlCenterOpen ? 0.8 : 1} />
           </Box>
           <Box
             sx={{
@@ -188,7 +180,7 @@ const CurtainLayout: FC<IProps> = ({
               position: "absolute",
               top: 0,
               left: 0,
-              // paddingTop: liftAmount > 0 ? "7vh" : "10vh",
+              // paddingTop: controlCenterOpen ? "7vh" : "10vh",
             }}
           >
             {children}
@@ -199,15 +191,17 @@ const CurtainLayout: FC<IProps> = ({
             height: "8vh",
             position: "absolute",
             transition: "all 1s ease-in-out",
-            bottom: liftAmount > 0 ? "0%" : "1rem",
-            left: liftAmount > 0 ? "50%" : "1rem",
-            transform: liftAmount > 0 ? `translateX(-50%)` : "translateX(0%)",
+            bottom: controlCenterOpen ? "0%" : "1rem",
+            left: controlCenterOpen ? "50%" : "1rem",
+            transform: controlCenterOpen
+              ? `translateX(-50%)`
+              : "translateX(0%)",
             display: "flex",
             justifyContent: "flex-start",
             alignItems: "center",
           }}
         >
-          {liftAmount > 0 ? (
+          {controlCenterOpen ? (
             <Box
               onClick={handleClose}
               sx={{

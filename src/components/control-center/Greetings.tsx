@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, TextField, Tooltip } from "@mui/material";
 import { toast } from "react-toastify";
-
+import { Info } from "@mui/icons-material";
 const Greetings = () => {
   const [name, setName] = useState<string>("");
 
@@ -39,6 +39,7 @@ const Greetings = () => {
         display: "flex",
         flexDirection: "column",
         gap: 1,
+        width: "100%",
         alignItems: "flex-start",
         height: "100%",
         justifyContent: "center",
@@ -49,8 +50,8 @@ const Greetings = () => {
         sx={{
           color: "white",
           fontFamily: "monospace",
-          fontSize: "clamp(1.5rem, 5vw, 2.5rem)",
-          lineHeight: "clamp(1.5rem, 5vw, 2.5rem)",
+          fontSize: "clamp(2rem, 5vw, 2.5rem)",
+          lineHeight: "clamp(2rem, 5vw, 2.5rem)",
         }}
       >
         Hello,
@@ -86,8 +87,8 @@ const Greetings = () => {
             },
 
             "& .MuiInputBase-input": {
-              fontSize: "clamp(1.5rem, 5vw, 2.5rem)",
-              lineHeight: "clamp(1.5rem, 5vw, 2.5rem)",
+              fontSize: "clamp(2rem, 5vw, 2.5rem)",
+              lineHeight: "clamp(2rem, 5vw, 2.5rem)",
             },
             "& .MuiInputBase-input::placeholder": {
               color: "white",
@@ -108,6 +109,31 @@ const Greetings = () => {
           placeholder="Anonymous"
         />
       </Tooltip>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          opacity: 0.5,
+          gap: 1,
+          width: "100%",
+        }}
+      >
+        <Info
+          sx={{
+            fontSize: "0.7rem",
+          }}
+        />
+        <Typography
+          variant="caption"
+          sx={{
+            color: "white",
+            fontFamily: "monospace",
+          }}
+        >
+          Click on the text to edit
+        </Typography>
+      </Box>
     </Box>
   );
 };

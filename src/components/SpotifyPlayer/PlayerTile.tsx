@@ -24,7 +24,12 @@ const SpotifyPlayerTile = () => {
     trackName: "",
     trackUrl: "",
   });
-  const { refreshToken, open } = useSelector((state: IStore) => ({
+  const {
+    refreshToken: existingRefreshToken,
+    open,
+    accessToken,
+    expiresAt,
+  } = useSelector((state: IStore) => ({
     ...state.spotify,
     ...state.controlCenter,
   }));
@@ -34,27 +39,45 @@ const SpotifyPlayerTile = () => {
     (async () => {
       try {
         if (open) {
-          if (refreshToken) {
-            const { access_token } = await regenerateSpotifyToken(refreshToken);
-            const playerData = await getPlaybackState(access_token);
+          if (accessToken && expiresAt && new Date(expiresAt) > new Date()) {
+            const playerData = await getPlaybackState(accessToken);
             console.log(playerData);
             setShow(true);
             setData(playerData);
           } else {
-            console.log("refresh token does not exist");
-            const { refreshToken } = await getRefreshToken();
-            if (refreshToken) {
+            if (!existingRefreshToken || existingRefreshToken?.length < 1) {
+              const { refreshToken } = await getRefreshToken();
+              if (refreshToken) {
+                const { access_token } = await regenerateSpotifyToken(
+                  refreshToken
+                );
+                const playerData = await getPlaybackState(access_token);
+                console.log(playerData);
+                setShow(true);
+                setData(playerData);
+                dispatch(
+                  setSpotifyData({
+                    accessToken: access_token,
+                    refreshToken: refreshToken,
+                  })
+                );
+              } else {
+                setShow(false);
+              }
+            } else {
               const { access_token } = await regenerateSpotifyToken(
-                refreshToken
+                existingRefreshToken
               );
+              const playerData = await getPlaybackState(access_token);
+              console.log(playerData);
+              setShow(true);
+              setData(playerData);
               dispatch(
                 setSpotifyData({
                   accessToken: access_token,
-                  refreshToken,
+                  refreshToken: existingRefreshToken,
                 })
               );
-            } else {
-              setShow(false);
             }
           }
         }
@@ -62,7 +85,8 @@ const SpotifyPlayerTile = () => {
         console.log(err);
       }
     })();
-  }, [refreshToken, dispatch, open]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, open]);
   return (
     <Box
       sx={{
