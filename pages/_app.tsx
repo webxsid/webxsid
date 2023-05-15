@@ -8,11 +8,18 @@ import { wrapper } from "@store/index";
 import { Provider as StoreProvider } from "react-redux";
 import ControlCenter from "@/components/control-center";
 import ThemeWrapper from "@/components/ThemeWrapper";
+import Head from "next/head";
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
   return (
     <StoreProvider store={store}>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+      </Head>
       <ThemeWrapper>
         <ToastContainer />
         <ControlCenter />
