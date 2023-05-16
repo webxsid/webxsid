@@ -126,6 +126,29 @@ const SpotifyPlayerTile = () => {
             />
           </Box>
           <Box
+            sx={{
+              position: "absolute",
+              bottom: 4,
+              right: 4,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              p: isMobile ? 0.8 : 1.2,
+              borderRadius: isMobile ? 2 : 3,
+            }}
+          >
+            {data.isPlaying ? (
+              <SoundBars />
+            ) : (
+              <History
+                sx={{
+                  color: "backgroundColor.contrastText",
+                  fontSize: isMobile ? 12 : 15,
+                }}
+              />
+            )}
+          </Box>
+          <Box
             sx={{ height: "100%", aspectRatio: "1/1", position: "relative" }}
           >
             <Avatar
@@ -138,29 +161,6 @@ const SpotifyPlayerTile = () => {
                 borderRadius: 3,
               }}
             />
-            <Box
-              sx={{
-                position: "absolute",
-                bottom: 4,
-                left: 4,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "backgroundColor.dark",
-                p: isMobile ? 0.8 : 1.2,
-                borderRadius: isMobile ? 2 : 3,
-              }}
-            >
-              {data.isPlaying ? (
-                <SoundBars />
-              ) : (
-                <History
-                  sx={{
-                    fontSize: isMobile ? 12 : 25,
-                  }}
-                />
-              )}
-            </Box>
           </Box>
           <Box
             sx={{
@@ -170,11 +170,13 @@ const SpotifyPlayerTile = () => {
               alignItems: "flex-start",
               justifyContent: "center",
               flexGrow: "1",
+              color: "backgroundColor.contrastText",
             }}
           >
             <Typography
               variant="body2"
               sx={{
+                color: "inherit",
                 textOverflow: "ellipsis",
                 maxWidth: "10rem",
                 overflow: "hidden",
@@ -188,6 +190,7 @@ const SpotifyPlayerTile = () => {
             <Typography
               variant="caption"
               sx={{
+                color: "inherit",
                 textOverflow: "ellipsis",
                 overflow: "hidden",
                 maxWidth: "10rem",
@@ -205,7 +208,9 @@ const SpotifyPlayerTile = () => {
         <Typography
           variant="body2"
           sx={{
+            width: "100%",
             textAlign: "center",
+            color: "backgroundColor.contrastText",
           }}
         >
           Spotify is not connected

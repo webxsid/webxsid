@@ -19,6 +19,7 @@ const Logo: FC<IProps> = ({ scale = 1 }) => {
         position: "relative",
         transform: `scale(${scale})`,
         fontFamily: "monospace",
+        color: "backgroundColor.contrastText",
       }}
     >
       <Typography
@@ -27,6 +28,7 @@ const Logo: FC<IProps> = ({ scale = 1 }) => {
           fontSize: "15px",
           lineHeight: "20px",
           letterSpacing: "2px",
+          color: "inherit",
         }}
       >
         WEB
@@ -38,6 +40,7 @@ const Logo: FC<IProps> = ({ scale = 1 }) => {
           lineHeight: "20px",
           textAlign: "right",
           letterSpacing: "2px",
+          color: "inherit",
         }}
       >
         SID

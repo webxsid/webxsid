@@ -9,7 +9,7 @@
 .icon span {
   width: 3px;
   height: 100%;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(0, 0, 0);
   border-radius: 3px;
   transform-origin: bottom;
   animation: bounce 2.2s ease infinite alternate;
@@ -17,7 +17,7 @@
 }
 
 .icon.light span {
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 255);
 }
 
 .icon span:nth-of-type(2) {

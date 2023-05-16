@@ -6,7 +6,7 @@ const SoundBars = () => {
   const { darkMode } = useSelector((state: IStore) => state.theme);
 
   return (
-    <div className={`${styles.icon} ${!darkMode ? "light" : ""}`}>
+    <div className={`${styles.icon} ${darkMode ? `${styles.light}` : ""}`}>
       <span />
       <span />
       <span />

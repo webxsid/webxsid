@@ -30,7 +30,7 @@ const darkTheme = createTheme({
       light: "#202123",
       main: "#040515",
       dark: "#1a1a1a",
-      contrastText: "#f2f2f2",
+      contrastText: "#FBFBFE",
     },
   },
 });

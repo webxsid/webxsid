@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, TextField, Tooltip } from "@mui/material";
 import { toast } from "react-toastify";
+import { useTheme } from "@mui/material";
+
 const Greetings = () => {
   const [name, setName] = useState<string>("");
+  const theme = useTheme();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -42,11 +45,12 @@ const Greetings = () => {
         height: "100%",
         justifyContent: "center",
         maxHeight: "5rem",
+        color: "backgroundColor.contrastText",
       }}
     >
       <Typography
         sx={{
-          color: "white",
+          color: "inherit",
           fontFamily: "monospace",
           fontSize: "clamp(2rem, 5vw, 2.5rem)",
           lineHeight: "clamp(2rem, 5vw, 2.5rem)",
@@ -80,7 +84,7 @@ const Greetings = () => {
           variant="standard"
           sx={{
             "& .MuiInputBase-root": {
-              color: "white",
+              color: "inherit",
               fontFamily: "monospace",
             },
 
@@ -91,7 +95,7 @@ const Greetings = () => {
             "& .MuiInputBase-input::placeholder": {
               color: "white",
             },
-            borderBottom: "1px dashed white",
+            borderBottom: `1px dashed ${theme.palette.backgroundColor.contrastText}`,
           }}
           InputProps={{
             disableUnderline: true,

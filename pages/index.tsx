@@ -53,6 +53,7 @@ export default function Home() {
                 flexDirection: "column",
                 alignItems: "center",
                 gap: 1,
+                color: "backgroundColor.contrastText",
               }}
             >
               <Typography

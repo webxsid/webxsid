@@ -17,7 +17,7 @@ const lightTheme = createTheme({
     },
     accent: {
       light: "#D47D5E",
-      main: "#CE6C47",
+      main: "#0E38B1",
       dark: "#A14A2B",
       contrastText: "#3C1C10",
     },
@@ -28,11 +28,11 @@ const lightTheme = createTheme({
       contrastText: "#141B1F",
     },
     backgroundColor: {
-      transparent: "#333333dd",
-      light: "#333333",
-      main: "#282828",
+      transparent: "#E6E8EDaa",
+      light: "#E6E8ED",
+      main: "#FBFBFE",
       dark: "#1a1a1a",
-      contrastText: "#f2f2f2",
+      contrastText: "#333333",
     },
   },
 });

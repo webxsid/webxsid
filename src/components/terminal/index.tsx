@@ -160,7 +160,7 @@ const Terminal: FC = () => {
       sx={{
         height: "100%",
         width: "100%",
-        backgroundColor: "backgroundColor.transparent",
+        backgroundColor: "#040515aa",
         backdropFilter: "blur(10px)",
         borderRadius: 5,
         color: "white",

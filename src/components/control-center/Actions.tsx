@@ -106,7 +106,7 @@ const CloseButton = () => {
       disableElevation
       sx={{
         borderRadius: "50%",
-        backgroundColor: "primary.main",
+        backgroundColor: "backgroundColor.main",
         border: `1px solid ${theme.palette.error.main}`,
         color: theme.palette.error.main,
         aspectRatio: "1/1",

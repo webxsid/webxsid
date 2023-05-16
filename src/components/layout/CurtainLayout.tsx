@@ -127,27 +127,47 @@ const CurtainLayout: FC<IProps> = ({
     <>
       <Box
         role="curtain"
+        className="padding-bottom"
         sx={{
           position: "fixed",
           top: 0,
           left: 0,
           display: "flex",
           flexDirection: "column",
-          height: "fit-content",
+          height: controlCenterOpen ? (isDesktop ? "60%" : "7%") : "100%",
+          transition: "all 1s ease-in-out",
           width: "100%",
           overflowY: "hidden",
           zIndex: 10,
-          transition: "all 0.5s ease-in-out",
           backgroundColor: "backgroundColor.main",
           borderRadius: controlCenterOpen ? "0 0 3rem 3rem" : "0px",
           ...rest,
         }}
       >
         <Box
+          sx={{
+            height: controlCenterOpen ? "7vh" : "10vh",
+            width: "100%",
+            position: "absolute",
+            py: 1,
+            top: 0,
+            left: 0,
+            zIndex: 99,
+            backgroundColor: "backgroundColor.main",
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Logo scale={controlCenterOpen ? 0.8 : 1} />
+        </Box>
+        <Box
           ref={curtainRef}
           role="scroll-view"
           sx={{
-            height: controlCenterOpen ? (isDesktop ? "60vh" : "7vh") : "100vh",
+            height: isDesktop ? "100%" : controlCenterOpen ? "0%" : "100%",
             transition: "all 1s ease-in-out",
             width: "100%",
             overflow: controlCenterOpen ? "hidden" : "auto",
@@ -156,31 +176,12 @@ const CurtainLayout: FC<IProps> = ({
         >
           <Box
             sx={{
-              height: controlCenterOpen ? "7vh" : "10vh",
-              width: "100%",
-              position: "absolute",
-              py: 1,
-              top: 0,
-              left: 0,
-              zIndex: 99,
-              backgroundColor: "backgroundColor.main",
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Logo scale={controlCenterOpen ? 0.8 : 1} />
-          </Box>
-          <Box
-            sx={{
               height: "100%",
               width: "100%",
               position: "absolute",
               top: 0,
               left: 0,
-              // paddingTop: controlCenterOpen ? "7vh" : "10vh",
+              // paddingTop: controlCenterOpen ? "7%" : "10%",
             }}
           >
             {children}
@@ -188,7 +189,7 @@ const CurtainLayout: FC<IProps> = ({
         </Box>
         <Box
           sx={{
-            height: "8vh",
+            height: "8%",
             position: "absolute",
             transition: "all 1s ease-in-out",
             bottom: controlCenterOpen ? "0%" : "1rem",

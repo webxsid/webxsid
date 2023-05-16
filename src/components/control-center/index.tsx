@@ -16,13 +16,14 @@ const ControlCenter = () => {
 
   return (
     <Box
+      className="padding-bottom"
       sx={{
         position: "fixed",
         backgroundColor: "backgroundColor.light",
         top: 0,
         left: 0,
         width: "100vw",
-        height: "100vh",
+        height: "100%",
         zIndex: 9,
         paddingTop: open ? (isDesktop ? "60vh" : "8vh") : "0",
         pb: 3,

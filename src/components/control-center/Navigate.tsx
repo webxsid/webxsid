@@ -49,7 +49,9 @@ const NavButton: FC<NavButtonProps> = ({ href, text, icon, index, active }) => {
           disableElevation
           sx={{
             borderRadius: 10,
-            backgroundColor: active ? "primary.main" : "backgroundColor.light",
+            backgroundColor: active
+              ? "backgroundColor.main"
+              : "backgroundColor.light",
             border: `1px solid ${
               active
                 ? theme.palette.accent.main
@@ -115,7 +117,9 @@ const NavButton: FC<NavButtonProps> = ({ href, text, icon, index, active }) => {
       ) : (
         <IconButton
           sx={{
-            backgroundColor: active ? "primary.main" : "backgroundColor.light",
+            backgroundColor: active
+              ? "backgroundColor.main"
+              : "backgroundColor.light",
             border: `1px solid ${
               active
                 ? theme.palette.accent.main
