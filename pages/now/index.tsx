@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import CurtainLayout from "@/components/layout/CurtainLayout";
-import { Box, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import Head from "next/head";
 import { useSelector, useDispatch } from "react-redux";
 import { IStore } from "@interfaces/store.interface";
@@ -12,6 +18,7 @@ const Now = () => {
   const [openSubCategories, setOpenSubCategories] = useState<string[]>([]);
   const {
     now: { data, date, error },
+    loading,
     darkMode,
   } = useSelector((state: IStore) => ({ ...state.pagesData, ...state.theme }));
 
@@ -116,6 +123,7 @@ const Now = () => {
               alignItems: "center",
               px: "clamp(1rem, 7vw, 20rem)",
               py: 6,
+              color: "backgroundColor.contrastText",
             }}
           >
             <Box
@@ -128,7 +136,13 @@ const Now = () => {
                 gap: 2,
               }}
             >
-              <Typography variant="h5" component="h3">
+              <Typography
+                variant="h5"
+                component="h3"
+                sx={{
+                  color: "inherit",
+                }}
+              >
                 About this page
               </Typography>
               <Typography
@@ -137,6 +151,7 @@ const Now = () => {
                 sx={{
                   textAlign: "justify",
                   fontFamily: "monospace",
+                  color: "inherit",
                 }}
               >
                 This personal website is my own little space on the internet
@@ -146,28 +161,110 @@ const Now = () => {
                 my digital living room as much as I enjoyed creating it.
               </Typography>
             </Box>
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <IconButton onClick={handleFetchData}>
-                <Refresh />
-              </IconButton>
-              <Typography
-                variant="body2"
-                component="p"
+            {loading ? (
+              <Box
                 sx={{
-                  fontFamily: "monospace",
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 2,
                 }}
               >
-                Updated on {new Date(date).toDateString()}, from my home in
-                India.
-              </Typography>
-            </Box>
+                <CircularProgress
+                  sx={{
+                    color: "accent.main",
+                  }}
+                  size={30}
+                />
+                <Typography
+                  variant="body2"
+                  component="p"
+                  sx={{ fontFamily: "monospace", color: "inherit" }}
+                >
+                  Fetching data...
+                </Typography>
+              </Box>
+            ) : error?.length > 0 ? (
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  component="p"
+                  sx={{ fontFamily: "monospace", color: "error.main" }}
+                >
+                  {error}
+                </Typography>
+                <Button
+                  onClick={handleFetchData}
+                  variant="text"
+                  sx={{
+                    color: "accent.main",
+                    "&:hover": {
+                      color: "accent.main",
+                    },
+                  }}
+                  startIcon={
+                    <Refresh
+                      sx={{
+                        color: "accent.main",
+                      }}
+                    />
+                  }
+                >
+                  Try again
+                </Button>
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  component="p"
+                  sx={{
+                    fontFamily: "monospace",
+                    color: "inherit",
+                  }}
+                >
+                  Updated on {new Date(date).toDateString()}, from my home in
+                  India.
+                </Typography>
+                <Button
+                  onClick={handleFetchData}
+                  variant="text"
+                  sx={{
+                    color: "accent.main",
+                    textTransform: "capitalize",
+                    "&:hover": {
+                      color: "accent.main",
+                    },
+                  }}
+                  startIcon={
+                    <Refresh
+                      sx={{
+                        color: "accent.main",
+                      }}
+                    />
+                  }
+                >
+                  Refresh
+                </Button>
+              </Box>
+            )}
           </Box>
         </Box>
       </CurtainLayout>
