@@ -14,7 +14,11 @@ export interface INowData {
 
 export interface IPagesDataState {
   now: {
-    data: INowData[];
+    data: {
+      [key: string]: {
+        [key: string]: INowData[];
+      };
+    };
     date: string;
     error?: string;
   };

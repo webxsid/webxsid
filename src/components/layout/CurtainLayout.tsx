@@ -8,19 +8,12 @@ import { toggleControlCenter } from "@store/actions";
 import { IStore } from "@interfaces/store.interface";
 import CurtainClose from "../Icons/CurtainClose";
 interface IProps {
-  liftThreshold: number;
   [key: string]: any;
   children: React.ReactNode;
 }
 
-const CurtainLayout: FC<IProps> = ({
-  liftThreshold = 0.6,
-  children,
-  ...rest
-}) => {
+const CurtainLayout: FC<IProps> = ({ children, ...rest }) => {
   const [lastScrollY, setLastScrollY] = useState<number>(0);
-  const [touchStartY, setTouchStartY] = useState<number | null>(null);
-  const [isAtBottom, setIsAtBottom] = useState<boolean>(false);
   const curtainRef = useRef<HTMLDivElement>(null);
 
   const { open: controlCenterOpen } = useSelector(

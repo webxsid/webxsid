@@ -1,18 +1,14 @@
 import React from "react";
 import Head from "next/head";
-import ThemeWrapper from "@/components/ThemeWrapper";
-import AboutMeHero from "@/components/about-me/Hero";
-import AboutMeGrid from "@/components/about-me/Grid";
+import CurtainLayout from "@/components/layout/CurtainLayout";
 
 const AboutMe = () => {
   return (
-    <ThemeWrapper>
-      <AboutMeHero />
+    <CurtainLayout>
       <Head>
-        <title>Web x Sid | Hello, World!</title>
+        <title>About x Sid</title>
       </Head>
-      <AboutMeGrid />
-    </ThemeWrapper>
+    </CurtainLayout>
   );
 };
 

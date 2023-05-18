@@ -12,7 +12,6 @@ const Now = () => {
   const [openSubCategories, setOpenSubCategories] = useState<string[]>([]);
   const {
     now: { data, date, error },
-    loading,
     darkMode,
   } = useSelector((state: IStore) => ({ ...state.pagesData, ...state.theme }));
 

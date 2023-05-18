@@ -16,7 +16,9 @@ import { ArrowRight, Circle, OpenInNew } from "@mui/icons-material";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import Link from "next/link";
 interface IProps {
-  data: INowData[];
+  data: {
+    [key: string]: INowData[];
+  };
   openSubCategories: string[];
   handleToggleSubCategory: (key: string) => void;
   color: string;

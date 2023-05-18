@@ -2,12 +2,11 @@ import React, { FC, useState, useEffect } from "react";
 import {
   Menu,
   ListItemButton,
-  Box,
   Typography,
   Button,
   ListItemIcon,
 } from "@mui/material";
-import { useTheme } from "@emotion/react";
+import { useTheme } from "@mui/material";
 import LiveDot from "../LiveDot";
 import { Circle, Menu as MenuIcon } from "@mui/icons-material";
 import { useSelector } from "react-redux";
@@ -57,7 +56,7 @@ const NowLogo: FC = () => {
     const notesRef = document.getElementById("notes");
     const consumingRef = document.getElementById("consuming");
     if (scrollViewRef) {
-      const onScroll = (e) => {
+      const onScroll = (e: any) => {
         const scrollTop = e.target.scrollTop;
         if (scrollTop === 0) {
           setDisplayText("Now");

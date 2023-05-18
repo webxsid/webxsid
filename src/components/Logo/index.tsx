@@ -1,8 +1,5 @@
 import React, { FC, useState, useEffect } from "react";
-import { Box, Typography } from "@mui/material";
-import { Close } from "@mui/icons-material";
-import { useSelector } from "react-redux";
-import { IStore } from "@interfaces/store.interface";
+import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import Base from "./Base";
 import NowLogo from "./Now";
@@ -11,9 +8,6 @@ interface IProps {
   scale?: number;
 }
 const Logo: FC<IProps> = ({ scale = 1 }) => {
-  const { darkMode, open: controlCenterOpen } = useSelector(
-    (state: IStore) => ({ ...state.theme, ...state.controlCenter })
-  );
   const [render, setRender] = useState<React.ReactNode>(<Base />);
 
   const router = useRouter();

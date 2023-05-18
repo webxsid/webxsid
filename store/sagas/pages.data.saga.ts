@@ -9,8 +9,12 @@ import { EPagesDataActionTypes } from "@store/types";
 
 function* nowPageSaga() {
   try {
-    const data = yield call(getLatestUpdates);
-    yield put(setNowDataSuccess(data as INowData[]));
+    const data: {
+      [key: string]: {
+        [key: string]: INowData[];
+      };
+    } = yield call(getLatestUpdates);
+    yield put(setNowDataSuccess(data));
   } catch (error) {
     console.log(error);
     yield put(

@@ -5,7 +5,7 @@ import {
 import { EPagesDataActionTypes } from "@store/types";
 const initialState: IPagesDataState = {
   now: {
-    data: [],
+    data: {},
     date: "",
     error: "",
   },
@@ -17,7 +17,7 @@ function pagesDataReducer(
   action: IPagedDataAction
 ): IPagesDataState {
   switch (action.type) {
-    case EPagesDataActionTypes.SET_NOW_DATA:
+    case EPagesDataActionTypes.SET_NOW_PAGE_DATA:
       return {
         ...state,
         loading: true,
