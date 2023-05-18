@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CurtainLayout from "@/components/layout/CurtainLayout";
-import {
-  Box,
-  Button,
-  IconButton,
-  Typography,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Button, Typography, CircularProgress } from "@mui/material";
 import Head from "next/head";
 import { useSelector, useDispatch } from "react-redux";
 import { IStore } from "@interfaces/store.interface";
@@ -185,7 +179,7 @@ const Now = () => {
                   Fetching data...
                 </Typography>
               </Box>
-            ) : error?.length > 0 ? (
+            ) : error && error?.length > 0 ? (
               <Box
                 sx={{
                   width: "100%",
