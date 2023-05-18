@@ -1,6 +1,5 @@
 import React, { FC, useState, useEffect, useRef } from "react";
 import { Box, Button, useTheme } from "@mui/material";
-import { IChildrenProps } from "@interfaces/components";
 import Logo from "../Logo";
 import { Menu } from "@mui/icons-material";
 import { useDeviceType } from "@/hooks/useDeviceType";
@@ -8,9 +7,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleControlCenter } from "@store/actions";
 import { IStore } from "@interfaces/store.interface";
 import CurtainClose from "../Icons/CurtainClose";
-interface IProps extends IChildrenProps {
+interface IProps {
   liftThreshold: number;
   [key: string]: any;
+  children: React.ReactNode;
 }
 
 const CurtainLayout: FC<IProps> = ({
@@ -20,6 +20,7 @@ const CurtainLayout: FC<IProps> = ({
 }) => {
   const [lastScrollY, setLastScrollY] = useState<number>(0);
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [isAtBottom, setIsAtBottom] = useState<boolean>(false);
   const curtainRef = useRef<HTMLDivElement>(null);
 
   const { open: controlCenterOpen } = useSelector(
@@ -40,69 +41,18 @@ const CurtainLayout: FC<IProps> = ({
   useEffect(() => {
     const ref = curtainRef?.current;
     if (!ref) return;
-    const handleWheel = (e: WheelEvent) => {
-      const { deltaY } = e;
-      if (deltaY === -0) return;
-      if (deltaY > 0) {
-        if (Math.abs(ref.scrollHeight - ref.clientHeight - ref.scrollTop) < 1) {
-          dispatch(toggleControlCenter(true));
-        }
-      }
-    };
-
-    ref.addEventListener("wheel", handleWheel, { passive: false });
-
-    return () => {
-      ref.removeEventListener("wheel", handleWheel);
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    const ref = curtainRef?.current;
-    if (!ref) return;
-    const handleTouchStart = (e: TouchEvent) => {
-      const { clientY } = e.touches[0];
-      setTouchStartY(clientY);
-
-      const handleTouchMove = (e: TouchEvent) => {
-        const { clientY } = e.touches[0];
-        const touchDistance = clientY - touchStartY!;
-        if (touchDistance < 0) {
-          if (
-            Math.abs(ref.scrollHeight - ref.clientHeight - ref.scrollTop) < 1
-          ) {
-            dispatch(toggleControlCenter(true));
-          }
-        }
-      };
-
-      const handleTouchEnd = () => {
-        ref?.removeEventListener("touchmove", handleTouchMove);
-        ref?.removeEventListener("touchend", handleTouchEnd);
-      };
-
-      ref?.addEventListener("touchmove", handleTouchMove, { passive: false });
-      ref?.addEventListener("touchend", handleTouchEnd);
-    };
-
-    ref.addEventListener("touchstart", handleTouchStart, { passive: false });
-
-    return () => {
-      ref.removeEventListener("touchstart", handleTouchStart);
-    };
-  }, [touchStartY, dispatch]);
-
-  useEffect(() => {
-    const ref = curtainRef?.current;
-    if (!ref) return;
     if (controlCenterOpen) {
+      const currentScrollY = ref.scrollTop;
+      setLastScrollY(currentScrollY);
       const scrollViewEl = document.getElementById("scroll-view-display");
       if (scrollViewEl) {
-        const currentScrollY = ref.scrollTop;
-        setLastScrollY(currentScrollY);
         const timeout = setTimeout(() => {
-          scrollViewEl.scrollIntoView({ behavior: "smooth", block: "center" });
-        }, 500);
+          ref.scrollTo({
+            top: scrollViewEl.offsetTop + scrollViewEl.offsetHeight / 2,
+            behavior: "smooth",
+            left: 0,
+          });
+        }, 1000);
 
         return () => {
           clearTimeout(timeout);
@@ -145,6 +95,7 @@ const CurtainLayout: FC<IProps> = ({
         }}
       >
         <Box
+          id="logo-container"
           sx={{
             height: controlCenterOpen ? "7vh" : "10vh",
             width: "100%",
@@ -165,6 +116,7 @@ const CurtainLayout: FC<IProps> = ({
         </Box>
         <Box
           ref={curtainRef}
+          id="scroll-view"
           role="scroll-view"
           sx={{
             height: isDesktop ? "100%" : controlCenterOpen ? "0%" : "100%",
@@ -181,7 +133,7 @@ const CurtainLayout: FC<IProps> = ({
               position: "absolute",
               top: 0,
               left: 0,
-              // paddingTop: controlCenterOpen ? "7%" : "10%",
+              paddingTop: controlCenterOpen ? "7vh" : "10vh",
             }}
           >
             {children}
@@ -192,7 +144,7 @@ const CurtainLayout: FC<IProps> = ({
             height: "8%",
             position: "absolute",
             transition: "all 1s ease-in-out",
-            bottom: controlCenterOpen ? "0%" : "1rem",
+            bottom: controlCenterOpen ? "0" : "1rem",
             left: controlCenterOpen ? "50%" : "1rem",
             transform: controlCenterOpen
               ? `translateX(-50%)`
@@ -200,6 +152,10 @@ const CurtainLayout: FC<IProps> = ({
             display: "flex",
             justifyContent: "flex-start",
             alignItems: "center",
+            px: controlCenterOpen ? 4 : 0,
+            backgroundColor: controlCenterOpen
+              ? "backgroundColor.main"
+              : "transparent",
           }}
         >
           {controlCenterOpen ? (

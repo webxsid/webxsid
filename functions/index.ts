@@ -1,2 +1,2 @@
 export * from "./spotify.functions";
-export * from "./helper.functions";
+export * from "./server.functions";

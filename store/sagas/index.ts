@@ -1,5 +1,6 @@
 import { all, fork } from "redux-saga/effects";
-const sagas: any[] = [];
+import pageDataWatcher from "./pages.data.saga";
+const sagas: any[] = [pageDataWatcher];
 
 function* rootSaga() {
   yield all(sagas.map((saga) => fork(saga)));

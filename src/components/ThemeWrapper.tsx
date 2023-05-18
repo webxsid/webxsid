@@ -6,9 +6,13 @@ import { setDarkMode } from "@store/actions";
 import { ThemeProvider, useMediaQuery } from "@mui/material";
 import { darkTheme, lightTheme } from "@/theme";
 // * Import interfaces
-import { IStore, IThemeWrapperProps } from "@interfaces/index";
+import { IStore } from "@interfaces/index";
 
-const ThemeWrapper: FC<IThemeWrapperProps> = ({ children }) => {
+interface IProps {
+  children: React.ReactNode;
+}
+
+const ThemeWrapper: FC<IProps> = ({ children }) => {
   const { darkMode, systemDefault } = useSelector(
     (state: IStore) => state.theme
   );

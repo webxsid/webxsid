@@ -1,0 +1,44 @@
+import React, { FC } from "react";
+import { Button } from "@mui/material";
+import Link from "next/link";
+import { useTheme } from "@mui/material";
+import { useSelector } from "react-redux";
+import { IStore } from "@interfaces/store.interface";
+
+const Base: FC = () => {
+  const theme = useTheme();
+  const { darkMode, open: disabled } = useSelector((state: IStore) => ({
+    ...state.theme,
+    ...state.controlCenter,
+  }));
+  return (
+    <Link href="/" passHref>
+      <Button
+        sx={{
+          px: 2,
+          py: 0.6,
+          borderRadius: 90,
+          backgroundColor: "backgroundColor.main",
+          border: `1px solid ${theme.palette.accent.main}`,
+          color: "accent.main",
+          fontFamily: "monospace",
+          textTransform: "none",
+          boxShadow: darkMode
+            ? `0px 4px 30px ${theme.palette.accent.main}`
+            : "none",
+          "&:hover": {
+            backgroundColor: "backgroundColor.main",
+            border: `1px solid ${theme.palette.accent.main}`,
+
+            color: "accent.main",
+          },
+        }}
+        disabled={disabled}
+      >
+        Web x Sid
+      </Button>
+    </Link>
+  );
+};
+
+export default Base;

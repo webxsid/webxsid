@@ -1,16 +1,16 @@
 import createSagaMiddleware from "redux-saga";
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
-import { persistReducer } from "redux-persist";
+import { persistReducer, persistStore } from "redux-persist";
 import rootReducer from "./reducers";
 import rootSaga from "./sagas";
-import storage from "./storage";
+import storage from "redux-persist/lib/storage";
 const sagaMiddleware = createSagaMiddleware();
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["theme", "spotify"],
+  blacklist: ["controlCenter"],
 };
 
 const persisterReducer = persistReducer(persistConfig, rootReducer);
@@ -26,4 +26,8 @@ export const store = configureStore({
 
 sagaMiddleware.run(rootSaga);
 
-export const wrapper = createWrapper(() => store, { debug: true });
+export const persistor = persistStore(store);
+
+export const wrapper = createWrapper(() => store, {
+  debug: process.env.NODE_ENV !== "production",
+});

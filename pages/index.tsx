@@ -1,5 +1,4 @@
 import React from "react";
-import ThemeWrapper from "@/components/ThemeWrapper";
 import Head from "next/head";
 import { Box, Typography } from "@mui/material";
 import Smile from "@/assets/Images/Memoji/Smile.png";
@@ -11,7 +10,7 @@ export default function Home() {
   const { isMobile } = useDeviceType();
 
   return (
-    <ThemeWrapper>
+    <>
       <Head>
         <title>Web x Sid</title>
       </Head>
@@ -138,6 +137,6 @@ export default function Home() {
           </Box>
         </Box>
       </CurtainLayout>
-    </ThemeWrapper>
+    </>
   );
 }
