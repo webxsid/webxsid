@@ -112,6 +112,9 @@ const NowLogo: FC = () => {
 
             color: `${color}`,
           },
+          "&.Mui-disabled": {
+            color,
+          },
         }}
         disabled={disabled}
       >

@@ -32,6 +32,9 @@ const Base: FC = () => {
 
             color: "accent.main",
           },
+          "&.Mui-disabled": {
+            color: theme.palette.accent.main,
+          },
         }}
         disabled={disabled}
       >

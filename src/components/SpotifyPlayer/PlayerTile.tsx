@@ -10,11 +10,12 @@ import {
 import { setSpotifyData } from "@store/actions";
 import { IStore } from "@interfaces/store.interface";
 import SoundBars from "./SoundBars";
+import { useDeviceType } from "@/hooks/useDeviceType";
 import Image from "next/image";
 import SpotifyIcon from "../../assets/Images/Spotify/icon-small.png";
 import SpotifyLogo from "../../assets/Images/Spotify/logo-large.png";
 const SpotifyPlayerTile = () => {
-  const isMobile = useMediaQuery("(max-width: 600px)");
+  const { isMobile } = useDeviceType();
   const [show, setShow] = useState(false);
   const [data, setData] = useState<any>({
     isPlaying: false,
@@ -96,10 +97,11 @@ const SpotifyPlayerTile = () => {
         gap: 1.5,
         width: "100%",
         height: "100%",
-        maxHeight: "5rem",
+        maxHeight: "7rem",
         p: 1,
-        backgroundColor: "backgroundColor.main",
-        backdropFilter: "blur(15px)",
+        backgroundColor: "transparent",
+        border: "1px solid",
+        borderColor: "backgroundColor.contrastText",
         borderRadius: "1rem",
         position: "relative",
       }}
@@ -143,7 +145,7 @@ const SpotifyPlayerTile = () => {
               <History
                 sx={{
                   color: "backgroundColor.contrastText",
-                  fontSize: isMobile ? 12 : 15,
+                  fontSize: isMobile ? 20 : 15,
                 }}
               />
             )}
