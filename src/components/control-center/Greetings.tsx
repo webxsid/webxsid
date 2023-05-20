@@ -3,19 +3,15 @@ import {
   Box,
   Typography,
   TextField,
-  Tooltip,
   InputAdornment,
   IconButton,
 } from "@mui/material";
-import { toast } from "react-toastify";
 import { useTheme } from "@mui/material";
 import { Telegram } from "@mui/icons-material";
-import { useDeviceType } from "@/hooks/useDeviceType";
 
 const Greetings = () => {
   const [name, setName] = useState<string>("");
   const [newName, setNewName] = useState<string>("");
-  const { isMobile } = useDeviceType();
   const theme = useTheme();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
