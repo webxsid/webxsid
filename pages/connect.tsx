@@ -19,7 +19,7 @@ const Connect = () => {
       <Head>
         <title>Connect x Sid</title>
       </Head>
-      <CurtainLayout liftThreshold={isMobile ? 0.4 : 0.5}>
+      <CurtainLayout>
         <></>
       </CurtainLayout>
       <Box

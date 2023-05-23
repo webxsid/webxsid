@@ -99,7 +99,7 @@ const ControlCenter = () => {
           </Grid>
         ) : (
           <Stack
-            spacing={1}
+            spacing={3}
             sx={{
               height: "100%",
               justifyContent: "space-between",

@@ -5,7 +5,7 @@ import Head from "next/head";
 import { useSelector, useDispatch } from "react-redux";
 import { IStore } from "@interfaces/store.interface";
 import { setNowData } from "@store/actions/pages.data.actions";
-import Section from "./Section";
+import Section from "@components/Now/Section";
 import { Refresh } from "@mui/icons-material";
 
 const Now = () => {
@@ -69,8 +69,15 @@ const Now = () => {
       <Head>
         <title>Now x Sid</title>
       </Head>
-      <CurtainLayout>
+      <CurtainLayout
+        contentSx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Box
+          className="container"
           sx={{
             width: "100%",
             height: "100%",
@@ -78,7 +85,6 @@ const Now = () => {
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            px: "clamp(1rem, 7vw, 20rem)",
           }}
         >
           <Section
@@ -106,6 +112,7 @@ const Now = () => {
             darkMode={darkMode}
           />
           <Box
+            className="container"
             id="scroll-view-display"
             sx={{
               width: "100%",
@@ -115,8 +122,8 @@ const Now = () => {
               gap: 8,
               justifyContent: "center",
               alignItems: "center",
-              px: "clamp(1rem, 7vw, 20rem)",
               py: 6,
+              px: 3,
               color: "backgroundColor.contrastText",
             }}
           >

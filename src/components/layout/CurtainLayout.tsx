@@ -8,11 +8,16 @@ import { toggleControlCenter } from "@store/actions";
 import { IStore } from "@interfaces/store.interface";
 import CurtainClose from "../Icons/CurtainClose";
 interface IProps {
-  [key: string]: any;
   children: React.ReactNode;
+  sx?: {
+    [key: string]: string;
+  };
+  contentSx?: {
+    [key: string]: string;
+  };
 }
 
-const CurtainLayout: FC<IProps> = ({ children, ...rest }) => {
+const CurtainLayout: FC<IProps> = ({ children, sx, contentSx }) => {
   const [lastScrollY, setLastScrollY] = useState<number>(0);
   const curtainRef = useRef<HTMLDivElement>(null);
 
@@ -84,7 +89,7 @@ const CurtainLayout: FC<IProps> = ({ children, ...rest }) => {
           zIndex: 10,
           backgroundColor: "backgroundColor.main",
           borderRadius: controlCenterOpen ? "0 0 3rem 3rem" : "0px",
-          ...rest,
+          ...sx,
         }}
       >
         <Box
@@ -127,6 +132,7 @@ const CurtainLayout: FC<IProps> = ({ children, ...rest }) => {
               top: 0,
               left: 0,
               paddingTop: controlCenterOpen ? "7vh" : "10vh",
+              ...contentSx,
             }}
           >
             {children}

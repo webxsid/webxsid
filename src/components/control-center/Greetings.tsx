@@ -7,12 +7,14 @@ import {
   IconButton,
 } from "@mui/material";
 import { useTheme } from "@mui/material";
+import { useDeviceType } from "@/hooks/useDeviceType";
 import { Telegram } from "@mui/icons-material";
 
 const Greetings = () => {
   const [name, setName] = useState<string>("");
   const [newName, setNewName] = useState<string>("");
   const theme = useTheme();
+  const { isMobile } = useDeviceType();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewName(e.target.value);
@@ -49,11 +51,14 @@ const Greetings = () => {
     >
       <Typography
         variant="h1"
+        noWrap
         sx={{
           color: "inherit",
           fontWeight: "bold",
-          fontSize: "clamp(3rem, 5vw, 3.5rem)",
-          lineHeight: "clamp(3rem, 5vw, 3.5rem)",
+          width: "100%",
+          px: 1,
+          fontSize: "clamp(2.3rem, 5vw, 3.5rem)",
+          lineHeight: "clamp(2.3rem, 5vw, 3.5rem)",
         }}
       >
         Hello! {name?.length > 0 && name}
@@ -68,7 +73,7 @@ const Greetings = () => {
             backgroundColor: "backgroundColor.main",
             border: `1px solid ${theme.palette.accent.main}`,
             px: 1,
-            py: 1.3,
+            py: isMobile ? 0.7 : 1.3,
             borderRadius: 10,
           },
 
@@ -91,7 +96,11 @@ const Greetings = () => {
                   borderRadius: 10,
                 }}
               >
-                <Telegram />
+                <Telegram
+                  sx={{
+                    fontSize: isMobile ? "small" : "medium",
+                  }}
+                />
               </IconButton>
             </InputAdornment>
           ),

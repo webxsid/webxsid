@@ -14,7 +14,7 @@ export default function Home() {
       <Head>
         <title>Web x Sid</title>
       </Head>
-      <CurtainLayout liftThreshold={isMobile ? 0.4 : 0.5}>
+      <CurtainLayout>
         <Box
           sx={{
             display: "flex",
