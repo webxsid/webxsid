@@ -21,7 +21,7 @@ import { useDeviceType } from "@/hooks/useDeviceType";
 import { useSelector, useDispatch } from "react-redux";
 import { IStore } from "@interfaces/store.interface";
 import { toggleControlCenter } from "@store/actions";
-import LiveDot from "../LiveDot";
+import LiveDot from "../Icons/LiveDot";
 interface NavButtonProps {
   href: string;
   text: string;

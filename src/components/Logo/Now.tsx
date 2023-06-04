@@ -7,7 +7,7 @@ import {
   ListItemIcon,
 } from "@mui/material";
 import { useTheme } from "@mui/material";
-import LiveDot from "../LiveDot";
+import LiveDot from "../Icons/LiveDot";
 import { Circle, Menu as MenuIcon } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { IStore } from "@interfaces/store.interface";
@@ -98,7 +98,7 @@ const NowLogo: FC = () => {
           borderRadius: 90,
           backgroundColor: "backgroundColor.main",
           border: `1px solid ${color}`,
-          color: `${color}`,
+          color,
           fontFamily: "monospace",
           textTransform: "none",
           display: "flex",
@@ -141,6 +141,7 @@ const NowLogo: FC = () => {
           elevation: 10,
           sx: {
             width: "90vw",
+            maxWidth: "30rem",
             backgroundColor: "backgroundColor.transparent",
             backdropFilter: "blur(5px)",
             borderRadius: 3,

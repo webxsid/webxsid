@@ -21,8 +21,8 @@ const CurtainLayout: FC<IProps> = ({ children, sx, contentSx }) => {
   const [lastScrollY, setLastScrollY] = useState<number>(0);
   const curtainRef = useRef<HTMLDivElement>(null);
 
-  const { open: controlCenterOpen } = useSelector(
-    (state: IStore) => state.controlCenter
+  const { open: controlCenterOpen, darkMode } = useSelector(
+    (state: IStore) => ({ ...state.controlCenter, ...state.theme })
   );
   const dispatch = useDispatch();
 
@@ -179,6 +179,7 @@ const CurtainLayout: FC<IProps> = ({ children, sx, contentSx }) => {
                 border: `1px solid ${theme.palette.backgroundColor.contrastText}`,
                 color: theme.palette.backgroundColor.contrastText,
                 aspectRatio: "1/1",
+                boxShadow: darkMode ? "0px 4px 30px #FAFAFA" : "unset",
                 display: "flex",
                 transform: "scale(0.8)",
                 justifyContent: "center",

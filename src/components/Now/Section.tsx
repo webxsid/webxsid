@@ -145,6 +145,7 @@ const Section: FC<IProps> = ({
                     <ListItemText
                       primary={
                         <Box
+                          component={"span"}
                           sx={{
                             display: "flex",
                             flexDirection: isMobile ? "column" : "row",
@@ -155,15 +156,16 @@ const Section: FC<IProps> = ({
                         >
                           <Typography
                             variant="h6"
-                            component="h6"
+                            component="span"
                             sx={{
                               color: "backgroundColor.contrastText",
                             }}
                           >
                             {item.title}
                           </Typography>
-                          {item?.progress !== null && (
+                          {!!item?.progress && (
                             <Box
+                              component={"span"}
                               sx={{
                                 display: "flex",
                                 alignItems: "center",
@@ -185,7 +187,7 @@ const Section: FC<IProps> = ({
                               />
                               <Typography
                                 variant="body1"
-                                component="p"
+                                component="span"
                                 sx={{
                                   color: `${color}`,
                                 }}
@@ -198,6 +200,7 @@ const Section: FC<IProps> = ({
                       }
                       secondary={
                         <Box
+                          component={"span"}
                           sx={{
                             display: "flex",
                             flexDirection: "column",
@@ -206,7 +209,7 @@ const Section: FC<IProps> = ({
                         >
                           <Typography
                             variant="body1"
-                            component="p"
+                            component="span"
                             sx={{
                               color: "backgroundColor.contrastText",
                               mt: 1,
@@ -219,7 +222,7 @@ const Section: FC<IProps> = ({
                             <Link href={item.link} passHref target="_blank">
                               <Typography
                                 variant="body1"
-                                component="p"
+                                component="span"
                                 sx={{
                                   color: `${color}`,
                                   opacity: 0.8,

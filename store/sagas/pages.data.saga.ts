@@ -1,5 +1,5 @@
 import { takeEvery, call, put } from "redux-saga/effects";
-import { getLatestUpdates } from "@functions/server.functions";
+import { getLatestUpdates } from "@/firebase/firestore";
 import {
   setNowDataSuccess,
   setNowDataError,
@@ -14,6 +14,7 @@ function* nowPageSaga() {
         [key: string]: INowData[];
       };
     } = yield call(getLatestUpdates);
+    console.log(data);
     yield put(setNowDataSuccess(data));
   } catch (error) {
     console.log(error);

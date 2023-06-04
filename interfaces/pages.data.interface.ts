@@ -3,10 +3,8 @@ export interface INowData {
   category: string;
   sub_category: string;
   title: string;
+  progress: number;
   description: string;
-  progress: number | null;
-  last_edited_time: string;
-  created_time: string;
   link: string | null;
   link_text: string | null;
   image: string | null;

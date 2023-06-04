@@ -1,4 +1,4 @@
-import { config } from "@config/env.config";
+import { config } from "@config/index";
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 

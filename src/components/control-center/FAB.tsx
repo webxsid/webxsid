@@ -7,8 +7,8 @@ import { IconButton, Box } from "@mui/material";
 import { Menu, Close } from "@mui/icons-material";
 
 const ControlCenterFAB = () => {
-  const { open: controlCenterOpen } = useSelector(
-    (state: IStore) => state.controlCenter
+  const { open: controlCenterOpen, darkMode } = useSelector(
+    (state: IStore) => ({ ...state.controlCenter, ...state.theme })
   );
   const dispatch = useDispatch();
   const handleClick = () => {
@@ -34,6 +34,7 @@ const ControlCenterFAB = () => {
         onClick={handleClick}
         sx={{
           backgroundColor: "accent.main",
+          boxShadow: darkMode ? "0px 4px 30px #FAFAFA" : "unset",
           color: "textColor.main",
           "&:hover": {
             backgroundColor: "accent.light",

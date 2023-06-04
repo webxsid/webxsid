@@ -42,7 +42,7 @@ const Now = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (data && data?.creating) {

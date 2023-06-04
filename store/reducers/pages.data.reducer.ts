@@ -53,6 +53,8 @@ function pagesDataReducer(
         loading: false,
       };
 
+    case "RESET":
+      return initialState;
     default:
       return state;
   }

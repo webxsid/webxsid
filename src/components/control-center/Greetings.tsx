@@ -32,7 +32,7 @@ const Greetings = () => {
     if (existingName) {
       setName(existingName);
     } else {
-      setName("Anonymous");
+      setName("");
     }
   }, []);
   return (
@@ -56,9 +56,10 @@ const Greetings = () => {
           color: "inherit",
           fontWeight: "bold",
           width: "100%",
+          textAlign: "center",
           px: 1,
-          fontSize: "clamp(2.3rem, 5vw, 3.5rem)",
-          lineHeight: "clamp(2.3rem, 5vw, 3.5rem)",
+          fontSize: "clamp(2.3rem, 5vw, 3rem)",
+          lineHeight: "clamp(2.3rem, 5vw, 3rem)",
         }}
       >
         Hello! {name?.length > 0 && name}
