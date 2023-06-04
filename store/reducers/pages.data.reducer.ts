@@ -53,7 +53,7 @@ function pagesDataReducer(
         loading: false,
       };
 
-    case "RESET":
+    case EPagesDataActionTypes.RESET:
       return initialState;
     default:
       return state;

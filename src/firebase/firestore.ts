@@ -1,12 +1,5 @@
 import { firestore } from ".";
-import {
-  collection,
-  getDocs,
-  getDoc,
-  doc,
-  setDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { INowData } from "@interfaces/pages.data.interface";
 import sanitizeFirebaseData from "@/utils/sanitise.util";
 
@@ -24,7 +17,7 @@ export const getLatestUpdates = async (): Promise<{
   } = {
     creating: {},
     notes: {},
-    creating: {},
+    consuming: {},
   };
   data.forEach(async (doc) => {
     const docData = await sanitizeFirebaseData(doc.data());
@@ -32,13 +25,13 @@ export const getLatestUpdates = async (): Promise<{
     const subCategory = docData.sub_category.toLowerCase();
     if (nowData[category]) {
       if (nowData[category][subCategory]) {
-        nowData[category][subCategory].push(docData);
+        nowData[category][subCategory].push(docData as INowData);
       } else {
-        nowData[category][subCategory] = [docData];
+        nowData[category][subCategory] = [docData as INowData];
       }
     } else {
       nowData[category] = {
-        [subCategory]: [docData],
+        [subCategory]: [docData as INowData],
       };
     }
   });
