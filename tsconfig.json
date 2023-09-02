@@ -32,7 +32,8 @@
       "@redcuers/*": ["store/reducers/*"],
       "@actions/*": ["store/actions/*"],
       "@types/*": ["store/types/*"],
-      "@sagas/*": ["store/sagas/*"]
+      "@sagas/*": ["store/sagas/*"],
+      "@logger": ["src/utils/logger.util.ts"]
     }
   },
   "include": [
@@ -41,7 +42,8 @@
     "**/*.tsx",
     "*.d.ts",
     "**/*.d.ts",
-    "pages/api/spotify/*.txt"
+    "pages/api/spotify/*.txt",
+    "pages/about-me/index.tss"
   ],
   "exclude": ["node_modules"]
 }

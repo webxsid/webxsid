@@ -3,6 +3,8 @@ import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import Base from "./Base";
 import NowLogo from "./Now";
+import ProjectsLogo from "./Projects";
+import AboutLogo from "./About";
 
 interface IProps {
   scale?: number;
@@ -20,6 +22,15 @@ const Logo: FC<IProps> = ({ scale = 1 }) => {
         break;
       case "/now":
         setRender(<NowLogo />);
+        break;
+      case "/projects":
+        setRender(<ProjectsLogo />);
+        break;
+      case "/projects/[id]":
+        setRender(<ProjectsLogo />);
+        break;
+      case "/about-me":
+        setRender(<AboutLogo />);
         break;
       default:
         setRender(<Base />);

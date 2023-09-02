@@ -32,7 +32,7 @@ interface NavButtonProps {
 
 const NavButton: FC<NavButtonProps> = ({ href, text, icon, index, active }) => {
   const theme = useTheme();
-  const { isMobile } = useDeviceType();
+  const { isMobile, isDesktop } = useDeviceType();
   const { open: controlCenterOpen } = useSelector(
     (state: IStore) => state.controlCenter
   );
@@ -101,18 +101,20 @@ const NavButton: FC<NavButtonProps> = ({ href, text, icon, index, active }) => {
             </Box>
             {text}
           </Box>
-          <Typography
-            variant="body2"
-            sx={{
-              color: active
-                ? theme.palette.accent.main
-                : theme.palette.backgroundColor.contrastText,
-              opacity: 0.8,
-              fontSize: "0.8rem",
-            }}
-          >
-            {index}
-          </Typography>
+          {isDesktop && (
+            <Typography
+              variant="body2"
+              sx={{
+                color: active
+                  ? theme.palette.accent.main
+                  : theme.palette.backgroundColor.contrastText,
+                opacity: 0.8,
+                fontSize: "0.8rem",
+              }}
+            >
+              {index}
+            </Typography>
+          )}
         </Button>
       ) : (
         <IconButton

@@ -1,5 +1,6 @@
 const sanitizeFirebaseData = async (
-  data: any
+  data: any,
+  id: string = ""
 ): Promise<{
   [key: string]: any;
 }> => {
@@ -7,7 +8,9 @@ const sanitizeFirebaseData = async (
     try {
       let responseObject: {
         [key: string]: any;
-      } = {};
+      } = {
+        id,
+      };
       Object.entries(data).forEach(([key, value]) => {
         const sanitizedKey = key.replace(/\s+/g, "_").toLowerCase();
         responseObject[sanitizedKey] = value;

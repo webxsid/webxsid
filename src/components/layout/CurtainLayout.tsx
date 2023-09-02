@@ -1,12 +1,13 @@
 import React, { FC, useState, useEffect, useRef } from "react";
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Button, IconButton, useTheme } from "@mui/material";
 import Logo from "../Logo";
-import { Menu } from "@mui/icons-material";
+import { Menu, ChevronLeft } from "@mui/icons-material";
 import { useDeviceType } from "@/hooks/useDeviceType";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleControlCenter } from "@store/actions";
 import { IStore } from "@interfaces/store.interface";
 import CurtainClose from "../Icons/CurtainClose";
+import { useRouter } from "next/router";
 interface IProps {
   children: React.ReactNode;
   sx?: {
@@ -20,6 +21,8 @@ interface IProps {
 const CurtainLayout: FC<IProps> = ({ children, sx, contentSx }) => {
   const [lastScrollY, setLastScrollY] = useState<number>(0);
   const curtainRef = useRef<HTMLDivElement>(null);
+  const [path, setPath] = useState<string>("/");
+  const router = useRouter();
 
   const { open: controlCenterOpen, darkMode } = useSelector(
     (state: IStore) => ({ ...state.controlCenter, ...state.theme })
@@ -71,6 +74,10 @@ const CurtainLayout: FC<IProps> = ({ children, sx, contentSx }) => {
     }
   }, [controlCenterOpen, lastScrollY]);
 
+  useEffect(() => {
+    setPath(router.pathname);
+  }, [router.pathname]);
+
   return (
     <>
       <Box
@@ -104,12 +111,37 @@ const CurtainLayout: FC<IProps> = ({ children, sx, contentSx }) => {
             zIndex: 99,
             backgroundColor: "backgroundColor.main",
             display: "flex",
-            flexDirection: "column",
+            // flexDirection: "column",
             gap: 2,
             justifyContent: "center",
             alignItems: "center",
           }}
         >
+          {path === "/projects/[id]" && (
+            <IconButton
+              size="small"
+              onClick={() => router.push("/projects")}
+              sx={{
+                position: "absolute",
+                left: "1rem",
+                top: "50%",
+                transform: "translateY(-50%)",
+                border: "1px solid",
+                borderColor: "accent.main",
+                color: "accent.main",
+                "&:hover": {
+                  backgroundColor: "backgroundColor.main",
+                  border: `1px solid ${theme.palette.accent.main}`,
+                },
+              }}
+            >
+              <ChevronLeft
+                sx={{
+                  fontSize: "0.8rem",
+                }}
+              />
+            </IconButton>
+          )}
           <Logo scale={controlCenterOpen ? 0.8 : 1} />
         </Box>
         <Box

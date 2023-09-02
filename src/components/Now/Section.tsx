@@ -6,7 +6,6 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Collapse,
   Chip,
   Button,
   CircularProgress,
@@ -19,20 +18,11 @@ interface IProps {
   data: {
     [key: string]: INowData[];
   };
-  openSubCategories: string[];
-  handleToggleSubCategory: (key: string) => void;
   color: string;
   id: string;
   darkMode: boolean;
 }
-const Section: FC<IProps> = ({
-  data,
-  openSubCategories,
-  handleToggleSubCategory,
-  color,
-  id,
-  darkMode,
-}) => {
+const Section: FC<IProps> = ({ data, color, id, darkMode }) => {
   const { isMobile } = useDeviceType();
   return (
     <Box
@@ -92,22 +82,21 @@ const Section: FC<IProps> = ({
               disableRipple
               disableTouchRipple
               disableFocusRipple
+              size="small"
               sx={{
-                px: 3,
                 display: "flex",
                 justifyContent: "flex-start",
                 alignItems: "center",
+                py: 0,
+                px: 0,
               }}
-              onClick={() => handleToggleSubCategory(key)}
             >
               <ArrowRight
                 sx={{
-                  transform: openSubCategories.includes(key)
-                    ? "rotate(90deg)"
-                    : "rotate(0deg)",
+                  transform: "rotate(90deg)",
                   transition: "all 0.2s ease-in-out",
                   color: `${color}`,
-                  fontSize: "3rem",
+                  fontSize: "2.4rem",
                 }}
               />
               <Typography
@@ -120,132 +109,129 @@ const Section: FC<IProps> = ({
                 {key}
               </Typography>
             </Button>
-            <Collapse
-              in={openSubCategories.includes(key)}
-              timeout="auto"
-              unmountOnExit
+            <List
+              component="div"
+              disablePadding
+              sx={{
+                pl: 3,
+              }}
             >
-              <List
-                component="div"
-                disablePadding
-                sx={{
-                  pl: 3,
-                }}
-              >
-                {value.map((item: INowData) => (
-                  <ListItem key={item.title}>
-                    <ListItemIcon>
-                      <Circle
+              {value.map((item: INowData) => (
+                <ListItem
+                  key={item.title}
+                  sx={{
+                    px: 0,
+                  }}
+                >
+                  <ListItemIcon>
+                    <Circle
+                      sx={{
+                        color: `${color}`,
+                        fontSize: "1rem",
+                      }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={
+                      <Box
+                        component={"span"}
                         sx={{
-                          color: `${color}`,
-                          fontSize: "1rem",
+                          display: "flex",
+                          flexDirection: isMobile ? "column" : "row",
+                          justifyContent: isMobile ? "center" : "flex-start",
+                          alignItems: isMobile ? "flex-start" : "center",
+                          gap: 1,
                         }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={
-                        <Box
-                          component={"span"}
+                      >
+                        <Typography
+                          variant="h6"
+                          component="span"
                           sx={{
-                            display: "flex",
-                            flexDirection: isMobile ? "column" : "row",
-                            justifyContent: isMobile ? "center" : "flex-start",
-                            alignItems: isMobile ? "flex-start" : "center",
-                            gap: 1,
+                            color: "backgroundColor.contrastText",
                           }}
                         >
-                          <Typography
-                            variant="h6"
-                            component="span"
+                          {item.title}
+                        </Typography>
+                        {!!item?.progress && (
+                          <Box
+                            component={"span"}
                             sx={{
-                              color: "backgroundColor.contrastText",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                              opacity: 0.8,
+                              transform: isMobile ? "scale(0.6)" : "scale(0.8)",
+                              transformOrigin: isMobile ? "left" : "right",
                             }}
                           >
-                            {item.title}
-                          </Typography>
-                          {!!item?.progress && (
-                            <Box
-                              component={"span"}
+                            <CircularProgress
+                              variant="determinate"
+                              value={item.progress}
                               sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 1,
-                                opacity: 0.8,
-                                transform: isMobile
-                                  ? "scale(0.6)"
-                                  : "scale(0.8)",
-                                transformOrigin: isMobile ? "left" : "right",
+                                color: `${color}`,
+                              }}
+                              size={20}
+                            />
+                            <Typography
+                              variant="body1"
+                              component="span"
+                              sx={{
+                                color: `${color}`,
                               }}
                             >
-                              <CircularProgress
-                                variant="determinate"
-                                value={item.progress}
-                                sx={{
-                                  color: `${color}`,
-                                }}
-                                size={20}
-                              />
-                              <Typography
-                                variant="body1"
-                                component="span"
-                                sx={{
-                                  color: `${color}`,
-                                }}
-                              >
-                                {item.progress}% Completed
-                              </Typography>
-                            </Box>
-                          )}
-                        </Box>
-                      }
-                      secondary={
-                        <Box
-                          component={"span"}
+                              {item.progress}% Completed
+                            </Typography>
+                          </Box>
+                        )}
+                      </Box>
+                    }
+                    secondary={
+                      <Box
+                        component={"span"}
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 1,
+                        }}
+                      >
+                        <Typography
+                          variant="body1"
+                          component="span"
                           sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 1,
+                            color: "backgroundColor.contrastText",
+                            mt: 1,
+                            opacity: 0.8,
                           }}
                         >
-                          <Typography
-                            variant="body1"
-                            component="span"
-                            sx={{
-                              color: "backgroundColor.contrastText",
-                              mt: 1,
-                              opacity: 0.8,
-                            }}
-                          >
-                            {item.description}
-                          </Typography>
-                          {item?.link && (
-                            <Link href={item.link} passHref target="_blank">
-                              <Typography
-                                variant="body1"
-                                component="span"
-                                sx={{
-                                  color: `${color}`,
-                                  opacity: 0.8,
-                                  textDecoration: "underline",
-                                  cursor: "pointer",
-                                  display: "flex",
-                                  justifyContent: "flex-start",
-                                  alignItems: "center",
-                                  gap: 1,
-                                }}
-                              >
-                                {item?.link_text ? item.link_text : item.link}
-                                <OpenInNew sx={{ fontSize: "1rem" }} />
-                              </Typography>
-                            </Link>
-                          )}
-                        </Box>
-                      }
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </Collapse>
+                          {item.description}
+                        </Typography>
+                        {item?.link && (
+                          <Link href={item.link} passHref target="_blank">
+                            <Typography
+                              variant="body1"
+                              component="span"
+                              sx={{
+                                color: `${color}`,
+                                opacity: 0.8,
+                                textDecoration: "underline",
+                                cursor: "pointer",
+                                display: "flex",
+                                justifyContent: "flex-start",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
+                              {item?.link_text ? item.link_text : item.link}
+                              <OpenInNew sx={{ fontSize: "1rem" }} />
+                            </Typography>
+                          </Link>
+                        )}
+                      </Box>
+                    }
+                  />
+                </ListItem>
+              ))}
+            </List>
           </React.Fragment>
         ))}
       </Box>

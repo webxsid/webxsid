@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   async redirects() {
     return [
       {
@@ -9,6 +9,9 @@ const nextConfig = {
         permanent: true,
       },
     ];
+  },
+  images: {
+    domains: ["i.ibb.co"],
   },
 };
 

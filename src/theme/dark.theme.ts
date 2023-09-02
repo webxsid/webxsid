@@ -8,10 +8,8 @@ const darkTheme = createTheme({
       contrastText: "#FBFBFE",
     },
     secondary: {
-      light: "#4C4A68",
-      main: "#2C2B3C",
-      dark: "#0B0B0F",
-      contrastText: "#F0F0F4",
+      main: "#E6E8ED",
+      contrastText: "#040515",
     },
     accent: {
       light: "#D47D5E",

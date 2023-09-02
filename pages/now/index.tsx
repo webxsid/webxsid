@@ -4,66 +4,44 @@ import { Box, Button, Typography, CircularProgress } from "@mui/material";
 import Head from "next/head";
 import { useSelector, useDispatch } from "react-redux";
 import { IStore } from "@interfaces/store.interface";
+import { INowData } from "@interfaces/pages.data.interface";
 import { setNowData } from "@store/actions/pages.data.actions";
 import Section from "@components/Now/Section";
 import { Refresh } from "@mui/icons-material";
-
+import { getLastUpdateDate } from "@/firebase/realtimeDb";
 const Now = () => {
-  const [openSubCategories, setOpenSubCategories] = useState<string[]>([]);
   const {
     now: { data, date, error },
     loading,
     darkMode,
   } = useSelector((state: IStore) => ({ ...state.pagesData, ...state.theme }));
+  const [localData, setLocalData] = useState<{
+    [key: string]: {
+      [key: string]: INowData[];
+    };
+  } | null>(null);
 
   const dispatch = useDispatch();
-
-  const handleToggleSubCategory = (key: string) => {
-    if (openSubCategories.includes(key)) {
-      setOpenSubCategories(openSubCategories.filter((item) => item !== key));
-    } else {
-      setOpenSubCategories([...openSubCategories, key]);
-    }
-  };
 
   const handleFetchData = () => {
     dispatch(setNowData());
   };
 
   useEffect(() => {
-    if (!date || !date.length || !!error || !!error?.length) {
-      handleFetchData();
-    } else {
-      if (
-        new Date().getTime() - new Date(date).getTime() >
-        1000 * 60 * 60 * 24 * 7
-      ) {
-        handleFetchData();
+    (async () => {
+      const lastUpdateDate = await getLastUpdateDate("now");
+      if (new Date(date) <= new Date(lastUpdateDate)) {
+        dispatch(setNowData());
       }
-    }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (data && data?.creating) {
-      Object.keys(data?.creating).forEach((key) => {
-        if (!openSubCategories.includes(key))
-          setOpenSubCategories([...openSubCategories, key]);
-      });
-    }
-    if (data && data?.notes) {
-      Object.keys(data?.notes).forEach((key) => {
-        if (!openSubCategories.includes(key))
-          setOpenSubCategories([...openSubCategories, key]);
-      });
-    }
-    if (data && data?.consuming) {
-      Object.keys(data?.consuming).forEach((key) => {
-        if (!openSubCategories.includes(key))
-          setOpenSubCategories([...openSubCategories, key]);
-      });
-    }
-  }, [data, openSubCategories]);
+    if (!data) return;
+    setLocalData(data);
+  }, [data]);
+
   return (
     <>
       <Head>
@@ -87,43 +65,40 @@ const Now = () => {
             gap: 2,
           }}
         >
-          <Section
-            id="creating"
-            data={data?.creating}
-            openSubCategories={openSubCategories}
-            handleToggleSubCategory={handleToggleSubCategory}
-            color="#EE7911"
-            darkMode={darkMode}
-          />
-          <Section
-            id="notes"
-            data={data?.notes}
-            openSubCategories={openSubCategories}
-            handleToggleSubCategory={handleToggleSubCategory}
-            color="#BE71DB"
-            darkMode={darkMode}
-          />
-          <Section
-            id="consuming"
-            data={data?.consuming}
-            openSubCategories={openSubCategories}
-            handleToggleSubCategory={handleToggleSubCategory}
-            color="#66CC90"
-            darkMode={darkMode}
-          />
+          {!!localData && (
+            <>
+              <Section
+                id="creating"
+                data={localData?.creating}
+                color="#EE7911"
+                darkMode={darkMode}
+              />
+              <Section
+                id="notes"
+                data={localData?.notes}
+                color="#BE71DB"
+                darkMode={darkMode}
+              />
+              <Section
+                id="consuming"
+                data={localData?.consuming}
+                color="#66CC90"
+                darkMode={darkMode}
+              />
+            </>
+          )}
           <Box
-            className="container"
             id="scroll-view-display"
             sx={{
               width: "100%",
               height: "100%",
               display: "flex",
               flexDirection: "column",
-              gap: 8,
+              gap: 3,
               justifyContent: "center",
               alignItems: "center",
-              py: 6,
-              px: 3,
+              pt: 4,
+              pb: 9,
               color: "backgroundColor.contrastText",
             }}
           >
@@ -147,10 +122,10 @@ const Now = () => {
                 About this page
               </Typography>
               <Typography
-                variant="body1"
+                variant="body2"
                 component="p"
                 sx={{
-                  textAlign: "justify",
+                  textAlign: "center",
                   fontFamily: "monospace",
                   color: "inherit",
                 }}
@@ -234,36 +209,18 @@ const Now = () => {
                 }}
               >
                 <Typography
-                  variant="body2"
+                  variant="caption"
                   component="p"
                   sx={{
                     fontFamily: "monospace",
                     color: "inherit",
+                    opacity: 0.5,
+                    fontSize: "0.7rem",
                   }}
                 >
                   Updated on {new Date(date).toDateString()}, from my home in
                   India.
                 </Typography>
-                <Button
-                  onClick={handleFetchData}
-                  variant="text"
-                  sx={{
-                    color: "accent.main",
-                    textTransform: "capitalize",
-                    "&:hover": {
-                      color: "accent.main",
-                    },
-                  }}
-                  startIcon={
-                    <Refresh
-                      sx={{
-                        color: "accent.main",
-                      }}
-                    />
-                  }
-                >
-                  Refresh
-                </Button>
               </Box>
             )}
           </Box>

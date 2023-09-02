@@ -51,6 +51,11 @@ const NowLogo: FC = () => {
   };
 
   useEffect(() => {
+    if (disabled) {
+      setDisplayText("Now");
+      setColor(theme.palette.accent.main);
+      return;
+    }
     const scrollViewRef = document.getElementById("scroll-view");
     const creatingRef = document.getElementById("creating");
     const notesRef = document.getElementById("notes");
@@ -85,7 +90,7 @@ const NowLogo: FC = () => {
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [disabled]);
 
   return (
     <>
