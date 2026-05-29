@@ -7,17 +7,9 @@ import {
   BriefcaseBusiness,
   User,
 } from "lucide-astro";
+import { globalNavItems } from "../lib/site-links";
 
 const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
-
-const items = [
-  { href: "/", label: "Home", icon: House },
-  { href: "/projects", label: "Projects", icon: BriefcaseBusiness },
-  { href: "/writing", label: "Writing", icon: BookOpenText },
-  { href: "/references", label: "References", icon: BookHeart },
-  { href: "/me", label: "Me", icon: User },
-  { href: "/now", label: "Now", icon: Clock3 },
-];
 
 function isActive(href: string) {
   const normalized = href.replace(/\/+$/, "") || "/";
@@ -32,14 +24,26 @@ function isActive(href: string) {
 
 <nav
   aria-label="Primary"
-  class="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom)+var(--dock-viewport-offset,0px))] left-1/2 z-50 flex -translate-x-1/2 items-center justify-center px-3 lg:static lg:bottom-auto lg:left-auto lg:translate-x-0 lg:justify-start lg:px-0"
+  class="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom)+var(--dock-viewport-offset,0px))] left-1/2 z-50 flex -translate-x-1/2 items-center justify-center px-3 lg:relative lg:bottom-auto lg:left-auto lg:translate-x-0 lg:justify-start lg:px-0"
 >
   <div
     class="inline-flex flex-row items-center gap-1 rounded-full border border-border/70 bg-bg p-1 shadow-[0_14px_40px_rgba(0,0,0,0.16)] lg:flex-col"
   >
     {
-      items.map(({ href, label, icon: Icon }) => {
+      globalNavItems.map(({ href, label, icon }) => {
         const active = isActive(href);
+        const Icon =
+          icon === "house"
+            ? House
+            : icon === "briefcase"
+              ? BriefcaseBusiness
+              : icon === "book"
+                ? BookOpenText
+                : icon === "bookmark"
+                  ? BookHeart
+                  : icon === "user"
+                    ? User
+                    : Clock3;
 
         return (
           <a
@@ -55,14 +59,9 @@ function isActive(href: string) {
           >
             <Icon size={16} strokeWidth={1.9} aria-hidden="true" />
             <span class="sr-only">{label}</span>
-            <span
-              class={[
-                "pointer-events-none absolute left-full top-1/2 ml-2 hidden translate-x-1 -translate-y-1/2 whitespace-nowrap rounded-full border border-border px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-text shadow-[0_10px_24px_rgba(0,0,0,0.28)] bg-bg/35 backdrop-blur-md",
-                "lg:group-hover:block lg:group-focus-visible:block",
-              ].join(" ")}
-            >
+            <label class="pointer-events-none absolute left-[120%] w-max bg-bg rounded-full px-4 py-1 text-xs text-text opacity-0 group-hover:opacity-100 border border-border/70 shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-opacity z-[1000]">
               {label}
-            </span>
+            </label>
           </a>
         );
       })

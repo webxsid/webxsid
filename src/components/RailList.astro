@@ -101,7 +101,7 @@ const {
   class="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom)+var(--dock-viewport-offset,0px))] left-1/2 z-40 w-[calc(100%-1.5rem)] -translate-x-1/2 lg:hidden"
 >
   <div
-    class="rounded-2xl border border-border/70 bg-bg-elevated p-2 shadow-[0_14px_40px_rgba(0,0,0,0.2)]"
+    class="rounded-2xl border border-border/70 bg-bg p-2 shadow-[0_14px_40px_rgba(0,0,0,0.2)]"
   >
     <ul
       data-rail-scroll-container
@@ -115,17 +115,16 @@ const {
           const active = item.id === activeId;
 
           return (
-            <li class="snap-start">
+            <li class="snap-start" aria-current={active ? "page" : undefined}>
               <a
                 href={item.href}
-                aria-current={active ? "page" : undefined}
                 class={[
-                  "flex flex-col rounded-xl border bg-bg-elevated text-left transition",
+                  "flex flex-col rounded-xl border bg-bg text-left transition",
                   mobileDensity === "compact"
                     ? "min-w-[9.5rem] max-w-[9.5rem] gap-0.5 px-2.5 py-1.5"
                     : "min-w-[11rem] max-w-[11rem] gap-1 px-3 py-2",
                   active
-                    ? "border-border/80 text-text"
+                    ? "border-border/80 text-text bg-bg-elevated shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
                     : "border-border/50 text-text-muted hover:border-border/70 hover:text-text",
                 ].join(" ")}
               >
@@ -192,23 +191,22 @@ const {
         const activeRect = activeItem.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
 
-        const activeCenter =
-          activeRect.left -
-          containerRect.left +
-          container.scrollLeft +
-          activeRect.width / 2;
+        const activeRectEnd = activeRect.left + activeRect.width;
+        const containerStart = containerRect.left;
+        const containerEnd = containerRect.left + containerRect.width;
 
-        const nextScrollLeft = activeCenter - container.clientWidth / 2;
+        const isActiveItemFullyVisible =
+          activeRect.left >= containerStart && activeRectEnd <= containerEnd;
 
-        const maxScrollLeft = Math.max(
-          0,
-          container.scrollWidth - container.clientWidth,
-        );
-
-        container.scrollTo({
-          left: Math.min(Math.max(0, nextScrollLeft), maxScrollLeft),
-          behavior: "auto",
-        });
+        if (!isActiveItemFullyVisible) {
+          container.scrollBy({
+            left:
+              activeRect.left -
+              containerStart -
+              (containerRect.width - activeRect.width) / 2,
+            behavior: "auto",
+          });
+        }
 
         return;
       }
@@ -228,13 +226,13 @@ const {
   };
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", scheduleRestore, {
-      once: true,
-    });
+    document.addEventListener("DOMContentLoaded", scheduleRestore, {});
   } else {
     scheduleRestore();
   }
 
+  document.addEventListener("astro:page-load", scheduleRestore);
+  document.addEventListener("astro:after-swap", scheduleRestore);
   window.addEventListener("load", scheduleRestore);
   window.addEventListener("pageshow", scheduleRestore);
 </script>

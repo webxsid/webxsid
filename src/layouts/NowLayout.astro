@@ -41,6 +41,8 @@ const nowRailItems = nowItems.map((item) => ({
   primary: formatNowRailDate(item.id),
   secondary: item.summary,
 }));
+
+const sectionLabel = "Now";
 ---
 
 <html lang="en" data-theme="graphite">
@@ -52,7 +54,6 @@ const nowRailItems = nowItems.map((item) => ({
     />
     <meta name="theme-color" content="#121214" />
     <SeoHead
-      title={title}
       description={description}
       pathname={Astro.url.pathname}
       seo={seo}
@@ -69,7 +70,11 @@ const nowRailItems = nowItems.map((item) => ({
   <body
     class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
   >
-    <RailPageShell backHref="/" backLabel="Back home">
+    <RailPageShell
+      backHref="/"
+      backLabel="Back home"
+      sectionLabel={sectionLabel}
+    >
       <RailList
         slot="rail"
         items={nowRailItems}

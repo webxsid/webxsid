@@ -44,6 +44,8 @@ const workRailItems = [...workItems]
     primary: item.company,
     secondary: item.period,
   }));
+
+const sectionLabel = "Work";
 ---
 
 <html lang="en" data-theme="graphite">
@@ -55,7 +57,6 @@ const workRailItems = [...workItems]
     />
     <meta name="theme-color" content="#121214" />
     <SeoHead
-      title={title}
       description={description}
       pathname={Astro.url.pathname}
       seo={seo}
@@ -72,7 +73,11 @@ const workRailItems = [...workItems]
   <body
     class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
   >
-    <RailPageShell backHref="/me" backLabel="Back to about">
+    <RailPageShell
+      backHref="/me"
+      backLabel="Back to about"
+      sectionLabel={sectionLabel}
+    >
       <RailList
         slot="rail"
         items={workRailItems}

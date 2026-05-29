@@ -53,6 +53,8 @@ const projectRailItems = [...projectItems]
     primary: item.title,
     secondary: `${item.status}${formatDate(item.updatedAt) ? ` · ${formatDate(item.updatedAt)}` : ""}`,
   }));
+
+const sectionLabel = "Projects";
 ---
 
 <html lang="en" data-theme="graphite">
@@ -64,7 +66,6 @@ const projectRailItems = [...projectItems]
     />
     <meta name="theme-color" content="#121214" />
     <SeoHead
-      title={title}
       description={description}
       pathname={Astro.url.pathname}
       seo={seo}
@@ -81,7 +82,11 @@ const projectRailItems = [...projectItems]
   <body
     class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
   >
-    <RailPageShell backHref="/projects" backLabel="Back to projects">
+    <RailPageShell
+      backHref="/projects"
+      backLabel="Back to projects"
+      sectionLabel={sectionLabel}
+    >
       <RailList
         slot="rail"
         items={projectRailItems}

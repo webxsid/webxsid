@@ -1,29 +1,27 @@
 ---
 import Container from "./Container.astro";
-import Logo from "./Logo.astro";
-import { ArrowLeft } from "lucide-astro";
+import { ShellHeader } from "./react/ShellHeader";
 
 type Props = {
   backHref: string;
   backLabel: string;
+  sectionLabel: string;
 };
 
-const { backHref, backLabel } = Astro.props as Props;
+const { backHref, backLabel, sectionLabel } = Astro.props as Props;
 ---
 
 <header class="sticky top-0 z-50 pt-3">
   <Container>
-    <div class="flex items-center justify-start gap-3">
-      <a
-        href={backHref}
-        aria-label={backLabel}
-        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/70 bg-bg/35 text-text-muted backdrop-blur-md transition hover:border-border hover:bg-bg-elevated/40 hover:text-text"
-      >
-        <ArrowLeft size={14} aria-hidden="true" />
-      </a>
-
-      <Logo />
-    </div>
+    <ShellHeader
+      client:load
+      transition:persist
+      backHref={backHref}
+      backLabel={backLabel}
+      variant="rail"
+      pageTitle={sectionLabel}
+      currentPath={Astro.url.pathname}
+    />
   </Container>
 </header>
 

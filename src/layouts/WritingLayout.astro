@@ -51,6 +51,8 @@ const writingRailItems = writingItems.map((item) => ({
     day: "numeric",
   })}`,
 }));
+
+const sectionLabel = writingType === "blogs" ? "Blogs" : "Notes";
 ---
 
 <html lang="en" data-theme="graphite">
@@ -62,7 +64,6 @@ const writingRailItems = writingItems.map((item) => ({
     />
     <meta name="theme-color" content="#121214" />
     <SeoHead
-      title={title}
       description={description}
       pathname={Astro.url.pathname}
       seo={seo}
@@ -79,7 +80,11 @@ const writingRailItems = writingItems.map((item) => ({
   <body
     class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
   >
-    <RailPageShell backHref={backHref} backLabel={backLabel}>
+    <RailPageShell
+      backHref={backHref}
+      backLabel={backLabel}
+      sectionLabel={sectionLabel}
+    >
       <RailList
         slot="rail"
         items={writingRailItems}

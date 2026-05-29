@@ -51,6 +51,8 @@ const referenceRailItems = referenceItems.map((item) => ({
     .filter(Boolean)
     .join(" · "),
 }));
+
+const sectionLabel = "References";
 ---
 
 <html lang="en" data-theme="graphite">
@@ -62,7 +64,6 @@ const referenceRailItems = referenceItems.map((item) => ({
     />
     <meta name="theme-color" content="#121214" />
     <SeoHead
-      title={title}
       description={description}
       pathname={Astro.url.pathname}
       seo={seo}
@@ -79,7 +80,11 @@ const referenceRailItems = referenceItems.map((item) => ({
   <body
     class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
   >
-    <RailPageShell backHref="/references" backLabel="Back to references">
+    <RailPageShell
+      backHref="/references"
+      backLabel="Back to references"
+      sectionLabel={sectionLabel}
+    >
       <RailList
         slot="rail"
         items={referenceRailItems}

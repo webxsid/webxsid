@@ -3,6 +3,15 @@ export const footerClosingNote = "Still building. Still learning.";
 export const footerColophon =
   "Built with Astro. Written in Markdown. Updated through regular use.";
 
+export const globalNavItems = [
+  { href: "/", label: "Home", icon: "house" },
+  { href: "/projects", label: "Projects", icon: "briefcase" },
+  { href: "/writing", label: "Writing", icon: "book" },
+  { href: "/references", label: "References", icon: "bookmark" },
+  { href: "/me", label: "Me", icon: "user" },
+  { href: "/now", label: "Now", icon: "clock" },
+] as const;
+
 export const footerSocialLinks = [
   { href: "https://github.com/webxsid", label: "GitHub", icon: "github" },
   { href: "https://www.threads.net/@webxsid", label: "Threads", icon: "threads" },
