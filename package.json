@@ -6,12 +6,10 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev --port 5868 --host",
-    "build": "astro build",
-    "preview": "pnpm run build && wrangler pages dev dist",
-    "astro": "astro",
-    "generate-types": "wrangler types",
-    "deploy": "pnpm run build && wrangler pages deploy dist"
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "check": "ASTRO_TELEMETRY_DISABLED=1 astro check"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
