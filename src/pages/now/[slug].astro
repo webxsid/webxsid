@@ -22,6 +22,7 @@ const sortedNowEntries = sortNowEntries(nowEntries);
 <NowLayout
   title={`${entry.data.title} · Now · Webxsid`}
   description={entry.data.summary}
+  seo={entry.data.seo}
   nowItems={sortedNowEntries.map((item) => ({
     id: item.id,
     summary: item.data.summary,

@@ -25,6 +25,7 @@ const workItems = (await getCollection("work")).map((item) => ({
 <WorkLayout
   title={`${entry.data.company} · Work · Webxsid`}
   description={entry.data.summary}
+  seo={entry.data.seo}
   workItems={workItems}
   activeId={entry.id}
 >

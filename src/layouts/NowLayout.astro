@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import RailList from "../components/RailList.astro";
 import RailPageShell from "../components/RailPageShell.astro";
+import SeoHead from "../components/SeoHead.astro";
 import { formatNowRailDate } from "../lib/now";
 
 type NowItem = {
@@ -12,6 +13,14 @@ type NowItem = {
 type Props = {
   title?: string;
   description?: string;
+  seo?: {
+    title?: string;
+    description?: string;
+    image?: string;
+    canonical?: string;
+    noindex?: boolean;
+  };
+  seoType?: "website" | "article";
   nowItems: NowItem[];
   activeId: string;
 };
@@ -19,6 +28,8 @@ type Props = {
 const {
   title = "Webxsid",
   description = "Sid's personal portfolio.",
+  seo,
+  seoType = "article",
   nowItems,
   activeId,
 } = Astro.props as Props;
@@ -38,9 +49,14 @@ const nowRailItems = nowItems.map((item) => ({
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <meta name="description" content={description} />
     <meta name="theme-color" content="#121214" />
-    <title>{title}</title>
+    <SeoHead
+      title={title}
+      description={description}
+      pathname={Astro.url.pathname}
+      seo={seo}
+      type={seoType}
+    />
     <script is:inline>
       const theme = localStorage.getItem("theme");
       if (theme) {

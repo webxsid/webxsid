@@ -5,6 +5,8 @@ kind: blog
 publishedAt: 2026-03-29
 featured: true
 order: 2
+seo:
+  description: Why local ownership changes the way software behaves under pressure.
 ---
 
 Local-first software stays responsive even when the network is not. That changes the trust model in a way users can feel immediately.

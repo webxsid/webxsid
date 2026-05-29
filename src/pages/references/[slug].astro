@@ -29,6 +29,7 @@ const referenceItems = sortReferenceEntries(await getCollection("references")).m
 <ReferenceLayout
   title={`${entry.data.title} · References · Webxsid`}
   description={entry.data.summary}
+  seo={entry.data.seo}
   referenceItems={referenceItems}
   activeId={entry.id}
 >

@@ -2,6 +2,16 @@ import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
+const seoSchema = z
+  .object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    image: z.string().optional(),
+    canonical: z.string().optional(),
+    noindex: z.boolean().default(false),
+  })
+  .optional();
+
 const projects = defineCollection({
   loader: glob({
     pattern: "**/*.md",
@@ -17,6 +27,7 @@ const projects = defineCollection({
     featured: z.boolean().default(false),
     source: z.url().optional(),
     live: z.url().optional(),
+    seo: seoSchema,
   }),
 });
 
@@ -32,6 +43,7 @@ const writing = defineCollection({
     publishedAt: z.coerce.date(),
     featured: z.boolean().default(false),
     order: z.number().default(0),
+    seo: seoSchema,
   }),
 });
 
@@ -44,6 +56,7 @@ const now = defineCollection({
     title: z.string().default("Current focus"),
     summary: z.string(),
     updatedAt: z.coerce.date(),
+    seo: seoSchema,
   }),
 });
 
@@ -71,6 +84,7 @@ const references = defineCollection({
     summary: z.string(),
     featured: z.boolean().default(false),
     publishedAt: z.coerce.date(),
+    seo: seoSchema,
   }),
 });
 
@@ -86,6 +100,7 @@ const work = defineCollection({
     role: z.string(),
     period: z.string(),
     order: z.number().default(0),
+    seo: seoSchema,
   }),
 });
 

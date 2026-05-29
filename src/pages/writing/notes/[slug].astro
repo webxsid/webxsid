@@ -30,6 +30,7 @@ const noteItems = sortWritingEntries(filterWritingEntries(writing, "note")).map(
 <WritingLayout
   title={`${entry.data.title} · Notes · Webxsid`}
   description={entry.data.summary}
+  seo={entry.data.seo}
   writingItems={noteItems}
   activeId={entry.id}
   backHref="/writing/notes"

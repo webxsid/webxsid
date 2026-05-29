@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import RailList from "../components/RailList.astro";
 import RailPageShell from "../components/RailPageShell.astro";
+import SeoHead from "../components/SeoHead.astro";
 
 type WritingItem = {
   id: string;
@@ -13,6 +14,14 @@ type WritingItem = {
 type Props = {
   title?: string;
   description?: string;
+  seo?: {
+    title?: string;
+    description?: string;
+    image?: string;
+    canonical?: string;
+    noindex?: boolean;
+  };
+  seoType?: "website" | "article";
   writingItems: WritingItem[];
   writingType: "blogs" | "notes";
   activeId: string;
@@ -23,6 +32,8 @@ type Props = {
 const {
   title = "Webxsid",
   description = "Sid's personal portfolio.",
+  seo,
+  seoType = "article",
   writingItems,
   activeId,
   writingType = "blogs",
@@ -48,9 +59,14 @@ const writingRailItems = writingItems.map((item) => ({
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <meta name="description" content={description} />
     <meta name="theme-color" content="#121214" />
-    <title>{title}</title>
+    <SeoHead
+      title={title}
+      description={description}
+      pathname={Astro.url.pathname}
+      seo={seo}
+      type={seoType}
+    />
     <script is:inline>
       const theme = localStorage.getItem("theme");
       if (theme) {

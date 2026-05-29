@@ -13,6 +13,11 @@ const projects = (await getCollection("projects")).sort(
 <BaseLayout
   title="Projects · Webxsid"
   description="Projects and infrastructure notes."
+  seo={{
+    title: "Projects · Webxsid",
+    description: "Selected projects and infrastructure notes from Webxsid.",
+    canonical: "/projects",
+  }}
   backHref="/"
 >
   <Container>

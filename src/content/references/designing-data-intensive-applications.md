@@ -6,6 +6,8 @@ year: 2017
 summary: A book that changed how I think about complexity, consistency, and the operational cost of every abstraction.
 featured: true
 publishedAt: 2026-05-29
+seo:
+  description: A book that reframed how I think about complexity, consistency, and operational cost.
 ---
 
 ## What stayed with me

@@ -1,0 +1,54 @@
+---
+import { SITE_URL } from "../lib/site";
+
+type SeoMeta = {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+  noindex?: boolean;
+};
+
+type Props = {
+  title: string;
+  description?: string;
+  pathname: string;
+  seo?: SeoMeta;
+  type?: "website" | "article";
+};
+
+const {
+  title,
+  description = "",
+  pathname,
+  seo,
+  type = "website",
+} = Astro.props as Props;
+
+const pageTitle = seo?.title ?? title;
+const pageDescription = seo?.description ?? description;
+const canonical = new URL(seo?.canonical ?? pathname, SITE_URL).toString();
+const image = seo?.image
+  ? new URL(seo.image, SITE_URL).toString()
+  : null;
+const robots = seo?.noindex ? "noindex, nofollow" : "index, follow";
+---
+
+<title>{pageTitle}</title>
+<meta name="description" content={pageDescription} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={robots} />
+<meta property="og:site_name" content="Webxsid" />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={pageDescription} />
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonical} />
+{
+  image && <meta property="og:image" content={image} />
+}
+<meta name="twitter:card" content={image ? "summary_large_image" : "summary"} />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={pageDescription} />
+{
+  image && <meta name="twitter:image" content={image} />
+}

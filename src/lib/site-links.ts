@@ -1,11 +1,8 @@
 import {
-  Bird,
   Github,
   Instagram,
   Mail,
-  MessageCircleMore,
   Rss,
-  Threads
 } from "lucide-astro";
 
 export const footerClosingNote = "Still building. Still learning.";
@@ -15,8 +12,8 @@ export const footerColophon =
 
 export const footerSocialLinks = [
   { href: "https://github.com/webxsid", label: "GitHub", icon: Github },
-  { href: "https://www.threads.com/@webxsid", label: "Threads", icon: Threads },
-  { href: "https://bsky.app/profile/webxsid.com", label: "Bluesky", icon: Bird },
+  { href: "https://www.threads.net/@webxsid", label: "Threads", icon: "threads" },
+  { href: "https://bsky.app/profile/webxsid.bsky.social", label: "Bluesky", icon: "bluesky" },
   { href: "https://instagram.com/webxsid", label: "Instagram", icon: Instagram },
   { href: "mailto:me@webxsid.com", label: "Mail", icon: Mail },
   { href: "/rss.xml", label: "RSS", icon: Rss },

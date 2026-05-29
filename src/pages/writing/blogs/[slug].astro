@@ -30,6 +30,7 @@ const blogItems = sortWritingEntries(filterWritingEntries(writing, "blog")).map(
 <WritingLayout
   title={`${entry.data.title} · Blogs · Webxsid`}
   description={entry.data.summary}
+  seo={entry.data.seo}
   writingItems={blogItems}
   activeId={entry.id}
   backHref="/writing/blogs"
