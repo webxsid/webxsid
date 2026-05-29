@@ -1,13 +1,15 @@
 {
-	"compatibility_date": "2026-05-29",
-	"compatibility_flags": ["global_fetch_strictly_public"],
-	"name": "webxsid",
-	"main": "@astrojs/cloudflare/entrypoints/server",
-	"assets": {
-		"directory": "./dist",
-		"binding": "ASSETS"
-	},
-	"observability": {
-		"enabled": true
-	}
+  "compatibility_date": "2026-05-29",
+  "compatibility_flags": [
+    "global_fetch_strictly_public"
+  ],
+  "name": "portfolio-beta",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  }
 }
