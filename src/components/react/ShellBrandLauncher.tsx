@@ -63,6 +63,8 @@ const isActivePath = (currentPath: string, href: string) => {
   );
 };
 
+const HEADER_HIDE_DELTA = 48;
+
 export function ShellBrandLauncher({
   backHref,
   backLabel = "Back",
@@ -73,22 +75,52 @@ export function ShellBrandLauncher({
 }: Props) {
   const reduceMotion = useReducedMotion();
   const shellRef = useRef<HTMLDivElement | null>(null);
+  const lastScrollYRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
   const [open, setOpen] = useState(false);
   const [activePath, setActivePath] = useState(() => normalizePath(currentPath));
   const [activeTitle, setActiveTitle] = useState(() =>
     getSectionLabel(currentPath, pageTitle),
   );
+  const [hidden, setHidden] = useState(false);
 
   const spring = reduceMotion
     ? { duration: 0 }
     : { type: "spring" as AnimationGeneratorType, stiffness: 280, damping: 30, mass: 0.8 };
 
   useEffect(() => {
+    lastScrollYRef.current = window.scrollY;
+
     const syncState = () => {
       const pathname = normalizePath(window.location.pathname);
       setActivePath(pathname);
       setActiveTitle(getSectionLabel(pathname, pageTitle));
       setOpen(false);
+      setHidden(false);
+      lastScrollYRef.current = window.scrollY;
+    };
+
+    const handleScroll = () => {
+      if (rafRef.current !== null) return;
+
+      rafRef.current = window.requestAnimationFrame(() => {
+        rafRef.current = null;
+
+        const currentScrollY = window.scrollY;
+        const delta = currentScrollY - lastScrollYRef.current;
+
+        if (currentScrollY <= 0) {
+          setHidden(false);
+        } else if (Math.abs(delta) >= HEADER_HIDE_DELTA) {
+          if (delta > 0) {
+            setHidden(true);
+            setOpen(false);
+          } else {
+            setHidden(false);
+          }
+          lastScrollYRef.current = currentScrollY;
+        }
+      });
     };
 
     const handlePointerDown = (event: PointerEvent) => {
@@ -107,6 +139,7 @@ export function ShellBrandLauncher({
 
     document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     document.addEventListener("astro:page-load", syncState);
     document.addEventListener("astro:after-swap", syncState);
     window.addEventListener("pageshow", syncState);
@@ -117,10 +150,15 @@ export function ShellBrandLauncher({
     return () => {
       document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("astro:page-load", syncState);
       document.removeEventListener("astro:after-swap", syncState);
       window.removeEventListener("pageshow", syncState);
       window.removeEventListener("popstate", syncState);
+
+      if (rafRef.current !== null) {
+        window.cancelAnimationFrame(rafRef.current);
+      }
     };
   }, [currentPath, pageTitle]);
 
@@ -132,11 +170,16 @@ export function ShellBrandLauncher({
   }, [currentPath, pageTitle]);
 
   const normalizedActivePath = normalizePath(activePath);
-  const shellClasses =
-    variant === "rail" ? "flex items-start gap-3" : "flex items-center gap-3";
+  const shellClasses = "flex items-center gap-3";
 
   return (
-    <motion.div ref={shellRef} layout className={shellClasses}>
+    <motion.div
+      ref={shellRef}
+      layout
+      animate={{ y: hidden ? -96 : 0 }}
+      transition={spring}
+      className={shellClasses}
+    >
       <motion.div
         layout
         animate={{
@@ -162,7 +205,7 @@ export function ShellBrandLauncher({
               strokeWidth="1.9"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-[14px] w-[14px]"
+              className="h-[14px] w-[14px] relative -left-[1px] "
               aria-hidden="true"
             >
               <path d="M15 18l-6-6 6-6" />
