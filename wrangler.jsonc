@@ -1,15 +1,10 @@
 {
+  "$schema": "./node_modules/wrangler/config-schema.json",
   "compatibility_date": "2026-05-29",
-  "compatibility_flags": [
-    "global_fetch_strictly_public"
-  ],
   "name": "portfolio-beta",
   "main": "@astrojs/cloudflare/entrypoints/server",
+  "pages_build_output_dir": "./dist",
   "assets": {
-    "directory": "./dist",
-    "binding": "ASSETS"
-  },
-  "observability": {
-    "enabled": true
+    "directory": "./dist"
   }
 }
