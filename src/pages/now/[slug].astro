@@ -1,0 +1,34 @@
+---
+import { getCollection, render } from "astro:content";
+import NowLayout from "../../layouts/NowLayout.astro";
+import NowEntry from "../../components/NowEntry.astro";
+import { sortNowEntries } from "../../lib/now";
+
+export async function getStaticPaths() {
+  const nowEntries = await getCollection("now");
+
+  return nowEntries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const nowEntries = await getCollection("now");
+const sortedNowEntries = sortNowEntries(nowEntries);
+---
+
+<NowLayout
+  title={`${entry.data.title} · Now · Webxsid`}
+  description={entry.data.summary}
+  nowItems={sortedNowEntries.map((item) => ({
+    id: item.id,
+    summary: item.data.summary,
+  }))}
+  activeId={entry.id}
+>
+  <NowEntry entry={entry}>
+    <Content />
+  </NowEntry>
+</NowLayout>

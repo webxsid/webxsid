@@ -1,0 +1,226 @@
+---
+type Item = {
+  id: string;
+  href: string;
+  primary: string;
+  secondary?: string;
+};
+
+type Props = {
+  items: Item[];
+  activeId: string;
+  ariaLabel: string;
+  secondaryVariant?: "meta" | "summary";
+  mobileDensity?: "normal" | "compact";
+};
+
+const {
+  items,
+  activeId,
+  ariaLabel,
+  secondaryVariant = "meta",
+  mobileDensity = "normal",
+} = Astro.props as Props;
+---
+
+<aside
+  data-rail-scroll
+  data-rail-scroll-container
+  data-rail-mode="vertical"
+  class="hidden lg:block lg:sticky lg:top-20 lg:max-h-[calc(100dvh-4rem)] lg:overflow-y-auto"
+>
+  <nav aria-label={ariaLabel}>
+    <ul class="space-y-6">
+      {
+        items.map((item) => {
+          const active = item.id === activeId;
+
+          return (
+            <li>
+              <a
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                class="group block space-y-2"
+              >
+                <div class="space-y-1">
+                  <span
+                    class={[
+                      "block text-sm transition",
+                      active
+                        ? "text-text"
+                        : "text-text-muted group-hover:text-text",
+                    ].join(" ")}
+                  >
+                    {item.primary}
+                  </span>
+
+                  {item.secondary && secondaryVariant === "meta" && (
+                    <span
+                      class={[
+                        "block font-mono text-[11px] uppercase tracking-[0.22em]",
+                        active ? "text-text-muted" : "text-text-muted/60",
+                      ].join(" ")}
+                    >
+                      {item.secondary}
+                    </span>
+                  )}
+
+                  {item.secondary && secondaryVariant === "summary" && (
+                    <p
+                      class={[
+                        "max-w-[12rem] text-xs leading-5",
+                        active ? "text-text-muted" : "text-text-muted/70",
+                      ].join(" ")}
+                    >
+                      {item.secondary}
+                    </p>
+                  )}
+                </div>
+
+                <div
+                  class={[
+                    "h-px transition-all duration-300",
+                    active
+                      ? "w-16 bg-text"
+                      : "w-8 bg-border/70 group-hover:w-12",
+                  ].join(" ")}
+                />
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
+</aside>
+
+<nav
+  data-rail-scroll
+  data-rail-mode="dock"
+  aria-label={ariaLabel}
+  class="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom)+var(--dock-viewport-offset,0px))] left-1/2 z-40 w-[calc(100%-1.5rem)] -translate-x-1/2 lg:hidden"
+>
+  <div class="rounded-2xl border border-border/70 bg-bg/55 p-2 shadow-[0_14px_40px_rgba(0,0,0,0.2)] backdrop-blur-md">
+    <ul
+      data-rail-scroll-container
+      class={[
+        "flex snap-x snap-mandatory overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
+        mobileDensity === "compact" ? "gap-1.5" : "gap-2",
+      ].join(" ")}
+    >
+      {
+        items.map((item) => {
+          const active = item.id === activeId;
+
+          return (
+            <li class="snap-start">
+              <a
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                class={[
+                  "flex flex-col rounded-xl border text-left transition",
+                  mobileDensity === "compact"
+                    ? "min-w-[9.5rem] max-w-[9.5rem] gap-0.5 px-2.5 py-1.5"
+                    : "min-w-[11rem] max-w-[11rem] gap-1 px-3 py-2",
+                  active
+                    ? "border-border/80 bg-bg-elevated text-text"
+                    : "border-border/50 bg-bg/25 text-text-muted hover:border-border/70 hover:text-text",
+                ].join(" ")}
+              >
+                <span
+                  class={[
+                    "block truncate leading-5",
+                    mobileDensity === "compact" ? "text-[13px]" : "text-sm",
+                  ].join(" ")}
+                >
+                  {item.primary}
+                </span>
+
+                {item.secondary && secondaryVariant === "meta" && (
+                  <span
+                    class={[
+                      "block truncate font-mono uppercase tracking-[0.18em]",
+                      mobileDensity === "compact" ? "text-[9px]" : "text-[10px]",
+                      active ? "text-text-muted" : "text-text-muted/70",
+                    ].join(" ")}
+                  >
+                    {item.secondary}
+                  </span>
+                )}
+
+                {item.secondary && secondaryVariant === "summary" && (
+                  <span
+                    class={[
+                      "block truncate leading-5",
+                      mobileDensity === "compact" ? "text-[11px]" : "text-xs",
+                      active ? "text-text-muted" : "text-text-muted/70",
+                    ].join(" ")}
+                  >
+                    {item.secondary}
+                  </span>
+                )}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</nav>
+
+<script is:inline>
+  const restoreActiveRailPosition = () => {
+    const rails = document.querySelectorAll("[data-rail-scroll]");
+
+    rails.forEach((rail) => {
+      if (!(rail instanceof HTMLElement)) return;
+
+      const activeItem = rail.querySelector('[aria-current="page"]');
+      if (!(activeItem instanceof HTMLElement)) return;
+
+      const mode = rail.getAttribute("data-rail-mode");
+      const container = rail.matches("[data-rail-scroll-container]")
+        ? rail
+        : rail.querySelector("[data-rail-scroll-container]");
+
+      if (!(container instanceof HTMLElement)) return;
+
+      if (mode === "dock") {
+        const containerRect = container.getBoundingClientRect();
+        const itemRect = activeItem.getBoundingClientRect();
+        const nextScrollLeft =
+          container.scrollLeft +
+          (itemRect.left - containerRect.left) -
+          containerRect.width / 2 +
+          itemRect.width / 2;
+
+        container.scrollTo({
+          left: Math.max(0, nextScrollLeft),
+          behavior: "auto",
+        });
+        return;
+      }
+
+      activeItem.scrollIntoView({
+        block: "nearest",
+        inline: "nearest",
+      });
+    });
+  };
+
+  const scheduleRestore = () => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(restoreActiveRailPosition);
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scheduleRestore, {
+      once: true,
+    });
+  } else {
+    scheduleRestore();
+  }
+
+  window.addEventListener("pageshow", scheduleRestore);
+</script>

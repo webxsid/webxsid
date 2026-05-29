@@ -1,0 +1,55 @@
+---
+type Entry = {
+  id: string;
+  data: {
+    title: string;
+    summary: string;
+    kind: "blog" | "note";
+    publishedAt: Date;
+    order: number;
+  };
+};
+
+type Props = {
+  entries: Entry[];
+  basePath: string;
+  kindLabel: string;
+};
+
+const { entries, basePath, kindLabel } = Astro.props as Props;
+---
+
+<div class="border-t border-border/70">
+  {
+    [...entries]
+      .sort((a, b) => a.data.order - b.data.order)
+      .map((entry) => (
+        <article class="group py-8">
+          <a href={`${basePath}/${entry.id}`} class="block space-y-3">
+            <div class="flex items-start justify-between gap-3">
+              <div class="space-y-1">
+                <h3 class="title-link">{entry.data.title}</h3>
+                <p class="max-w-2xl text-sm leading-7 text-text-muted">
+                  {entry.data.summary}
+                </p>
+              </div>
+
+              <span class="shrink-0 font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
+                {entry.data.publishedAt.toLocaleDateString(undefined, {
+                  month: "short",
+                  day: "2-digit",
+                  year: "numeric",
+                })}
+              </span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-text-muted">
+              <span>{kindLabel}</span>
+              <span class="text-border">/</span>
+              <span>Published {entry.data.publishedAt.getFullYear()}</span>
+            </div>
+          </a>
+        </article>
+      ))
+  }
+</div>

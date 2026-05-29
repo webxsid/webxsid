@@ -1,0 +1,45 @@
+.terminal-button {
+  font-family: monospace;
+}
+
+.terminal-button::before {
+  content: "[ ";
+  padding-right: 0.25em;
+}
+
+.terminal-button::after {
+  content: " ]";
+  padding-left: 0.25em;
+}
+
+.title-link {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  text-transform: capitalize;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.title-link:hover {
+  text-decoration-style: solid;
+}
+
+.title-link[target="_blank"]::after {
+  content: " ↗";
+}
+
+.inline-link {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  color: rgb(var(--muted));
+}
+
+.inline-link:hover {
+  text-decoration-style: solid;
+}
+
+.inline-link[target="_blank"]::after {
+  content: " ↗";
+}

@@ -1,0 +1,97 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+import Section from "../../components/Section.astro";
+import { filterWritingEntries, sortWritingEntries } from "../../lib/writing";
+
+const writing = await getCollection("writing");
+const blogs = sortWritingEntries(filterWritingEntries(writing, "blog"));
+const notes = sortWritingEntries(filterWritingEntries(writing, "note"));
+---
+
+<BaseLayout
+  title="Writing · Webxsid"
+  description="Blogs and short notes."
+  backHref="/"
+>
+  <Container>
+    <div class="py-8 lg:py-14">
+      <div class="max-w-4xl space-y-14">
+        <Section title="Blogs and notes">
+          <div
+            class="max-w-2xl space-y-5 text-sm leading-7 text-text-muted lg:text-[15px]"
+          >
+            <p>
+              Long-form posts live under blogs. Shorter, more transient thoughts
+              live under notes.
+            </p>
+
+            <p>
+              Both use the same underlying content model so the system stays
+              small, but the routes stay clean and separate.
+            </p>
+          </div>
+        </Section>
+
+        <div class="border-t border-border/70">
+          <article class="group py-8">
+            <a href="/writing/blogs" class="block space-y-3">
+              <div class="flex items-start justify-between gap-3">
+                <div class="space-y-1">
+                  <h3 class="title-link">Blogs</h3>
+                  <p class="max-w-2xl text-sm leading-7 text-text-muted">
+                    Longer posts with more context, structure, and room to
+                    explore.
+                  </p>
+                </div>
+
+                <span
+                  class="shrink-0 font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted"
+                >
+                  {blogs.length} entries
+                </span>
+              </div>
+
+              <div
+                class="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-text-muted"
+              >
+                <span>Long form</span>
+                <span class="text-border">/</span>
+                <span>Structured essays</span>
+              </div>
+            </a>
+          </article>
+
+          <article class="group border-t border-border/70 py-8">
+            <a href="/writing/notes" class="block space-y-3">
+              <div class="flex items-start justify-between gap-3">
+                <div class="space-y-1">
+                  <h3 class="title-link">Notes</h3>
+                  <p class="max-w-2xl text-sm leading-7 text-text-muted">
+                    Short operational notes, quick ideas, and lightweight
+                    observations.
+                  </p>
+                </div>
+
+                <span
+                  class="shrink-0 font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted"
+                >
+                  {notes.length} entries
+                </span>
+              </div>
+
+              <div
+                class="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-text-muted"
+              >
+                <span>Short form</span>
+                <span class="text-border">/</span>
+                <span>Disposable by design</span>
+              </div>
+            </a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </Container>
+</BaseLayout>

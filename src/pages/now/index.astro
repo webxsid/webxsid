@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from "astro:content";
+import NowLayout from "../../layouts/NowLayout.astro";
+import NowEntry from "../../components/NowEntry.astro";
+import { getLatestNowEntry, sortNowEntries } from "../../lib/now";
+
+const nowEntries = await getCollection("now");
+const sortedNowEntries = sortNowEntries(nowEntries);
+const latest = getLatestNowEntry(nowEntries);
+const { Content } = await render(latest);
+---
+
+<NowLayout
+  title="Now · Webxsid"
+  description={latest.data.summary}
+  nowItems={sortedNowEntries.map((item) => ({
+    id: item.id,
+    summary: item.data.summary,
+  }))}
+  activeId={latest.id}
+>
+  <NowEntry entry={latest}>
+    <Content />
+  </NowEntry>
+</NowLayout>

@@ -1,0 +1,119 @@
+---
+import { getCollection, render } from "astro:content";
+import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import ContentDocument from "../../components/ContentDocument.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const projectItems = (await getCollection("projects")).map((item) => ({
+  id: item.id,
+  title: item.data.title,
+  status: item.data.status,
+  updatedAt: item.data.updatedAt,
+  order: item.data.order,
+}));
+
+const updatedAt = entry.data.updatedAt
+  ? new Date(entry.data.updatedAt).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+  : null;
+---
+
+<ProjectLayout
+  title={`${entry.data.title} · Projects · Webxsid`}
+  description={entry.data.summary}
+  projectItems={projectItems}
+  activeId={entry.id}
+>
+  <div class="max-w-4xl space-y-12 lg:space-y-16">
+    <header class="space-y-7">
+      <div class="space-y-3">
+        <p
+          class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted"
+        >
+          Project
+        </p>
+
+        <h1
+          class="max-w-3xl text-3xl font-semibold tracking-tight text-text sm:text-4xl lg:text-5xl lg:leading-[1.08]"
+        >
+          {entry.data.title}
+        </h1>
+      </div>
+
+      <div
+        class="max-w-2xl space-y-5 text-sm leading-7 text-text-muted sm:text-[15px] sm:leading-8"
+      >
+        <p>{entry.data.summary}</p>
+
+        <div
+          class="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-text-muted"
+        >
+          <StatusBadge status={entry.data.status} />
+
+          <span class="text-border">/</span>
+
+          <span>{entry.data.stack.join(" · ")}</span>
+
+          {
+            updatedAt && (
+              <>
+                <span class="text-border">/</span>
+                <span>{updatedAt}</span>
+              </>
+            )
+          }
+
+          {
+            entry.data.source && (
+              <>
+                <span class="text-border">/</span>
+                <a
+                  href={entry.data.source}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="transition hover:text-text"
+                >
+                  Source
+                </a>
+              </>
+            )
+          }
+
+          {
+            entry.data.live && (
+              <>
+                <span class="text-border">/</span>
+                <a
+                  href={entry.data.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="transition hover:text-text"
+                >
+                  Site
+                </a>
+              </>
+            )
+          }
+        </div>
+      </div>
+    </header>
+
+    <ContentDocument class="space-y-4">
+      <Content />
+    </ContentDocument>
+  </div>
+</ProjectLayout>

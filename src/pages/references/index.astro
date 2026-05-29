@@ -1,0 +1,61 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+import Section from "../../components/Section.astro";
+import {
+  formatReferenceMeta,
+  getReferencePath,
+  sortReferenceEntries,
+} from "../../lib/references";
+
+const references = sortReferenceEntries(await getCollection("references"));
+---
+
+<BaseLayout
+  title="References · Webxsid"
+  description="Influential books, essays, talks, songs, and other works."
+  backHref="/"
+>
+  <Container>
+    <div class="py-8 lg:py-14">
+      <div class="max-w-4xl space-y-14">
+        <Section title="References">
+          <div
+            class="max-w-2xl space-y-5 text-sm leading-7 text-text-muted lg:text-[15px]"
+          >
+            <p>
+              A collection of books, articles, talks, songs, and other works
+              that left something behind. These are not recommendations or
+              reviews. They are notes on ideas that changed how I think,
+              influenced how I work, or stayed with me long after the original
+              work was finished.
+            </p>
+          </div>
+        </Section>
+
+        <div class="border-t border-border/70">
+          {
+            references.map((reference, idx) => (
+              <article class="group py-8">
+                <div class="space-y-3">
+                  <a href={getReferencePath(reference)} class="title-link">
+                    {reference.data.title}
+                  </a>
+
+                  <p class="max-w-2xl text-sm leading-7 text-text-muted">
+                    {reference.data.summary}
+                  </p>
+
+                  <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
+                    {formatReferenceMeta(reference)}
+                  </p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </Container>
+</BaseLayout>

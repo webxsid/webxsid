@@ -1,0 +1,69 @@
+---
+import "../styles/global.css";
+import RailList from "../components/RailList.astro";
+import RailPageShell from "../components/RailPageShell.astro";
+
+type WorkItem = {
+  id: string;
+  company: string;
+  period: string;
+  order: number;
+};
+
+type Props = {
+  title?: string;
+  description?: string;
+  workItems: WorkItem[];
+  activeId: string;
+};
+
+const {
+  title = "Webxsid",
+  description = "Sid's personal portfolio.",
+  workItems,
+  activeId,
+} = Astro.props as Props;
+
+const workRailItems = [...workItems]
+  .sort((a, b) => a.order - b.order)
+  .map((item) => ({
+    id: item.id,
+    href: `/work/${item.id}`,
+    primary: item.company,
+    secondary: item.period,
+  }));
+---
+
+<html lang="en" data-theme="graphite">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#121214" />
+    <title>{title}</title>
+    <script is:inline>
+      const theme = localStorage.getItem("theme");
+      if (theme) {
+        document.documentElement.dataset.theme = theme;
+      }
+    </script>
+  </head>
+  <body
+    class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
+  >
+    <RailPageShell backHref="/me" backLabel="Back to about">
+      <RailList
+        slot="rail"
+        items={workRailItems}
+        activeId={activeId}
+        ariaLabel="Work pages"
+        mobileDensity="compact"
+      />
+
+      <slot />
+    </RailPageShell>
+  </body>
+</html>

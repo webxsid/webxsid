@@ -1,0 +1,67 @@
+---
+import "../styles/global.css";
+import RailList from "../components/RailList.astro";
+import RailPageShell from "../components/RailPageShell.astro";
+import { formatNowRailDate } from "../lib/now";
+
+type NowItem = {
+  id: string;
+  summary: string;
+};
+
+type Props = {
+  title?: string;
+  description?: string;
+  nowItems: NowItem[];
+  activeId: string;
+};
+
+const {
+  title = "Webxsid",
+  description = "Sid's personal portfolio.",
+  nowItems,
+  activeId,
+} = Astro.props as Props;
+
+const nowRailItems = nowItems.map((item) => ({
+  id: item.id,
+  href: `/now/${item.id}`,
+  primary: formatNowRailDate(item.id),
+  secondary: item.summary,
+}));
+---
+
+<html lang="en" data-theme="graphite">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#121214" />
+    <title>{title}</title>
+    <script is:inline>
+      const theme = localStorage.getItem("theme");
+      if (theme) {
+        document.documentElement.dataset.theme = theme;
+      }
+    </script>
+  </head>
+  <body
+    class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
+  >
+    <RailPageShell backHref="/" backLabel="Back home">
+      <RailList
+        slot="rail"
+        items={nowRailItems}
+        activeId={activeId}
+        ariaLabel="Now pages"
+        secondaryVariant="summary"
+        mobileDensity="compact"
+      />
+
+      <slot />
+    </RailPageShell>
+  </body>
+</html>

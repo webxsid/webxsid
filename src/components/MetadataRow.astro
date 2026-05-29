@@ -1,0 +1,13 @@
+---
+type Props = {
+  label: string;
+  value: string;
+};
+
+const { label, value } = Astro.props as Props;
+---
+
+<div class="grid grid-cols-[7rem_1fr] gap-3 text-sm sm:grid-cols-[8rem_1fr]">
+  <dt class="font-mono uppercase tracking-[0.24em] text-text-muted">{label}</dt>
+  <dd class="text-text">{value}</dd>
+</div>

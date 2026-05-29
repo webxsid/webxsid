@@ -1,0 +1,32 @@
+---
+type Props = {
+  href: string;
+  title: string;
+  summary: string;
+  titleLimit?: number;
+  summaryLimit?: number;
+};
+
+const {
+  href,
+  title,
+  summary,
+  titleLimit = 30,
+  summaryLimit = 70,
+} = Astro.props as Props;
+
+const truncate = (value: string, limit: number) =>
+  value.length > limit ? `${value.slice(0, limit)}...` : value;
+---
+
+<article class="group py-4">
+  <div class="space-y-2">
+    <a href={href} class="title-link">
+      {truncate(title, titleLimit)}
+    </a>
+
+    <p class="max-w-xl text-sm leading-6 text-text-muted">
+      {truncate(summary, summaryLimit)}
+    </p>
+  </div>
+</article>

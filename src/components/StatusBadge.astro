@@ -1,0 +1,22 @@
+---
+type Props = {
+  status: string;
+};
+
+const { status } = Astro.props as Props;
+
+const tone =
+  status === "active"
+    ? " text-emerald-700 dark:text-emerald-300"
+    : status === "building"
+      ? " text-amber-700 dark:text-amber-300"
+      : status === "maintained"
+        ? " text-sky-700 dark:text-sky-300"
+        : " text-text-muted";
+---
+
+<span
+  class={`inline-flex items-center  px-2 py-1 font-mono text-[11px] uppercase tracking-[0.24em] ${tone}`}
+>
+  {status}
+</span>

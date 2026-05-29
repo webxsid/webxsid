@@ -1,0 +1,132 @@
+@layer components {
+  .content-document,
+  .content-note {
+    @apply prose prose-invert;
+  }
+
+  .content-document {
+    @apply max-w-3xl;
+  }
+
+  .content-document h1 {
+    @apply mb-8 text-5xl font-semibold tracking-tight leading-[1.05] text-text;
+  }
+
+  .content-document h2 {
+    @apply mt-16 mb-5 border-b border-border/70 pb-2 text-2xl font-medium tracking-tight text-text;
+  }
+
+  .content-document h3 {
+    @apply mt-8 mb-2 font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted;
+  }
+
+  .content-document p {
+    @apply my-5 text-[16px] leading-7 text-text-muted;
+  }
+
+  .content-document strong {
+    @apply font-medium text-text;
+  }
+
+  .content-document ul,
+  .content-document ol {
+    @apply my-5;
+  }
+
+  .content-document li {
+    @apply my-1 text-[16px] leading-7 text-text-muted;
+  }
+
+  .content-document a {
+    @apply text-text underline decoration-border underline-offset-4;
+  }
+
+  .content-document a:hover {
+    @apply decoration-text;
+  }
+
+  .content-document blockquote {
+    @apply border-l-2 border-border pl-4 italic text-text-muted;
+  }
+
+  .content-document hr {
+    @apply my-12 border-border/70;
+  }
+
+  .content-document code {
+    @apply text-[0.9em] text-text;
+  }
+
+  .content-document code::before,
+  .content-document code::after {
+    content: none;
+  }
+
+  .content-document pre {
+    @apply rounded-none border border-border/70;
+    background-color: rgb(var(--bg-elevated) / 0.2);
+  }
+
+  .content-note {
+    @apply max-w-2xl;
+  }
+
+  .content-note h1 {
+    @apply mb-6 text-3xl font-semibold tracking-tight leading-tight text-text;
+  }
+
+  .content-note h2 {
+    @apply mt-10 mb-3 font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted;
+  }
+
+  .content-note h3 {
+    @apply mt-6 mb-2 text-base font-medium text-text;
+  }
+
+  .content-note p {
+    @apply my-4 text-[15px] leading-7 text-text-muted;
+  }
+
+  .content-note strong {
+    @apply font-medium text-text;
+  }
+
+  .content-note ul,
+  .content-note ol {
+    @apply my-4;
+  }
+
+  .content-note li {
+    @apply my-1 text-[15px] leading-7 text-text-muted;
+  }
+
+  .content-note a {
+    @apply text-text underline decoration-border underline-offset-4;
+  }
+
+  .content-note a:hover {
+    @apply decoration-text;
+  }
+
+  .content-note blockquote {
+    @apply border-l border-border pl-4 italic text-text-muted;
+  }
+
+  .content-note hr {
+    @apply my-8 border-border/70;
+  }
+
+  .content-note code {
+    @apply text-[0.9em] text-text;
+  }
+
+  .content-note code::before,
+  .content-note code::after {
+    content: none;
+  }
+
+  .content-note pre {
+    @apply rounded-none border border-border/70;
+    background-color: rgb(var(--bg-elevated) / 0.2);
+  }
+}

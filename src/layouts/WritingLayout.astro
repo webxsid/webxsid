@@ -1,0 +1,76 @@
+---
+import "../styles/global.css";
+import RailList from "../components/RailList.astro";
+import RailPageShell from "../components/RailPageShell.astro";
+
+type WritingItem = {
+  id: string;
+  title: string;
+  publishedAt: Date;
+  order: number;
+};
+
+type Props = {
+  title?: string;
+  description?: string;
+  writingItems: WritingItem[];
+  writingType: "blogs" | "notes";
+  activeId: string;
+  backHref?: string;
+  backLabel?: string;
+};
+
+const {
+  title = "Webxsid",
+  description = "Sid's personal portfolio.",
+  writingItems,
+  activeId,
+  writingType = "blogs",
+  backHref = "/writing",
+  backLabel = "Back to writing",
+} = Astro.props as Props;
+
+const writingRailItems = writingItems.map((item) => ({
+  id: item.id,
+  href: `/writing/${writingType}/${item.id}`,
+  primary: item.title,
+  secondary: `published ${item.publishedAt.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+  })}`,
+}));
+---
+
+<html lang="en" data-theme="graphite">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#121214" />
+    <title>{title}</title>
+    <script is:inline>
+      const theme = localStorage.getItem("theme");
+      if (theme) {
+        document.documentElement.dataset.theme = theme;
+      }
+    </script>
+  </head>
+  <body
+    class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
+  >
+    <RailPageShell backHref={backHref} backLabel={backLabel}>
+      <RailList
+        slot="rail"
+        items={writingRailItems}
+        activeId={activeId}
+        ariaLabel="Writing pages"
+        mobileDensity="compact"
+      />
+
+      <slot />
+    </RailPageShell>
+  </body>
+</html>

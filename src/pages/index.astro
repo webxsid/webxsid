@@ -1,17 +1,173 @@
 ---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import HomePreviewItem from "../components/HomePreviewItem.astro";
+import Section from "../components/Section.astro";
+import { getLatestNowEntry, formatNowUpdatedAt } from "../lib/now";
+import { filterWritingEntries, getWritingPath } from "../lib/writing";
+import {
+  formatReferenceMeta,
+  getReferencePath,
+  sortReferenceEntries,
+} from "../lib/references";
 
+const [projects, writing, references, nowEntries] = await Promise.all([
+  getCollection("projects"),
+  getCollection("writing"),
+  getCollection("references"),
+  getCollection("now"),
+]);
+
+const featuredProjects = [...projects]
+  .sort((a, b) => a.data.order - b.data.order)
+  .filter((project) => project.data.featured)
+  .slice(0, 3);
+
+const blogs = filterWritingEntries(writing, "blog")
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3);
+
+const featuredReferences = sortReferenceEntries(references).slice(0, 3);
+const latestNow = getLatestNowEntry(nowEntries);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-IN", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Webxsid"
+  description="Sid's portfolio: projects, writing, references, and operational notes."
+>
+  <Container>
+    <div class="py-4 lg:py-6">
+      <Section title="Siddharth Mittal">
+        <div class="space-y-8">
+          <div class="space-y-5">
+            <p
+              class="max-w-3xl font-mono text-xl font-semibold tracking-tight text-text lg:text-4xl lg:leading-[1.1]"
+            >
+              I build local-first tools, backend systems, and software designed
+              to last.
+            </p>
+            <p
+              class="max-w-2xl font-mono text-sm text-text-muted lg:text-md lg:leading-8"
+            >
+              I’m a backend engineer focused on developer tooling,
+              infrastructure, distributed systems, and software that values
+              ownership, reliability, and calm interfaces. Learn more <a
+                href="/me"
+                class="inline-link"
+              >
+                about me
+              </a> or see
+
+              <a href="/now" class="inline-link"> what I’m working on </a> right now.
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      <div class="grid gap-10 lg:grid-cols-3 lg:gap-8">
+        <Section title="Projects">
+          <ul class="border-t border-border/70">
+            {
+              featuredProjects.map((project, idx) => (
+                <li class={idx === 0 ? "" : "border-t border-border/70"}>
+                  <HomePreviewItem
+                    href={`/projects/${project.id}`}
+                    title={project.data.title}
+                    summary={project.data.summary}
+                  />
+                </li>
+              ))
+            }
+          </ul>
+
+          <a
+            href="/projects"
+            class="inline-flex items-center font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted transition hover:text-text terminal-button"
+          >
+            View all projects
+          </a>
+        </Section>
+
+        <Section title="Writing">
+          <ul class="border-t border-border/70">
+            {
+              blogs.map((entry, idx) => (
+                <li class={idx === 0 ? "" : "border-t border-border/70"}>
+                  <HomePreviewItem
+                    href={getWritingPath(entry)}
+                    title={entry.data.title}
+                    summary={entry.data.summary}
+                  />
+                </li>
+              ))
+            }
+          </ul>
+
+          <a
+            href="/writing/blogs"
+            class="inline-flex items-center font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted transition hover:text-text terminal-button"
+          >
+            View all writing
+          </a>
+        </Section>
+
+        <Section title="References">
+          <ul class="border-t border-border/70">
+            {
+              featuredReferences.map((reference, idx) => (
+                <li class={idx === 0 ? "" : "border-t border-border/70"}>
+                  <HomePreviewItem
+                    href={getReferencePath(reference)}
+                    title={reference.data.title}
+                    summary={reference.data.summary}
+                  />
+                </li>
+              ))
+            }
+          </ul>
+
+          <a
+            href="/references"
+            class="inline-flex items-center font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted transition hover:text-text terminal-button"
+          >
+            View all references
+          </a>
+        </Section>
+      </div>
+    </div>
+    {
+      latestNow && (
+        <Section title="Currently">
+          <div class="max-w-2xl space-y-4">
+            <p class="text-sm leading-7 text-text-muted">
+              {latestNow.data.summary}
+            </p>
+
+            <div class="flex items-center gap-3">
+              <span class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
+                Updated {formatNowUpdatedAt(latestNow.data.updatedAt)}
+              </span>
+
+              <span class="text-border">/</span>
+
+              <a
+                href="/now"
+                class="inline-link"
+              >
+                Read more
+              </a>
+            </div>
+          </div>
+        </Section>
+      )
+    }
+  </Container>
+</BaseLayout>

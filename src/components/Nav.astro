@@ -1,0 +1,71 @@
+---
+import {
+  BookOpenText,
+  BookHeart,
+  Clock3,
+  House,
+  BriefcaseBusiness,
+  User,
+} from "lucide-astro";
+
+const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
+
+const items = [
+  { href: "/", label: "Home", icon: House },
+  { href: "/projects", label: "Projects", icon: BriefcaseBusiness },
+  { href: "/writing", label: "Writing", icon: BookOpenText },
+  { href: "/references", label: "References", icon: BookHeart },
+  { href: "/me", label: "Me", icon: User },
+  { href: "/now", label: "Now", icon: Clock3 },
+];
+
+function isActive(href: string) {
+  const normalized = href.replace(/\/+$/, "") || "/";
+
+  if (normalized === "/") {
+    return pathname === "/";
+  }
+
+  return pathname === normalized || pathname.startsWith(`${normalized}/`);
+}
+---
+
+<nav
+  aria-label="Primary"
+  class="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom)+var(--dock-viewport-offset,0px))] left-1/2 z-50 flex -translate-x-1/2 items-center justify-center px-3 lg:static lg:bottom-auto lg:left-auto lg:translate-x-0 lg:justify-start lg:px-0"
+>
+  <div
+    class="inline-flex flex-row items-center gap-1 rounded-full border border-border/70 bg-bg/35 p-1 shadow-[0_14px_40px_rgba(0,0,0,0.16)] backdrop-blur-md lg:flex-col"
+  >
+    {
+      items.map(({ href, label, icon: Icon }) => {
+        const active = isActive(href);
+
+        return (
+          <a
+            href={href}
+            aria-label={label}
+            aria-current={active ? "page" : undefined}
+            class={[
+              "group relative inline-flex h-10 w-10 items-center justify-center rounded-full border transition",
+              active
+                ? "border-border/80 bg-bg-elevated text-text shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+                : "border-transparent text-text-muted hover:border-border/60 hover:bg-bg/55 hover:text-text",
+            ].join(" ")}
+          >
+            <Icon size={16} strokeWidth={1.9} aria-hidden="true" />
+            <span class="sr-only">{label}</span>
+            <span
+              class={[
+                "pointer-events-none absolute left-full top-1/2 ml-2 hidden translate-x-1 -translate-y-1/2 whitespace-nowrap rounded-full border border-border/85 bg-bg-elevated/95 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-text shadow-[0_10px_24px_rgba(0,0,0,0.28)] backdrop-blur-sm",
+                "lg:block lg:opacity-0 lg:transition lg:duration-150 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100",
+              ].join(" ")}
+            >
+              {label}
+            </span>
+          </a>
+        );
+      })
+    }
+  </div>
+</nav>

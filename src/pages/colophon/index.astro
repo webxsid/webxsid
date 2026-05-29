@@ -1,0 +1,115 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+import Section from "../../components/Section.astro";
+import ContentDocument from "../../components/ContentDocument.astro";
+---
+
+<BaseLayout
+  title="Colophon · Webxsid"
+  description="Notes on how this site is built and maintained."
+  backHref="/"
+>
+  <Container>
+    <div class="py-8 lg:py-14">
+      <div class="max-w-4xl space-y-14 lg:space-y-16">
+        <Section title="Colophon">
+          <div class="space-y-7">
+            <p
+              class="max-w-3xl text-2xl font-semibold tracking-tight text-text sm:text-4xl lg:text-3xl lg:leading-[1.08]"
+            >
+              A small record of how this site is put together, revised, and kept
+              in use.
+            </p>
+            <ContentDocument class="mt-2">
+              <h2>Why this site exists</h2>
+
+              <p>
+                Most portfolio sites eventually become snapshots. They capture a
+                moment in time, then slowly drift out of sync with the work they
+                were meant to represent.
+              </p>
+
+              <p>
+                This site is an attempt to avoid that. Rather than treating it
+                as a finished artifact, I treat it as a working document.
+                Projects evolve, ideas change, old assumptions get replaced, and
+                the site changes alongside them.
+              </p>
+
+              <p>
+                The goal is not completeness. The goal is to maintain a place
+                where the work, the reasoning behind it, and the things that
+                influence it can live together.
+              </p>
+
+              <h2>How it is built</h2>
+
+              <p>
+                The site is built with Astro and styled with Tailwind CSS.
+                Content is stored as Markdown and rendered through Astro Content
+                Collections.
+              </p>
+
+              <p>
+                Pages are intentionally simple. There is no CMS, very little
+                client-side JavaScript, and no attempt to optimise for
+                engagement. Most of the site is static HTML generated at build
+                time.
+              </p>
+
+              <p>The structure mirrors the way I think about my work:</p>
+
+              <ul>
+                <li>Projects for systems and tools.</li>
+                <li>Writing for longer thoughts and technical notes.</li>
+                <li>
+                  References for books, articles, songs, and ideas that stayed
+                  with me.
+                </li>
+                <li>
+                  Work for the teams and systems that shaped my approach to
+                  engineering.
+                </li>
+                <li>Now for whatever currently has my attention.</li>
+              </ul>
+
+              <h2>Design</h2>
+
+              <p>The visual design is intentionally restrained.</p>
+
+              <p>
+                Over time I've found myself preferring software that becomes
+                clearer the closer you get to it. The same idea applies here.
+                Typography, spacing, and structure carry most of the interface.
+                The goal is to make reading feel effortless rather than
+                decorative.
+              </p>
+
+              <p>
+                Many modern portfolios feel like products. I wanted this site to
+                feel more like a notebook.
+              </p>
+
+              <h2>Maintenance</h2>
+
+              <p>
+                The site is maintained intermittently, usually alongside
+                whatever project or idea I'm currently exploring.
+              </p>
+
+              <p>
+                Most updates are small: a note added, a page rewritten, a
+                project updated, a thought recorded before it disappears.
+              </p>
+
+              <p>
+                There is no roadmap. Only whatever seems worth documenting next.
+              </p>
+            </ContentDocument>
+          </div>
+        </Section>
+      </div>
+    </div>
+  </Container>
+</BaseLayout>

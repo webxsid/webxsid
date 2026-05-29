@@ -1,0 +1,101 @@
+---
+import Container from "./Container.astro";
+import { Github, Instagram, Mail, Rss } from "lucide-astro";
+import BlueskyIcon from "./icons/BlueskyIcon.astro";
+import ThreadsIcon from "./icons/ThreadsIcon.astro";
+import {
+  footerColophon,
+  footerLinkColumns,
+  footerSocialLinks,
+} from "../lib/site-links";
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-border/70 sm:mt-28">
+  <Container class="py-14 sm:py-16 lg:py-20">
+    <div
+      class="grid gap-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-20"
+    >
+      <div class="max-w-md space-y-7">
+        <p
+          class="font-serif text-[clamp(2rem,4vw,3.5rem)] leading-[0.98] tracking-[-0.04em] text-text"
+        >
+          Still Building,<br />
+          Still Learning.
+        </p>
+
+        <nav aria-label="Social links">
+          <ul class="flex flex-wrap items-center gap-3">
+            {
+              footerSocialLinks.map(({ href, label, icon }) => {
+                const Icon =
+                  icon === "github"
+                    ? Github
+                    : icon === "threads"
+                      ? ThreadsIcon
+                      : icon === "bluesky"
+                        ? BlueskyIcon
+                        : icon === "instagram"
+                          ? Instagram
+                          : icon === "mail"
+                            ? Mail
+                            : Rss;
+
+                return (
+                  <li>
+                    <a
+                      href={href}
+                      target={href.startsWith("http") ? "_blank" : undefined}
+                      rel={
+                        href.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
+                      aria-label={label}
+                      class="inline-flex h-9 w-9 items-center justify-center text-text-muted transition duration-150 hover:text-text focus-visible:text-text"
+                    >
+                      <Icon size={18} strokeWidth={1.8} aria-hidden="true" />
+                      <span class="sr-only">{label}</span>
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </nav>
+        <p class="font-mono text-[11px] leading-6 text-text-muted">
+          &copy; Siddharth Mittal {currentYear}
+        </p>
+      </div>
+
+      <div class="space-y-10">
+        <nav
+          aria-label="Footer links"
+          class="grid grid-cols-2 gap-x-10 gap-y-8"
+        >
+          {
+            footerLinkColumns.map((column) => (
+              <ul class="space-y-3">
+                {column.map((link) => (
+                  <li>
+                    <a
+                      href={link.href}
+                      class="text-[15px] leading-6 text-text-muted transition duration-150 hover:text-text"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ))
+          }
+        </nav>
+
+        <p class="max-w-sm font-mono text-[11px] leading-6 text-text-muted">
+          {footerColophon}
+        </p>
+      </div>
+    </div>
+  </Container>
+</footer>

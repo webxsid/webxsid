@@ -1,0 +1,61 @@
+---
+import { getCollection, render } from "astro:content";
+import WorkLayout from "../../layouts/WorkLayout.astro";
+import ContentDocument from "../../components/ContentDocument.astro";
+
+export async function getStaticPaths() {
+  const work = await getCollection("work");
+
+  return work.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const workItems = (await getCollection("work")).map((item) => ({
+  id: item.id,
+  company: item.data.company,
+  period: item.data.period,
+  order: item.data.order,
+}));
+---
+
+<WorkLayout
+  title={`${entry.data.company} · Work · Webxsid`}
+  description={entry.data.summary}
+  workItems={workItems}
+  activeId={entry.id}
+>
+  <div class="max-w-3xl space-y-10">
+    <div class="space-y-5">
+      <p
+        class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted"
+      >
+        {entry.data.company}
+      </p>
+
+      <h1
+        class="text-3xl font-semibold tracking-tight text-text sm:text-4xl lg:text-5xl lg:leading-[1.08]"
+      >
+        {entry.data.title}
+      </h1>
+
+      <div
+        class="space-y-3 text-sm leading-7 text-text-muted sm:text-[15px] sm:leading-8"
+      >
+        <p>{entry.data.summary}</p>
+        <p
+          class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted"
+        >
+          {entry.data.role} · {entry.data.period}
+        </p>
+      </div>
+    </div>
+
+    <ContentDocument class="space-y-4">
+      <Content />
+    </ContentDocument>
+  </div>
+</WorkLayout>

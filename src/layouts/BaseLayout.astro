@@ -1,0 +1,83 @@
+---
+import "../styles/global.css";
+import { ThemeSelector } from "../components/react/Theme";
+import Container from "../components/Container.astro";
+import Logo from "../components/Logo.astro";
+import Nav from "../components/Nav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { ArrowLeft } from "lucide-astro";
+
+type Props = {
+  title?: string;
+  description?: string;
+  backHref?: string;
+  backLabel?: string;
+};
+
+const {
+  title = "Webxsid",
+  description = "Sid's personal portfolio.",
+  backHref,
+  backLabel = "Back",
+} = Astro.props as Props;
+---
+
+<html lang="en" data-theme="graphite">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#121214" />
+    <title>{title}</title>
+    <script is:inline>
+      const theme = localStorage.getItem("theme");
+      if (theme) {
+        document.documentElement.dataset.theme = theme;
+      }
+    </script>
+  </head>
+  <body
+    class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
+  >
+    <header class="sticky top-0 z-50 pt-3">
+      <Container>
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            {
+              backHref && (
+                <a
+                  href={backHref}
+                  aria-label={backLabel}
+                  class="inline-flex h-10 items-center gap-2 rounded-full border border-border/70 bg-bg/35 px-3 text-text-muted backdrop-blur-md transition hover:border-border hover:bg-bg-elevated/40 hover:text-text"
+                >
+                  <ArrowLeft size={14} aria-hidden="true" />
+                </a>
+              )
+            }
+
+            <div class="shrink-0">
+              <Logo />
+            </div>
+          </div>
+        </div>
+      </Container>
+    </header>
+
+    <Container
+      class="lg:grid lg:grid-cols-[auto_minmax(0,1fr)] lg:items-start lg:gap-8"
+    >
+      <aside class="lg:sticky lg:top-24 lg:pt-4">
+        <Nav />
+      </aside>
+
+      <main class="pb-[calc(7rem+env(safe-area-inset-bottom))] lg:pb-0">
+        <slot />
+      </main>
+    </Container>
+
+    <SiteFooter />
+  </body>
+</html>

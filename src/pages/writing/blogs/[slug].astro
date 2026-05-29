@@ -1,0 +1,47 @@
+---
+import { getCollection, render } from "astro:content";
+import WritingLayout from "../../../layouts/WritingLayout.astro";
+import WritingArticle from "../../../components/WritingArticle.astro";
+import { filterWritingEntries, sortWritingEntries } from "../../../lib/writing";
+
+export async function getStaticPaths() {
+  const writing = await getCollection("writing");
+  const blogs = filterWritingEntries(writing, "blog");
+
+  return blogs.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const writing = await getCollection("writing");
+const blogItems = sortWritingEntries(filterWritingEntries(writing, "blog")).map(
+  (item) => ({
+    id: item.id,
+    title: item.data.title,
+    publishedAt: item.data.publishedAt,
+    order: item.data.order,
+  }),
+);
+---
+
+<WritingLayout
+  title={`${entry.data.title} · Blogs · Webxsid`}
+  description={entry.data.summary}
+  writingItems={blogItems}
+  activeId={entry.id}
+  backHref="/writing/blogs"
+  backLabel="Back to blogs"
+  writingType="blogs"
+>
+  <WritingArticle
+    eyebrow="Blog"
+    title={entry.data.title}
+    summary={entry.data.summary}
+    publishedAt={entry.data.publishedAt}
+  >
+    <Content />
+  </WritingArticle>
+</WritingLayout>

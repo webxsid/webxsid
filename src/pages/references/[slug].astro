@@ -1,0 +1,66 @@
+---
+import { getCollection, render } from "astro:content";
+import ReferenceLayout from "../../layouts/ReferenceLayout.astro";
+import ContentDocument from "../../components/ContentDocument.astro";
+import { formatReferenceMeta, sortReferenceEntries } from "../../lib/references";
+
+export async function getStaticPaths() {
+  const references = await getCollection("references");
+
+  return references.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const referenceItems = sortReferenceEntries(await getCollection("references")).map((item) => ({
+  id: item.id,
+  title: item.data.title,
+  type: item.data.type,
+  creator: item.data.creator,
+  year: item.data.year,
+  publishedAt: item.data.publishedAt,
+  featured: item.data.featured,
+}));
+---
+
+<ReferenceLayout
+  title={`${entry.data.title} · References · Webxsid`}
+  description={entry.data.summary}
+  referenceItems={referenceItems}
+  activeId={entry.id}
+>
+  <div class="max-w-4xl space-y-12 lg:space-y-16">
+    <header class="space-y-7">
+      <div class="space-y-3">
+        <p
+          class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted"
+        >
+          Reference
+        </p>
+
+        <h1
+          class="max-w-3xl text-3xl font-semibold tracking-tight text-text sm:text-4xl lg:text-5xl lg:leading-[1.08]"
+        >
+          {entry.data.title}
+        </h1>
+      </div>
+
+      <div
+        class="max-w-2xl space-y-5 text-sm leading-7 text-text-muted sm:text-[15px] sm:leading-8"
+      >
+        <p>{entry.data.summary}</p>
+
+        <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
+          {formatReferenceMeta(entry)}
+        </p>
+      </div>
+    </header>
+
+    <ContentDocument class="space-y-4">
+      <Content />
+    </ContentDocument>
+  </div>
+</ReferenceLayout>

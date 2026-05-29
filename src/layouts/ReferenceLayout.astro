@@ -1,0 +1,76 @@
+---
+import "../styles/global.css";
+import RailList from "../components/RailList.astro";
+import RailPageShell from "../components/RailPageShell.astro";
+
+type ReferenceItem = {
+  id: string;
+  title: string;
+  type: string;
+  creator?: string;
+  year?: number;
+  publishedAt: Date;
+  featured: boolean;
+};
+
+type Props = {
+  title?: string;
+  description?: string;
+  referenceItems: ReferenceItem[];
+  activeId: string;
+};
+
+const {
+  title = "Webxsid",
+  description = "Sid's personal portfolio.",
+  referenceItems,
+  activeId,
+} = Astro.props as Props;
+
+const referenceRailItems = referenceItems.map((item) => ({
+  id: item.id,
+  href: `/references/${item.id}`,
+  primary: item.title,
+  secondary: [
+    item.type.charAt(0).toUpperCase() + item.type.slice(1),
+    item.creator,
+    item.year ? String(item.year) : undefined,
+  ]
+    .filter(Boolean)
+    .join(" · "),
+}));
+---
+
+<html lang="en" data-theme="graphite">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#121214" />
+    <title>{title}</title>
+    <script is:inline>
+      const theme = localStorage.getItem("theme");
+      if (theme) {
+        document.documentElement.dataset.theme = theme;
+      }
+    </script>
+  </head>
+  <body
+    class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
+  >
+    <RailPageShell backHref="/references" backLabel="Back to references">
+      <RailList
+        slot="rail"
+        items={referenceRailItems}
+        activeId={activeId}
+        ariaLabel="Reference pages"
+        mobileDensity="compact"
+      />
+
+      <slot />
+    </RailPageShell>
+  </body>
+</html>

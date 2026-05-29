@@ -1,0 +1,41 @@
+@import "./theme.css";
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "./button.css";
+@import "./content.css";
+
+@theme {
+  --color-bg: rgb(var(--bg));
+  --color-bg-elevated: rgb(var(--bg-elevated));
+  --color-text: rgb(var(--text));
+  --color-text-muted: rgb(var(--text-muted));
+  --color-border: rgb(var(--border));
+  --color-accent: rgb(var(--accent));
+  --font-sans: "IBM Plex Sans", "Inter Tight", "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
+}
+
+html {
+  background: rgb(var(--bg));
+  color: rgb(var(--text));
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: rgb(var(--bg));
+}
+
+::selection {
+  background: rgb(var(--accent) / 0.18);
+  color: rgb(var(--text));
+}
+
+a {
+  text-decoration-color: rgb(var(--accent) / 0.5);
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  text-decoration-color: rgb(var(--accent));
+}
