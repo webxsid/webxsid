@@ -3,6 +3,7 @@ import "../styles/global.css";
 import RailList from "../components/RailList.astro";
 import RailPageShell from "../components/RailPageShell.astro";
 import SeoHead from "../components/SeoHead.astro";
+import { ClientRouter } from "astro:transitions";
 
 type ProjectItem = {
   id: string;
@@ -69,6 +70,7 @@ const projectRailItems = [...projectItems]
       seo={seo}
       type={seoType}
     />
+    <ClientRouter />
     <script is:inline>
       const theme = localStorage.getItem("theme");
       if (theme) {

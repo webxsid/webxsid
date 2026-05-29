@@ -100,7 +100,9 @@ const {
   aria-label={ariaLabel}
   class="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom)+var(--dock-viewport-offset,0px))] left-1/2 z-40 w-[calc(100%-1.5rem)] -translate-x-1/2 lg:hidden"
 >
-  <div class="rounded-2xl border border-border/70 bg-bg/55 p-2 shadow-[0_14px_40px_rgba(0,0,0,0.2)] backdrop-blur-md">
+  <div
+    class="rounded-2xl border border-border/70 bg-bg/55 p-2 shadow-[0_14px_40px_rgba(0,0,0,0.2)] backdrop-blur-md"
+  >
     <ul
       data-rail-scroll-container
       class={[
@@ -140,7 +142,9 @@ const {
                   <span
                     class={[
                       "block truncate font-mono uppercase tracking-[0.18em]",
-                      mobileDensity === "compact" ? "text-[9px]" : "text-[10px]",
+                      mobileDensity === "compact"
+                        ? "text-[9px]"
+                        : "text-[10px]",
                       active ? "text-text-muted" : "text-text-muted/70",
                     ].join(" ")}
                   >
@@ -167,7 +171,6 @@ const {
     </ul>
   </div>
 </nav>
-
 <script is:inline>
   const restoreActiveRailPosition = () => {
     const rails = document.querySelectorAll("[data-rail-scroll]");
@@ -186,24 +189,34 @@ const {
       if (!(container instanceof HTMLElement)) return;
 
       if (mode === "dock") {
+        const activeRect = activeItem.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
-        const itemRect = activeItem.getBoundingClientRect();
-        const nextScrollLeft =
+
+        const activeCenter =
+          activeRect.left -
+          containerRect.left +
           container.scrollLeft +
-          (itemRect.left - containerRect.left) -
-          containerRect.width / 2 +
-          itemRect.width / 2;
+          activeRect.width / 2;
+
+        const nextScrollLeft = activeCenter - container.clientWidth / 2;
+
+        const maxScrollLeft = Math.max(
+          0,
+          container.scrollWidth - container.clientWidth,
+        );
 
         container.scrollTo({
-          left: Math.max(0, nextScrollLeft),
+          left: Math.min(Math.max(0, nextScrollLeft), maxScrollLeft),
           behavior: "auto",
         });
+
         return;
       }
 
       activeItem.scrollIntoView({
         block: "nearest",
-        inline: "nearest",
+        inline: "center",
+        behavior: "auto",
       });
     });
   };
@@ -222,5 +235,6 @@ const {
     scheduleRestore();
   }
 
+  window.addEventListener("load", scheduleRestore);
   window.addEventListener("pageshow", scheduleRestore);
 </script>

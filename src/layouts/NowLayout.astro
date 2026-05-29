@@ -4,6 +4,7 @@ import RailList from "../components/RailList.astro";
 import RailPageShell from "../components/RailPageShell.astro";
 import SeoHead from "../components/SeoHead.astro";
 import { formatNowRailDate } from "../lib/now";
+import { ClientRouter } from "astro:transitions";
 
 type NowItem = {
   id: string;
@@ -57,6 +58,7 @@ const nowRailItems = nowItems.map((item) => ({
       seo={seo}
       type={seoType}
     />
+    <ClientRouter />
     <script is:inline>
       const theme = localStorage.getItem("theme");
       if (theme) {
