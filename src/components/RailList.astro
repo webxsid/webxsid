@@ -101,7 +101,7 @@ const {
   class="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom)+var(--dock-viewport-offset,0px))] left-1/2 z-40 w-[calc(100%-1.5rem)] -translate-x-1/2 lg:hidden"
 >
   <div
-    class="rounded-2xl border border-border/70 bg-bg/55 p-2 shadow-[0_14px_40px_rgba(0,0,0,0.2)] backdrop-blur-md"
+    class="rounded-2xl border border-border/70 bg-bg-elevated p-2 shadow-[0_14px_40px_rgba(0,0,0,0.2)]"
   >
     <ul
       data-rail-scroll-container
@@ -120,13 +120,13 @@ const {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 class={[
-                  "flex flex-col rounded-xl border text-left transition",
+                  "flex flex-col rounded-xl border bg-bg-elevated text-left transition",
                   mobileDensity === "compact"
                     ? "min-w-[9.5rem] max-w-[9.5rem] gap-0.5 px-2.5 py-1.5"
                     : "min-w-[11rem] max-w-[11rem] gap-1 px-3 py-2",
                   active
-                    ? "border-border/80 bg-bg-elevated text-text"
-                    : "border-border/50 bg-bg/25 text-text-muted hover:border-border/70 hover:text-text",
+                    ? "border-border/80 text-text"
+                    : "border-border/50 text-text-muted hover:border-border/70 hover:text-text",
                 ].join(" ")}
               >
                 <span

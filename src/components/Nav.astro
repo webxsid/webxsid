@@ -35,7 +35,7 @@ function isActive(href: string) {
   class="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom)+var(--dock-viewport-offset,0px))] left-1/2 z-50 flex -translate-x-1/2 items-center justify-center px-3 lg:static lg:bottom-auto lg:left-auto lg:translate-x-0 lg:justify-start lg:px-0"
 >
   <div
-    class="inline-flex flex-row items-center gap-1 rounded-full border border-border/70 bg-bg/35 p-1 shadow-[0_14px_40px_rgba(0,0,0,0.16)] backdrop-blur-md lg:flex-col"
+    class="inline-flex flex-row items-center gap-1 rounded-full border border-border/70 bg-bg p-1 shadow-[0_14px_40px_rgba(0,0,0,0.16)] lg:flex-col"
   >
     {
       items.map(({ href, label, icon: Icon }) => {
@@ -50,15 +50,15 @@ function isActive(href: string) {
               "group relative inline-flex h-10 w-10 items-center justify-center rounded-full border transition",
               active
                 ? "border-border/80 bg-bg-elevated text-text shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
-                : "border-transparent text-text-muted hover:border-border/60 hover:bg-bg/55 hover:text-text",
+                : "border-transparent bg-bg text-text-muted hover:border-border/60 hover:bg-bg hover:text-text",
             ].join(" ")}
           >
             <Icon size={16} strokeWidth={1.9} aria-hidden="true" />
             <span class="sr-only">{label}</span>
             <span
               class={[
-                "pointer-events-none absolute left-full top-1/2 ml-2 hidden translate-x-1 -translate-y-1/2 whitespace-nowrap rounded-full border border-border/85 bg-bg-elevated/95 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-text shadow-[0_10px_24px_rgba(0,0,0,0.28)] backdrop-blur-sm",
-                "lg:block lg:opacity-0 lg:transition lg:duration-150 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100",
+                "pointer-events-none absolute left-full top-1/2 ml-2 hidden translate-x-1 -translate-y-1/2 whitespace-nowrap rounded-full border border-border px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-text shadow-[0_10px_24px_rgba(0,0,0,0.28)] bg-bg/35 backdrop-blur-md",
+                "lg:group-hover:block lg:group-focus-visible:block",
               ].join(" ")}
             >
               {label}
