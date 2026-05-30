@@ -42,7 +42,7 @@ const references = sortReferenceEntries(await getCollection("references"));
 
         <div class="border-t border-border/70">
           {
-            references.map((reference, idx) => (
+            references.map((reference) => (
               <article class="group py-8">
                 <div class="space-y-3">
                   <a href={getReferencePath(reference)} class="title-link">

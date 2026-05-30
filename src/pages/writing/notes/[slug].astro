@@ -3,6 +3,8 @@ import { getCollection, render } from "astro:content";
 import WritingLayout from "../../../layouts/WritingLayout.astro";
 import WritingArticle from "../../../components/content/WritingArticle.astro";
 import { filterWritingEntries, sortWritingEntries } from "../../../lib/writing";
+import { getContentLinkProfiles, getEmptyContentLinkProfile } from "../../../lib/content-links";
+import { getWritingPath } from "../../../lib/writing";
 
 export async function getStaticPaths() {
   const writing = await getCollection("writing");
@@ -17,6 +19,8 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const writing = await getCollection("writing");
+const linkProfiles = await getContentLinkProfiles();
+const linkProfile = linkProfiles.get(getWritingPath(entry)) ?? getEmptyContentLinkProfile();
 const noteItems = sortWritingEntries(filterWritingEntries(writing, "note")).map(
   (item) => ({
     id: item.id,
@@ -31,6 +35,7 @@ const noteItems = sortWritingEntries(filterWritingEntries(writing, "note")).map(
   title={`${entry.data.title} · Notes · Webxsid`}
   description={entry.data.summary}
   seo={entry.data.seo}
+  resourceHints={linkProfile.resourceHints}
   writingItems={noteItems}
   activeId={entry.id}
   backHref="/writing/notes"
@@ -42,6 +47,7 @@ const noteItems = sortWritingEntries(filterWritingEntries(writing, "note")).map(
     title={entry.data.title}
     summary={entry.data.summary}
     publishedAt={entry.data.publishedAt}
+    linkProfile={linkProfile}
   >
     <Content />
   </WritingArticle>

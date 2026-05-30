@@ -1,5 +1,8 @@
 ---
 import ContentDocument from "./ContentDocument.astro";
+import ContentHeader from "./ContentHeader.astro";
+import ContentLinkFooter from "./ContentLinkFooter.astro";
+import type { ContentLinkProfile } from "../../lib/content-links";
 import { formatDate } from "../../lib/dates";
 
 type Props = {
@@ -7,33 +10,20 @@ type Props = {
   title: string;
   summary: string;
   publishedAt: Date;
+  linkProfile?: ContentLinkProfile;
 };
 
-const { eyebrow, title, summary, publishedAt } = Astro.props as Props;
+const { eyebrow, title, summary, publishedAt, linkProfile } = Astro.props as Props;
 ---
 
-<div class="max-w-3xl space-y-12 lg:space-y-16">
-  <header class="space-y-7">
-    <div class="space-y-3">
-      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
-        {eyebrow}
-      </p>
-
-      <h1 class="max-w-3xl text-3xl font-semibold tracking-tight text-text sm:text-4xl lg:text-5xl lg:leading-[1.08]">
-        {title}
-      </h1>
-    </div>
-
-    <div class="max-w-2xl space-y-5 text-sm leading-7 text-text-muted sm:text-[15px] sm:leading-8">
-      <p>{summary}</p>
-
-      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
-        published {formatDate(publishedAt)}
-      </p>
-    </div>
-  </header>
+<div class="motion-page max-w-3xl space-y-12 lg:space-y-16">
+  <ContentHeader eyebrow={eyebrow} title={title} summary={summary}>
+    <span slot="meta">published {formatDate(publishedAt)}</span>
+  </ContentHeader>
 
   <ContentDocument note class="space-y-4">
     <slot />
   </ContentDocument>
+
+  <ContentLinkFooter profile={linkProfile} />
 </div>

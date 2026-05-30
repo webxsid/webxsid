@@ -5,6 +5,10 @@
 @import "./content.css";
 
 @theme {
+  --ease-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@theme {
   --color-bg: rgb(var(--bg));
   --color-bg-elevated: rgb(var(--bg-elevated));
   --color-text: rgb(var(--text));
@@ -13,6 +17,69 @@
   --color-accent: rgb(var(--accent));
   --font-sans: "IBM Plex Sans", "Inter Tight", "Inter", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
+}
+
+@layer utilities {
+  .motion-page {
+    animation: page-rise 260ms var(--ease-smooth) both;
+  }
+
+  .motion-surface {
+    transition-property: transform, border-color, background-color, color, box-shadow, opacity;
+    transition-duration: 180ms;
+    transition-timing-function: var(--ease-smooth);
+  }
+
+  .motion-surface:hover {
+    transform: translateY(-1px);
+  }
+
+  .motion-soft {
+    transition-property: color, background-color, border-color, text-decoration-color, opacity, transform;
+    transition-duration: 150ms;
+    transition-timing-function: var(--ease-smooth);
+  }
+
+  .motion-soft:hover {
+    transform: translateY(-1px);
+  }
+
+  .motion-lift {
+    transition-property: transform, box-shadow, border-color, background-color;
+    transition-duration: 180ms;
+    transition-timing-function: var(--ease-smooth);
+  }
+
+  .motion-lift:hover {
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes page-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 html {

@@ -1,5 +1,6 @@
 .terminal-button {
   font-family: monospace;
+  transition: transform 150ms cubic-bezier(0.2, 0.8, 0.2, 1), color 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .terminal-button::before {
@@ -12,16 +13,22 @@
   padding-left: 0.25em;
 }
 
+.terminal-button:hover {
+  transform: translateY(-1px);
+}
+
 .title-link {
   font-family: var(--font-sans);
   font-weight: 500;
   text-transform: capitalize;
   text-decoration: underline;
   text-decoration-style: dotted;
+  transition: transform 150ms cubic-bezier(0.2, 0.8, 0.2, 1), color 150ms cubic-bezier(0.2, 0.8, 0.2, 1), text-decoration-color 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .title-link:hover {
   text-decoration-style: solid;
+  transform: translateY(-1px);
 }
 
 .title-link[target="_blank"]::after {
@@ -34,10 +41,12 @@
   text-decoration: underline;
   text-decoration-style: dotted;
   color: rgb(var(--muted));
+  transition: transform 150ms cubic-bezier(0.2, 0.8, 0.2, 1), color 150ms cubic-bezier(0.2, 0.8, 0.2, 1), text-decoration-color 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .inline-link:hover {
   text-decoration-style: solid;
+  transform: translateY(-1px);
 }
 
 .inline-link[target="_blank"]::after {

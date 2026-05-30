@@ -15,6 +15,7 @@ type Props = {
   pathname: string;
   seo?: SeoMeta;
   type?: "website" | "article";
+  resourceHints?: string[];
 };
 
 const {
@@ -23,6 +24,7 @@ const {
   pathname,
   seo,
   type = "website",
+  resourceHints = [],
 } = Astro.props as Props;
 
 const pageTitle = seo?.title ?? title;
@@ -52,4 +54,16 @@ const robots = seo?.noindex ? "noindex, nofollow" : "index, follow";
 <meta name="twitter:description" content={pageDescription} />
 {
   image && <meta name="twitter:image" content={image} />
+}
+{
+  [...new Set(resourceHints)].map((origin) => {
+    const parsed = new URL(origin);
+
+    return (
+      <>
+        <link rel="dns-prefetch" href={`//${parsed.host}`} />
+        <link rel="preconnect" href={parsed.origin} crossorigin="anonymous" />
+      </>
+    );
+  })
 }

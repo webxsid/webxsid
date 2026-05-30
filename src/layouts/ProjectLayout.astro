@@ -24,6 +24,7 @@ type Props = {
     canonical?: string;
     noindex?: boolean;
   };
+  resourceHints?: string[];
   seoType?: "website" | "article";
   projectItems: ProjectItem[];
   activeId: string;
@@ -33,6 +34,7 @@ const {
   title = "Webxsid",
   description = "Sid's personal portfolio.",
   seo,
+  resourceHints = [],
   seoType = "article",
   projectItems,
   activeId,
@@ -72,6 +74,7 @@ const sectionLabel = "Projects";
       pathname={Astro.url.pathname}
       seo={seo}
       type={seoType}
+      resourceHints={resourceHints}
     />
     <ClientRouter />
     <ThemeBootstrap />

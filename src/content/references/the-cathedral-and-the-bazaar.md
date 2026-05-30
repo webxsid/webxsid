@@ -21,3 +21,9 @@ The useful question is not whether a system is elegant in isolation. It is wheth
 ## Why it matters
 
 It remains one of the clearest reminders that software is social before it is technical.
+
+That perspective connects directly to [Why local-first matters](/writing/blogs/why-local-first-matters) and [Building projects for focus](/writing/blogs/building-projects-for-focus), because both are really about making participation cheap enough to sustain.
+
+It also helps explain why [CRONA](/projects/crona) tries to keep the shape of the system small. If the structure is too heavy, contributors and users alike pay for that weight every time they need to re-enter the work.
+
+External link for comparison: [The original essay](https://catb.org/~esr/writings/cathedral-bazaar/) remains a useful primary source and a good stress test for the backlink/footer logic.

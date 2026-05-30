@@ -2,6 +2,9 @@
 import { getCollection, render } from "astro:content";
 import WorkLayout from "../../layouts/WorkLayout.astro";
 import ContentDocument from "../../components/content/ContentDocument.astro";
+import ContentHeader from "../../components/content/ContentHeader.astro";
+import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro";
+import { getContentLinkProfiles, getEmptyContentLinkProfile } from "../../lib/content-links";
 
 export async function getStaticPaths() {
   const work = await getCollection("work");
@@ -20,43 +23,27 @@ const workItems = (await getCollection("work")).map((item) => ({
   period: item.data.period,
   order: item.data.order,
 }));
+const linkProfiles = await getContentLinkProfiles();
+const linkProfile = linkProfiles.get(`/work/${entry.id}`) ?? getEmptyContentLinkProfile();
 ---
 
 <WorkLayout
   title={`${entry.data.company} · Work · Webxsid`}
   description={entry.data.summary}
   seo={entry.data.seo}
+  resourceHints={linkProfile.resourceHints}
   workItems={workItems}
   activeId={entry.id}
 >
   <div class="max-w-3xl space-y-10">
-    <div class="space-y-5">
-      <p
-        class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted"
-      >
-        {entry.data.company}
-      </p>
-
-      <h1
-        class="text-3xl font-semibold tracking-tight text-text sm:text-4xl lg:text-5xl lg:leading-[1.08]"
-      >
-        {entry.data.title}
-      </h1>
-
-      <div
-        class="space-y-3 text-sm leading-7 text-text-muted sm:text-[15px] sm:leading-8"
-      >
-        <p>{entry.data.summary}</p>
-        <p
-          class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted"
-        >
-          {entry.data.role} · {entry.data.period}
-        </p>
-      </div>
-    </div>
+    <ContentHeader eyebrow={entry.data.company} title={entry.data.title} summary={entry.data.summary}>
+      <span slot="meta">{entry.data.role} · {entry.data.period}</span>
+    </ContentHeader>
 
     <ContentDocument class="space-y-4">
       <Content />
     </ContentDocument>
+
+    <ContentLinkFooter profile={linkProfile} />
   </div>
 </WorkLayout>

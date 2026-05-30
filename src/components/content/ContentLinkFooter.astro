@@ -1,0 +1,71 @@
+---
+import type { ContentLinkProfile } from "../../lib/content-links";
+
+type Props = {
+  profile?: ContentLinkProfile;
+};
+
+const { profile } = Astro.props as Props;
+
+const hasBacklinks = (profile?.backlinks.length ?? 0) > 0;
+const hasReferences = (profile?.references.length ?? 0) > 0;
+---
+{
+  (hasBacklinks || hasReferences) && (
+    <footer class="motion-page max-w-3xl border-t border-border/70 pt-8 sm:pt-10">
+      <div class="space-y-8">
+        {
+          hasBacklinks && (
+            <section class="space-y-3">
+              <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
+                Linked from
+              </p>
+
+              <ul class="space-y-2">
+                {profile?.backlinks.map((item) => (
+                  <li>
+                    <a
+                      href={item.href}
+                      class="motion-soft inline-flex flex-wrap items-center gap-2 text-sm text-text-muted hover:text-text"
+                    >
+                      <span>{item.section}</span>
+                      <span class="text-border">/</span>
+                      <span>{item.label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        {
+          hasReferences && (
+            <section class="space-y-3">
+              <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
+                Referenced links
+              </p>
+
+              <ul class="space-y-2">
+                {profile?.references.map((item) => (
+                  <li>
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="motion-soft inline-flex flex-wrap items-center gap-2 text-sm text-text-muted hover:text-text"
+                    >
+                      <span>{item.label}</span>
+                      <span class="text-border">/</span>
+                      <span>{item.origin}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+      </div>
+    </footer>
+  )
+}

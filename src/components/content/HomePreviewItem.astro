@@ -19,9 +19,9 @@ const truncate = (value: string, limit: number) =>
   value.length > limit ? `${value.slice(0, limit)}...` : value;
 ---
 
-<article class="group py-4">
+<article class="motion-page motion-surface group py-4">
   <div class="space-y-2">
-    <a href={href} class="title-link">
+    <a href={href} class="title-link motion-soft">
       {truncate(title, titleLimit)}
     </a>
 

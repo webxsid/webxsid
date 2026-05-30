@@ -20,7 +20,7 @@ const brandIcon = await getImage({
 });
 ---
 
-<header class="sticky top-0 z-50 pt-3">
+<header class="motion-page sticky top-0 z-50 pt-3">
   <Container>
     <ShellHeader
       client:load
@@ -35,14 +35,14 @@ const brandIcon = await getImage({
   </Container>
 </header>
 
-<Container class="py-4 lg:py-6">
+<Container class="motion-page py-4 lg:py-6">
   <div class="space-y-8 lg:space-y-10">
     <div
       class="grid gap-10 lg:grid-cols-[14rem_minmax(0,1fr)] lg:items-start lg:gap-12"
     >
       <slot name="rail" />
 
-      <main class="min-w-0 pb-[calc(10rem+env(safe-area-inset-bottom))] lg:pb-0">
+      <main class="motion-page min-w-0 pb-[calc(10rem+env(safe-area-inset-bottom))] lg:pb-0">
         <slot />
       </main>
     </div>

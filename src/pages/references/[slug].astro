@@ -2,7 +2,10 @@
 import { getCollection, render } from "astro:content";
 import ReferenceLayout from "../../layouts/ReferenceLayout.astro";
 import ContentDocument from "../../components/content/ContentDocument.astro";
+import ContentHeader from "../../components/content/ContentHeader.astro";
+import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro";
 import { formatReferenceMeta, sortReferenceEntries } from "../../lib/references";
+import { getContentLinkProfiles, getEmptyContentLinkProfile } from "../../lib/content-links";
 
 export async function getStaticPaths() {
   const references = await getCollection("references");
@@ -24,44 +27,27 @@ const referenceItems = sortReferenceEntries(await getCollection("references")).m
   publishedAt: item.data.publishedAt,
   featured: item.data.featured,
 }));
+const linkProfiles = await getContentLinkProfiles();
+const linkProfile = linkProfiles.get(`/references/${entry.id}`) ?? getEmptyContentLinkProfile();
 ---
 
 <ReferenceLayout
   title={`${entry.data.title} · References · Webxsid`}
   description={entry.data.summary}
   seo={entry.data.seo}
+  resourceHints={linkProfile.resourceHints}
   referenceItems={referenceItems}
   activeId={entry.id}
 >
   <div class="max-w-4xl space-y-12 lg:space-y-16">
-    <header class="space-y-7">
-      <div class="space-y-3">
-        <p
-          class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted"
-        >
-          Reference
-        </p>
-
-        <h1
-          class="max-w-3xl text-3xl font-semibold tracking-tight text-text sm:text-4xl lg:text-5xl lg:leading-[1.08]"
-        >
-          {entry.data.title}
-        </h1>
-      </div>
-
-      <div
-        class="max-w-2xl space-y-5 text-sm leading-7 text-text-muted sm:text-[15px] sm:leading-8"
-      >
-        <p>{entry.data.summary}</p>
-
-        <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
-          {formatReferenceMeta(entry)}
-        </p>
-      </div>
-    </header>
+    <ContentHeader eyebrow="Reference" title={entry.data.title} summary={entry.data.summary}>
+      <span slot="meta">{formatReferenceMeta(entry)}</span>
+    </ContentHeader>
 
     <ContentDocument class="space-y-4">
       <Content />
     </ContentDocument>
+
+    <ContentLinkFooter profile={linkProfile} />
   </div>
 </ReferenceLayout>

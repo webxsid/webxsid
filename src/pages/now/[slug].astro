@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import NowLayout from "../../layouts/NowLayout.astro";
 import NowEntry from "../../components/content/NowEntry.astro";
 import { sortNowEntries } from "../../lib/now";
+import { getContentLinkProfiles, getEmptyContentLinkProfile } from "../../lib/content-links";
 
 export async function getStaticPaths() {
   const nowEntries = await getCollection("now");
@@ -17,19 +18,22 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const nowEntries = await getCollection("now");
 const sortedNowEntries = sortNowEntries(nowEntries);
+const linkProfiles = await getContentLinkProfiles();
+const linkProfile = linkProfiles.get(`/now/${entry.id}`) ?? getEmptyContentLinkProfile();
 ---
 
 <NowLayout
   title={`${entry.data.title} · Now · Webxsid`}
   description={entry.data.summary}
   seo={entry.data.seo}
+  resourceHints={linkProfile.resourceHints}
   nowItems={sortedNowEntries.map((item) => ({
     id: item.id,
     summary: item.data.summary,
   }))}
   activeId={entry.id}
 >
-  <NowEntry entry={entry}>
+  <NowEntry entry={entry} linkProfile={linkProfile}>
     <Content />
   </NowEntry>
 </NowLayout>

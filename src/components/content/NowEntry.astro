@@ -1,5 +1,8 @@
 ---
 import ContentDocument from "./ContentDocument.astro";
+import ContentHeader from "./ContentHeader.astro";
+import ContentLinkFooter from "./ContentLinkFooter.astro";
+import type { ContentLinkProfile } from "../../lib/content-links";
 import { formatNowUpdatedAt } from "../../lib/now";
 
 type Props = {
@@ -11,35 +14,20 @@ type Props = {
       updatedAt: Date;
     };
   };
+  linkProfile?: ContentLinkProfile;
 };
 
-const { entry } = Astro.props as Props;
+const { entry, linkProfile } = Astro.props as Props;
 ---
 
-<div class="max-w-3xl space-y-12 lg:space-y-16">
-  <header class="space-y-7">
-    <div class="space-y-3">
-      <h1
-        class="max-w-3xl text-3xl font-semibold tracking-tight text-text sm:text-4xl lg:text-5xl lg:leading-[1.08]"
-      >
-        {entry.data.title}
-      </h1>
-    </div>
-
-    <div
-      class="max-w-2xl space-y-5 text-sm leading-7 text-text-muted sm:text-[15px] sm:leading-8"
-    >
-      <p>{entry.data.summary}</p>
-
-      <p
-        class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted"
-      >
-        Updated · {formatNowUpdatedAt(entry.data.updatedAt)}
-      </p>
-    </div>
-  </header>
+<div class="motion-page max-w-3xl space-y-12 lg:space-y-16">
+  <ContentHeader eyebrow="Now" title={entry.data.title} summary={entry.data.summary}>
+    <span slot="meta">updated {formatNowUpdatedAt(entry.data.updatedAt)}</span>
+  </ContentHeader>
 
   <ContentDocument class="space-y-4">
     <slot />
   </ContentDocument>
+
+  <ContentLinkFooter profile={linkProfile} />
 </div>

@@ -24,9 +24,9 @@ export function ShellHeaderBrand({
       aria-label={`${logoLabel} navigation`}
       onClick={onToggle}
       layout
-      className="inline-flex items-center gap-3 rounded-full border border-border/70 bg-bg px-3 py-2 text-left text-text transition-[transform,box-shadow] cursor-pointer"
+      className="motion-surface inline-flex items-center gap-3 rounded-full border border-border/70 bg-bg px-3 py-2 text-left text-text cursor-pointer"
     >
-      <span className="inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-border/70 bg-bg">
+      <span className="motion-surface inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-border/70 bg-bg">
         {brandIcon ? (
           <img
             src={brandIcon.src}
@@ -42,11 +42,11 @@ export function ShellHeaderBrand({
       </span>
 
       <span className="flex flex-col items-start gap-0.5">
-        <span className="font-mono text-[11px] uppercase tracking-[0.32em] text-text">
+        <span className="motion-soft font-mono text-[11px] uppercase tracking-[0.32em] text-text">
           {logoLabel}
         </span>
 
-        <span className="flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
+        <span className="motion-soft flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
           <span>{activeTitle}</span>
 
           <svg
