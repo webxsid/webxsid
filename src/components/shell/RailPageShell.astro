@@ -35,6 +35,8 @@ const brandIcon = await getImage({
   </Container>
 </header>
 
+<slot name="dock" />
+
 <Container class="motion-page py-4 lg:py-6">
   <div class="space-y-8 lg:space-y-10">
     <div
@@ -48,3 +50,9 @@ const brandIcon = await getImage({
     </div>
   </div>
 </Container>
+
+<script>
+  import { setupRailRestore } from "../rail/rail-restore";
+
+  setupRailRestore();
+</script>

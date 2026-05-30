@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
-import RailList from "../components/rail/RailList.astro";
+import RailDesktop from "../components/rail/RailDesktop.astro";
+import RailDock from "../components/rail/RailDock.astro";
 import RailPageShell from "../components/shell/RailPageShell.astro";
 import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 import SeoHead from "../components/shell/SeoHead.astro";
@@ -86,13 +87,20 @@ const sectionLabel = "Projects";
       backHref="/projects"
       backLabel="Back to projects"
       sectionLabel={sectionLabel}
-    >
-      <RailList
-        slot="rail"
+  >
+      <RailDock
+        slot="dock"
         items={projectRailItems}
         activeId={activeId}
         ariaLabel="Project pages"
         mobileDensity="compact"
+      />
+
+      <RailDesktop
+        slot="rail"
+        items={projectRailItems}
+        activeId={activeId}
+        ariaLabel="Project pages"
       />
 
       <slot />

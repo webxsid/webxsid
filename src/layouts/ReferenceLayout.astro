@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
-import RailList from "../components/rail/RailList.astro";
+import RailDesktop from "../components/rail/RailDesktop.astro";
+import RailDock from "../components/rail/RailDock.astro";
 import RailPageShell from "../components/shell/RailPageShell.astro";
 import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 import SeoHead from "../components/shell/SeoHead.astro";
@@ -84,13 +85,20 @@ const sectionLabel = "References";
       backHref="/references"
       backLabel="Back to references"
       sectionLabel={sectionLabel}
-    >
-      <RailList
-        slot="rail"
+  >
+      <RailDock
+        slot="dock"
         items={referenceRailItems}
         activeId={activeId}
         ariaLabel="Reference pages"
         mobileDensity="compact"
+      />
+
+      <RailDesktop
+        slot="rail"
+        items={referenceRailItems}
+        activeId={activeId}
+        ariaLabel="Reference pages"
       />
 
       <slot />
