@@ -1,0 +1,47 @@
+---
+import RailDesktop from "./RailDesktop.astro";
+import RailDock from "./RailDock.astro";
+
+type Item = {
+  id: string;
+  href: string;
+  primary: string;
+  secondary?: string;
+};
+
+type Props = {
+  items: Item[];
+  activeId: string;
+  ariaLabel: string;
+  secondaryVariant?: "meta" | "summary";
+  mobileDensity?: "normal" | "compact";
+};
+
+const {
+  items,
+  activeId,
+  ariaLabel,
+  secondaryVariant = "meta",
+  mobileDensity = "normal",
+} = Astro.props as Props;
+---
+<RailDesktop
+  items={items}
+  activeId={activeId}
+  ariaLabel={ariaLabel}
+  secondaryVariant={secondaryVariant}
+/>
+
+<RailDock
+  items={items}
+  activeId={activeId}
+  ariaLabel={ariaLabel}
+  secondaryVariant={secondaryVariant}
+  mobileDensity={mobileDensity}
+/>
+
+<script>
+  import { setupRailRestore } from "./rail-restore";
+
+  setupRailRestore();
+</script>

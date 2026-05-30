@@ -1,9 +1,9 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Container from "../components/Container.astro";
-import HomePreviewItem from "../components/HomePreviewItem.astro";
-import Section from "../components/Section.astro";
+import Container from "../components/shell/Container.astro";
+import HomePreviewItem from "../components/content/HomePreviewItem.astro";
+import Section from "../components/content/Section.astro";
 import { getLatestNowEntry, formatNowUpdatedAt } from "../lib/now";
 import { filterWritingEntries, getWritingPath } from "../lib/writing";
 import {

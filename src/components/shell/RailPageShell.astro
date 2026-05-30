@@ -1,6 +1,8 @@
 ---
+import { getImage } from "astro:assets";
 import Container from "./Container.astro";
-import { ShellHeader } from "./react/ShellHeader";
+import { ShellHeader } from "../react/header/ShellHeader";
+import SiteIcon from "../../../assets/SiteIcon.png";
 
 type Props = {
   backHref: string;
@@ -9,6 +11,13 @@ type Props = {
 };
 
 const { backHref, backLabel, sectionLabel } = Astro.props as Props;
+
+const brandIcon = await getImage({
+  src: SiteIcon,
+  width: 64,
+  height: 64,
+  format: "webp",
+});
 ---
 
 <header class="sticky top-0 z-50 pt-3">
@@ -18,6 +27,7 @@ const { backHref, backLabel, sectionLabel } = Astro.props as Props;
       transition:persist
       backHref={backHref}
       backLabel={backLabel}
+      brandIcon={brandIcon}
       variant="rail"
       pageTitle={sectionLabel}
       currentPath={Astro.url.pathname}

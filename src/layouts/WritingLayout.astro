@@ -1,8 +1,9 @@
 ---
 import "../styles/global.css";
-import RailList from "../components/RailList.astro";
-import RailPageShell from "../components/RailPageShell.astro";
-import SeoHead from "../components/SeoHead.astro";
+import RailList from "../components/rail/RailList.astro";
+import RailPageShell from "../components/shell/RailPageShell.astro";
+import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
+import SeoHead from "../components/shell/SeoHead.astro";
 import { ClientRouter } from "astro:transitions";
 
 type WritingItem = {
@@ -64,18 +65,14 @@ const sectionLabel = writingType === "blogs" ? "Blogs" : "Notes";
     />
     <meta name="theme-color" content="#121214" />
     <SeoHead
+      title={title}
       description={description}
       pathname={Astro.url.pathname}
       seo={seo}
       type={seoType}
     />
     <ClientRouter />
-    <script is:inline>
-      const theme = localStorage.getItem("theme");
-      if (theme) {
-        document.documentElement.dataset.theme = theme;
-      }
-    </script>
+    <ThemeBootstrap />
   </head>
   <body
     class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"

@@ -2,9 +2,14 @@
 type Props = {
   size?: number;
   class?: string;
+  strokeWidth?: number;
 };
 
-const { size = 18, class: className = "" } = Astro.props as Props;
+const {
+  size = 18,
+  class: className = "",
+  strokeWidth = 2,
+} = Astro.props as Props;
 ---
 
 <svg
@@ -15,6 +20,7 @@ const { size = 18, class: className = "" } = Astro.props as Props;
   fill="currentColor"
   width={size}
   height={size}
+  stroke-width={strokeWidth}
   class={className}
 >
   <title>Bluesky</title>

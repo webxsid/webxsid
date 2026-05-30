@@ -1,9 +1,9 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Container from "../../components/Container.astro";
-import Section from "../../components/Section.astro";
-import StatusBadge from "../../components/StatusBadge.astro";
+import Container from "../../components/shell/Container.astro";
+import Section from "../../components/content/Section.astro";
+import StatusBadge from "../../components/content/StatusBadge.astro";
 
 const projects = (await getCollection("projects")).sort(
   (a, b) => a.data.order - b.data.order,

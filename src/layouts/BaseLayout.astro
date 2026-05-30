@@ -1,11 +1,14 @@
 ---
 import "../styles/global.css";
-import Container from "../components/Container.astro";
-import Nav from "../components/Nav.astro";
-import SeoHead from "../components/SeoHead.astro";
-import SiteFooter from "../components/SiteFooter.astro";
+import { getImage } from "astro:assets";
+import Container from "../components/shell/Container.astro";
+import Nav from "../components/shell/Nav.astro";
+import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
+import SeoHead from "../components/shell/SeoHead.astro";
+import SiteFooter from "../components/shell/SiteFooter.astro";
 import { ClientRouter, fade } from "astro:transitions";
-import { ShellHeader } from "../components/react/ShellHeader";
+import { ShellHeader } from "../components/react/header/ShellHeader";
+import SiteIcon from "../../assets/SiteIcon.png";
 
 type SeoMeta = {
   title?: string;
@@ -30,6 +33,13 @@ const {
   backHref,
   backLabel = "Back",
 } = Astro.props as Props;
+
+const brandIcon = await getImage({
+  src: SiteIcon,
+  width: 64,
+  height: 64,
+  format: "webp",
+});
 ---
 
 <html lang="en" data-theme="graphite">
@@ -42,12 +52,7 @@ const {
     <meta name="theme-color" content="#121214" />
     <SeoHead title={title} description={description} pathname={Astro.url.pathname} seo={seo} />
     <ClientRouter />
-    <script is:inline>
-      const theme = localStorage.getItem("theme");
-      if (theme) {
-        document.documentElement.dataset.theme = theme;
-      }
-    </script>
+    <ThemeBootstrap />
   </head>
   <body
     class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
@@ -59,6 +64,7 @@ const {
           transition:persist
           backHref={backHref}
           backLabel={backLabel}
+          brandIcon={brandIcon}
           currentPath={Astro.url.pathname}
         />
       </Container>

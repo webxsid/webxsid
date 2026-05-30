@@ -1,0 +1,120 @@
+---
+type Item = {
+  id: string;
+  href: string;
+  primary: string;
+  secondary?: string;
+};
+
+type Props = {
+  item: Item;
+  active: boolean;
+  variant: "vertical" | "dock";
+  secondaryVariant?: "meta" | "summary";
+  mobileDensity?: "normal" | "compact";
+};
+
+const {
+  item,
+  active,
+  variant,
+  secondaryVariant = "meta",
+  mobileDensity = "normal",
+} = Astro.props as Props;
+---
+
+{
+  variant === "vertical" ? (
+    <a
+      href={item.href}
+      aria-current={active ? "page" : undefined}
+      class="group block space-y-2"
+    >
+      <div class="space-y-1">
+        <span
+          class={[
+            "block text-sm transition",
+            active ? "text-text" : "text-text-muted group-hover:text-text",
+          ].join(" ")}
+        >
+          {item.primary}
+        </span>
+
+        {item.secondary && secondaryVariant === "meta" && (
+          <span
+            class={[
+              "block font-mono text-[11px] uppercase tracking-[0.22em]",
+              active ? "text-text-muted" : "text-text-muted/60",
+            ].join(" ")}
+          >
+            {item.secondary}
+          </span>
+        )}
+
+        {item.secondary && secondaryVariant === "summary" && (
+          <p
+            class={[
+              "max-w-[12rem] text-xs leading-5",
+              active ? "text-text-muted" : "text-text-muted/70",
+            ].join(" ")}
+          >
+            {item.secondary}
+          </p>
+        )}
+      </div>
+
+      <div
+        class={[
+          "h-px transition-all duration-300",
+          active ? "w-16 bg-text" : "w-8 bg-border/70 group-hover:w-12",
+        ].join(" ")}
+      />
+    </a>
+  ) : (
+    <a
+      href={item.href}
+      class={[
+        "flex flex-col rounded-xl border bg-bg text-left transition",
+        mobileDensity === "compact"
+          ? "min-w-[9.5rem] max-w-[9.5rem] gap-0.5 px-2.5 py-1.5"
+          : "min-w-[11rem] max-w-[11rem] gap-1 px-3 py-2",
+        active
+          ? "border-border/80 text-text bg-bg-elevated shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
+          : "border-border/50 text-text-muted hover:border-border/70 hover:text-text",
+      ].join(" ")}
+    >
+      <span
+        class={[
+          "block truncate leading-5",
+          mobileDensity === "compact" ? "text-[13px]" : "text-sm",
+        ].join(" ")}
+      >
+        {item.primary}
+      </span>
+
+      {item.secondary && secondaryVariant === "meta" && (
+        <span
+          class={[
+            "block truncate font-mono uppercase tracking-[0.18em]",
+            mobileDensity === "compact" ? "text-[9px]" : "text-[10px]",
+            active ? "text-text-muted" : "text-text-muted/70",
+          ].join(" ")}
+        >
+          {item.secondary}
+        </span>
+      )}
+
+      {item.secondary && secondaryVariant === "summary" && (
+        <span
+          class={[
+            "block truncate leading-5",
+            mobileDensity === "compact" ? "text-[11px]" : "text-xs",
+            active ? "text-text-muted" : "text-text-muted/70",
+          ].join(" ")}
+        >
+          {item.secondary}
+        </span>
+      )}
+    </a>
+  )
+}

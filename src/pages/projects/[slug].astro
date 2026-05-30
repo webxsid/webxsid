@@ -1,8 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
 import ProjectLayout from "../../layouts/ProjectLayout.astro";
-import ContentDocument from "../../components/ContentDocument.astro";
-import StatusBadge from "../../components/StatusBadge.astro";
+import ContentDocument from "../../components/content/ContentDocument.astro";
+import StatusBadge from "../../components/content/StatusBadge.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");

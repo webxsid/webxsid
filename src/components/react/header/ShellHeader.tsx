@@ -1,8 +1,10 @@
 import { ShellBrandLauncher } from "./ShellBrandLauncher";
+import type { ShellBrandIcon } from "./header-utils";
 
 type Props = {
   backHref?: string;
   backLabel?: string;
+  brandIcon?: ShellBrandIcon;
   logoLabel?: string;
   pageTitle?: string;
   currentPath?: string;
@@ -12,6 +14,7 @@ type Props = {
 export function ShellHeader({
   backHref,
   backLabel = "Back",
+  brandIcon,
   logoLabel = "Webxsid",
   pageTitle,
   currentPath = "/",
@@ -21,6 +24,7 @@ export function ShellHeader({
     <ShellBrandLauncher
       backHref={backHref}
       backLabel={backLabel}
+      brandIcon={brandIcon}
       logoLabel={logoLabel}
       pageTitle={pageTitle}
       currentPath={currentPath}

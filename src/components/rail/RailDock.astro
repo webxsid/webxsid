@@ -1,0 +1,59 @@
+---
+import RailItem from "./RailItem.astro";
+
+type Item = {
+  id: string;
+  href: string;
+  primary: string;
+  secondary?: string;
+};
+
+type Props = {
+  items: Item[];
+  activeId: string;
+  ariaLabel: string;
+  secondaryVariant?: "meta" | "summary";
+  mobileDensity?: "normal" | "compact";
+};
+
+const {
+  items,
+  activeId,
+  ariaLabel,
+  secondaryVariant = "meta",
+  mobileDensity = "normal",
+} = Astro.props as Props;
+---
+
+<nav
+  data-rail-scroll
+  data-rail-mode="dock"
+  aria-label={ariaLabel}
+  class="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom)+var(--dock-viewport-offset,0px))] left-1/2 z-40 w-[calc(100%-1.5rem)] -translate-x-1/2 lg:hidden"
+>
+  <div
+    class="rounded-2xl border border-border/70 bg-bg p-2 shadow-[0_14px_40px_rgba(0,0,0,0.2)]"
+  >
+    <ul
+      data-rail-scroll-container
+      class={[
+        "flex snap-x snap-mandatory overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
+        mobileDensity === "compact" ? "gap-1.5" : "gap-2",
+      ].join(" ")}
+    >
+      {
+        items.map((item) => (
+          <li class="snap-start" aria-current={item.id === activeId ? "page" : undefined}>
+            <RailItem
+              item={item}
+              active={item.id === activeId}
+              variant="dock"
+              secondaryVariant={secondaryVariant}
+              mobileDensity={mobileDensity}
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>

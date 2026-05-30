@@ -1,9 +1,9 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import Container from "../../../components/Container.astro";
-import Section from "../../../components/Section.astro";
-import ArticleList from "../../../components/ArticleList.astro";
+import Container from "../../../components/shell/Container.astro";
+import Section from "../../../components/content/Section.astro";
+import ArticleList from "../../../components/content/ArticleList.astro";
 import { filterWritingEntries, sortWritingEntries } from "../../../lib/writing";
 
 const writing = await getCollection("writing");

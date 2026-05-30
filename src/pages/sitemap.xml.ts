@@ -90,7 +90,7 @@ export const GET: APIRoute = async () => {
       lastmod: entry.data.updatedAt.toISOString(),
     }));
 
-  const pages = [
+  const pages: SitemapEntry[] = [
     ...staticPages,
     ...projectPages,
     ...workPages,
