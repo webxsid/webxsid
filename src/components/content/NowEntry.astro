@@ -2,6 +2,7 @@
 import ContentDocument from "./ContentDocument.astro";
 import ContentHeader from "./ContentHeader.astro";
 import ContentLinkFooter from "./ContentLinkFooter.astro";
+import ContentLinkPreview from "./ContentLinkPreview.astro";
 import type { ContentLinkProfile } from "../../lib/content-links";
 import { formatNowUpdatedAt } from "../../lib/now";
 
@@ -20,7 +21,7 @@ type Props = {
 const { entry, linkProfile } = Astro.props as Props;
 ---
 
-<div class="motion-page max-w-3xl space-y-12 lg:space-y-16">
+<div class="motion-page max-w-3xl space-y-12 lg:space-y-16" data-content-preview-scope>
   <ContentHeader eyebrow="Now" title={entry.data.title} summary={entry.data.summary}>
     <span slot="meta">updated {formatNowUpdatedAt(entry.data.updatedAt)}</span>
   </ContentHeader>
@@ -30,4 +31,5 @@ const { entry, linkProfile } = Astro.props as Props;
   </ContentDocument>
 
   <ContentLinkFooter profile={linkProfile} />
+  <ContentLinkPreview previewLinks={linkProfile?.previewLinks ?? []} />
 </div>

@@ -16,3 +16,6 @@ Some observations only matter once the rest of the system has enough context to 
 I think the point is similar to the one in [Building projects for focus](/writing/blogs/building-projects-for-focus): the best lightweight artifact is the one that can disappear from your attention without losing its usefulness.
 
 For external context, [The Cathedral and the Bazaar](/references/the-cathedral-and-the-bazaar) is a good reminder that small observations can influence larger systems if they are easy for other people to pick up and continue.
+
+[The Pimeagen](https://youtu.be/_Q-e_nczWqM?si=2JXYqlIFt6pUyM5G)
+[GIF](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjV1a3I4ZnA2dnZnZTljODJ5anR5bXhqNDhjdDFnMDd0Z3Q3MHZ3ZiZlcD12MV9naWZzX3RyZW5kaW5nJmN0PWc/4XS2GWun7aFT9CqtC7/giphy.gif)

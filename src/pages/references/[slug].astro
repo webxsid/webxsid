@@ -4,6 +4,7 @@ import ReferenceLayout from "../../layouts/ReferenceLayout.astro";
 import ContentDocument from "../../components/content/ContentDocument.astro";
 import ContentHeader from "../../components/content/ContentHeader.astro";
 import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro";
+import ContentLinkPreview from "../../components/content/ContentLinkPreview.astro";
 import { formatReferenceMeta, sortReferenceEntries } from "../../lib/references";
 import { getContentLinkProfiles, getEmptyContentLinkProfile } from "../../lib/content-links";
 
@@ -39,7 +40,7 @@ const linkProfile = linkProfiles.get(`/references/${entry.id}`) ?? getEmptyConte
   referenceItems={referenceItems}
   activeId={entry.id}
 >
-  <div class="max-w-4xl space-y-12 lg:space-y-16">
+  <div class="max-w-4xl space-y-12 lg:space-y-16" data-content-preview-scope>
     <ContentHeader eyebrow="Reference" title={entry.data.title} summary={entry.data.summary}>
       <span slot="meta">{formatReferenceMeta(entry)}</span>
     </ContentHeader>
@@ -49,5 +50,6 @@ const linkProfile = linkProfiles.get(`/references/${entry.id}`) ?? getEmptyConte
     </ContentDocument>
 
     <ContentLinkFooter profile={linkProfile} />
+    <ContentLinkPreview previewLinks={linkProfile.previewLinks} />
   </div>
 </ReferenceLayout>

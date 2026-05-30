@@ -1,0 +1,21 @@
+---
+import type { LinkPreviewRecord } from "../../lib/link-preview-shared";
+
+type Props = {
+  previewLinks?: LinkPreviewRecord[];
+};
+
+const previewLinks = (Astro.props as Props).previewLinks ?? [];
+const previewLinksJson = JSON.stringify(previewLinks).replace(/</g, "\\u003c");
+---
+
+<script is:inline type="application/json" id="webxsid-link-preview-data" set:html={previewLinksJson}></script>
+
+<script>
+  import { installLinkPreviewController } from "../../lib/link-preview";
+
+  const data = document.getElementById("webxsid-link-preview-data");
+  const previewLinks = data?.textContent ? JSON.parse(data.textContent) : [];
+
+  installLinkPreviewController(previewLinks);
+</script>

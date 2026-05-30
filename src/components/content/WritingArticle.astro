@@ -2,6 +2,7 @@
 import ContentDocument from "./ContentDocument.astro";
 import ContentHeader from "./ContentHeader.astro";
 import ContentLinkFooter from "./ContentLinkFooter.astro";
+import ContentLinkPreview from "./ContentLinkPreview.astro";
 import type { ContentLinkProfile } from "../../lib/content-links";
 import { formatDate } from "../../lib/dates";
 
@@ -16,7 +17,7 @@ type Props = {
 const { eyebrow, title, summary, publishedAt, linkProfile } = Astro.props as Props;
 ---
 
-<div class="motion-page max-w-3xl space-y-12 lg:space-y-16">
+<div class="motion-page max-w-3xl space-y-12 lg:space-y-16" data-content-preview-scope>
   <ContentHeader eyebrow={eyebrow} title={title} summary={summary}>
     <span slot="meta">published {formatDate(publishedAt)}</span>
   </ContentHeader>
@@ -26,4 +27,5 @@ const { eyebrow, title, summary, publishedAt, linkProfile } = Astro.props as Pro
   </ContentDocument>
 
   <ContentLinkFooter profile={linkProfile} />
+  <ContentLinkPreview previewLinks={linkProfile?.previewLinks ?? []} />
 </div>

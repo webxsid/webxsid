@@ -4,6 +4,7 @@ import ProjectLayout from "../../layouts/ProjectLayout.astro";
 import ContentDocument from "../../components/content/ContentDocument.astro";
 import ContentHeader from "../../components/content/ContentHeader.astro";
 import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro";
+import ContentLinkPreview from "../../components/content/ContentLinkPreview.astro";
 import StatusBadge from "../../components/content/StatusBadge.astro";
 import { getContentLinkProfiles, getEmptyContentLinkProfile } from "../../lib/content-links";
 
@@ -45,7 +46,7 @@ const updatedAt = entry.data.updatedAt
   projectItems={projectItems}
   activeId={entry.id}
 >
-  <div class="max-w-4xl space-y-12 lg:space-y-16">
+  <div class="max-w-4xl space-y-12 lg:space-y-16" data-content-preview-scope>
     <ContentHeader eyebrow="Project" title={entry.data.title} summary={entry.data.summary}>
       <span slot="meta" class="flex flex-wrap items-center gap-x-3 gap-y-2">
         <StatusBadge status={entry.data.status} />
@@ -102,5 +103,6 @@ const updatedAt = entry.data.updatedAt
     </ContentDocument>
 
     <ContentLinkFooter profile={linkProfile} />
+    <ContentLinkPreview previewLinks={linkProfile.previewLinks} />
   </div>
 </ProjectLayout>
