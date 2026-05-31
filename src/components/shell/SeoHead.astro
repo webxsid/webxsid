@@ -5,6 +5,8 @@ type SeoMeta = {
   title?: string;
   description?: string;
   image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   canonical?: string;
   noindex?: boolean;
 };
@@ -16,6 +18,9 @@ type Props = {
   seo?: SeoMeta;
   type?: "website" | "article";
   resourceHints?: string[];
+  articleSection?: string;
+  articlePublishedTime?: string;
+  articleModifiedTime?: string;
 };
 
 const {
@@ -25,6 +30,9 @@ const {
   seo,
   type = "website",
   resourceHints = [],
+  articleSection,
+  articlePublishedTime,
+  articleModifiedTime,
 } = Astro.props as Props;
 
 const pageTitle = seo?.title ?? title;
@@ -33,14 +41,21 @@ const canonical = new URL(seo?.canonical ?? pathname, SITE_URL).toString();
 const image = seo?.image?.trim()
   ? new URL(seo.image, SITE_URL).toString()
   : null;
+const imageWidth = seo?.imageWidth;
+const imageHeight = seo?.imageHeight;
 const robots = seo?.noindex ? "noindex, nofollow" : "index, follow";
+const author = "Siddharth Mittal";
+const rssUrl = new URL("/rss.xml", SITE_URL).toString();
 ---
 
 <title>{pageTitle}</title>
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <meta name="description" content={pageDescription} />
+<meta name="author" content={author} />
 <link rel="canonical" href={canonical} />
+<link rel="alternate" type="application/rss+xml" title="Webxsid RSS" href={rssUrl} />
 <meta name="robots" content={robots} />
+<meta property="og:locale" content="en_US" />
 <meta property="og:site_name" content="Webxsid" />
 <meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={pageDescription} />
@@ -49,11 +64,42 @@ const robots = seo?.noindex ? "noindex, nofollow" : "index, follow";
 {
   image && <meta property="og:image" content={image} />
 }
+{
+  image && <meta property="og:image:alt" content={pageTitle} />
+}
+{
+  image && imageWidth && imageHeight && (
+    <>
+      <meta property="og:image:width" content={String(imageWidth)} />
+      <meta property="og:image:height" content={String(imageHeight)} />
+      <meta property="og:image:type" content="image/png" />
+    </>
+  )
+}
 <meta name="twitter:card" content={image ? "summary_large_image" : "summary"} />
 <meta name="twitter:title" content={pageTitle} />
 <meta name="twitter:description" content={pageDescription} />
 {
   image && <meta name="twitter:image" content={image} />
+}
+{
+  image && <meta name="twitter:image:alt" content={pageTitle} />
+}
+{
+  type === "article" && articleSection && <meta property="article:section" content={articleSection} />
+}
+{
+  type === "article" && <meta property="article:author" content={author} />
+}
+{
+  type === "article" && articlePublishedTime && (
+    <meta property="article:published_time" content={articlePublishedTime} />
+  )
+}
+{
+  type === "article" && articleModifiedTime && (
+    <meta property="article:modified_time" content={articleModifiedTime} />
+  )
 }
 {
   [...new Set(resourceHints)].map((origin) => {

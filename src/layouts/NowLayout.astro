@@ -7,6 +7,7 @@ import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 import SeoHead from "../components/shell/SeoHead.astro";
 import { formatNowRailDate } from "../lib/now";
 import { ClientRouter } from "astro:transitions";
+import type { SeoMeta } from "../lib/seo";
 
 type NowItem = {
   id: string;
@@ -16,15 +17,12 @@ type NowItem = {
 type Props = {
   title?: string;
   description?: string;
-  seo?: {
-    title?: string;
-    description?: string;
-    image?: string;
-    canonical?: string;
-    noindex?: boolean;
-  };
+  seo?: SeoMeta;
   resourceHints?: string[];
   seoType?: "website" | "article";
+  articleSection?: string;
+  articlePublishedTime?: string;
+  articleModifiedTime?: string;
   nowItems: NowItem[];
   activeId: string;
 };
@@ -35,6 +33,9 @@ const {
   seo,
   resourceHints = [],
   seoType = "article",
+  articleSection = "Now",
+  articlePublishedTime,
+  articleModifiedTime,
   nowItems,
   activeId,
 } = Astro.props as Props;
@@ -64,6 +65,9 @@ const sectionLabel = "Now";
       seo={seo}
       type={seoType}
       resourceHints={resourceHints}
+      articleSection={articleSection}
+      articlePublishedTime={articlePublishedTime}
+      articleModifiedTime={articleModifiedTime}
     />
     <ClientRouter />
     <ThemeBootstrap />

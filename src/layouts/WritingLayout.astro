@@ -6,6 +6,7 @@ import RailPageShell from "../components/shell/RailPageShell.astro";
 import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 import SeoHead from "../components/shell/SeoHead.astro";
 import { ClientRouter } from "astro:transitions";
+import type { SeoMeta } from "../lib/seo";
 
 type WritingItem = {
   id: string;
@@ -17,15 +18,12 @@ type WritingItem = {
 type Props = {
   title?: string;
   description?: string;
-  seo?: {
-    title?: string;
-    description?: string;
-    image?: string;
-    canonical?: string;
-    noindex?: boolean;
-  };
+  seo?: SeoMeta;
   resourceHints?: string[];
   seoType?: "website" | "article";
+  articleSection?: string;
+  articlePublishedTime?: string;
+  articleModifiedTime?: string;
   writingItems: WritingItem[];
   writingType: "blogs" | "notes";
   activeId: string;
@@ -39,6 +37,9 @@ const {
   seo,
   resourceHints = [],
   seoType = "article",
+  articleSection,
+  articlePublishedTime,
+  articleModifiedTime,
   writingItems,
   activeId,
   writingType = "blogs",
@@ -57,6 +58,7 @@ const writingRailItems = writingItems.map((item) => ({
 }));
 
 const sectionLabel = writingType === "blogs" ? "Blogs" : "Notes";
+const articleSectionLabel = articleSection ?? sectionLabel;
 ---
 
 <html lang="en" data-theme="graphite">
@@ -74,6 +76,9 @@ const sectionLabel = writingType === "blogs" ? "Blogs" : "Notes";
       seo={seo}
       type={seoType}
       resourceHints={resourceHints}
+      articleSection={articleSectionLabel}
+      articlePublishedTime={articlePublishedTime}
+      articleModifiedTime={articleModifiedTime}
     />
     <ClientRouter />
     <ThemeBootstrap />

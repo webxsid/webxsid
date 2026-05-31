@@ -46,6 +46,8 @@ const updatedAt = entry.data.updatedAt
   description={entry.data.summary}
   seo={seo}
   resourceHints={linkProfile.resourceHints}
+  articlePublishedTime={entry.data.updatedAt.toISOString()}
+  articleModifiedTime={entry.data.updatedAt.toISOString()}
   projectItems={projectItems}
   activeId={entry.id}
 >

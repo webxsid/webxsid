@@ -27,6 +27,8 @@ const linkProfile = linkProfiles.get(`/now/${entry.id}`) ?? getEmptyContentLinkP
   description={entry.data.summary}
   seo={entry.data.seo}
   resourceHints={linkProfile.resourceHints}
+  articlePublishedTime={entry.data.updatedAt.toISOString()}
+  articleModifiedTime={entry.data.updatedAt.toISOString()}
   nowItems={sortedNowEntries.map((item) => ({
     id: item.id,
     summary: item.data.summary,

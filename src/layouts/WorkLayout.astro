@@ -6,6 +6,7 @@ import RailPageShell from "../components/shell/RailPageShell.astro";
 import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 import SeoHead from "../components/shell/SeoHead.astro";
 import { ClientRouter } from "astro:transitions";
+import type { SeoMeta } from "../lib/seo";
 
 type WorkItem = {
   id: string;
@@ -17,15 +18,12 @@ type WorkItem = {
 type Props = {
   title?: string;
   description?: string;
-  seo?: {
-    title?: string;
-    description?: string;
-    image?: string;
-    canonical?: string;
-    noindex?: boolean;
-  };
+  seo?: SeoMeta;
   resourceHints?: string[];
   seoType?: "website" | "article";
+  articleSection?: string;
+  articlePublishedTime?: string;
+  articleModifiedTime?: string;
   workItems: WorkItem[];
   activeId: string;
 };
@@ -36,6 +34,9 @@ const {
   seo,
   resourceHints = [],
   seoType = "article",
+  articleSection = "Work",
+  articlePublishedTime,
+  articleModifiedTime,
   workItems,
   activeId,
 } = Astro.props as Props;
@@ -67,6 +68,9 @@ const sectionLabel = "Work";
       seo={seo}
       type={seoType}
       resourceHints={resourceHints}
+      articleSection={articleSection}
+      articlePublishedTime={articlePublishedTime}
+      articleModifiedTime={articleModifiedTime}
     />
     <ClientRouter />
     <ThemeBootstrap />

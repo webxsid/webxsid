@@ -39,6 +39,7 @@ const blogItems = sortWritingEntries(filterWritingEntries(writing, "blog")).map(
   description={entry.data.summary}
   seo={seo}
   resourceHints={linkProfile.resourceHints}
+  articlePublishedTime={entry.data.publishedAt.toISOString()}
   writingItems={blogItems}
   activeId={entry.id}
   backHref="/writing/blogs"

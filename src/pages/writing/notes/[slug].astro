@@ -39,6 +39,7 @@ const noteItems = sortWritingEntries(filterWritingEntries(writing, "note")).map(
   description={entry.data.summary}
   seo={seo}
   resourceHints={linkProfile.resourceHints}
+  articlePublishedTime={entry.data.publishedAt.toISOString()}
   writingItems={noteItems}
   activeId={entry.id}
   backHref="/writing/notes"

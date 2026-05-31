@@ -8,15 +8,8 @@ import SeoHead from "../components/shell/SeoHead.astro";
 import SiteFooter from "../components/shell/SiteFooter.astro";
 import { ClientRouter, fade } from "astro:transitions";
 import { ShellHeader } from "../components/react/header/ShellHeader";
+import type { SeoMeta } from "../lib/seo";
 import SiteIcon from "../../assets/SiteIcon.png";
-
-type SeoMeta = {
-  title?: string;
-  description?: string;
-  image?: string;
-  canonical?: string;
-  noindex?: boolean;
-};
 
 type Props = {
   title?: string;

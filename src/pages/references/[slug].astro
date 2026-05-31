@@ -37,6 +37,7 @@ const linkProfile = linkProfiles.get(`/references/${entry.id}`) ?? getEmptyConte
   description={entry.data.summary}
   seo={entry.data.seo}
   resourceHints={linkProfile.resourceHints}
+  articlePublishedTime={entry.data.publishedAt.toISOString()}
   referenceItems={referenceItems}
   activeId={entry.id}
 >
