@@ -1,0 +1,213 @@
+---
+import "../styles/global.css";
+import SeoHead from "../components/shell/SeoHead.astro";
+import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
+
+const seo = {
+  title: "404 · Webxsid",
+  description: "The page wandered off somewhere else.",
+  canonical: "/404",
+  noindex: true,
+};
+---
+
+<html lang="en" data-theme="graphite">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#121214" />
+    <SeoHead
+      title="404 · Webxsid"
+      description="The page wandered off somewhere else."
+      pathname={Astro.url.pathname}
+      seo={seo}
+    />
+    <ThemeBootstrap />
+    <style>
+      :root {
+        --error-grid-size: 76px;
+      }
+
+      body {
+        min-height: 100dvh;
+        overflow: hidden;
+        background:
+          radial-gradient(
+            circle at 50% 35%,
+            rgba(255, 255, 255, 0.05),
+            transparent 45%
+          ),
+          rgb(var(--bg));
+      }
+
+      .error-page {
+        position: relative;
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        padding: 1.25rem;
+      }
+
+      .error-grid {
+        pointer-events: none;
+        position: absolute;
+        inset: -16%;
+        background-image:
+          linear-gradient(rgba(var(--border) / 0.24) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(var(--border) / 0.24) 1px,
+            transparent 1px
+          );
+        background-size: calc(var(--error-grid-size) * 1.15)
+          calc(var(--error-grid-size) * 1.15);
+        background-position: 0 0;
+        opacity: 0.45;
+        mask-image: radial-gradient(
+          circle at 50% 45%,
+          black 34%,
+          transparent 78%
+        );
+        animation: error-grid-drift 28s linear infinite;
+      }
+
+      .error-grid::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(var(--accent) / 0.075) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(var(--accent) / 0.075) 1px,
+            transparent 1px
+          );
+        background-size: calc(var(--error-grid-size) * 2)
+          calc(var(--error-grid-size) * 2);
+        opacity: 0.7;
+        animation: error-grid-shift 22s linear infinite;
+      }
+
+      .error-shell {
+        position: relative;
+        z-index: 1;
+        width: min(45rem, 100%);
+        text-align: center;
+      }
+
+      .error-kicker {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 4rem;
+        padding: 0.45rem 0.8rem;
+        border: 1px solid rgb(var(--border) / 0.7);
+        border-radius: 999px;
+        background: rgb(var(--bg-elevated) / 0.65);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        color: rgb(var(--text-muted));
+      }
+
+      .error-title {
+        margin-top: 1.5rem;
+        font-family: var(--font-serif, Georgia, serif);
+        font-size: clamp(4rem, 15vw, 6rem);
+        line-height: 0.92;
+        letter-spacing: -0.08em;
+        color: rgb(var(--text));
+      }
+
+      .error-copy {
+        margin: 1.1rem auto 0;
+        max-width: 22rem;
+        font-size: clamp(0.98rem, 1.8vw, 1.05rem);
+        line-height: 1.7;
+        color: rgb(var(--text-muted));
+      }
+
+      .error-actions {
+        margin-top: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .error-home {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: rgb(var(--text));
+        text-decoration: none;
+        border-bottom: 1px solid rgb(var(--accent) / 0.45);
+        padding-bottom: 0.2rem;
+      }
+
+      .error-home:hover {
+        border-bottom-color: rgb(var(--accent));
+      }
+
+      @keyframes error-grid-drift {
+        from {
+          transform: translate3d(0, 0, 0) scale(1.03);
+        }
+
+        50% {
+          transform: translate3d(-1.25%, 0.75%, 0) scale(1.04);
+        }
+
+        to {
+          transform: translate3d(0, 0, 0) scale(1.03);
+        }
+      }
+
+      @keyframes error-grid-shift {
+        from {
+          transform: translate3d(0, 0, 0);
+        }
+
+        50% {
+          transform: translate3d(0.75%, -0.5%, 0);
+        }
+
+        to {
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .error-grid,
+        .error-grid::after {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="error-page">
+      <div class="error-grid" aria-hidden="true"></div>
+
+      <section class="error-shell" aria-labelledby="error-title">
+        <div class="error-kicker">404</div>
+        <h1 id="error-title" class="error-title">Nothing to see here.</h1>
+        <p class="error-copy">
+          The page wandered off somewhere else. You can head back to the
+          homepage and start fresh.
+        </p>
+        <div class="error-actions">
+          <a href="/" class="error-home">Return home</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
