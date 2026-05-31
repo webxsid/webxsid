@@ -1,1 +1,1 @@
-export { SITE_ORIGINS, SITE_URL, resolveSiteUrl } from "../../site.config.js";
+export { SITE_URL, resolveSiteUrl } from "../../site.config.js";

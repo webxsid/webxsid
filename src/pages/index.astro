@@ -8,11 +8,7 @@ import { getLatestNowEntry, formatNowUpdatedAt } from "../lib/now";
 import { filterWritingEntries, getWritingPath } from "../lib/writing";
 import { getStaticOgImagePath } from "../lib/og-image";
 import { withAutoOgImage } from "../lib/seo";
-import {
-  formatReferenceMeta,
-  getReferencePath,
-  sortReferenceEntries,
-} from "../lib/references";
+import { getReferencePath, sortReferenceEntries } from "../lib/references";
 
 const [projects, writing, references, nowEntries] = await Promise.all([
   getCollection("projects"),
@@ -32,13 +28,6 @@ const blogs = filterWritingEntries(writing, "blog")
 
 const featuredReferences = sortReferenceEntries(references).slice(0, 3);
 const latestNow = getLatestNowEntry(nowEntries);
-
-const formatDate = (date: Date) =>
-  date.toLocaleDateString("en-IN", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  });
 
 const seo = withAutoOgImage(
   {
