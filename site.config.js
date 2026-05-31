@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const DEFAULT_SITE_URL = "https://webxsid.com";
-const BETA_SITE_URL = "https://portolfio-beta.pages.dev";
+const BETA_SITE_URL = "https://beta.webxsid.com";
 const LOCAL_SITE_URL = "http://localhost:5868";
 const WRANGLER_CONFIG_PATH = resolve(process.cwd(), "wrangler.jsonc");
 
