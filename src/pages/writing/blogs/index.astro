@@ -4,20 +4,27 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import Container from "../../../components/shell/Container.astro";
 import Section from "../../../components/content/Section.astro";
 import ArticleList from "../../../components/content/ArticleList.astro";
+import { getListOgImagePath } from "../../../lib/og-image";
+import { withAutoOgImage } from "../../../lib/seo";
 import { filterWritingEntries, sortWritingEntries } from "../../../lib/writing";
 
 const writing = await getCollection("writing");
 const blogs = sortWritingEntries(filterWritingEntries(writing, "blog"));
+
+const seo = withAutoOgImage(
+  {
+    title: "Blogs · Webxsid",
+    description: "Long-form writing and essays from Webxsid.",
+    canonical: "/writing/blogs",
+  },
+  getListOgImagePath("blogs"),
+);
 ---
 
 <BaseLayout
   title="Blogs · Webxsid"
   description="Long-form writing and essays."
-  seo={{
-    title: "Blogs · Webxsid",
-    description: "Long-form writing and essays from Webxsid.",
-    canonical: "/writing/blogs",
-  }}
+  seo={seo}
   backHref="/writing"
 >
   <Container>

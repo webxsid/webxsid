@@ -7,6 +7,8 @@ import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro"
 import ContentLinkPreview from "../../components/content/ContentLinkPreview.astro";
 import StatusBadge from "../../components/content/StatusBadge.astro";
 import { getContentLinkProfiles, getEmptyContentLinkProfile } from "../../lib/content-links";
+import { getProjectOgImagePath } from "../../lib/og-image";
+import { withAutoOgImage } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -19,6 +21,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const seo = withAutoOgImage(entry.data.seo, getProjectOgImagePath(entry.id));
 const projectItems = (await getCollection("projects")).map((item) => ({
   id: item.id,
   title: item.data.title,
@@ -41,7 +44,7 @@ const updatedAt = entry.data.updatedAt
 <ProjectLayout
   title={`${entry.data.title} · Projects · Webxsid`}
   description={entry.data.summary}
-  seo={entry.data.seo}
+  seo={seo}
   resourceHints={linkProfile.resourceHints}
   projectItems={projectItems}
   activeId={entry.id}

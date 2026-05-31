@@ -3,21 +3,28 @@ import { getCollection, render } from "astro:content";
 import NowLayout from "../../layouts/NowLayout.astro";
 import NowEntry from "../../components/content/NowEntry.astro";
 import { getLatestNowEntry, sortNowEntries } from "../../lib/now";
+import { getStaticOgImagePath } from "../../lib/og-image";
+import { withAutoOgImage } from "../../lib/seo";
 
 const nowEntries = await getCollection("now");
 const sortedNowEntries = sortNowEntries(nowEntries);
 const latest = getLatestNowEntry(nowEntries);
 const { Content } = await render(latest);
+
+const seo = withAutoOgImage(
+  {
+    title: "Now · Webxsid",
+    description: "A current snapshot of what has my attention.",
+    canonical: "/now",
+  },
+  getStaticOgImagePath(),
+);
 ---
 
 <NowLayout
   title="Now · Webxsid"
   description={latest.data.summary}
-  seo={{
-    title: "Now · Webxsid",
-    description: "A current snapshot of what has my attention.",
-    canonical: "/now",
-  }}
+  seo={seo}
   nowItems={sortedNowEntries.map((item) => ({
     id: item.id,
     summary: item.data.summary,

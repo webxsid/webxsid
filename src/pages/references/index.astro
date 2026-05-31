@@ -8,19 +8,26 @@ import {
   getReferencePath,
   sortReferenceEntries,
 } from "../../lib/references";
+import { getListOgImagePath } from "../../lib/og-image";
+import { withAutoOgImage } from "../../lib/seo";
 
 const references = sortReferenceEntries(await getCollection("references"));
+
+const seo = withAutoOgImage(
+  {
+    title: "References · Webxsid",
+    description:
+      "Influential books, essays, talks, songs, and other works that shaped how I think.",
+    canonical: "/references",
+  },
+  getListOgImagePath("references"),
+);
 ---
 
 <BaseLayout
   title="References · Webxsid"
   description="Influential books, essays, talks, songs, and other works."
-  seo={{
-    title: "References · Webxsid",
-    description:
-      "Influential books, essays, talks, songs, and other works that shaped how I think.",
-    canonical: "/references",
-  }}
+  seo={seo}
   backHref="/"
 >
   <Container>

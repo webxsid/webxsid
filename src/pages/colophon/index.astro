@@ -3,16 +3,23 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Container from "../../components/shell/Container.astro";
 import Section from "../../components/content/Section.astro";
 import ContentDocument from "../../components/content/ContentDocument.astro";
+import { getStaticOgImagePath } from "../../lib/og-image";
+import { withAutoOgImage } from "../../lib/seo";
+
+const seo = withAutoOgImage(
+  {
+    title: "Colophon · Webxsid",
+    description: "Notes on how this site is built and maintained.",
+    canonical: "/colophon",
+  },
+  getStaticOgImagePath(),
+);
 ---
 
 <BaseLayout
   title="Colophon · Webxsid"
   description="Notes on how this site is built and maintained."
-  seo={{
-    title: "Colophon · Webxsid",
-    description: "Notes on how this site is built and maintained.",
-    canonical: "/colophon",
-  }}
+  seo={seo}
   backHref="/"
 >
   <Container>

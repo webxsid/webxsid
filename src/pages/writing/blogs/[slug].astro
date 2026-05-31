@@ -5,6 +5,8 @@ import WritingArticle from "../../../components/content/WritingArticle.astro";
 import { filterWritingEntries, sortWritingEntries } from "../../../lib/writing";
 import { getContentLinkProfiles, getEmptyContentLinkProfile } from "../../../lib/content-links";
 import { getWritingPath } from "../../../lib/writing";
+import { getWritingOgImagePath } from "../../../lib/og-image";
+import { withAutoOgImage } from "../../../lib/seo";
 
 export async function getStaticPaths() {
   const writing = await getCollection("writing");
@@ -21,6 +23,7 @@ const { Content } = await render(entry);
 const writing = await getCollection("writing");
 const linkProfiles = await getContentLinkProfiles();
 const linkProfile = linkProfiles.get(getWritingPath(entry)) ?? getEmptyContentLinkProfile();
+const seo = withAutoOgImage(entry.data.seo, getWritingOgImagePath("blog", entry.id));
 const blogItems = sortWritingEntries(filterWritingEntries(writing, "blog")).map(
   (item) => ({
     id: item.id,
@@ -34,7 +37,7 @@ const blogItems = sortWritingEntries(filterWritingEntries(writing, "blog")).map(
 <WritingLayout
   title={`${entry.data.title} · Blogs · Webxsid`}
   description={entry.data.summary}
-  seo={entry.data.seo}
+  seo={seo}
   resourceHints={linkProfile.resourceHints}
   writingItems={blogItems}
   activeId={entry.id}

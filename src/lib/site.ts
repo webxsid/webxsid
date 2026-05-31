@@ -1,1 +1,1 @@
-export const SITE_URL = "https://webxsid.com";
+export { SITE_URL, resolveSiteUrl } from "../../site.config.js";

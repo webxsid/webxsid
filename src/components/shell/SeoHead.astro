@@ -30,7 +30,7 @@ const {
 const pageTitle = seo?.title ?? title;
 const pageDescription = seo?.description ?? description;
 const canonical = new URL(seo?.canonical ?? pathname, SITE_URL).toString();
-const image = seo?.image
+const image = seo?.image?.trim()
   ? new URL(seo.image, SITE_URL).toString()
   : null;
 const robots = seo?.noindex ? "noindex, nofollow" : "index, follow";

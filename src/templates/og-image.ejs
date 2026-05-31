@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="<%= width %>" height="<%= height %>" viewBox="0 0 <%= width %> <%= height %>" role="img" aria-labelledby="title desc">
+  <title><%= fullTitle %></title>
+  <desc><%= desc %></desc>
+
+  <rect width="<%= width %>" height="<%= height %>" fill="#0f0f11" />
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1" />
+    </pattern>
+  </defs>
+  <rect width="<%= width %>" height="<%= height %>" fill="url(#grid)" opacity="0.35" />
+
+  <text x="64" y="<%= titleY %>" dominant-baseline="hanging" fill="#f4f4f7" font-size="68" font-family="IBM Plex Sans, Inter Tight, Inter, system-ui, sans-serif" font-weight="700" letter-spacing="-0.05em">
+    <%- titleTspans %>
+  </text>
+
+  <text x="64" y="<%= summaryY %>" dominant-baseline="hanging" fill="#b1b1bc" font-size="32" font-family="IBM Plex Sans, Inter Tight, Inter, system-ui, sans-serif" font-weight="400" letter-spacing="-0.01em">
+    <%- summaryTspans %>
+  </text>
+
+  <%- projectMetaMarkup %>
+
+  <line x1="35" y1="570" x2="1170" y2="570" stroke="#2c2c34" stroke-width="1" />
+
+  <%- iconMarkup %>
+  <text x="80" y="600" fill="#90909c" font-size="15" font-family="IBM Plex Mono, ui-monospace, SFMono-Regular, Menlo, monospace" letter-spacing="0.18em" text-transform="uppercase"><%= brand %></text>
+  <text x="600" y="600" text-anchor="middle" fill="#90909c" font-size="15" font-family="IBM Plex Mono, ui-monospace, SFMono-Regular, Menlo, monospace" letter-spacing="0.18em" text-transform="uppercase"><%= readTimeLabel %></text>
+  <text x="1160" y="600" text-anchor="end" fill="#b1b1bc" font-size="13" font-family="IBM Plex Mono, ui-monospace, SFMono-Regular, Menlo, monospace" letter-spacing="0.2em" text-transform="uppercase"><%= sectionLabel %></text>
+
+</svg>

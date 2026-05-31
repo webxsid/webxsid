@@ -6,6 +6,8 @@ import ContentHeader from "../../components/content/ContentHeader.astro";
 import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro";
 import ContentLinkPreview from "../../components/content/ContentLinkPreview.astro";
 import { getContentLinkProfiles, getEmptyContentLinkProfile } from "../../lib/content-links";
+import { getStaticOgImagePath } from "../../lib/og-image";
+import { withAutoOgImage } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const work = await getCollection("work");
@@ -26,12 +28,13 @@ const workItems = (await getCollection("work")).map((item) => ({
 }));
 const linkProfiles = await getContentLinkProfiles();
 const linkProfile = linkProfiles.get(`/work/${entry.id}`) ?? getEmptyContentLinkProfile();
+const seo = withAutoOgImage(entry.data.seo, getStaticOgImagePath());
 ---
 
 <WorkLayout
   title={`${entry.data.company} · Work · Webxsid`}
   description={entry.data.summary}
-  seo={entry.data.seo}
+  seo={seo}
   resourceHints={linkProfile.resourceHints}
   workItems={workItems}
   activeId={entry.id}
