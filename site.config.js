@@ -1,30 +1,43 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
 const DEFAULT_SITE_URL = "https://webxsid.com";
+const BETA_SITE_URL = "https://portolfio-beta.pages.dev";
 const LOCAL_SITE_URL = "http://localhost:5868";
+const WRANGLER_CONFIG_PATH = resolve(process.cwd(), "wrangler.jsonc");
 
-const normalizeSiteUrl = (value) => {
-  const trimmed = value.trim();
-  const parsed = /^https?:\/\//i.test(trimmed)
-    ? new URL(trimmed)
-    : new URL(`https://${trimmed}`);
+export const SITE_ORIGINS = {
+  production: DEFAULT_SITE_URL,
+  beta: BETA_SITE_URL,
+  local: LOCAL_SITE_URL,
+};
 
-  return parsed.origin;
+const readWranglerConfig = () => {
+  try {
+    const raw = readFileSync(WRANGLER_CONFIG_PATH, "utf8");
+    return JSON.parse(raw);
+  } catch {
+    return {};
+  }
+};
+
+const resolveDeployment = () => {
+  if (process.env.NODE_ENV === "development") {
+    return "local";
+  }
+
+  const wranglerName = String(readWranglerConfig().name ?? "").toLowerCase();
+
+  if (wranglerName.includes("beta")) {
+    return "beta";
+  }
+
+  return "production";
 };
 
 export const resolveSiteUrl = () => {
-  const candidate =
-    process.env.SITE_URL?.trim() ||
-    process.env.CF_PAGES_URL?.trim() ||
-    process.env.VERCEL_URL?.trim();
-
-  if (candidate) {
-    return normalizeSiteUrl(candidate);
-  }
-
-  if (process.env.NODE_ENV === "development") {
-    return LOCAL_SITE_URL;
-  }
-
-  return DEFAULT_SITE_URL;
+  const deployment = resolveDeployment();
+  return SITE_ORIGINS[deployment];
 };
 
 export const SITE_URL = resolveSiteUrl();

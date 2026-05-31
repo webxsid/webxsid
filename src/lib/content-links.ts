@@ -1,4 +1,5 @@
 import { getCollection } from "astro:content";
+import { SITE_URL } from "./site";
 import { getWritingPath } from "./writing";
 import type {
   LinkPreviewKind,
@@ -38,7 +39,7 @@ const emptyProfile: ContentLinkProfile = {
   resourceHints: [],
 };
 
-const siteOrigin = "https://webxsid.com";
+const siteOrigin = new URL(SITE_URL).origin;
 
 const markdownLinkPattern =
   /\[[^\]]*?\]\(([^)\s]+)(?:\s+"[^"]*")?\)|<((?:https?:\/\/|\/)[^>\s]+)>/g;
@@ -207,7 +208,7 @@ const getYouTubePreview = async (url: URL): Promise<Partial<LinkPreviewRecord>> 
       redirect: "follow",
       headers: {
         "user-agent":
-          "Mozilla/5.0 (compatible; WebxsidPreviewBot/1.0; +https://webxsid.com)",
+        `Mozilla/5.0 (compatible; WebxsidPreviewBot/1.0; +${SITE_URL})`,
         accept: "text/html,application/xhtml+xml",
       },
     });
@@ -277,7 +278,7 @@ const getExternalPreview = (() => {
           signal: controller.signal,
           headers: {
             "user-agent":
-              "Mozilla/5.0 (compatible; WebxsidPreviewBot/1.0; +https://webxsid.com)",
+              `Mozilla/5.0 (compatible; WebxsidPreviewBot/1.0; +${SITE_URL})`,
             accept: "text/html,application/xhtml+xml",
           },
         });
