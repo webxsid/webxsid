@@ -5,11 +5,19 @@ import {
   Clock3,
   House,
   BriefcaseBusiness,
-  User,
 } from "lucide-astro";
-import { globalNavItems } from "../../lib/site-links";
+import { getCollection } from "astro:content";
+import { filterSharedNavItems, globalNavItems } from "../../lib/site-links";
 
 const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const [references, nowEntries] = await Promise.all([
+  getCollection("references"),
+  getCollection("now"),
+]);
+const navItems = filterSharedNavItems(globalNavItems, {
+  hasReferences: references.length > 0,
+  hasNow: nowEntries.length > 0,
+});
 
 function isActive(href: string) {
   const normalized = href.replace(/\/+$/, "") || "/";
@@ -20,6 +28,18 @@ function isActive(href: string) {
 
   return pathname === normalized || pathname.startsWith(`${normalized}/`);
 }
+
+const iconsMap = {
+  house: House,
+  briefcase: BriefcaseBusiness,
+  book: BookOpenText,
+  bookmark: BookHeart,
+  clock: Clock3,
+};
+
+const getIconComponent = (icon: keyof typeof iconsMap) => {
+  return iconsMap[icon] || Clock3;
+};
 ---
 
 <nav
@@ -27,23 +47,12 @@ function isActive(href: string) {
   class="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom)+var(--dock-viewport-offset,0px))] left-1/2 z-50 flex -translate-x-1/2 items-center justify-center px-3 lg:relative lg:bottom-auto lg:left-auto lg:translate-x-0 lg:justify-start lg:px-0"
 >
   <div
-    class="inline-flex flex-row items-center gap-1 rounded-full border border-border/70 bg-bg p-1 shadow-[0_14px_40px_rgba(0,0,0,0.16)] lg:flex-col"
+    class="shell-nav-frame inline-flex flex-row items-center gap-1 p-1 lg:flex-col"
   >
     {
-      globalNavItems.map(({ href, label, icon }) => {
+      navItems.map(({ href, label, icon }) => {
         const active = isActive(href);
-        const Icon =
-          icon === "house"
-            ? House
-            : icon === "briefcase"
-              ? BriefcaseBusiness
-              : icon === "book"
-                ? BookOpenText
-                : icon === "bookmark"
-                  ? BookHeart
-                  : icon === "user"
-                    ? User
-                    : Clock3;
+        const Icon = getIconComponent(icon);
 
         return (
           <a
@@ -51,15 +60,15 @@ function isActive(href: string) {
             aria-label={label}
             aria-current={active ? "page" : undefined}
             class={[
-              "motion-surface group relative inline-flex h-10 w-10 items-center justify-center rounded-full border",
+              "shell-control shell-item motion-surface group relative inline-flex h-10 w-10 items-center justify-center border",
               active
-                ? "border-border/80 bg-bg-elevated text-text shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
-                : "border-transparent bg-bg text-text-muted hover:border-border/60 hover:bg-bg hover:text-text",
+                ? "shell-item-active"
+                : "border-transparent text-text-muted hover:text-text",
             ].join(" ")}
           >
             <Icon size={16} strokeWidth={1.9} aria-hidden="true" />
             <span class="sr-only">{label}</span>
-            <label class="pointer-events-none absolute left-[120%] w-max bg-bg rounded-full px-4 py-1 text-xs text-text opacity-0 group-hover:opacity-100 border border-border/70 shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-opacity z-[1000]">
+            <label class="shell-tooltip ui-tag pointer-events-none absolute left-[120%] w-max px-4 py-1 text-text opacity-0 group-hover:opacity-100 transition-opacity z-[1000]">
               {label}
             </label>
           </a>

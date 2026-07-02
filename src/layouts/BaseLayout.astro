@@ -1,8 +1,11 @@
 ---
 import "../styles/global.css";
 import { getImage } from "astro:assets";
+import { getCollection } from "astro:content";
 import Container from "../components/shell/Container.astro";
 import Nav from "../components/shell/Nav.astro";
+import ShellLoadBoot from "../components/shell/ShellLoadBoot.astro";
+import ShellLoadUX from "../components/shell/ShellLoadUX.astro";
 import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 import SeoHead from "../components/shell/SeoHead.astro";
 import SiteFooter from "../components/shell/SiteFooter.astro";
@@ -27,6 +30,11 @@ const {
   backLabel = "Back",
 } = Astro.props as Props;
 
+const [references, nowEntries] = await Promise.all([
+  getCollection("references"),
+  getCollection("now"),
+]);
+
 const brandIcon = await getImage({
   src: SiteIcon,
   width: 64,
@@ -35,7 +43,7 @@ const brandIcon = await getImage({
 });
 ---
 
-<html lang="en" data-theme="graphite">
+<html lang="en" data-theme="graphite" data-theme-family="graphite" data-theme-mode="system">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -43,6 +51,7 @@ const brandIcon = await getImage({
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <meta name="theme-color" content="#121214" />
+    <ShellLoadBoot />
     <SeoHead title={title} description={description} pathname={Astro.url.pathname} seo={seo} />
     <ClientRouter />
     <ThemeBootstrap />
@@ -50,6 +59,7 @@ const brandIcon = await getImage({
   <body
     class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
   >
+    <ShellLoadUX />
     <header class="motion-page sticky top-0 z-50 pt-3" transition:animate="none">
       <Container>
         <ShellHeader
@@ -59,6 +69,8 @@ const brandIcon = await getImage({
           backLabel={backLabel}
           brandIcon={brandIcon}
           currentPath={Astro.url.pathname}
+          hasReferences={references.length > 0}
+          hasNow={nowEntries.length > 0}
         />
       </Container>
     </header>
@@ -71,6 +83,7 @@ const brandIcon = await getImage({
       </aside>
 
       <main
+        data-shell-main
         class="motion-page relative z-10 pb-[calc(7rem+env(safe-area-inset-bottom))] lg:pb-0"
         transition:animate={fade({ duration: "0.24s" })}
       >

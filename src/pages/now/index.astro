@@ -9,7 +9,8 @@ import { withAutoOgImage } from "../../lib/seo";
 const nowEntries = await getCollection("now");
 const sortedNowEntries = sortNowEntries(nowEntries);
 const latest = getLatestNowEntry(nowEntries);
-const { Content } = await render(latest);
+const hasNowEntries = Boolean(latest);
+const { Content } = hasNowEntries ? await render(latest) : { Content: null };
 
 const seo = withAutoOgImage(
   {
@@ -23,15 +24,34 @@ const seo = withAutoOgImage(
 
 <NowLayout
   title="Now · Webxsid"
-  description={latest.data.summary}
+  description={latest?.data.summary ?? "A current snapshot of what has my attention."}
   seo={seo}
   nowItems={sortedNowEntries.map((item) => ({
     id: item.id,
     summary: item.data.summary,
   }))}
-  activeId={latest.id}
+  activeId={latest?.id ?? ""}
 >
-  <NowEntry entry={latest}>
-    <Content />
-  </NowEntry>
+  {
+    hasNowEntries && Content ? (
+      <NowEntry entry={latest}>
+        <Content />
+      </NowEntry>
+    ) : (
+      <section class="motion-page space-y-6 py-6 sm:py-8">
+        <div class="space-y-3 border-y border-border/70 py-8 sm:py-10">
+          <p class="ui-label font-mono uppercase text-text-muted">
+            Now
+          </p>
+          <h1 class="ui-title max-w-2xl font-mono font-semibold tracking-tight text-text">
+            Nothing current is published here right now.
+          </h1>
+          <p class="ui-prose max-w-2xl text-text-muted">
+            This page stays available, but the running log is empty until the next
+            update is published.
+          </p>
+        </div>
+      </section>
+    )
+  }
 </NowLayout>

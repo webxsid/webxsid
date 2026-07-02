@@ -1,21 +1,75 @@
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { globalNavItems } from "../../../lib/site-links";
+import { createPortal } from "react-dom";
 import { isActivePath } from "./header-utils";
+import type { GlobalNavItem } from "../../../lib/site-links";
+import type { RefObject } from "react";
 
 type Props = {
   activePath: string;
   open: boolean;
   onClose: () => void;
+  navItems: readonly GlobalNavItem[];
+  triggerRef?: RefObject<HTMLButtonElement | null>;
 };
 
-export function ShellHeaderMenu({ activePath, open, onClose }: Props) {
+export function ShellHeaderMenu({
+  activePath,
+  open,
+  onClose,
+  navItems,
+  triggerRef,
+}: Props) {
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileTop, setMobileTop] = useState<number | null>(null);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 639px)");
+    const update = () => setIsMobile(media.matches);
+
+    update();
+    media.addEventListener("change", update);
+
+    return () => {
+      media.removeEventListener("change", update);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!open || !isMobile) return;
+
+    const updatePosition = () => {
+      const rect = triggerRef?.current?.getBoundingClientRect();
+      if (!rect) return;
+      setMobileTop(rect.bottom + 8);
+    };
+
+    updatePosition();
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
+
+    return () => {
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
+    };
+  }, [open, isMobile]);
+
   if (!open) return null;
 
-  return (
-    <div className="motion-page absolute left-0 top-full z-20 mt-2 w-[min(18rem,calc(100vw-1.5rem))] rounded-2xl border border-border/70 bg-bg p-2 shadow-[0_18px_42px_rgba(0,0,0,0.18)]">
+  const panel = (
+    <div
+      data-shell-popup="true"
+      className={[
+        "shell-menu-panel motion-page z-50 p-2",
+        isMobile
+          ? "fixed left-1/2 w-[min(18rem,calc(100vw-1rem))] -translate-x-1/2"
+          : "absolute left-0 top-full mt-2 w-[min(18rem,calc(100vw-1.5rem))]",
+      ].join(" ")}
+      style={isMobile && mobileTop !== null ? { top: `${mobileTop}px` } : undefined}
+    >
       <nav aria-label="Primary">
         <ul className="space-y-1">
-          {globalNavItems.map((item) => {
+          {navItems.map((item) => {
             const active = isActivePath(activePath, item.href);
 
             return (
@@ -25,9 +79,9 @@ export function ShellHeaderMenu({ activePath, open, onClose }: Props) {
                   initial={false}
                   onClick={onClose}
                   className={[
-                    "motion-surface flex items-center justify-between rounded-xl border px-3 py-2 font-mono text-[11px] uppercase tracking-[0.24em]",
+                    "shell-menu-item motion-surface ui-shell flex items-center justify-between border px-3 py-2 font-mono uppercase",
                     active
-                      ? "border-border/80 bg-bg-elevated text-text"
+                      ? "shell-item-active"
                       : "border-transparent bg-bg text-text-muted hover:border-border/60 hover:bg-bg-elevated hover:text-text",
                   ].join(" ")}
                 >
@@ -53,4 +107,6 @@ export function ShellHeaderMenu({ activePath, open, onClose }: Props) {
       </nav>
     </div>
   );
+
+  return isMobile ? createPortal(panel, document.body) : panel;
 }

@@ -1,14 +1,17 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import { buildOgImageHeaders, renderOgImage } from "../../../lib/og-image";
+import { getProjectStackLabel, isProjectDetailPage } from "../../../lib/projects";
 
 export const prerender = true;
 
 export async function getStaticPaths() {
   const projects = (await getCollection("projects")) as CollectionEntry<"projects">[];
 
-  return projects.map((entry) => ({
-    params: { slug: entry.id },
-  }));
+  return projects
+    .filter((entry) => isProjectDetailPage(entry))
+    .map((entry) => ({
+      params: { slug: entry.id },
+    }));
 }
 
 export async function GET({ params }: { params: { slug: string } }) {
@@ -26,7 +29,7 @@ export async function GET({ params }: { params: { slug: string } }) {
     projectMeta: {
       status:
         project.data.status.charAt(0).toUpperCase() + project.data.status.slice(1),
-      stack: project.data.stack.join(" · "),
+      stack: getProjectStackLabel(project),
     },
   });
 

@@ -3,6 +3,8 @@ import "../styles/global.css";
 import RailDesktop from "../components/rail/RailDesktop.astro";
 import RailDock from "../components/rail/RailDock.astro";
 import RailPageShell from "../components/shell/RailPageShell.astro";
+import ShellLoadBoot from "../components/shell/ShellLoadBoot.astro";
+import ShellLoadUX from "../components/shell/ShellLoadUX.astro";
 import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 import SeoHead from "../components/shell/SeoHead.astro";
 import { ClientRouter } from "astro:transitions";
@@ -13,19 +15,22 @@ type WritingItem = {
   title: string;
   publishedAt: Date;
   order: number;
+  kind: "blog" | "note";
+  draft?: boolean;
 };
 
 type Props = {
   title?: string;
   description?: string;
   seo?: SeoMeta;
+  keywords?: string[];
+  articleTags?: string[];
   resourceHints?: string[];
   seoType?: "website" | "article";
   articleSection?: string;
   articlePublishedTime?: string;
   articleModifiedTime?: string;
   writingItems: WritingItem[];
-  writingType: "blogs" | "notes";
   activeId: string;
   backHref?: string;
   backLabel?: string;
@@ -35,6 +40,8 @@ const {
   title = "Webxsid",
   description = "Sid's personal portfolio.",
   seo,
+  keywords = [],
+  articleTags = [],
   resourceHints = [],
   seoType = "article",
   articleSection,
@@ -42,22 +49,21 @@ const {
   articleModifiedTime,
   writingItems,
   activeId,
-  writingType = "blogs",
   backHref = "/writing",
   backLabel = "Back to writing",
 } = Astro.props as Props;
 
 const writingRailItems = writingItems.map((item) => ({
   id: item.id,
-  href: `/writing/${writingType}/${item.id}`,
+  href: item.draft ? `/writing/draft/${item.id}` : `/writing/${item.id}`,
   primary: item.title,
-  secondary: `published ${item.publishedAt.toLocaleDateString(undefined, {
+  secondary: `${item.publishedAt.toLocaleDateString(undefined, {
     month: "short",
-    day: "numeric",
+    year: "numeric",
   })}`,
 }));
 
-const sectionLabel = writingType === "blogs" ? "Blogs" : "Notes";
+const sectionLabel = "Writing";
 const articleSectionLabel = articleSection ?? sectionLabel;
 ---
 
@@ -69,12 +75,15 @@ const articleSectionLabel = articleSection ?? sectionLabel;
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <meta name="theme-color" content="#121214" />
+    <ShellLoadBoot />
     <SeoHead
       title={title}
       description={description}
       pathname={Astro.url.pathname}
       seo={seo}
       type={seoType}
+      keywords={keywords}
+      articleTags={articleTags}
       resourceHints={resourceHints}
       articleSection={articleSectionLabel}
       articlePublishedTime={articlePublishedTime}
@@ -86,11 +95,12 @@ const articleSectionLabel = articleSection ?? sectionLabel;
   <body
     class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
   >
+    <ShellLoadUX />
     <RailPageShell
       backHref={backHref}
       backLabel={backLabel}
       sectionLabel={sectionLabel}
-  >
+    >
       <RailDock
         slot="dock"
         items={writingRailItems}

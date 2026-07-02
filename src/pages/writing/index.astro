@@ -3,18 +3,21 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Container from "../../components/shell/Container.astro";
 import Section from "../../components/content/Section.astro";
-import { filterWritingEntries, sortWritingEntries } from "../../lib/writing";
+import {
+  getWritingPath,
+  sortWritingEntries,
+  filterPublicWritingEntries,
+} from "../../lib/writing";
 import { getListOgImagePath } from "../../lib/og-image";
 import { withAutoOgImage } from "../../lib/seo";
 
 const writing = await getCollection("writing");
-const blogs = sortWritingEntries(filterWritingEntries(writing, "blog"));
-const notes = sortWritingEntries(filterWritingEntries(writing, "note"));
+const entries = sortWritingEntries(filterPublicWritingEntries(writing));
 
 const seo = withAutoOgImage(
   {
     title: "Writing · Webxsid",
-    description: "Blogs and short notes from Webxsid.",
+    description: "Writing from Webxsid.",
     canonical: "/writing",
   },
   getListOgImagePath("writing"),
@@ -23,85 +26,102 @@ const seo = withAutoOgImage(
 
 <BaseLayout
   title="Writing · Webxsid"
-  description="Blogs and short notes."
+  description="Writing."
   seo={seo}
   backHref="/"
 >
-  <Container>
+  <Container class="min-h-screen">
     <div class="py-8 lg:py-14">
-      <div class="max-w-4xl space-y-14">
-        <Section title="Blogs and notes">
-          <div
-            class="max-w-2xl space-y-5 text-sm leading-7 text-text-muted lg:text-[15px]"
-          >
-            <p>
-              Long-form posts live under blogs. Shorter, more transient thoughts
-              live under notes.
+      <div class="space-y-10">
+        <Section>
+          <div class="space-y-5 text-text-muted">
+            <p
+              class="ui-title max-w-2xl font-mono font-semibold tracking-tight text-text"
+            >
+              Writing
             </p>
-
-            <p>
-              Both use the same underlying content model so the system stays
-              small, but the routes stay clean and separate.
+            <p class="ui-prose">
+              Longer essays, shorter observations, and everything in between
+              live here now as one continuous body of writing.
             </p>
           </div>
         </Section>
 
-        <div class="border-t border-border/70">
-          <article class="group py-8">
-            <a href="/writing/blogs" class="block space-y-3">
-              <div class="flex items-start justify-between gap-3">
-                <div class="space-y-1">
-                  <h3 class="title-link">Blogs</h3>
-                  <p class="max-w-2xl text-sm leading-7 text-text-muted">
-                    Longer posts with more context, structure, and room to
-                    explore.
-                  </p>
-                </div>
+        <div class="overflow-x-auto border-y border-border/70">
+          <div class="divide-y divide-border/70 md:hidden">
+            {
+              entries.map((entry) => (
+                <article class="space-y-4 py-5">
+                  <div class="space-y-2.5">
+                    <a
+                      href={getWritingPath(entry)}
+                      class="title-link ui-link motion-soft"
+                    >
+                      {entry.data.title}
+                    </a>
+                    <p class="ui-tag text-text-muted">
+                      {entry.data.publishedAt.toLocaleDateString(undefined, {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
 
-                <span
-                  class="shrink-0 font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted"
-                >
-                  {blogs.length} entries
-                </span>
-              </div>
+                  <p class="ui-prose text-text-muted">{entry.data.summary}</p>
+                </article>
+              ))
+            }
+          </div>
 
-              <div
-                class="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-text-muted"
-              >
-                <span>Long form</span>
-                <span class="text-border">/</span>
-                <span>Structured essays</span>
-              </div>
-            </a>
-          </article>
+          <div class="hidden md:block">
+            <table class="min-w-[56rem] w-full table-fixed border-collapse">
+              <thead class="border-b border-border/70">
+                <tr class="ui-table font-mono uppercase text-text-muted">
+                  <th class="w-[28%] py-3 pr-6 text-left font-medium">Title</th>
+                  <th class="w-[52%] py-3 pr-6 text-left font-medium"
+                    >Summary</th
+                  >
+                  <th class="w-[20%] py-3 text-left font-medium">Published</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  entries.map((entry) => (
+                    <tr class="border-b border-border/70 last:border-b-0">
+                      <td class="align-top py-5 pr-6">
+                        <a
+                          href={getWritingPath(entry)}
+                          class="title-link ui-link motion-soft"
+                        >
+                          {entry.data.title}
+                        </a>
+                      </td>
 
-          <article class="group border-t border-border/70 py-8">
-            <a href="/writing/notes" class="block space-y-3">
-              <div class="flex items-start justify-between gap-3">
-                <div class="space-y-1">
-                  <h3 class="title-link">Notes</h3>
-                  <p class="max-w-2xl text-sm leading-7 text-text-muted">
-                    Short operational notes, quick ideas, and lightweight
-                    observations.
-                  </p>
-                </div>
+                      <td class="align-top py-5 pr-6">
+                        <p class="ui-prose max-w-3xl text-text-muted">
+                          {entry.data.summary}
+                        </p>
+                      </td>
 
-                <span
-                  class="shrink-0 font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted"
-                >
-                  {notes.length} entries
-                </span>
-              </div>
-
-              <div
-                class="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-text-muted"
-              >
-                <span>Short form</span>
-                <span class="text-border">/</span>
-                <span>Disposable by design</span>
-              </div>
-            </a>
-          </article>
+                      <td class="align-top py-5">
+                        <p class="ui-tag text-text-muted">
+                          {entry.data.publishedAt.toLocaleDateString(
+                            undefined,
+                            {
+                              month: "short",
+                              day: "2-digit",
+                              year: "numeric",
+                            },
+                          )}
+                        </p>
+                      </td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

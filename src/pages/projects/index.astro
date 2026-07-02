@@ -4,6 +4,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Container from "../../components/shell/Container.astro";
 import Section from "../../components/content/Section.astro";
 import StatusBadge from "../../components/content/StatusBadge.astro";
+import {
+  getProjectExcerpt,
+  getProjectHref,
+  getProjectStackLabel,
+} from "../../lib/projects";
 import { getListOgImagePath } from "../../lib/og-image";
 import { withAutoOgImage } from "../../lib/seo";
 
@@ -19,6 +24,9 @@ const seo = withAutoOgImage(
   },
   getListOgImagePath("projects"),
 );
+
+const introCopy =
+  "Most of these exist because I underestimated both the problem and my willingness to keep working on it.";
 ---
 
 <BaseLayout
@@ -27,81 +35,149 @@ const seo = withAutoOgImage(
   seo={seo}
   backHref="/"
 >
-  <Container>
+  <Container class="min-h-screen">
     <div class="py-8 lg:py-14">
-      <div class="max-w-4xl space-y-14">
-        <Section title="Projects">
-          <div
-            class="max-w-2xl space-y-5 text-sm leading-7 text-text-muted lg:text-[15px]"
-          >
-            <p>
-              Most of the projects here begin as attempts to simplify some part
-              of my own workflow, understand a system more deeply, or explore a
-              particular way of building software.
+      <div class="space-y-10">
+        <Section>
+          <div class="space-y-5 text-text-muted">
+            <p
+              class="ui-title max-w-2xl font-mono font-semibold tracking-tight text-text"
+            >
+              Projects
             </p>
-
-            <p>Some stay small. Some slowly turn into long-term systems.</p>
+            <p class="ui-prose">{introCopy}</p>
           </div>
         </Section>
 
-        <div class="border-t border-border/70">
-          {
-            projects.map((project) => (
-              <article class="group py-8">
-                <div class="block space-y-3">
-                  <div class="flex items-start justify-between gap-3">
-                    <div class="space-y-1">
-                      <a href={`/projects/${project.id}`} class="title-link">
-                        {project.data.title}
-                      </a>
+        <div class="overflow-x-auto border-y border-border/70">
+          <div class="divide-y divide-border/70 md:hidden">
+            {
+              projects.map((project) => {
+                const href = getProjectHref(project);
+                const stackLabel = getProjectStackLabel(project);
+                const bodyExcerpt =
+                  project.data.detailsPage === false
+                    ? getProjectExcerpt(project.body ?? "") ||
+                      project.data.summary
+                    : project.data.summary;
 
-                      <p class="max-w-2xl text-sm leading-7 text-text-muted">
-                        {project.data.summary}
-                      </p>
+                return (
+                  <article id={project.id} class="space-y-4 py-5">
+                    <div class="space-y-2.5">
+                      <div class="flex items-start justify-between gap-4">
+                        <div class="min-w-0 space-y-2">
+                          {href ? (
+                            <a
+                              href={href}
+                              class="title-link ui-link motion-soft"
+                            >
+                              {project.data.title}
+                            </a>
+                          ) : (
+                            <span class="ui-link font-semibold tracking-tight text-text">
+                              {project.data.title}
+                            </span>
+                          )}
+                          {stackLabel && (
+                            <p class="ui-tag font-mono text-text-muted">
+                              {stackLabel}
+                            </p>
+                          )}
+                        </div>
+
+                        <StatusBadge
+                          status={project.data.status}
+                          class="shrink-0 pt-0.5"
+                        />
+                      </div>
                     </div>
 
-                    <span class="shrink-0 font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
-                      <StatusBadge status={project.data.status} />
-                    </span>
-                  </div>
+                    <p class="ui-prose text-text-muted">{bodyExcerpt}</p>
+                  </article>
+                );
+              })
+            }
+          </div>
 
-                  <div class="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-text-muted">
-                    <span>{project.data.stack.join(" · ")}</span>
+          <div class="hidden md:block">
+            <table class="min-w-[58rem] w-full table-fixed border-collapse">
+              <thead class="border-b border-border/70">
+                <tr class="ui-table font-mono uppercase text-text-muted">
+                  <th class="w-[22%] py-3 pr-6 text-left font-medium"
+                    >Project</th
+                  >
+                  <th class="w-[18%] py-3 pr-6 text-left font-medium"
+                    >Built With</th
+                  >
+                  <th class="w-[14%] py-3 pr-6 text-left font-medium">Status</th
+                  >
+                  <th class="w-[46%] py-3 pr-6 text-left font-medium"
+                    >Summary</th
+                  >
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  projects.map((project) => {
+                    const href = getProjectHref(project);
+                    const stackLabel = getProjectStackLabel(project);
+                    const bodyExcerpt =
+                      project.data.detailsPage === false
+                        ? getProjectExcerpt(project.body ?? "") ||
+                          project.data.summary
+                        : project.data.summary;
 
-                    {project.data.source && (
-                      <>
-                        <span class="text-border">/</span>
+                    return (
+                      <tr
+                        id={project.id}
+                        class="border-b border-border/70 last:border-b-0"
+                      >
+                        <td class="align-top py-5 pr-6">
+                          <div class="space-y-2.5">
+                            {href ? (
+                              <a
+                                href={href}
+                                class="title-link ui-link motion-soft"
+                              >
+                                {project.data.title}
+                              </a>
+                            ) : (
+                              <span class="ui-link font-semibold tracking-tight text-text">
+                                {project.data.title}
+                              </span>
+                            )}
+                          </div>
+                        </td>
 
-                        <a
-                          href={project.data.source}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="transition hover:text-text inline-link"
-                        >
-                          Source
-                        </a>
-                      </>
-                    )}
+                        <td class="align-top py-5 pr-6">
+                          <div class="space-y-2.5">
+                            {stackLabel ? (
+                              <p class="ui-tag text-text-muted">{stackLabel}</p>
+                            ) : (
+                              <span class="ui-prose text-text-muted">—</span>
+                            )}
+                          </div>
+                        </td>
+                        <td class="align-top py-5 pr-6">
+                          <div class="pt-0.5">
+                            <StatusBadge status={project.data.status} />
+                          </div>
+                        </td>
 
-                    {project.data.live && (
-                      <>
-                        <span class="text-border">/</span>
-
-                        <a
-                          href={project.data.live}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="transition hover:text-text inline-link"
-                        >
-                          Site
-                        </a>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </article>
-            ))
-          }
+                        <td class="align-top py-5 pr-6">
+                          <div class="space-y-2">
+                            <p class="ui-prose max-w-3xl text-text-muted">
+                              {bodyExcerpt}
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                }
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

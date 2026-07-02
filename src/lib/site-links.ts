@@ -8,9 +8,10 @@ export const globalNavItems = [
   { href: "/projects", label: "Projects", icon: "briefcase" },
   { href: "/writing", label: "Writing", icon: "book" },
   { href: "/references", label: "References", icon: "bookmark" },
-  { href: "/me", label: "Me", icon: "user" },
   { href: "/now", label: "Now", icon: "clock" },
 ] as const;
+
+export type GlobalNavItem = (typeof globalNavItems)[number];
 
 export const footerSocialLinks = [
   { href: "https://github.com/webxsid", label: "GitHub", icon: "github" },
@@ -29,8 +30,29 @@ export const footerLinkColumns = [
   ],
   [
     { href: "/work", label: "Work" },
-    { href: "/me", label: "About" },
     { href: "/now", label: "Now" },
     { href: "/colophon", label: "Colophon" },
   ],
 ] as const;
+
+type SharedNavVisibility = {
+  hasReferences: boolean;
+  hasNow: boolean;
+};
+
+export function filterSharedNavItems<T extends { href: string }>(
+  items: readonly T[],
+  visibility: SharedNavVisibility,
+) {
+  return items.filter((item) => {
+    if (item.href === "/references") {
+      return visibility.hasReferences;
+    }
+
+    if (item.href === "/now") {
+      return visibility.hasNow;
+    }
+
+    return true;
+  });
+}

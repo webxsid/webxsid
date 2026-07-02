@@ -3,6 +3,8 @@ import "../styles/global.css";
 import RailDesktop from "../components/rail/RailDesktop.astro";
 import RailDock from "../components/rail/RailDock.astro";
 import RailPageShell from "../components/shell/RailPageShell.astro";
+import ShellLoadBoot from "../components/shell/ShellLoadBoot.astro";
+import ShellLoadUX from "../components/shell/ShellLoadUX.astro";
 import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 import SeoHead from "../components/shell/SeoHead.astro";
 import { ClientRouter } from "astro:transitions";
@@ -14,6 +16,9 @@ type ProjectItem = {
   status: string;
   updatedAt?: Date;
   order: number;
+  yearStarted?: number;
+  yearEnded?: number;
+  detailsPage?: boolean;
 };
 
 type Props = {
@@ -42,21 +47,29 @@ const {
   activeId,
 } = Astro.props as Props;
 
-const formatDate = (value?: Date) =>
-  value
-    ? value.toLocaleDateString(undefined, {
-        month: "short",
-        day: "numeric",
-      })
-    : null;
+const formatYears = (yearStarted?: number, yearEnded?: number) => {
+  if (!yearStarted && !yearEnded) return "";
+  if (yearStarted && yearEnded && yearStarted !== yearEnded) {
+    return `${yearStarted}–${yearEnded}`;
+  }
+  if (yearStarted && yearEnded) return `${yearStarted}`;
+  if (yearStarted) return `${yearStarted}–`;
+  return `–${yearEnded}`;
+};
+
+const formatStatus = (status: string) =>
+  status.charAt(0).toUpperCase() + status.slice(1);
 
 const projectRailItems = [...projectItems]
+  .filter((item) => item.detailsPage !== false)
   .sort((a, b) => a.order - b.order)
   .map((item) => ({
     id: item.id,
     href: `/projects/${item.id}`,
     primary: item.title,
-    secondary: `${item.status}${formatDate(item.updatedAt) ? ` · ${formatDate(item.updatedAt)}` : ""}`,
+    secondary: [formatStatus(item.status), formatYears(item.yearStarted, item.yearEnded)]
+      .filter(Boolean)
+      .join(" · "),
   }));
 
 const sectionLabel = "Projects";
@@ -70,6 +83,7 @@ const sectionLabel = "Projects";
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <meta name="theme-color" content="#121214" />
+    <ShellLoadBoot />
     <SeoHead
       title={title}
       description={description}
@@ -87,11 +101,12 @@ const sectionLabel = "Projects";
   <body
     class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
   >
+    <ShellLoadUX />
     <RailPageShell
       backHref="/projects"
       backLabel="Back to projects"
       sectionLabel={sectionLabel}
-  >
+    >
       <RailDock
         slot="dock"
         items={projectRailItems}

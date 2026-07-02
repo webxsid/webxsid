@@ -9,6 +9,8 @@ type Props = {
   pageTitle?: string;
   currentPath?: string;
   variant?: "default" | "rail";
+  hasReferences?: boolean;
+  hasNow?: boolean;
 };
 
 export function ShellHeader({
@@ -19,6 +21,8 @@ export function ShellHeader({
   pageTitle,
   currentPath = "/",
   variant = "default",
+  hasReferences = false,
+  hasNow = false,
 }: Props) {
   return (
     <ShellBrandLauncher
@@ -29,6 +33,8 @@ export function ShellHeader({
       pageTitle={pageTitle}
       currentPath={currentPath}
       variant={variant}
+      hasReferences={hasReferences}
+      hasNow={hasNow}
     />
   );
 }

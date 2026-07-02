@@ -17,6 +17,8 @@ type Props = {
   pathname: string;
   seo?: SeoMeta;
   type?: "website" | "article";
+  keywords?: string[];
+  articleTags?: string[];
   resourceHints?: string[];
   articleSection?: string;
   articlePublishedTime?: string;
@@ -29,6 +31,8 @@ const {
   pathname,
   seo,
   type = "website",
+  keywords = [],
+  articleTags = [],
   resourceHints = [],
   articleSection,
   articlePublishedTime,
@@ -46,12 +50,15 @@ const imageHeight = seo?.imageHeight;
 const robots = seo?.noindex ? "noindex, nofollow" : "index, follow";
 const author = "Siddharth Mittal";
 const rssUrl = new URL("/rss.xml", SITE_URL).toString();
+const keywordContent = [...new Set(keywords.map((value) => value.trim()).filter(Boolean))].join(", ");
+const normalizedArticleTags = [...new Set(articleTags.map((value) => value.trim()).filter(Boolean))];
 ---
 
 <title>{pageTitle}</title>
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <meta name="description" content={pageDescription} />
 <meta name="author" content={author} />
+{keywordContent && <meta name="keywords" content={keywordContent} />}
 <link rel="canonical" href={canonical} />
 <link rel="alternate" type="application/rss+xml" title="Webxsid RSS" href={rssUrl} />
 <meta name="robots" content={robots} />
@@ -90,6 +97,12 @@ const rssUrl = new URL("/rss.xml", SITE_URL).toString();
 }
 {
   type === "article" && <meta property="article:author" content={author} />
+}
+{
+  type === "article" &&
+    normalizedArticleTags.map((tag) => (
+      <meta property="article:tag" content={tag} />
+    ))
 }
 {
   type === "article" && articlePublishedTime && (

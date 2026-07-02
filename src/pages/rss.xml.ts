@@ -1,17 +1,16 @@
 import { getCollection } from "astro:content";
 import rss from "@astrojs/rss";
 import { SITE_URL } from "../lib/site";
-import { filterWritingEntries } from "../lib/writing";
+import { filterPublicWritingEntries, getWritingPath } from "../lib/writing";
 
 export async function GET() {
   const writing = await getCollection("writing");
-  const blogs = filterWritingEntries(writing, "blog");
 
-  const items = blogs
+  const items = filterPublicWritingEntries(writing)
     .map((entry) => ({
       title: entry.data.title,
       description: entry.data.summary,
-      link: `/writing/blogs/${entry.id}`,
+      link: getWritingPath(entry),
       pubDate: entry.data.publishedAt,
     }))
     .sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime())
@@ -19,7 +18,7 @@ export async function GET() {
 
   return rss({
     title: "Webxsid RSS",
-    description: "Recent blog posts from Webxsid.",
+    description: "Recent writing from Webxsid.",
     site: SITE_URL,
     items,
   });

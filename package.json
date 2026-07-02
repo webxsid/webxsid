@@ -9,7 +9,12 @@
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev --host --port 5868",
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
-    "check": "ASTRO_TELEMETRY_DISABLED=1 astro check"
+    "check": "ASTRO_TELEMETRY_DISABLED=1 astro check",
+    "content:sync": "node scripts/content-manager.mjs sync",
+    "content:new": "node scripts/content-manager.mjs new",
+    "content:delete": "node scripts/content-manager.mjs delete",
+    "content:list": "node scripts/content-manager.mjs list",
+    "content:doctor": "node scripts/content-manager.mjs doctor"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
@@ -17,6 +22,7 @@
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/tailwind": "^6.0.2",
+    "@inquirer/prompts": "^8.5.2",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.3.0",

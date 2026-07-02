@@ -383,15 +383,15 @@ export function getProjectOgImagePath(slug: string) {
   return `/og-images/projects/${slug}.png`;
 }
 
-export function getWritingOgImagePath(kind: "blog" | "note", slug: string) {
-  return `/og-images/writing/${kind === "blog" ? "blogs" : "notes"}/${slug}.png`;
+export function getWritingOgImagePath(slug: string) {
+  return `/og-images/writing/${slug}.png`;
 }
 
 export function getStaticOgImagePath() {
   return "/og";
 }
 
-export function getListOgImagePath(kind: "projects" | "writing" | "references" | "blogs" | "notes") {
+export function getListOgImagePath(kind: "projects" | "writing" | "references") {
   return `/og-list/${kind}.png`;
 }
 

@@ -2,43 +2,61 @@
 import { getCollection, render } from "astro:content";
 import ProjectLayout from "../../layouts/ProjectLayout.astro";
 import ContentDocument from "../../components/content/ContentDocument.astro";
-import ContentHeader from "../../components/content/ContentHeader.astro";
-import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro";
+import ProjectMetadataFooter from "../../components/content/ProjectMetadataFooter.astro";
 import ContentLinkPreview from "../../components/content/ContentLinkPreview.astro";
 import StatusBadge from "../../components/content/StatusBadge.astro";
-import { getContentLinkProfiles, getEmptyContentLinkProfile } from "../../lib/content-links";
+import {
+  getEmptyContentLinkProfile,
+  getContentLinkProfiles,
+} from "../../lib/content-links";
+import {
+  getProjectCompanyLabel,
+  getProjectCompanyHref,
+  getProjectStackLabel,
+  isProjectDetailPage,
+  getProjectTagsLabel,
+} from "../../lib/projects";
 import { getProjectOgImagePath } from "../../lib/og-image";
 import { withAutoOgImage } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
 
-  return projects.map((entry) => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }));
+  return projects
+    .filter((entry) => isProjectDetailPage(entry))
+    .map((entry) => ({
+      params: { slug: entry.id },
+      props: { entry },
+    }));
 }
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const seo = withAutoOgImage(entry.data.seo, getProjectOgImagePath(entry.id));
-const projectItems = (await getCollection("projects")).map((item) => ({
-  id: item.id,
-  title: item.data.title,
-  status: item.data.status,
-  updatedAt: item.data.updatedAt,
-  order: item.data.order,
-}));
+const projectItems = (await getCollection("projects"))
+  .filter((item) => isProjectDetailPage(item))
+  .map((item) => ({
+    id: item.id,
+    title: item.data.title,
+    status: item.data.status,
+    updatedAt: item.data.updatedAt,
+    order: item.data.order,
+    yearStarted: item.data.yearStarted,
+    yearEnded: item.data.yearEnded,
+    detailsPage: item.data.detailsPage,
+  }));
 const linkProfiles = await getContentLinkProfiles();
-const linkProfile = linkProfiles.get(`/projects/${entry.id}`) ?? getEmptyContentLinkProfile();
-
-const updatedAt = entry.data.updatedAt
-  ? new Date(entry.data.updatedAt).toLocaleDateString(undefined, {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })
-  : null;
+const linkProfile =
+  linkProfiles.get(`/projects/${entry.id}`) ?? getEmptyContentLinkProfile();
+const companyLabel = getProjectCompanyLabel(entry);
+const stackLabel = getProjectStackLabel(entry);
+const companyHref = getProjectCompanyHref(entry);
+const tagLabel = getProjectTagsLabel(entry);
+const declaredProjectUrls = [
+  entry.data.source,
+  entry.data.website,
+  entry.data.demo,
+].filter((url): url is string => Boolean(url));
 ---
 
 <ProjectLayout
@@ -51,63 +69,68 @@ const updatedAt = entry.data.updatedAt
   projectItems={projectItems}
   activeId={entry.id}
 >
-  <div class="max-w-4xl space-y-12 lg:space-y-16" data-content-preview-scope>
-    <ContentHeader eyebrow="Project" title={entry.data.title} summary={entry.data.summary}>
-      <span slot="meta" class="flex flex-wrap items-center gap-x-3 gap-y-2">
-        <StatusBadge status={entry.data.status} />
+  <div class="max-w-4xl space-y-12 lg:space-y-14" data-content-preview-scope>
+    <header class="motion-page max-w-3xl space-y-6">
+      <div class="space-y-3">
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+          <h1 class="ui-title font-semibold tracking-tight text-text">
+            {entry.data.title}
+          </h1>
 
-        <span class="text-border">/</span>
+          <StatusBadge status={entry.data.status} />
+        </div>
 
-        <span>{entry.data.stack.join(" · ")}</span>
+        <p class="ui-body max-w-3xl text-text-muted">
+          {entry.data.summary}
+        </p>
+      </div>
 
+      <div class="ui-body space-y-1 text-text-muted">
         {
-          updatedAt && (
-            <>
-              <span class="text-border">/</span>
-              <span>{updatedAt}</span>
-            </>
+          companyLabel && (
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <p class="ui-tag leading-6">Built at:</p>
+              {companyHref ? (
+                <a href={companyHref} class="meta-link">
+                  {companyLabel}
+                </a>
+              ) : (
+                <p class="ui-tag">{companyLabel}</p>
+              )}
+            </div>
           )
         }
 
         {
-          entry.data.source && (
-            <>
-              <span class="text-border">/</span>
-              <a
-                href={entry.data.source}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="transition hover:text-text"
-              >
-                Source
-              </a>
-            </>
+          stackLabel && (
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 ">
+              <p class="ui-tag leading-6">
+                <span class="font-bold"> Built With:</span> {stackLabel}
+              </p>
+            </div>
           )
         }
 
         {
-          entry.data.live && (
-            <>
-              <span class="text-border">/</span>
-              <a
-                href={entry.data.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="transition hover:text-text"
-              >
-                Site
-              </a>
-            </>
+          tagLabel && (
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <p class="ui-tag leading-6">
+                <span class="font-bold">Tags:</span> {tagLabel}
+              </p>
+            </div>
           )
         }
-      </span>
-    </ContentHeader>
+      </div>
+    </header>
 
     <ContentDocument class="space-y-4">
       <Content />
     </ContentDocument>
 
-    <ContentLinkFooter profile={linkProfile} />
+    <ProjectMetadataFooter
+      profile={linkProfile}
+      declaredUrls={declaredProjectUrls}
+    />
     <ContentLinkPreview previewLinks={linkProfile.previewLinks} />
   </div>
 </ProjectLayout>

@@ -16,12 +16,12 @@ const {
 
 <section id={id} class={`motion-page space-y-4 py-6 sm:py-8 ${className}`.trim()}>
   {eyebrow && (
-    <p class="font-mono text-[11px] uppercase tracking-[0.28em] text-text-muted">
+    <p class="ui-label font-mono uppercase text-text-muted">
       {eyebrow}
     </p>
   )}
 
-  {title && <h2 class="font-mono text-sm uppercase tracking-[0.24em] text-text">{title}</h2>}
+  {title && <h2 class="ui-heading font-mono uppercase tracking-[0.24em] text-text">{title}</h2>}
 
   <slot />
 </section>

@@ -5,7 +5,10 @@ import ContentDocument from "../../components/content/ContentDocument.astro";
 import ContentHeader from "../../components/content/ContentHeader.astro";
 import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro";
 import ContentLinkPreview from "../../components/content/ContentLinkPreview.astro";
-import { getContentLinkProfiles, getEmptyContentLinkProfile } from "../../lib/content-links";
+import {
+  getContentLinkProfiles,
+  getEmptyContentLinkProfile,
+} from "../../lib/content-links";
 import { getStaticOgImagePath } from "../../lib/og-image";
 import { withAutoOgImage } from "../../lib/seo";
 
@@ -27,7 +30,8 @@ const workItems = (await getCollection("work")).map((item) => ({
   order: item.data.order,
 }));
 const linkProfiles = await getContentLinkProfiles();
-const linkProfile = linkProfiles.get(`/work/${entry.id}`) ?? getEmptyContentLinkProfile();
+const linkProfile =
+  linkProfiles.get(`/work/${entry.id}`) ?? getEmptyContentLinkProfile();
 const seo = withAutoOgImage(entry.data.seo, getStaticOgImagePath());
 ---
 
@@ -40,8 +44,19 @@ const seo = withAutoOgImage(entry.data.seo, getStaticOgImagePath());
   activeId={entry.id}
 >
   <div class="max-w-3xl space-y-10" data-content-preview-scope>
-    <ContentHeader eyebrow={entry.data.company} title={entry.data.title} summary={entry.data.summary}>
-      <span slot="meta">{entry.data.role} · {entry.data.period}</span>
+    <ContentHeader
+      eyebrow={entry.data.company}
+      title={entry.data.title}
+      summary={entry.data.summary}
+    >
+      <span slot="meta"
+        >{entry.data.role} · {entry.data.period} - <a
+          href={entry.data.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="meta-link">{entry.data.company}</a
+        >
+      </span>
     </ContentHeader>
 
     <ContentDocument class="space-y-4">

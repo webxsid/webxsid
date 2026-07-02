@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import type { RefObject } from "react";
 import type { ShellBrandIcon } from "./header-utils";
 
 type Props = {
@@ -7,6 +8,7 @@ type Props = {
   activeTitle: string;
   open: boolean;
   onToggle: () => void;
+  triggerRef?: RefObject<HTMLButtonElement | null>;
 };
 
 export function ShellHeaderBrand({
@@ -15,18 +17,20 @@ export function ShellHeaderBrand({
   activeTitle,
   open,
   onToggle,
+  triggerRef,
 }: Props) {
   return (
     <motion.button
+      ref={triggerRef}
       type="button"
       aria-haspopup="menu"
       aria-expanded={open}
       aria-label={`${logoLabel} navigation`}
       onClick={onToggle}
       layout
-      className="motion-surface inline-flex items-center gap-3 rounded-full border border-border/70 bg-bg px-3 py-2 text-left text-text cursor-pointer"
+      className="shell-brand-button motion-surface inline-flex items-center gap-3 px-3 py-2 text-left text-text"
     >
-      <span className="motion-surface inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-border/70 bg-bg">
+      <span className="shell-brand-badge motion-surface inline-flex h-8 w-8 items-center justify-center overflow-hidden">
         {brandIcon ? (
           <img
             src={brandIcon.src}
@@ -42,11 +46,11 @@ export function ShellHeaderBrand({
       </span>
 
       <span className="flex flex-col items-start gap-0.5">
-        <span className="motion-soft font-mono text-[11px] uppercase tracking-[0.32em] text-text">
+        <span className="motion-soft ui-shell font-mono uppercase text-text">
           {logoLabel}
         </span>
 
-        <span className="motion-soft flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
+        <span className="motion-soft ui-shell flex items-center gap-1 font-mono uppercase text-text-muted">
           <span>{activeTitle}</span>
 
           <svg

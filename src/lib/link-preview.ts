@@ -221,7 +221,7 @@ const buildMedia = (state: LinkPreviewState, target: LinkPreviewRecord) => {
   el.style.width = "100%";
   el.style.height = "100%";
   el.style.objectFit = target.kind === "image" ? "contain" : "cover";
-  el.style.background = "rgb(var(--bg))";
+  el.style.background = "rgb(var(--surface-page))";
   el.addEventListener("error", () => {
     if (state.mediaWrap) {
       state.mediaWrap.hidden = true;
@@ -430,14 +430,18 @@ const getPreviewRecord = (state: LinkPreviewState, anchor: HTMLAnchorElement) =>
 
   try {
     const url = new URL(rawHref, window.location.href);
-    if (url.origin === window.location.origin) {
-      return null;
-    }
-
     const key = toPreviewKey(rawHref);
     if (key) {
       const built = state.previewByHref.get(key);
       if (built) return built;
+    }
+
+    if (url.origin === window.location.origin) {
+      if (/\.(gif|gifv|png|jpe?g|webp|avif|mp4|webm|mov|m4v)$/i.test(url.pathname)) {
+        return classifyFallback(url.href, anchorText);
+      }
+
+      return null;
     }
 
     return classifyFallback(url.href, anchorText);

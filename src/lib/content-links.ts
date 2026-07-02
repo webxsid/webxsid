@@ -1,6 +1,7 @@
 import { getCollection } from "astro:content";
 import { SITE_URL } from "./site";
 import { getWritingPath } from "./writing";
+import { getProjectHref, isProjectDetailPage } from "./projects";
 import type {
   LinkPreviewKind,
   LinkPreviewRecord,
@@ -62,10 +63,6 @@ const getSectionLabel = (path: string) => {
   if (normalized.startsWith("/work/")) return "Work";
   if (normalized === "/now") return "Now";
   if (normalized.startsWith("/now/")) return "Now";
-  if (normalized === "/writing/blogs") return "Blogs";
-  if (normalized.startsWith("/writing/blogs/")) return "Blogs";
-  if (normalized === "/writing/notes") return "Notes";
-  if (normalized.startsWith("/writing/notes/")) return "Notes";
   if (normalized.startsWith("/writing/")) return "Writing";
 
   return "Page";
@@ -349,16 +346,18 @@ async function buildContentLinkProfiles() {
   ]);
 
   const nodes: ContentNode[] = [
-    ...projects.map((entry) =>
-      buildNode(
-        `/projects/${entry.id}`,
-        entry.data.title,
-        entry.data.summary,
-        "projects",
-        entry.body ?? "",
-        [entry.data.source, entry.data.live].filter(Boolean) as string[],
+    ...projects
+      .filter((entry) => isProjectDetailPage(entry))
+      .map((entry) =>
+        buildNode(
+          getProjectHref(entry) ?? `/projects/${entry.id}`,
+          entry.data.title,
+          entry.data.summary,
+          "projects",
+          entry.body ?? "",
+          [entry.data.source, entry.data.website, entry.data.demo].filter(Boolean) as string[],
+        ),
       ),
-    ),
     ...writing.map((entry) =>
       buildNode(
         getWritingPath(entry),

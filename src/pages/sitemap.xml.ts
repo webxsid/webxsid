@@ -1,7 +1,7 @@
 import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 import { SITE_URL } from "../lib/site";
-import { filterWritingEntries } from "../lib/writing";
+import { filterPublicWritingEntries, getWritingPath } from "../lib/writing";
 
 type SitemapEntry = {
   loc: string;
@@ -28,8 +28,6 @@ export const GET: APIRoute = async () => {
     "/me",
     "/projects",
     "/writing",
-    "/writing/blogs",
-    "/writing/notes",
     "/references",
     "/now",
     "/colophon",
@@ -38,7 +36,7 @@ export const GET: APIRoute = async () => {
   }));
 
   const projectPages = projects
-    .filter((entry) => !entry.data.seo?.noindex)
+    .filter((entry) => !entry.data.seo?.noindex && entry.data.detailsPage !== false)
     .map((entry) => ({
       loc: normalizeCanonical(
         `/projects/${entry.id}`,
@@ -53,21 +51,11 @@ export const GET: APIRoute = async () => {
       loc: normalizeCanonical(`/work/${entry.id}`, entry.data.seo?.canonical),
     }));
 
-  const blogPages = filterWritingEntries(writing, "blog")
+  const writingPages = filterPublicWritingEntries(writing)
     .filter((entry) => !entry.data.seo?.noindex)
     .map((entry) => ({
       loc: normalizeCanonical(
-        `/writing/blogs/${entry.id}`,
-        entry.data.seo?.canonical,
-      ),
-      lastmod: entry.data.publishedAt.toISOString(),
-    }));
-
-  const notePages = filterWritingEntries(writing, "note")
-    .filter((entry) => !entry.data.seo?.noindex)
-    .map((entry) => ({
-      loc: normalizeCanonical(
-        `/writing/notes/${entry.id}`,
+        getWritingPath(entry),
         entry.data.seo?.canonical,
       ),
       lastmod: entry.data.publishedAt.toISOString(),
@@ -94,8 +82,7 @@ export const GET: APIRoute = async () => {
     ...staticPages,
     ...projectPages,
     ...workPages,
-    ...blogPages,
-    ...notePages,
+    ...writingPages,
     ...referencePages,
     ...nowPages,
   ];

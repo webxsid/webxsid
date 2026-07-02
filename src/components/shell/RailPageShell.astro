@@ -1,5 +1,6 @@
 ---
 import { getImage } from "astro:assets";
+import { getCollection } from "astro:content";
 import Container from "./Container.astro";
 import { ShellHeader } from "../react/header/ShellHeader";
 import SiteIcon from "../../../assets/SiteIcon.png";
@@ -11,6 +12,11 @@ type Props = {
 };
 
 const { backHref, backLabel, sectionLabel } = Astro.props as Props;
+
+const [references, nowEntries] = await Promise.all([
+  getCollection("references"),
+  getCollection("now"),
+]);
 
 const brandIcon = await getImage({
   src: SiteIcon,
@@ -31,6 +37,8 @@ const brandIcon = await getImage({
       variant="rail"
       pageTitle={sectionLabel}
       currentPath={Astro.url.pathname}
+      hasReferences={references.length > 0}
+      hasNow={nowEntries.length > 0}
     />
   </Container>
 </header>
@@ -44,7 +52,10 @@ const brandIcon = await getImage({
     >
       <slot name="rail" />
 
-      <main class="motion-page min-w-0 pb-[calc(10rem+env(safe-area-inset-bottom))] lg:pb-0">
+      <main
+        data-rail-shell-main
+        class="motion-page min-w-0 pb-[calc(10rem+env(safe-area-inset-bottom))] lg:pb-0"
+      >
         <slot />
       </main>
     </div>

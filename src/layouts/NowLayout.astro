@@ -3,6 +3,8 @@ import "../styles/global.css";
 import RailDesktop from "../components/rail/RailDesktop.astro";
 import RailDock from "../components/rail/RailDock.astro";
 import RailPageShell from "../components/shell/RailPageShell.astro";
+import ShellLoadBoot from "../components/shell/ShellLoadBoot.astro";
+import ShellLoadUX from "../components/shell/ShellLoadUX.astro";
 import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 import SeoHead from "../components/shell/SeoHead.astro";
 import { formatNowRailDate } from "../lib/now";
@@ -58,6 +60,7 @@ const sectionLabel = "Now";
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <meta name="theme-color" content="#121214" />
+    <ShellLoadBoot />
     <SeoHead
       title={title}
       description={description}
@@ -75,6 +78,7 @@ const sectionLabel = "Now";
   <body
     class="min-h-dvh bg-bg text-text antialiased selection:bg-accent/20 selection:text-text"
   >
+    <ShellLoadUX />
     <RailPageShell
       backHref="/"
       backLabel="Back home"

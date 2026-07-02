@@ -7,61 +7,116 @@ type Props = {
 
 const { profile } = Astro.props as Props;
 
-const hasBacklinks = (profile?.backlinks.length ?? 0) > 0;
-const hasReferences = (profile?.references.length ?? 0) > 0;
+const groupItems = <T,>(items: T[], getKey: (item: T) => string) => {
+  const groups = new Map<string, T[]>();
+
+  for (const item of items) {
+    const key = getKey(item);
+    const bucket = groups.get(key);
+
+    if (bucket) {
+      bucket.push(item);
+      continue;
+    }
+
+    groups.set(key, [item]);
+  }
+
+  return [...groups.entries()].map(([label, items]) => ({ label, items }));
+};
+
+const backlinkGroups = groupItems(profile?.backlinks ?? [], (item) => item.section).map(
+  (group) => ({
+    ...group,
+    count: group.items.length,
+  }),
+);
+
+const hasConnectedWriting = backlinkGroups.length > 0;
+const hasExternalReferences = (profile?.references.length ?? 0) > 0;
 ---
 {
-  (hasBacklinks || hasReferences) && (
-    <footer class="motion-page max-w-3xl border-t border-border/70 pt-8 sm:pt-10">
-      <div class="space-y-8">
+  (hasConnectedWriting || hasExternalReferences) && (
+    <footer class="motion-page max-w-4xl border-t border-border/70 pt-8 sm:pt-10 lg:pt-12">
+      <div class="space-y-8 sm:space-y-10">
         {
-          hasBacklinks && (
-            <section class="space-y-3">
-              <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
-                Linked from
+          hasConnectedWriting && (
+            <section class="space-y-4">
+              <p class="ui-label font-mono uppercase text-text-muted">
+                Connected Writing
               </p>
 
-              <ul class="space-y-2">
-                {profile?.backlinks.map((item) => (
-                  <li>
-                    <a
-                      href={item.href}
-                      class="motion-soft inline-flex flex-wrap items-center gap-2 text-sm text-text-muted hover:text-text"
-                    >
-                      <span>{item.section}</span>
-                      <span class="text-border">/</span>
-                      <span>{item.label}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <div class="overflow-x-auto">
+                <table class="w-full border-separate border-spacing-0">
+                  <tbody>
+                    {backlinkGroups.map((group) => (
+                      <tr class="align-top">
+                        <td class="ui-table block w-full pb-2 pr-0 font-mono uppercase text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
+                          {group.label} ({group.count})
+                        </td>
+                        <td class="block pb-5 md:table-cell md:pb-4">
+                          <div class="space-y-1.5">
+                            {group.items.map((item) => (
+                              <div>
+                              <a
+                                href={item.href}
+                                class="meta-link text-text"
+                              >
+                                {item.label}
+                              </a>
+                              </div>
+                            ))}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </section>
           )
         }
 
         {
-          hasReferences && (
-            <section class="space-y-3">
-              <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
-                Referenced links
+          hasExternalReferences && (
+            <section class="space-y-4">
+              <p class="ui-label font-mono uppercase text-text-muted">
+                External References
               </p>
 
-              <ul class="space-y-2">
-                {profile?.references.map((item) => (
-                  <li>
-                    <a
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="motion-soft inline-flex flex-wrap items-center gap-2 text-sm text-text-muted hover:text-text"
-                    >
-                      <span>{item.title}</span>
-                      <span class="text-border">/</span>
-                      <span>{item.origin}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <div class="overflow-x-auto">
+                <table class="w-full border-separate border-spacing-0">
+                  <tbody>
+                    {profile?.references.map((item) => (
+                      <tr class="align-top">
+                        <td class="ui-table block w-full pb-2 pr-0 font-mono uppercase text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
+                          {item.origin}
+                        </td>
+                        <td class="block pb-5 md:table-cell md:pb-4">
+                          <div class="space-y-1.5">
+                            <p class="ui-prose text-text">
+                              <a
+                                href={item.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="meta-link"
+                              >
+                                {item.displayUrl}
+                              </a>
+                            </p>
+
+                            {item.description && (
+                              <p class="ui-rail-summary max-w-xl text-text-muted">
+                                {item.description}
+                              </p>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </section>
           )
         }

@@ -10,25 +10,27 @@ const { eyebrow, title, summary, class: className = "" } = Astro.props as Props;
 const hasMeta = Astro.slots.has("meta");
 ---
 
-<header class={`motion-page max-w-3xl space-y-7 lg:space-y-8 ${className}`.trim()}>
+<header
+  class={`motion-page max-w-3xl space-y-7 lg:space-y-8 ${className}`.trim()}
+>
   <div class="space-y-3">
-    {eyebrow && (
-      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
-        {eyebrow}
-      </p>
-    )}
+    {
+      eyebrow && (
+        <p class="ui-label font-mono uppercase text-text-muted">{eyebrow}</p>
+      )
+    }
 
-    <h1 class="max-w-3xl text-3xl font-semibold tracking-tight text-text sm:text-4xl lg:text-5xl lg:leading-[1.08]">
+    <h1 class="ui-title max-w-3xl font-semibold tracking-tight text-text">
       {title}
     </h1>
   </div>
 
-  <div class="max-w-2xl space-y-5 text-sm leading-7 text-text-muted sm:text-[15px] sm:leading-8">
+  <div class="ui-prose max-w-2xl space-y-5 text-text-muted">
     <p>{summary}</p>
 
     {
       hasMeta && (
-        <div class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
+        <div class="ui-tag uppercase text-text-muted">
           <slot name="meta" />
         </div>
       )

@@ -1,0 +1,66 @@
+[data-theme="retro-dark"] {
+  color-scheme: dark;
+  --surface-page: 34 41 71;
+  --surface-elevated: 48 58 95;
+  --surface-overlay: 26 33 59;
+  --surface-preview-media: 39 47 79;
+
+  --text-primary: 246 243 222;
+  --text-muted: 185 191 205;
+  --text-accent: 255 107 89;
+
+  --border-default: 191 201 233;
+  --border-subtle-opacity: 0.58;
+  --border-strong-opacity: 1;
+
+  --accent-primary: 255 96 78;
+  --accent-soft-opacity: 0.16;
+  --accent-strong-opacity: 0.98;
+  --selection-opacity: 0.28;
+
+  --color-status-active: 114 165 255;
+  --color-status-building: 242 184 86;
+  --color-status-maintained: 121 201 132;
+  --color-status-archived: 158 168 188;
+  --color-status-prototype: 101 199 228;
+  --color-status-experimental: 189 139 235;
+
+  --shadow-nav:
+    0 0 0 2px rgba(191, 201, 233, 0.16),
+    0 4px 0 rgba(18, 24, 47, 0.72);
+  --shadow-dock:
+    0 0 0 2px rgba(191, 201, 233, 0.16),
+    0 4px 0 rgba(18, 24, 47, 0.72);
+  --shadow-preview:
+    0 0 0 2px rgba(191, 201, 233, 0.12),
+    0 5px 0 rgba(18, 24, 47, 0.72);
+  --shadow-active-inset:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.12),
+    inset 0 -2px 0 rgba(10, 15, 32, 0.5);
+
+  --loader-splash-background:
+    linear-gradient(180deg, rgb(52 64 108) 0%, rgb(29 37 66) 100%);
+  --shell-nav-background:
+    linear-gradient(180deg, rgb(54 66 111) 0%, rgb(40 50 86) 100%);
+  --shell-nav-border-opacity: 1;
+  --shell-dock-background:
+    linear-gradient(180deg, rgb(54 66 111) 0%, rgb(40 50 86) 100%);
+  --shell-dock-border-opacity: 1;
+  --shell-item-background:
+    linear-gradient(180deg, rgb(59 72 120) 0%, rgb(45 55 92) 100%);
+  --shell-item-active-background:
+    linear-gradient(180deg, rgb(255 110 92) 0%, rgb(216 72 61) 100%);
+  --shell-item-active-text: rgb(251 248 234);
+  --shell-item-border-opacity: 1;
+  --shell-item-active-border-opacity: 1;
+  --shell-item-label-background:
+    linear-gradient(180deg, rgb(67 80 128) 0%, rgb(48 58 98) 100%);
+  --shell-back-background:
+    linear-gradient(180deg, rgb(54 66 111) 0%, rgb(40 50 86) 100%);
+  --shell-back-text: rgb(185 191 205);
+  --shell-back-border-opacity: 1;
+  --shell-back-hover-text: rgb(246 243 222);
+  --shell-back-shadow:
+    0 0 0 2px rgba(191, 201, 233, 0.16),
+    0 4px 0 rgba(18, 24, 47, 0.72);
+}

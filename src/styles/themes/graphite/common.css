@@ -1,0 +1,109 @@
+:where([data-theme="graphite"], [data-theme="paper"]) {
+  color-scheme: light dark;
+  --font-sans-stack: "Fraunces", "IBM Plex Sans", "Inter Tight", "Inter", system-ui, serif;
+  --font-mono-stack: "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
+  --font-display-stack: "Fraunces", "Iowan Old Style", "Palatino Linotype", serif;
+
+  --radius-shell: 1.15rem;
+  --radius-dock: 1rem;
+  --radius-control: 9999px;
+  --radius-preview: 0.4rem;
+  --radius-code: 0.2rem;
+
+  --motion-duration-soft: 170ms;
+  --motion-duration-surface: 210ms;
+  --motion-duration-page: 300ms;
+  --motion-lift-distance: -1px;
+  --motion-route-shift: 2px;
+
+  --link-underline-style: solid;
+  --link-underline-offset: 0.16em;
+
+  --loader-splash-background:
+    radial-gradient(circle at 50% 24%, rgb(var(--accent-primary) / 0.09), transparent 30%),
+    linear-gradient(180deg, rgb(var(--surface-elevated) / 0.55), transparent 42%),
+    rgb(var(--surface-page));
+  --loader-splash-glyph-size: clamp(2.9rem, 7vw, 4.2rem);
+  --loader-splash-label-size: 10px;
+  --loader-route-height: 2px;
+  --loader-route-scale-start: 0.2;
+  --loader-route-scale-mid: 0.54;
+  --loader-route-scale-end: 0.24;
+
+  --shell-nav-background:
+    linear-gradient(180deg, rgb(var(--surface-elevated) / 0.94), rgb(var(--surface-page) / 0.92));
+  --shell-nav-border-opacity: 0.88;
+  --shell-dock-background:
+    linear-gradient(180deg, rgb(var(--surface-elevated) / 0.92), rgb(var(--surface-page) / 0.9));
+  --shell-dock-border-opacity: 0.82;
+  --shell-item-background: rgb(var(--surface-page) / 0.8);
+  --shell-item-active-background: rgb(var(--surface-elevated) / 0.96);
+  --shell-item-active-text: rgb(var(--text-primary));
+  --shell-item-border-opacity: 0.46;
+  --shell-item-active-border-opacity: 0.92;
+  --shell-item-label-background:
+    linear-gradient(180deg, rgb(var(--surface-elevated) / 0.96), rgb(var(--surface-page) / 0.92));
+  --shell-back-background: var(--shell-nav-background);
+  --shell-back-text: rgb(var(--text-muted));
+  --shell-back-border-opacity: var(--shell-nav-border-opacity);
+  --shell-back-hover-text: rgb(var(--text-primary));
+  --shell-back-shadow: var(--shadow-nav);
+
+  --preview-width: min(22.75rem, calc(100vw - 1.5rem));
+  --preview-body-gap: 0.72rem;
+  --preview-body-padding: 1rem;
+
+  --ui-title-size: clamp(1.34rem, 3vw, 2.6rem);
+  --ui-title-line-height: 1.08;
+  --ui-lead-size: 1.02rem;
+  --ui-lead-line-height: 1.6;
+  --ui-prose-size: 0.99rem;
+  --ui-prose-line-height: 1.72;
+  --ui-heading-size: 0.96rem;
+  --ui-body-size: 0.98rem;
+  --ui-body-line-height: 1.76;
+  --ui-link-size: 0.98rem;
+  --ui-meta-link-size: 0.86rem;
+  --ui-meta-link-line-height: 1.48;
+  --ui-meta-link-tracking: 0.02em;
+  --ui-meta-size: 0.7rem;
+  --ui-meta-tracking: 0.22em;
+  --ui-tag-size: 0.68rem;
+  --ui-tag-line-height: 1.42;
+  --ui-tag-tracking: 0.16em;
+  --ui-label-size: 0.66rem;
+  --ui-label-tracking: 0.28em;
+  --ui-shell-size: 0.66rem;
+  --ui-shell-tracking: 0.24em;
+  --ui-table-size: 0.62rem;
+  --ui-table-tracking: 0.22em;
+  --ui-rail-primary-size: 0.92rem;
+  --ui-rail-meta-size: 0.66rem;
+  --ui-rail-summary-size: 0.76rem;
+
+  --footer-title-size: clamp(1.78rem, 3.8vw, 2.6rem);
+  --footer-title-line-height: 1.1;
+  --footer-title-font-family: "Fraunces", "Iowan Old Style", serif;
+
+  --footer-nav-link-size: clamp(0.84rem, 2.2vw, 1rem);
+  --footer-nav-link-line-height: 1.3;
+
+  --content-title-size: clamp(1.95rem, 4vw, 3.05rem);
+  --content-title-line-height: 1.06;
+  --content-heading-size: 0.84rem;
+  --content-heading-line-height: 1.28;
+  --content-subheading-size: 0.74rem;
+  --content-subheading-line-height: 1.34;
+  --content-label-size: 0.56rem;
+  --content-label-tracking: 0.24em;
+  --content-body-size: 0.99rem;
+  --content-body-line-height: 1.74;
+  --content-note-title-size: clamp(1.52rem, 3vw, 2.16rem);
+  --content-note-title-line-height: 1.1;
+  --content-note-heading-size: 0.96rem;
+  --content-note-heading-line-height: 1.28;
+  --content-note-subheading-size: 0.66rem;
+  --content-note-subheading-line-height: 1.34;
+  --content-note-body-size: 0.94rem;
+  --content-note-body-line-height: 1.72;
+}

@@ -20,13 +20,26 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
-    status: z.enum(["active", "building", "maintained", "archived"]).default("active"),
+    status: z
+      .enum(["active", "building", "maintained", "archived", "prototype", "experimental"])
+      .default("active"),
     stack: z.array(z.string()).default([]),
+    tags: z.array(z.string()).default([]),
+    company: z
+      .object({
+        name: z.string(),
+        slug: z.string(),
+      })
+      .optional(),
+    yearStarted: z.coerce.number().int().optional(),
+    yearEnded: z.coerce.number().int().optional(),
     order: z.number().default(0),
     updatedAt: z.coerce.date(),
     featured: z.boolean().default(false),
     source: z.url().optional(),
-    live: z.url().optional(),
+    website: z.url().optional(),
+    demo: z.url().optional(),
+    detailsPage: z.boolean().default(false),
     seo: seoSchema,
   }),
 });
@@ -39,7 +52,9 @@ const writing = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
+    tags: z.array(z.string()).default([]),
     kind: z.enum(["blog", "note"]).default("blog"),
+    draft: z.boolean().default(false),
     publishedAt: z.coerce.date(),
     featured: z.boolean().default(false),
     order: z.number().default(0),
@@ -56,6 +71,8 @@ const now = defineCollection({
     title: z.string().default("Current focus"),
     summary: z.string(),
     updatedAt: z.coerce.date(),
+    tags: z.array(z.string()).default([]),
+    links: z.array(z.object({ title: z.string(), url: z.url() })).default([]),
     seo: seoSchema,
   }),
 });
@@ -97,6 +114,7 @@ const work = defineCollection({
     title: z.string(),
     summary: z.string(),
     company: z.string(),
+    url: z.url(),
     role: z.string(),
     period: z.string(),
     order: z.number().default(0),

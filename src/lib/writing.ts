@@ -2,10 +2,18 @@ import type { CollectionEntry } from "astro:content";
 
 export type WritingKind = "blog" | "note";
 
-type WritingEntry = CollectionEntry<"writing">;
+export type WritingEntry = CollectionEntry<"writing">;
 
 export function getWritingPath(entry: WritingEntry) {
-  return `/writing/${entry.data.kind === "note" ? "notes" : "blogs"}/${entry.id}`;
+  if (entry.data.draft) {
+    return `/writing/draft/${entry.id}`;
+  }
+
+  return `/writing/${entry.id}`;
+}
+
+export function filterPublicWritingEntries(entries: WritingEntry[]) {
+  return entries.filter((entry) => !entry.data.draft);
 }
 
 export function sortWritingEntries(entries: WritingEntry[]) {

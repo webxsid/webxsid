@@ -1,0 +1,27 @@
+[data-theme="graphite"] {
+  color-scheme: dark;
+  --surface-page: 16 16 20;
+  --surface-elevated: 26 26 32;
+  --surface-overlay: 16 16 20;
+  --surface-preview-media: 18 18 23;
+  --text-primary: 234 233 238;
+  --text-muted: 151 148 159;
+  --text-accent: 131 149 245;
+  --border-default: 50 49 58;
+  --border-subtle-opacity: 0.54;
+  --border-strong-opacity: 0.84;
+  --accent-primary: 131 149 245;
+  --accent-soft-opacity: 0.1;
+  --accent-strong-opacity: 0.82;
+  --selection-opacity: 0.2;
+  --color-status-active: 131 149 245;
+  --color-status-building: 214 164 47;
+  --color-status-maintained: 99 179 104;
+  --color-status-archived: 127 125 135;
+  --color-status-prototype: 92 173 194;
+  --color-status-experimental: 188 136 245;
+  --shadow-nav: 0 14px 38px rgba(0, 0, 0, 0.2);
+  --shadow-dock: 0 14px 36px rgba(0, 0, 0, 0.22);
+  --shadow-preview: 0 24px 52px rgba(0, 0, 0, 0.26);
+  --shadow-active-inset: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}

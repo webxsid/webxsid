@@ -1,0 +1,66 @@
+[data-theme="retro"] {
+  color-scheme: light;
+  --surface-page: 238 240 223;
+  --surface-elevated: 252 252 245;
+  --surface-overlay: 223 228 203;
+  --surface-preview-media: 223 230 206;
+
+  --text-primary: 43 56 89;
+  --text-muted: 103 112 132;
+  --text-accent: 194 58 51;
+
+  --border-default: 57 72 118;
+  --border-subtle-opacity: 0.82;
+  --border-strong-opacity: 1;
+
+  --accent-primary: 196 63 56;
+  --accent-soft-opacity: 0.16;
+  --accent-strong-opacity: 0.96;
+  --selection-opacity: 0.24;
+
+  --color-status-active: 58 93 194;
+  --color-status-building: 212 139 52;
+  --color-status-maintained: 90 153 88;
+  --color-status-archived: 124 132 151;
+  --color-status-prototype: 61 141 173;
+  --color-status-experimental: 147 98 177;
+
+  --shadow-nav:
+    0 0 0 2px rgba(57, 72, 118, 0.2),
+    0 4px 0 rgba(57, 72, 118, 0.62);
+  --shadow-dock:
+    0 0 0 2px rgba(57, 72, 118, 0.2),
+    0 4px 0 rgba(57, 72, 118, 0.62);
+  --shadow-preview:
+    0 0 0 2px rgba(57, 72, 118, 0.14),
+    0 5px 0 rgba(57, 72, 118, 0.58);
+  --shadow-active-inset:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(24, 42, 96, 0.18);
+
+  --loader-splash-background:
+    linear-gradient(180deg, rgb(252 252 245) 0%, rgb(231 235 211) 100%);
+  --shell-nav-background:
+    linear-gradient(180deg, rgb(252 252 245) 0%, rgb(236 239 220) 100%);
+  --shell-nav-border-opacity: 1;
+  --shell-dock-background:
+    linear-gradient(180deg, rgb(252 252 245) 0%, rgb(236 239 220) 100%);
+  --shell-dock-border-opacity: 1;
+  --shell-item-background:
+    linear-gradient(180deg, rgb(252 252 245) 0%, rgb(243 245 232) 100%);
+  --shell-item-active-background:
+    linear-gradient(180deg, rgb(88 118 196) 0%, rgb(54 84 160) 100%);
+  --shell-item-active-text: rgb(252 252 245);
+  --shell-item-border-opacity: 1;
+  --shell-item-active-border-opacity: 1;
+  --shell-item-label-background:
+    linear-gradient(180deg, rgb(252 252 247) 0%, rgb(240 242 228) 100%);
+  --shell-back-background:
+    linear-gradient(180deg, rgb(252 252 245) 0%, rgb(236 239 220) 100%);
+  --shell-back-text: rgb(91 103 129);
+  --shell-back-border-opacity: 1;
+  --shell-back-hover-text: rgb(43 56 89);
+  --shell-back-shadow:
+    0 0 0 2px rgba(57, 72, 118, 0.2),
+    0 4px 0 rgba(57, 72, 118, 0.62);
+}

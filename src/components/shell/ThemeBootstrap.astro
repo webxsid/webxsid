@@ -1,6 +1,128 @@
 <script is:inline>
-  const theme = localStorage.getItem("theme");
-  if (theme) {
-    document.documentElement.dataset.theme = theme;
-  }
+  (() => {
+    const FAMILY_KEY = "theme-family";
+    const MODE_KEY = "theme-mode";
+    const LEGACY_KEY = "theme";
+    const DEFAULT_FAMILY = "graphite";
+    const DEFAULT_MODE = "system";
+    const families = {
+      graphite: {
+        light: "paper",
+        dark: "graphite",
+        colors: {
+          paper: "#f7f4ee",
+          graphite: "#121214",
+        },
+      },
+      phosphor: {
+        light: "phosphor-light",
+        dark: "phosphor",
+        colors: {
+          "phosphor-light": "#f0f7ec",
+          phosphor: "#0a0f0a",
+        },
+      },
+      retro: {
+        light: "retro",
+        dark: "retro-dark",
+        colors: {
+          retro: "#eef0df",
+          "retro-dark": "#222945",
+        },
+      },
+    };
+
+    const prefersDark = () =>
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    const getFamilyFromLegacy = (theme) => {
+      switch (theme) {
+        case "paper":
+        case "graphite":
+          return "graphite";
+        case "phosphor-light":
+        case "phosphor":
+          return "phosphor";
+        case "retro":
+        case "retro-dark":
+          return "retro";
+        default:
+          return DEFAULT_FAMILY;
+      }
+    };
+
+    const getModeFromLegacy = (theme) => {
+      switch (theme) {
+        case "paper":
+        case "phosphor-light":
+        case "retro":
+          return "light";
+        case "graphite":
+        case "phosphor":
+        case "retro-dark":
+          return "dark";
+        default:
+          return DEFAULT_MODE;
+      }
+    };
+
+    const resolveVariant = (family, mode) => {
+      const group = families[family] ?? families[DEFAULT_FAMILY];
+
+      if (mode === "light") return group.light;
+      if (mode === "dark") return group.dark;
+
+      return prefersDark() ? group.dark : group.light;
+    };
+
+    const resolveThemeColor = (variant) => {
+      for (const family of Object.values(families)) {
+        if (variant in family.colors) {
+          return family.colors[variant];
+        }
+      }
+
+      return "#121214";
+    };
+
+    const applyTheme = () => {
+      const storedFamily = localStorage.getItem(FAMILY_KEY);
+      const storedMode = localStorage.getItem(MODE_KEY);
+      const legacyTheme = localStorage.getItem(LEGACY_KEY);
+      const nextFamily = storedFamily ?? getFamilyFromLegacy(legacyTheme);
+      const nextMode = storedMode ?? getModeFromLegacy(legacyTheme);
+      const resolvedFamily = families[nextFamily] ? nextFamily : DEFAULT_FAMILY;
+      const resolvedMode = nextMode === "light" || nextMode === "dark" ? nextMode : DEFAULT_MODE;
+      const nextVariant = resolveVariant(resolvedFamily, resolvedMode);
+
+      if (!storedFamily && !storedMode && legacyTheme) {
+        localStorage.setItem(FAMILY_KEY, resolvedFamily);
+        localStorage.setItem(MODE_KEY, resolvedMode);
+      }
+
+      document.documentElement.dataset.themeFamily = resolvedFamily;
+      document.documentElement.dataset.themeMode = resolvedMode;
+      document.documentElement.dataset.theme = nextVariant;
+
+      const themeColor = document.querySelector('meta[name="theme-color"]');
+      if (themeColor) {
+        themeColor.setAttribute("content", resolveThemeColor(nextVariant));
+      }
+    };
+
+    applyTheme();
+
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleSchemeChange = () => {
+      const mode = document.documentElement.dataset.themeMode ?? DEFAULT_MODE;
+      if (mode === "system") {
+        applyTheme();
+      }
+    };
+
+    document.addEventListener("astro:after-swap", applyTheme);
+    document.addEventListener("astro:page-load", applyTheme);
+    window.addEventListener("pageshow", applyTheme);
+    media.addEventListener("change", handleSchemeChange);
+  })();
 </script>

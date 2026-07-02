@@ -1,22 +1,16 @@
 ---
 type Props = {
   status: string;
+  class?: string;
 };
 
-const { status } = Astro.props as Props;
+const { status, class: className } = Astro.props as Props;
 
-const tone =
-  status === "active"
-    ? " text-emerald-700 dark:text-emerald-300"
-    : status === "building"
-      ? " text-amber-700 dark:text-amber-300"
-      : status === "maintained"
-        ? " text-sky-700 dark:text-sky-300"
-        : " text-text-muted";
+const tone = `status-${status.toLowerCase().replace(/\s+/g, "-")}`;
 ---
 
 <span
-  class={`motion-soft inline-flex items-center px-2 py-1 font-mono text-[11px] uppercase tracking-[0.24em] ${tone}`}
+  class={`motion-soft ui-shell inline-flex items-center font-mono uppercase ${tone} ${className ?? ""}`.trim()}
 >
   {status}
 </span>

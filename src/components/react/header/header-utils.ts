@@ -4,6 +4,113 @@ export type ShellBrandIcon = {
   height?: number;
 };
 
+export const themeFamilies = [
+  {
+    value: "graphite",
+    label: "Graphite",
+    lightVariant: "paper",
+    darkVariant: "graphite",
+  },
+  {
+    value: "phosphor",
+    label: "Phosphor",
+    lightVariant: "phosphor-light",
+    darkVariant: "phosphor",
+  },
+  {
+    value: "retro",
+    label: "Retro",
+    lightVariant: "retro",
+    darkVariant: "retro-dark",
+  },
+] as const;
+
+export type ThemeFamily = (typeof themeFamilies)[number]["value"];
+
+export const themeModes = [
+  { value: "system", label: "System" },
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+] as const;
+
+export type ThemeMode = (typeof themeModes)[number]["value"];
+
+export const THEME_FAMILY_STORAGE_KEY = "theme-family";
+export const THEME_MODE_STORAGE_KEY = "theme-mode";
+export const LEGACY_THEME_STORAGE_KEY = "theme";
+
+export const defaultThemeFamily: ThemeFamily = "graphite";
+export const defaultThemeMode: ThemeMode = "system";
+
+export const isThemeFamily = (value: string | null | undefined): value is ThemeFamily =>
+  themeFamilies.some((option) => option.value === value);
+
+export const isThemeMode = (value: string | null | undefined): value is ThemeMode =>
+  themeModes.some((option) => option.value === value);
+
+export const getThemeVariants = (family: ThemeFamily) => {
+  const theme = themeFamilies.find((option) => option.value === family) ?? themeFamilies[0];
+
+  return {
+    light: theme.lightVariant,
+    dark: theme.darkVariant,
+  } as const;
+};
+
+export const resolveThemeVariant = (
+  family: ThemeFamily,
+  mode: ThemeMode,
+  prefersDark: boolean,
+) => {
+  const variants = getThemeVariants(family);
+
+  if (mode === "light") return variants.light;
+  if (mode === "dark") return variants.dark;
+
+  return prefersDark ? variants.dark : variants.light;
+};
+
+export const resolveThemeFamilyFromVariant = (variant: string | null | undefined) => {
+  switch (variant) {
+    case "paper":
+    case "graphite":
+      return "graphite" as const;
+    case "phosphor-light":
+    case "phosphor":
+      return "phosphor" as const;
+    case "retro":
+    case "retro-dark":
+      return "retro" as const;
+    default:
+      return defaultThemeFamily;
+  }
+};
+
+export const resolveThemeModeFromVariant = (variant: string | null | undefined) => {
+  switch (variant) {
+    case "paper":
+    case "phosphor-light":
+    case "retro":
+      return "light" as const;
+    case "graphite":
+    case "phosphor":
+    case "retro-dark":
+      return "dark" as const;
+    default:
+      return defaultThemeMode;
+  }
+};
+
+export const resolveThemeFamilyAndMode = (family: string | null | undefined, mode: string | null | undefined) => {
+  const nextFamily = isThemeFamily(family) ? family : defaultThemeFamily;
+  const nextMode = isThemeMode(mode) ? mode : defaultThemeMode;
+
+  return {
+    family: nextFamily,
+    mode: nextMode,
+  } as const;
+};
+
 export const normalizePath = (value: string) => {
   const next = value.replace(/\/+$/, "");
   return next || "/";
@@ -26,16 +133,7 @@ export const getSectionLabel = (value: string, fallback = "Page") => {
     return "Now";
   }
   if (normalized === "/writing" || normalized.startsWith("/writing/")) {
-    if (normalized.startsWith("/writing/blogs/") || normalized === "/writing/blogs") {
-      return "Blogs";
-    }
-    if (normalized.startsWith("/writing/notes/") || normalized === "/writing/notes") {
-      return "Notes";
-    }
     return "Writing";
-  }
-  if (normalized === "/me" || normalized.startsWith("/me/")) {
-    return "About";
   }
 
   return fallback;

@@ -3,12 +3,12 @@ import {
   renderOgListImage,
 } from "../../lib/og-image";
 
-type ListKind = "projects" | "writing" | "references" | "blogs" | "notes";
+type ListKind = "projects" | "writing" | "references";
 
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const kinds: ListKind[] = ["projects", "writing", "references", "blogs", "notes"];
+  const kinds: ListKind[] = ["projects", "writing", "references"];
 
   return kinds.map((kind) => ({
     params: { kind },
@@ -24,18 +24,8 @@ const LIST_CONTENT: Record<ListKind, { title: string; summary: string; sectionLa
   },
   writing: {
     title: "Writing",
-    summary: "Notes, essays, and longer thoughts on software, systems, and the work around them.",
+    summary: "Essays, observations, and longer thoughts on software, systems, and the work around them.",
     sectionLabel: "Writing",
-  },
-  blogs: {
-    title: "Blogs",
-    summary: "Longer-form writing on engineering, tooling, tradeoffs, and building software.",
-    sectionLabel: "Blogs",
-  },
-  notes: {
-    title: "Notes",
-    summary: "Smaller observations, unfinished thoughts, and ideas recorded before they disappear.",
-    sectionLabel: "Notes",
   },
   references: {
     title: "References",

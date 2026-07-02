@@ -1,10 +1,15 @@
 ---
+import StatusBadge from "./StatusBadge.astro";
+
 type Props = {
-  href: string;
+  href?: string;
   title: string;
   summary: string;
   titleLimit?: number;
   summaryLimit?: number;
+  previewType?: "project" | "writing";
+  projectStatus?: string;
+  projectStack?: string[];
 };
 
 const {
@@ -13,6 +18,9 @@ const {
   summary,
   titleLimit = 30,
   summaryLimit = 70,
+  previewType = "writing",
+  projectStatus,
+  projectStack,
 } = Astro.props as Props;
 
 const truncate = (value: string, limit: number) =>
@@ -21,11 +29,35 @@ const truncate = (value: string, limit: number) =>
 
 <article class="motion-page motion-surface group py-4">
   <div class="space-y-2">
-    <a href={href} class="title-link motion-soft">
-      {truncate(title, titleLimit)}
-    </a>
+    <div class="flex items-center justify-between">
+      {
+        href ? (
+          <a href={href} class="title-link motion-soft">
+            {truncate(title, titleLimit)}
+          </a>
+        ) : (
+          <span class="title-link motion-soft">
+            {truncate(title, titleLimit)}
+          </span>
+        )
+      }
+      {projectStatus && <StatusBadge status={projectStatus} />}
+    </div>
+    {
+      previewType === "project" && (
+        <div class="flex flex-col items-start justify-center gap-1 mt-1">
+          {projectStack && (
+            <>
+              <span class="ui-tag text-text-muted">
+                {projectStack.join(" ⋅ ")}
+              </span>
+            </>
+          )}
+        </div>
+      )
+    }
 
-    <p class="max-w-xl text-sm leading-6 text-text-muted">
+    <p class="ui-prose max-w-xl text-text-muted">
       {truncate(summary, summaryLimit)}
     </p>
   </div>

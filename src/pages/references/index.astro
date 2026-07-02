@@ -4,7 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Container from "../../components/shell/Container.astro";
 import Section from "../../components/content/Section.astro";
 import {
-  formatReferenceMeta,
+  formatReferenceType,
   getReferencePath,
   sortReferenceEntries,
 } from "../../lib/references";
@@ -12,6 +12,10 @@ import { getListOgImagePath } from "../../lib/og-image";
 import { withAutoOgImage } from "../../lib/seo";
 
 const references = sortReferenceEntries(await getCollection("references"));
+const getReferenceMetaDetails = (reference: (typeof references)[number]) =>
+  [reference.data.creator, reference.data.year ? String(reference.data.year) : ""]
+    .filter(Boolean)
+    .join(" · ");
 
 const seo = withAutoOgImage(
   {
@@ -30,14 +34,17 @@ const seo = withAutoOgImage(
   seo={seo}
   backHref="/"
 >
-  <Container>
+  <Container class="min-h-screen">
     <div class="py-8 lg:py-14">
-      <div class="max-w-4xl space-y-14">
-        <Section title="References">
-          <div
-            class="max-w-2xl space-y-5 text-sm leading-7 text-text-muted lg:text-[15px]"
-          >
-            <p>
+      <div class="space-y-10">
+        <Section>
+          <div class="space-y-5 text-text-muted">
+            <p
+              class="ui-title max-w-2xl font-mono font-semibold tracking-tight text-text"
+            >
+              References
+            </p>
+            <p class="ui-prose">
               A collection of books, articles, talks, songs, and other works
               that left something behind. These are not recommendations or
               reviews. They are notes on ideas that changed how I think,
@@ -47,27 +54,99 @@ const seo = withAutoOgImage(
           </div>
         </Section>
 
-        <div class="border-t border-border/70">
-          {
-            references.map((reference) => (
-              <article class="group py-8">
-                <div class="space-y-3">
-                  <a href={getReferencePath(reference)} class="title-link">
-                    {reference.data.title}
-                  </a>
+        {
+          references.length > 0 ? (
+            <div class="overflow-x-auto border-y border-border/70">
+              <div class="divide-y divide-border/70 md:hidden">
+                {
+                  references.map((reference) => (
+                    <article class="space-y-4 py-5">
+                      <div class="space-y-2.5">
+                        <a
+                          href={getReferencePath(reference)}
+                          class="title-link ui-link motion-soft"
+                        >
+                          {reference.data.title}
+                        </a>
+                        <p class="ui-meta font-mono text-text-muted">
+                          {formatReferenceType(reference.data.type)}
+                        </p>
+                      </div>
 
-                  <p class="max-w-2xl text-sm leading-7 text-text-muted">
-                    {reference.data.summary}
-                  </p>
+                      <p class="ui-prose text-text-muted">
+                        {reference.data.summary}
+                      </p>
 
-                  <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted">
-                    {formatReferenceMeta(reference)}
-                  </p>
-                </div>
-              </article>
-            ))
-          }
-        </div>
+                      <p class="ui-meta font-mono text-text-muted">
+                        {getReferenceMetaDetails(reference)}
+                      </p>
+                    </article>
+                  ))
+                }
+              </div>
+
+              <div class="hidden md:block">
+                <table class="min-w-[62rem] w-full table-fixed border-collapse">
+                  <thead class="border-b border-border/70">
+                    <tr class="ui-table font-mono uppercase text-text-muted">
+                      <th class="w-[24%] py-3 pr-6 text-left font-medium">Title</th>
+                      <th class="w-[12%] py-3 pr-6 text-left font-medium">Type</th>
+                      <th class="w-[42%] py-3 pr-6 text-left font-medium">Summary</th>
+                      <th class="w-[22%] py-3 text-left font-medium">Meta</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      references.map((reference) => (
+                        <tr class="border-b border-border/70 last:border-b-0">
+                          <td class="align-top py-5 pr-6">
+                            <a
+                              href={getReferencePath(reference)}
+                              class="title-link ui-link motion-soft"
+                            >
+                              {reference.data.title}
+                            </a>
+                          </td>
+
+                          <td class="align-top py-5 pr-6">
+                            <p class="ui-meta font-mono text-text-muted">
+                              {formatReferenceType(reference.data.type)}
+                            </p>
+                          </td>
+
+                          <td class="align-top py-5 pr-6">
+                            <p class="ui-prose max-w-3xl text-text-muted">
+                              {reference.data.summary}
+                            </p>
+                          </td>
+
+                          <td class="align-top py-5">
+                            <p class="ui-meta font-mono text-text-muted">
+                              {getReferenceMetaDetails(reference)}
+                            </p>
+                          </td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : (
+            <section class="motion-page space-y-3 border-y border-border/70 py-8 sm:py-10">
+              <p class="ui-label font-mono uppercase text-text-muted">
+                References
+              </p>
+              <h2 class="ui-title max-w-2xl font-mono font-semibold tracking-tight text-text">
+                Nothing is archived here right now.
+              </h2>
+              <p class="ui-prose max-w-2xl text-text-muted">
+                This section stays available, but the reference shelf is empty until
+                new entries are added back.
+              </p>
+            </section>
+          )
+        }
       </div>
     </div>
   </Container>

@@ -2,6 +2,7 @@
 title: Behind an Interview Platform
 summary: Building and maintaining the systems behind remote technical interviews — from scheduling workflows and automation pipelines to recording infrastructure, operational tooling, and the backend services that held everything together under real-world conditions.
 company: Taptic
+url: https://taptic.ai
 role: Sr. Platform Engineer
 period: 2024 - present
 order: 0

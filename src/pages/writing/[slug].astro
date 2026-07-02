@@ -1,0 +1,60 @@
+---
+import { getCollection, render } from "astro:content";
+import WritingLayout from "../../layouts/WritingLayout.astro";
+import WritingArticle from "../../components/content/WritingArticle.astro";
+import { sortWritingEntries, getWritingPath, filterPublicWritingEntries } from "../../lib/writing";
+import {
+  getContentLinkProfiles,
+  getEmptyContentLinkProfile,
+} from "../../lib/content-links";
+import { getWritingOgImagePath } from "../../lib/og-image";
+import { withAutoOgImage } from "../../lib/seo";
+
+export async function getStaticPaths() {
+  const writing = await getCollection("writing");
+
+  return filterPublicWritingEntries(writing).map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const writing = await getCollection("writing");
+const linkProfiles = await getContentLinkProfiles();
+const linkProfile =
+  linkProfiles.get(getWritingPath(entry)) ?? getEmptyContentLinkProfile();
+const seo = withAutoOgImage(entry.data.seo, getWritingOgImagePath(entry.id));
+const writingItems = sortWritingEntries(filterPublicWritingEntries(writing)).map((item) => ({
+  id: item.id,
+  title: item.data.title,
+  publishedAt: item.data.publishedAt,
+  order: item.data.order,
+  kind: item.data.kind,
+  draft: item.data.draft,
+}));
+---
+
+<WritingLayout
+  title={`${entry.data.title} · Writing · Webxsid`}
+  description={entry.data.summary}
+  seo={seo}
+  keywords={entry.data.tags}
+  articleTags={entry.data.tags}
+  resourceHints={linkProfile.resourceHints}
+  articlePublishedTime={entry.data.publishedAt.toISOString()}
+  writingItems={writingItems}
+  activeId={entry.id}
+>
+  <WritingArticle
+    eyebrow="Writing"
+    title={entry.data.title}
+    summary={entry.data.summary}
+    publishedAt={entry.data.publishedAt}
+    tags={entry.data.tags}
+    linkProfile={linkProfile}
+  >
+    <Content />
+  </WritingArticle>
+</WritingLayout>

@@ -9,32 +9,57 @@
   }
 
   .content-document h1 {
-    @apply mb-8 text-5xl font-semibold tracking-tight leading-[1.05] text-text;
+    font-size: var(--content-title-size);
+    line-height: var(--content-title-line-height);
+    @apply mb-8 font-semibold tracking-tight text-text;
   }
 
   .content-document h2 {
-    @apply mt-16 mb-5 border-b border-border/70 pb-2 text-2xl font-medium tracking-tight text-text;
+    font-size: var(--content-heading-size);
+    line-height: var(--content-heading-line-height);
+    @apply mt-20 mb-6 flex items-center gap-4 border-b border-border/70 pb-3 font-mono font-medium uppercase tracking-[0.26em] text-text;
+  }
+
+  .content-document h2::before {
+    content: "";
+    @apply block h-px w-8 bg-border;
   }
 
   .content-document h3 {
-    @apply mt-8 mb-2 font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted;
+    font-size: var(--content-subheading-size);
+    line-height: var(--content-subheading-line-height);
+    @apply mt-10 mb-3 font-semibold tracking-tight text-text;
+  }
+
+  .content-document h4 {
+    font-size: var(--content-label-size);
+    letter-spacing: var(--content-label-tracking);
+    @apply mt-8 mb-2 font-mono uppercase text-text-muted;
   }
 
   .content-document p {
-    @apply my-5 text-[16px] leading-7 text-text-muted;
+    font-size: var(--content-body-size);
+    line-height: var(--content-body-line-height);
+    @apply my-5 font-normal text-text;
   }
 
   .content-document strong {
-    @apply font-medium text-text;
+    @apply font-semibold text-text;
   }
 
   .content-document ul,
   .content-document ol {
-    @apply my-5;
+    @apply my-5 pl-5;
   }
 
   .content-document li {
-    @apply my-1 text-[16px] leading-7 text-text-muted;
+    font-size: var(--content-body-size);
+    line-height: var(--content-body-line-height);
+    @apply my-0 text-text;
+  }
+
+  .content-document li::marker {
+    @apply text-text-muted;
   }
 
   .content-document a {
@@ -46,15 +71,20 @@
   }
 
   .content-document blockquote {
-    @apply border-l-2 border-border pl-4 italic text-text-muted;
+    @apply my-8 border-l-2 border-border pl-5 italic text-text;
+  }
+
+  .content-document blockquote p {
+    @apply text-text;
   }
 
   .content-document hr {
-    @apply my-12 border-border/70;
+    @apply my-14 border-border/70;
   }
 
   .content-document code {
-    @apply text-[0.9em] text-text;
+    @apply bg-bg-elevated/40 px-1 py-0.5 font-mono text-[0.9em] text-text;
+    border-radius: var(--radius-code);
   }
 
   .content-document code::before,
@@ -63,8 +93,12 @@
   }
 
   .content-document pre {
-    @apply rounded-none border border-border/70;
-    background-color: rgb(var(--bg-elevated) / 0.2);
+    @apply my-8 rounded-none border border-border/70 p-4;
+    background-color: rgb(var(--surface-elevated) / 0.2);
+  }
+
+  .content-document pre code {
+    @apply bg-transparent p-0;
   }
 
   .content-note {
@@ -72,32 +106,46 @@
   }
 
   .content-note h1 {
-    @apply mb-6 text-3xl font-semibold tracking-tight leading-tight text-text;
+    font-size: var(--content-note-title-size);
+    line-height: var(--content-note-title-line-height);
+    @apply mb-6 font-semibold tracking-tight text-text;
   }
 
   .content-note h2 {
-    @apply mt-10 mb-3 font-mono text-[11px] uppercase tracking-[0.24em] text-text-muted;
+    font-size: var(--content-note-heading-size);
+    line-height: var(--content-note-heading-line-height);
+    @apply mt-14 mb-4 border-b border-border/70 pb-2 font-semibold tracking-tight text-text;
   }
 
   .content-note h3 {
-    @apply mt-6 mb-2 text-base font-medium text-text;
+    font-size: var(--content-note-subheading-size);
+    line-height: var(--content-note-subheading-line-height);
+    @apply mt-9 mb-3 font-mono uppercase tracking-[0.24em] text-text-muted;
   }
 
   .content-note p {
-    @apply my-4 text-[15px] leading-7 text-text-muted;
+    font-size: var(--content-note-body-size);
+    line-height: var(--content-note-body-line-height);
+    @apply my-4 font-normal text-text;
   }
 
   .content-note strong {
-    @apply font-medium text-text;
+    @apply font-semibold text-text;
   }
 
   .content-note ul,
   .content-note ol {
-    @apply my-4;
+    @apply my-4 pl-5;
   }
 
   .content-note li {
-    @apply my-1 text-[15px] leading-7 text-text-muted;
+    font-size: var(--content-note-body-size);
+    line-height: var(--content-note-body-line-height);
+    @apply my-0 text-text;
+  }
+
+  .content-note li::marker {
+    @apply text-text-muted;
   }
 
   .content-note a {
@@ -109,15 +157,16 @@
   }
 
   .content-note blockquote {
-    @apply border-l border-border pl-4 italic text-text-muted;
+    @apply my-6 border-l border-border pl-4 italic text-text;
   }
 
   .content-note hr {
-    @apply my-8 border-border/70;
+    @apply my-10 border-border/70;
   }
 
   .content-note code {
-    @apply text-[0.9em] text-text;
+    @apply bg-bg-elevated/40 px-1 py-0.5 font-mono text-[0.9em] text-text;
+    border-radius: var(--radius-code);
   }
 
   .content-note code::before,
@@ -126,7 +175,11 @@
   }
 
   .content-note pre {
-    @apply rounded-none border border-border/70;
-    background-color: rgb(var(--bg-elevated) / 0.2);
+    @apply my-6 rounded-none border border-border/70 p-4;
+    background-color: rgb(var(--surface-elevated) / 0.2);
+  }
+
+  .content-note pre code {
+    @apply bg-transparent p-0;
   }
 }

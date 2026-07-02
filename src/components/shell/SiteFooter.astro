@@ -1,15 +1,27 @@
 ---
 import Container from "./Container.astro";
+import { getCollection } from "astro:content";
 import { Github, Instagram, Mail, Rss } from "lucide-astro";
 import BlueskyIcon from "../icons/BlueskyIcon.astro";
 import ThreadsIcon from "../icons/ThreadsIcon.astro";
 import {
+  filterSharedNavItems,
   footerColophon,
   footerLinkColumns,
   footerSocialLinks,
 } from "../../lib/site-links";
 
 const currentYear = new Date().getFullYear();
+const [references, nowEntries] = await Promise.all([
+  getCollection("references"),
+  getCollection("now"),
+]);
+const footerColumns = footerLinkColumns.map((column) =>
+  filterSharedNavItems(column as readonly { href: string; label: string }[], {
+    hasReferences: references.length > 0,
+    hasNow: nowEntries.length > 0,
+  }),
+);
 ---
 
 <footer class="mt-24 border-t border-border/70 sm:mt-28">
@@ -18,9 +30,7 @@ const currentYear = new Date().getFullYear();
       class="grid gap-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-20"
     >
       <div class="max-w-md space-y-7">
-        <p
-          class="font-serif text-[clamp(2rem,4vw,3.5rem)] leading-[0.98] tracking-[-0.04em] text-text"
-        >
+        <p class="footer-title max-w-md tracking-[-0.04em] text-text">
           Still Building,<br />
           Still Learning.
         </p>
@@ -64,7 +74,7 @@ const currentYear = new Date().getFullYear();
             }
           </ul>
         </nav>
-        <p class="font-mono text-[11px] leading-6 text-text-muted">
+        <p class="ui-meta font-mono leading-6 text-text-muted">
           &copy; Siddharth Mittal {currentYear}
         </p>
       </div>
@@ -75,13 +85,13 @@ const currentYear = new Date().getFullYear();
           class="grid grid-cols-2 gap-x-10 gap-y-8"
         >
           {
-            footerLinkColumns.map((column) => (
+            footerColumns.map((column) => (
               <ul class="space-y-3">
                 {column.map((link) => (
                   <li>
                     <a
                       href={link.href}
-                      class="motion-soft text-[15px] leading-6 text-text-muted hover:text-text"
+                      class="motion-soft footer-nav-link font-mono text-text-muted hover:text-text"
                     >
                       {link.label}
                     </a>
@@ -92,7 +102,7 @@ const currentYear = new Date().getFullYear();
           }
         </nav>
 
-        <p class="max-w-sm font-mono text-[11px] leading-6 text-text-muted">
+        <p class="ui-prose max-w-sm leading-6 text-text-muted">
           {footerColophon}
         </p>
       </div>

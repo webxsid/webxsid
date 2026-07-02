@@ -1,6 +1,10 @@
 .terminal-button {
-  font-family: monospace;
-  transition: transform 150ms cubic-bezier(0.2, 0.8, 0.2, 1), color 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  font-family: var(--font-mono);
+  transition:
+    transform var(--motion-duration-soft) var(--motion-ease),
+    color var(--motion-duration-soft) var(--motion-ease);
+  color: inherit;
+  cursor: var(--cursor-interactive);
 }
 
 .terminal-button::before {
@@ -14,41 +18,80 @@
 }
 
 .terminal-button:hover {
-  transform: translateY(-1px);
+  transform: translateY(var(--motion-lift-distance));
+  color: var(--color-accent);
 }
 
 .title-link {
   font-family: var(--font-sans);
+  font-size: var(--ui-link-size);
   font-weight: 500;
   text-transform: capitalize;
   text-decoration: underline;
-  text-decoration-style: dotted;
-  transition: transform 150ms cubic-bezier(0.2, 0.8, 0.2, 1), color 150ms cubic-bezier(0.2, 0.8, 0.2, 1), text-decoration-color 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-decoration-style: var(--link-underline-style);
+  text-underline-offset: var(--link-underline-offset);
+  transition:
+    transform var(--motion-duration-soft) var(--motion-ease),
+    color var(--motion-duration-soft) var(--motion-ease),
+    text-decoration-color var(--motion-duration-soft) var(--motion-ease);
+  cursor: var(--cursor-interactive);
 }
 
 .title-link:hover {
   text-decoration-style: solid;
-  transform: translateY(-1px);
+  transform: translateY(var(--motion-lift-distance));
 }
 
 .title-link[target="_blank"]::after {
-  content: " ↗";
+  content: var(--link-external-marker);
 }
 
 .inline-link {
   font-family: var(--font-sans);
+  font-size: var(--ui-link-size);
   font-weight: 500;
   text-decoration: underline;
-  text-decoration-style: dotted;
-  color: rgb(var(--muted));
-  transition: transform 150ms cubic-bezier(0.2, 0.8, 0.2, 1), color 150ms cubic-bezier(0.2, 0.8, 0.2, 1), text-decoration-color 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  text-decoration-style: var(--link-underline-style);
+  text-underline-offset: var(--link-underline-offset);
+  color: inherit;
+  transition:
+    transform var(--motion-duration-soft) var(--motion-ease),
+    color var(--motion-duration-soft) var(--motion-ease),
+    text-decoration-color var(--motion-duration-soft) var(--motion-ease);
+  cursor: var(--cursor-interactive);
 }
 
 .inline-link:hover {
+  color: var(--color-accent);
   text-decoration-style: solid;
-  transform: translateY(-1px);
+  transform: translateY(var(--motion-lift-distance));
 }
 
 .inline-link[target="_blank"]::after {
-  content: " ↗";
+  content: var(--link-external-marker);
+}
+
+.meta-link {
+  font-family: var(--font-sans);
+  font-size: var(--ui-meta-link-size);
+  line-height: var(--ui-meta-link-line-height);
+  letter-spacing: var(--ui-meta-link-tracking);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-style: var(--link-underline-style);
+  text-underline-offset: var(--link-underline-offset);
+  color: inherit;
+  transition:
+    color var(--motion-duration-soft) var(--motion-ease),
+    text-decoration-color var(--motion-duration-soft) var(--motion-ease);
+  cursor: var(--cursor-interactive);
+}
+
+.meta-link:hover {
+  color: var(--color-accent);
+  text-decoration-style: solid;
+}
+
+.meta-link[target="_blank"]::after {
+  content: var(--link-external-marker);
 }

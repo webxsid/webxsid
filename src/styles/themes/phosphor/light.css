@@ -1,0 +1,35 @@
+[data-theme="phosphor-light"] {
+  color-scheme: light;
+  --surface-page: 230 239 223;
+  --surface-elevated: 214 227 207;
+  --surface-overlay: 230 239 223;
+  --surface-preview-media: 225 235 218;
+  --text-primary: 22 49 26;
+  --text-muted: 72 102 76;
+  --text-accent: 33 120 52;
+  --border-default: 91 127 97;
+  --border-subtle-opacity: 0.62;
+  --border-strong-opacity: 1;
+  --accent-primary: 33 120 52;
+  --accent-soft-opacity: 0.16;
+  --accent-strong-opacity: 0.84;
+  --selection-opacity: 0.28;
+  --color-status-active: 33 120 52;
+  --color-status-building: 164 124 47;
+  --color-status-maintained: 62 133 74;
+  --color-status-archived: 92 118 95;
+  --color-status-prototype: 56 132 136;
+  --color-status-experimental: 120 98 162;
+  --shadow-nav:
+    inset 0 0 0 1px rgba(238, 248, 233, 0.42),
+    0 0 0 1px rgba(50, 84, 54, 0.14);
+  --shadow-dock:
+    inset 0 0 0 1px rgba(238, 248, 233, 0.36),
+    0 0 0 1px rgba(50, 84, 54, 0.14);
+  --shadow-preview:
+    inset 0 0 0 1px rgba(238, 248, 233, 0.32),
+    0 0 0 1px rgba(50, 84, 54, 0.18);
+  --shadow-active-inset:
+    inset 0 0 0 1px rgba(240, 252, 238, 0.22),
+    inset 0 0 0 2px rgba(44, 90, 51, 0.12);
+}

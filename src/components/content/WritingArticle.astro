@@ -11,15 +11,24 @@ type Props = {
   title: string;
   summary: string;
   publishedAt: Date;
+  tags?: string[];
   linkProfile?: ContentLinkProfile;
 };
 
-const { eyebrow, title, summary, publishedAt, linkProfile } = Astro.props as Props;
+const { eyebrow, title, summary, publishedAt, tags = [], linkProfile } = Astro.props as Props;
 ---
 
 <div class="motion-page max-w-3xl space-y-12 lg:space-y-16" data-content-preview-scope>
   <ContentHeader eyebrow={eyebrow} title={title} summary={summary}>
-    <span slot="meta">published {formatDate(publishedAt)}</span>
+    <span slot="meta">
+      published {formatDate(publishedAt)}
+      {tags.length > 0 && (
+        <>
+          <br />
+          <span class="ui-tag">{tags.join(" · ")}</span>
+        </>
+      )}
+    </span>
   </ContentHeader>
 
   <ContentDocument note class="space-y-4">

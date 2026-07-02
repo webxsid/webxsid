@@ -1,0 +1,139 @@
+:root {
+  --surface-page: 15 15 17;
+  --surface-elevated: 23 23 27;
+  --surface-overlay: 15 15 17;
+  --surface-preview-media: 15 15 17;
+
+  --text-primary: 238 238 242;
+  --text-muted: 158 158 168;
+  --text-accent: 124 145 255;
+
+  --border-default: 42 42 49;
+  --border-subtle-opacity: 0.5;
+  --border-strong-opacity: 0.8;
+
+  --accent-primary: 124 145 255;
+  --accent-soft-opacity: 0.08;
+  --accent-strong-opacity: 0.82;
+  --selection-opacity: 0.18;
+
+  --color-status-active: 124 145 255;
+  --color-status-building: 224 170 44;
+  --color-status-maintained: 102 187 106;
+  --color-status-archived: 128 128 138;
+  --color-status-prototype: 93 184 205;
+  --color-status-experimental: 198 140 255;
+
+  --font-sans-stack: "IBM Plex Sans", "Inter Tight", "Inter", system-ui, sans-serif;
+  --font-mono-stack: "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
+  --font-display-stack: var(--font-sans-stack);
+
+  --radius-shell: 9999px;
+  --radius-dock: 1rem;
+  --radius-control: 9999px;
+  --radius-preview: 0;
+  --radius-code: 0.25rem;
+
+  --shadow-nav: 0 14px 40px rgba(0, 0, 0, 0.16);
+  --shadow-dock: 0 14px 40px rgba(0, 0, 0, 0.2);
+  --shadow-preview: 0 20px 48px rgba(0, 0, 0, 0.22);
+  --shadow-active-inset: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+  --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-duration-soft: 150ms;
+  --motion-duration-surface: 180ms;
+  --motion-duration-page: 260ms;
+  --motion-lift-distance: -1px;
+  --motion-route-shift: 3px;
+
+  --cursor-default: default;
+  --cursor-interactive: pointer;
+
+  --link-underline-style: dotted;
+  --link-underline-offset: 0.18em;
+  --link-external-marker: " ↗";
+
+  --loader-splash-background:
+    radial-gradient(circle at 50% 38%, rgb(var(--surface-elevated) / 0.42), transparent 38%),
+    rgb(var(--surface-page));
+  --loader-splash-glyph-size: clamp(3rem, 8vw, 4.5rem);
+  --loader-splash-label-size: 11px;
+  --loader-route-height: 2px;
+  --loader-route-scale-start: 0.18;
+  --loader-route-scale-mid: 0.5;
+  --loader-route-scale-end: 0.22;
+
+  --shell-nav-background: rgb(var(--surface-page));
+  --shell-nav-border-opacity: 0.7;
+  --shell-dock-background: rgb(var(--surface-page));
+  --shell-dock-border-opacity: 0.7;
+  --shell-item-background: rgb(var(--surface-page));
+  --shell-item-active-background: rgb(var(--surface-elevated));
+  --shell-item-active-text: rgb(var(--text-primary));
+  --shell-item-border-opacity: 0.5;
+  --shell-item-active-border-opacity: 0.8;
+  --shell-item-label-background: rgb(var(--surface-page));
+  --shell-back-background: var(--shell-item-background);
+  --shell-back-text: rgb(var(--text-muted));
+  --shell-back-border-opacity: var(--shell-nav-border-opacity);
+  --shell-back-hover-text: rgb(var(--text-primary));
+  --shell-back-shadow: var(--shadow-nav);
+
+  --preview-width: min(22rem, calc(100vw - 1.5rem));
+  --preview-body-gap: 0.75rem;
+  --preview-body-padding: 1rem;
+
+  --ui-title-size: clamp(1.25rem, 2.8vw, 2.4rem);
+  --ui-title-line-height: 1.1;
+  --ui-lead-size: 1.08rem;
+  --ui-lead-line-height: 1.55;
+  --ui-prose-size: 0.98rem;
+  --ui-prose-line-height: 1.72;
+  --ui-heading-size: 1rem;
+  --ui-body-size: 0.98rem;
+  --ui-body-line-height: 1.8;
+  --ui-link-size: 1rem;
+  --ui-meta-link-size: 0.9rem;
+  --ui-meta-link-line-height: 1.5;
+  --ui-meta-link-tracking: 0.01em;
+  --ui-meta-size: 0.72rem;
+  --ui-meta-tracking: 0.22em;
+  --ui-tag-size: 0.7rem;
+  --ui-tag-line-height: 1.45;
+  --ui-tag-tracking: 0.16em;
+  --ui-label-size: 0.68rem;
+  --ui-label-tracking: 0.28em;
+  --ui-shell-size: 0.68rem;
+  --ui-shell-tracking: 0.24em;
+  --ui-table-size: 0.64rem;
+  --ui-table-tracking: 0.22em;
+  --ui-rail-primary-size: 0.95rem;
+  --ui-rail-meta-size: 0.68rem;
+  --ui-rail-summary-size: 0.78rem;
+
+  --footer-title-size: clamp(1.65rem, 3.7vw, 2.45rem);
+  --footer-title-line-height: 1.1;
+  --footer-title-font-family: serif;
+
+  --footer-nav-link-size: clamp(0.88rem, 2.5vw, 1.1rem);
+  --footer-nav-link-line-height: 1.3;
+
+  --content-title-size: clamp(1.9rem, 4vw, 3rem);
+  --content-title-line-height: 1.08;
+  --content-heading-size: 0.88rem;
+  --content-heading-line-height: 1.3;
+  --content-subheading-size: 0.72rem;
+  --content-subheading-line-height: 1.35;
+  --content-label-size: 0.58rem;
+  --content-label-tracking: 0.22em;
+  --content-body-size: 1rem;
+  --content-body-line-height: 1.72;
+  --content-note-title-size: clamp(1.55rem, 3.2vw, 2.2rem);
+  --content-note-title-line-height: 1.12;
+  --content-note-heading-size: 1rem;
+  --content-note-heading-line-height: 1.3;
+  --content-note-subheading-size: 0.68rem;
+  --content-note-subheading-line-height: 1.35;
+  --content-note-body-size: 0.96rem;
+  --content-note-body-line-height: 1.72;
+}

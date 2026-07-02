@@ -1,7 +1,17 @@
+import { useRef } from "react";
 import { motion } from "motion/react";
-import type { ShellBrandIcon } from "./header-utils";
+import {
+  resolveThemeVariant,
+  THEME_FAMILY_STORAGE_KEY,
+  THEME_MODE_STORAGE_KEY,
+  type ShellBrandIcon,
+  type ThemeFamily,
+  type ThemeMode,
+} from "./header-utils";
+import { filterSharedNavItems, globalNavItems } from "../../../lib/site-links";
 import { ShellHeaderBrand } from "./ShellHeaderBrand";
 import { ShellHeaderMenu } from "./ShellHeaderMenu";
+import { ShellThemePicker } from "./ShellThemePicker";
 import { useShellHeaderBehavior } from "./useShellHeaderBehavior";
 
 type Props = {
@@ -12,6 +22,8 @@ type Props = {
   pageTitle?: string;
   currentPath?: string;
   variant?: "default" | "rail";
+  hasReferences?: boolean;
+  hasNow?: boolean;
 };
 export function ShellBrandLauncher({
   backHref,
@@ -21,12 +33,61 @@ export function ShellBrandLauncher({
   pageTitle,
   currentPath = "/",
   variant = "default",
+  hasReferences = false,
+  hasNow = false,
 }: Props) {
-  const { shellRef, open, setOpen, activePath, activeTitle, spring } =
-    useShellHeaderBehavior({
-      currentPath,
-      pageTitle,
-    });
+  const brandTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const themeTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const {
+    shellRef,
+    open,
+    setOpen,
+    activePath,
+    activeTitle,
+    spring,
+    themeFamily,
+    setThemeFamily,
+    themeMode,
+    setThemeMode,
+    themeOpen,
+    setThemeOpen,
+  } = useShellHeaderBehavior({
+    currentPath,
+    pageTitle,
+  });
+
+  const isSystemDark = () =>
+    window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  const applyThemeFamily = (nextFamily: ThemeFamily) => {
+    const nextVariant = resolveThemeVariant(
+      nextFamily,
+      themeMode,
+      isSystemDark(),
+    );
+
+    document.documentElement.dataset.themeFamily = nextFamily;
+    document.documentElement.dataset.themeMode = themeMode;
+    document.documentElement.dataset.theme = nextVariant;
+    localStorage.setItem(THEME_FAMILY_STORAGE_KEY, nextFamily);
+    localStorage.setItem(THEME_MODE_STORAGE_KEY, themeMode);
+    setThemeFamily(nextFamily);
+  };
+
+  const applyThemeMode = (nextMode: ThemeMode) => {
+    const nextVariant = resolveThemeVariant(
+      themeFamily,
+      nextMode,
+      isSystemDark(),
+    );
+
+    document.documentElement.dataset.themeFamily = themeFamily;
+    document.documentElement.dataset.themeMode = nextMode;
+    document.documentElement.dataset.theme = nextVariant;
+    localStorage.setItem(THEME_FAMILY_STORAGE_KEY, themeFamily);
+    localStorage.setItem(THEME_MODE_STORAGE_KEY, nextMode);
+    setThemeMode(nextMode);
+  };
 
   return (
     <motion.div
@@ -43,16 +104,18 @@ export function ShellBrandLauncher({
           marginRight: backHref ? 0 : -12,
         }}
         transition={spring}
-        className="overflow-hidden"
+        className="relative"
         aria-hidden={backHref ? undefined : "true"}
       >
         {backHref ? (
           <motion.a
+            type="button"
             href={backHref}
             aria-label={backLabel}
             initial={false}
             transition={spring}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/70 bg-bg text-text-muted transition-[transform,box-shadow] hover:border-border hover:text-text"
+            layout
+            className="shell-brand-button motion-surface inline-flex items-center py-3 px-3 justify-center"
           >
             <svg
               viewBox="0 0 24 24"
@@ -70,19 +133,44 @@ export function ShellBrandLauncher({
         ) : null}
       </motion.div>
 
-      <div className="relative">
-        <ShellHeaderBrand
-          brandIcon={brandIcon}
-          logoLabel={logoLabel}
-          activeTitle={activeTitle}
-          open={open}
-          onToggle={() => setOpen((value) => !value)}
-        />
+      <div className="flex items-center gap-2">
+        <div className="relative">
+          <ShellHeaderBrand
+            triggerRef={brandTriggerRef}
+            brandIcon={brandIcon}
+            logoLabel={logoLabel}
+            activeTitle={activeTitle}
+            open={open}
+            onToggle={() => {
+              setThemeOpen(false);
+              setOpen((value) => !value);
+            }}
+          />
 
-        <ShellHeaderMenu
-          activePath={activePath}
-          open={open}
-          onClose={() => setOpen(false)}
+          <ShellHeaderMenu
+            triggerRef={brandTriggerRef}
+            activePath={activePath}
+            open={open}
+            onClose={() => setOpen(false)}
+            navItems={filterSharedNavItems(globalNavItems, {
+              hasReferences,
+              hasNow,
+            })}
+          />
+        </div>
+
+        <ShellThemePicker
+          triggerRef={themeTriggerRef}
+          activeFamily={themeFamily}
+          activeMode={themeMode}
+          open={themeOpen}
+          onToggle={() => {
+            setOpen(false);
+            setThemeOpen((value) => !value);
+          }}
+          onClose={() => setThemeOpen(false)}
+          onSelectFamily={applyThemeFamily}
+          onSelectMode={applyThemeMode}
         />
       </div>
     </motion.div>

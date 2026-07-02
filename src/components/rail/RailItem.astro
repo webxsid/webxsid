@@ -32,8 +32,8 @@ const {
     >
       <div class="space-y-1">
         <span
-          class={[
-            "block text-sm transition",
+            class={[
+            "ui-rail-primary block transition",
             active ? "text-text" : "text-text-muted group-hover:text-text",
           ].join(" ")}
         >
@@ -43,7 +43,7 @@ const {
         {item.secondary && secondaryVariant === "meta" && (
           <span
             class={[
-              "block font-mono text-[11px] uppercase tracking-[0.22em]",
+              "ui-rail-meta block font-mono uppercase",
               active ? "text-text-muted" : "text-text-muted/60",
             ].join(" ")}
           >
@@ -54,7 +54,7 @@ const {
         {item.secondary && secondaryVariant === "summary" && (
           <p
             class={[
-              "max-w-[12rem] text-xs leading-5",
+              "ui-rail-summary max-w-[12rem]",
               active ? "text-text-muted" : "text-text-muted/70",
             ].join(" ")}
           >
@@ -66,7 +66,9 @@ const {
       <div
         class={[
           "h-px transition-all duration-300",
-          active ? "w-16 bg-text" : "w-8 bg-border/70 group-hover:w-12",
+          active
+            ? "w-[80%] bg-text"
+            : "w-8 bg-border/70 group-hover:w-[50%] hover:bg-border/80",
         ].join(" ")}
       />
     </a>
@@ -74,19 +76,20 @@ const {
     <a
       href={item.href}
       class={[
-        "motion-surface flex flex-col rounded-xl border bg-bg text-left",
+        "shell-item motion-surface flex flex-col border text-left",
         mobileDensity === "compact"
           ? "min-w-[9.5rem] max-w-[9.5rem] gap-0.5 px-2.5 py-1.5"
           : "min-w-[11rem] max-w-[11rem] gap-1 px-3 py-2",
         active
-          ? "border-border/80 text-text bg-bg-elevated shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]"
-          : "border-border/50 text-text-muted hover:border-border/70 hover:text-text",
+          ? "shell-item-active"
+          : "text-text-muted hover:text-text",
       ].join(" ")}
+      style="border-radius: var(--radius-dock);"
     >
       <span
         class={[
           "block truncate leading-5",
-          mobileDensity === "compact" ? "text-[13px]" : "text-sm",
+          "ui-rail-primary",
         ].join(" ")}
       >
         {item.primary}
@@ -95,8 +98,7 @@ const {
       {item.secondary && secondaryVariant === "meta" && (
         <span
           class={[
-            "block truncate font-mono uppercase tracking-[0.18em]",
-            mobileDensity === "compact" ? "text-[9px]" : "text-[10px]",
+            "ui-rail-meta block truncate font-mono uppercase",
             active ? "text-text-muted" : "text-text-muted/70",
           ].join(" ")}
         >
@@ -107,8 +109,7 @@ const {
       {item.secondary && secondaryVariant === "summary" && (
         <span
           class={[
-            "block truncate leading-5",
-            mobileDensity === "compact" ? "text-[11px]" : "text-xs",
+            "ui-rail-summary block truncate",
             active ? "text-text-muted" : "text-text-muted/70",
           ].join(" ")}
         >

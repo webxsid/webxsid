@@ -1,0 +1,27 @@
+[data-theme="paper"] {
+  color-scheme: light;
+  --surface-page: 245 240 232;
+  --surface-elevated: 233 227 219;
+  --surface-overlay: 245 240 232;
+  --surface-preview-media: 241 236 228;
+  --text-primary: 42 39 41;
+  --text-muted: 98 91 94;
+  --text-accent: 84 97 172;
+  --border-default: 204 196 187;
+  --border-subtle-opacity: 0.5;
+  --border-strong-opacity: 0.88;
+  --accent-primary: 84 97 172;
+  --accent-soft-opacity: 0.1;
+  --accent-strong-opacity: 0.8;
+  --selection-opacity: 0.2;
+  --color-status-active: 84 97 172;
+  --color-status-building: 184 124 47;
+  --color-status-maintained: 83 127 92;
+  --color-status-archived: 129 118 108;
+  --color-status-prototype: 78 128 141;
+  --color-status-experimental: 148 106 178;
+  --shadow-nav: 0 10px 28px rgba(66, 49, 31, 0.08);
+  --shadow-dock: 0 10px 26px rgba(66, 49, 31, 0.08);
+  --shadow-preview: 0 18px 38px rgba(54, 40, 25, 0.12);
+  --shadow-active-inset: inset 0 0 0 1px rgba(255, 255, 255, 0.26);
+}

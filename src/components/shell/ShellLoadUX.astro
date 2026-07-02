@@ -1,0 +1,57 @@
+<div data-splash-overlay aria-hidden="true">
+  <div data-splash-loader>
+    <span data-splash-glyph>/</span>
+    <span data-splash-label>Webxsid</span>
+  </div>
+</div>
+
+<div data-route-progress aria-hidden="true"></div>
+
+<script is:inline>
+  (() => {
+    if (window.__webxsidShellUxInitialized) return;
+    window.__webxsidShellUxInitialized = true;
+
+    const root = document.documentElement;
+    const minSplashDuration = 320;
+
+    const finishSplash = () => {
+      if (root.dataset.splash === "done") return;
+
+      const startedAt = window.__webxsidSplashStartedAt ?? performance.now();
+      const elapsed = performance.now() - startedAt;
+      const delay = Math.max(0, minSplashDuration - elapsed);
+
+      window.setTimeout(() => {
+        root.dataset.splash = "done";
+      }, delay);
+    };
+
+    const markRouteLoading = (value) => {
+      root.dataset.routeLoading = value ? "true" : "false";
+    };
+
+    const afterInitialPaint = () => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          finishSplash();
+        });
+      });
+    };
+
+    if (document.readyState === "complete") {
+      afterInitialPaint();
+    } else {
+      window.addEventListener("load", afterInitialPaint, { once: true });
+    }
+
+    document.addEventListener("astro:before-preparation", () => {
+      markRouteLoading(true);
+    });
+
+    document.addEventListener("astro:page-load", () => {
+      markRouteLoading(false);
+      finishSplash();
+    });
+  })();
+</script>

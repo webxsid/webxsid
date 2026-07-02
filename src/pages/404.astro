@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 import SeoHead from "../components/shell/SeoHead.astro";
+import ShellLoadBoot from "../components/shell/ShellLoadBoot.astro";
+import ShellLoadUX from "../components/shell/ShellLoadUX.astro";
 import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 
 const seo = {
@@ -19,6 +21,7 @@ const seo = {
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <meta name="theme-color" content="#121214" />
+    <ShellLoadBoot />
     <SeoHead
       title="404 · Webxsid"
       description="The page wandered off somewhere else."
@@ -40,7 +43,7 @@ const seo = {
             rgba(255, 255, 255, 0.05),
             transparent 45%
           ),
-          rgb(var(--bg));
+          rgb(var(--surface-page));
       }
 
       .error-page {
@@ -56,10 +59,10 @@ const seo = {
         position: absolute;
         inset: -16%;
         background-image:
-          linear-gradient(rgba(var(--border) / 0.24) 1px, transparent 1px),
+          linear-gradient(rgba(var(--border-default) / 0.24) 1px, transparent 1px),
           linear-gradient(
             90deg,
-            rgba(var(--border) / 0.24) 1px,
+            rgba(var(--border-default) / 0.24) 1px,
             transparent 1px
           );
         background-size: calc(var(--error-grid-size) * 1.15)
@@ -79,10 +82,10 @@ const seo = {
         position: absolute;
         inset: 0;
         background-image:
-          linear-gradient(rgba(var(--accent) / 0.075) 1px, transparent 1px),
+          linear-gradient(rgba(var(--accent-primary) / 0.075) 1px, transparent 1px),
           linear-gradient(
             90deg,
-            rgba(var(--accent) / 0.075) 1px,
+            rgba(var(--accent-primary) / 0.075) 1px,
             transparent 1px
           );
         background-size: calc(var(--error-grid-size) * 2)
@@ -104,14 +107,22 @@ const seo = {
         justify-content: center;
         min-width: 4rem;
         padding: 0.45rem 0.8rem;
-        border: 1px solid rgb(var(--border) / 0.7);
+        border: 1px solid rgb(var(--border-default) / 0.7);
         border-radius: 999px;
-        background: rgb(var(--bg-elevated) / 0.65);
+        background: rgb(var(--surface-elevated) / 0.65);
         font-family: var(--font-mono);
         font-size: 11px;
         letter-spacing: 0.26em;
         text-transform: uppercase;
         color: rgb(var(--text-muted));
+      }
+
+      html[data-theme="retro"] .error-kicker,
+      html[data-theme="retro-dark"] .error-kicker {
+        border-radius: 0.25rem;
+        box-shadow:
+          0 0 0 2px rgba(var(--border-default) / 0.18),
+          0 3px 0 rgba(var(--border-default) / 0.55);
       }
 
       .error-title {
@@ -120,7 +131,16 @@ const seo = {
         font-size: clamp(4rem, 15vw, 6rem);
         line-height: 0.92;
         letter-spacing: -0.08em;
-        color: rgb(var(--text));
+        color: rgb(var(--text-primary));
+      }
+
+      html[data-theme="retro"] .error-title,
+      html[data-theme="retro-dark"] .error-title {
+        font-family: var(--font-display-stack);
+        font-size: clamp(2.2rem, 7vw, 3.6rem);
+        line-height: 1.15;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
       }
 
       .error-copy {
@@ -129,6 +149,14 @@ const seo = {
         font-size: clamp(0.98rem, 1.8vw, 1.05rem);
         line-height: 1.7;
         color: rgb(var(--text-muted));
+      }
+
+      html[data-theme="retro"] .error-copy,
+      html[data-theme="retro-dark"] .error-copy {
+        max-width: 26rem;
+        font-family: var(--font-sans-stack);
+        font-size: clamp(1.2rem, 2vw, 1.45rem);
+        line-height: 1.45;
       }
 
       .error-actions {
@@ -147,14 +175,19 @@ const seo = {
         font-size: 11px;
         letter-spacing: 0.22em;
         text-transform: uppercase;
-        color: rgb(var(--text));
+        color: rgb(var(--text-primary));
         text-decoration: none;
-        border-bottom: 1px solid rgb(var(--accent) / 0.45);
+        border-bottom: 1px solid rgb(var(--accent-primary) / 0.45);
         padding-bottom: 0.2rem;
       }
 
       .error-home:hover {
-        border-bottom-color: rgb(var(--accent));
+        border-bottom-color: rgb(var(--accent-primary));
+      }
+
+      html[data-theme="retro"] .error-home,
+      html[data-theme="retro-dark"] .error-home {
+        border-bottom-width: 2px;
       }
 
       @keyframes error-grid-drift {
@@ -194,6 +227,7 @@ const seo = {
     </style>
   </head>
   <body>
+    <ShellLoadUX />
     <main class="error-page">
       <div class="error-grid" aria-hidden="true"></div>
 

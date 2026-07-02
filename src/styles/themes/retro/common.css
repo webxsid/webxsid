@@ -1,0 +1,90 @@
+[data-theme="retro"],
+[data-theme="retro-dark"] {
+  --font-sans-stack: "VT323", "IBM Plex Mono", "JetBrains Mono", monospace;
+  --font-mono-stack: "Press Start 2P", "VT323", "IBM Plex Mono", monospace;
+  --font-display-stack: "Press Start 2P", "VT323", monospace;
+
+  --radius-shell: 0.45rem;
+  --radius-dock: 0.4rem;
+  --radius-control: 0.25rem;
+  --radius-preview: 0.25rem;
+  --radius-code: 0.2rem;
+
+  --motion-duration-soft: 105ms;
+  --motion-duration-surface: 125ms;
+  --motion-duration-page: 170ms;
+  --motion-lift-distance: 0px;
+  --motion-route-shift: 1px;
+
+  --cursor-default: url("/cursors/retro-default.svg") 1 1, default;
+  --cursor-interactive: url("/cursors/retro-interactive.svg") 12 12, pointer;
+
+  --link-underline-style: solid;
+  --link-underline-offset: 0.12em;
+  --link-external-marker: " >>";
+
+  --loader-splash-glyph-size: clamp(2.15rem, 6vw, 3rem);
+  --loader-splash-label-size: 10px;
+  --loader-route-height: 4px;
+  --loader-route-scale-start: 0.26;
+  --loader-route-scale-mid: 0.68;
+  --loader-route-scale-end: 0.32;
+
+  --preview-width: min(24rem, calc(100vw - 1.5rem));
+  --preview-body-gap: 0.5rem;
+  --preview-body-padding: 0.85rem;
+
+  --ui-title-size: clamp(1.7rem, 4vw, 3rem);
+  --ui-title-line-height: 1.18;
+  --ui-lead-size: 1.12rem;
+  --ui-lead-line-height: 1.36;
+  --ui-prose-size: clamp(1rem, 2.5vw, 1.25rem);
+  --ui-prose-line-height: 1.56;
+  --ui-heading-size: clamp(0.7rem, 1.5vw, 0.85rem);
+  --ui-body-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  --ui-body-line-height: 1.48;
+  --ui-link-size: clamp(1.2rem, 2.51vw, 1.5rem);
+  --ui-meta-link-size: clamp(0.8rem, 1.8vw, 1rem);
+  --ui-meta-link-line-height: 1.38;
+  --ui-meta-link-tracking: 0.08em;
+  --ui-meta-size: clamp(0.3rem, 2vw, 0.7rem);
+  --ui-meta-tracking: 0.18em;
+  --ui-tag-size: clamp(0.8rem, 1.6vw, 1.1rem);
+  --ui-tag-line-height: 1.35;
+  --ui-tag-tracking: 0.12em;
+  --ui-label-size: 0.54rem;
+  --ui-label-tracking: 0.24em;
+  --ui-shell-size: 0.52rem;
+  --ui-shell-tracking: 0.18em;
+  --ui-table-size: 0.52rem;
+  --ui-table-tracking: 0.18em;
+  --ui-rail-primary-size: 1.3rem;
+  --ui-rail-meta-size: 0.52rem;
+  --ui-rail-summary-size: 0.66rem;
+
+  --footer-title-size: clamp(1.2rem, 2.6vw, 1.6rem);
+  --footer-title-line-height: 1.1;
+  --footer-title-font-family: "Press Start 2P", "VT323", monospace;
+
+  --footer-nav-link-size: clamp(0.5rem, 2.5vw, 0.8rem);
+  --footer-nav-link-line-height: 1.3;
+
+  --content-title-size: clamp(1.65rem, 3.7vw, 2.45rem);
+  --content-title-line-height: 1.1;
+  --content-heading-size: 0.82rem;
+  --content-heading-line-height: 1.28;
+  --content-subheading-size: 0.68rem;
+  --content-subheading-line-height: 1.32;
+  --content-label-size: 0.54rem;
+  --content-label-tracking: 0.22em;
+  --content-body-size: 1.8rem;
+  --content-body-line-height: 1.56;
+  --content-note-title-size: clamp(1.42rem, 3vw, 2rem);
+  --content-note-title-line-height: 1.12;
+  --content-note-heading-size: 1.8rem;
+  --content-note-heading-line-height: 1.28;
+  --content-note-subheading-size: 0.64rem;
+  --content-note-subheading-line-height: 1.32;
+  --content-note-body-size: 1.4rem;
+  --content-note-body-line-height: 1.56;
+}
