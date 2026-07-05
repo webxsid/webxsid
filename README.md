@@ -1,75 +1,78 @@
 # Siddharth Mittal
 
-> Building systems that stay understandable over time.
+> Backend engineer building software that values clarity, ownership, and longevity.
 
-Backend engineer focused on developer tooling, distributed systems, local-first software, and the infrastructure that quietly keeps things running.
+I spend most of my time building backend systems, developer tools, and local-first software. I'm particularly interested in distributed systems, infrastructure, release engineering, and products that remain understandable long after they're written.
 
-Most of my work sits somewhere between operational tooling, backend architecture, developer experience, and personal software built for long-term use rather than short-term growth.
+More than anything, I enjoy building software that quietly fits into existing workflows instead of competing for attention.
 
 ---
 
 ## Current Focus
-```md
-Building    → Crona 
-Exploring   → Swift, Linux, Systems Programming 
-Maintaining → Home Lab Infrastructure 
-Writing     → Systems, Tradeoffs, Engineering Workflows 
+
+```text
+Building    → Crona
+Exploring   → Swift, Linux & Systems Programming
+Maintaining → Home Lab
+Writing     → Backend Engineering & Software Design
 ```
+
 ---
 
-## Active Projects
+## Featured Projects
 
 ### Crona
 
-A local-first work tracker built for developers.
+A local-first work tracker for developers.
 
 - Terminal-first
 - Offline-first
+- SQLite
+- Go
 - Open source
-- Built around work sessions rather than tasks
 
-Repository:
-https://github.com/webxsid/crona
-
-Website:
-https://crona.work
+→ https://crona.work
 
 ---
 
 ### Pebbles
 
-An experiment in recommendations, personal knowledge, and sharing useful things with people who might care.
-
-Currently focused on backend architecture, operational simplicity, and sustainable growth.
+A private-first recommendation platform for sharing books, films, music, articles and anything else worth remembering with friends and family.
 
 ---
 
-## Philosophy
+## Writing
 
-I tend to prefer:
+I occasionally write about:
 
-- Small durable abstractions
+- Backend engineering
 - Local-first software
-- Systems that remain understandable after time away
-- Operational simplicity over architectural cleverness
-- Documentation as a form of thinking
+- System design
+- Developer tools
+- Data ownership
+- Engineering trade-offs
+
+Latest articles live on:
+
+→ https://webxsid.com/writing
 
 ---
 
 ## Elsewhere
 
-- Website → https://webxsid.com
-- Writing → https://webxsid.com/writing
-- References → https://webxsid.com/references
-- Now → https://webxsid.com/now
+🌐 Website — https://webxsid.com
+
+📝 Writing — https://webxsid.com/writing
+
+📍 Now — https://webxsid.com/now
+
+💬 Threads — https://threads.com/@webxsid
 
 ---
-
-## GitHub Activity
 
 <p align="center">
   <img
     src="https://github-readme-streak-stats.herokuapp.com/?user=webxsid&hide_border=true&theme=transparent"
+    alt="GitHub contribution streak"
   />
 </p>
-
