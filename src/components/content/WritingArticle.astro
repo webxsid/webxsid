@@ -1,5 +1,6 @@
 ---
 import ContentDocument from "./ContentDocument.astro";
+import ArticleFooter from "./ArticleFooter.astro";
 import ContentHeader from "./ContentHeader.astro";
 import ContentLinkFooter from "./ContentLinkFooter.astro";
 import ContentLinkPreview from "./ContentLinkPreview.astro";
@@ -35,6 +36,7 @@ const { eyebrow, title, summary, publishedAt, tags = [], linkProfile } = Astro.p
     <slot />
   </ContentDocument>
 
+  <ArticleFooter />
   <ContentLinkFooter profile={linkProfile} />
   <ContentLinkPreview previewLinks={linkProfile?.previewLinks ?? []} />
 </div>

@@ -13,10 +13,12 @@ import {
 } from "../lib/writing";
 import { getStaticOgImagePath } from "../lib/og-image";
 import { withAutoOgImage } from "../lib/seo";
+import { formatNowUpdatedAt, getLatestNowEntry } from "../lib/now";
 
-const [projects, writing] = await Promise.all([
+const [projects, writing, nowEntries] = await Promise.all([
   getCollection("projects"),
   getCollection("writing"),
+  getCollection("now"),
 ]);
 
 const featuredProjects = [...projects]
@@ -27,6 +29,8 @@ const featuredProjects = [...projects]
 const latestWriting = sortWritingEntries(filterPublicWritingEntries(writing))
   .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
   .slice(0, 3);
+
+const latestNow = getLatestNowEntry(nowEntries);
 
 const seo = withAutoOgImage(
   {
@@ -144,6 +148,27 @@ const seo = withAutoOgImage(
         </div>
       </Section>
     </div>
+    {
+      latestNow && (
+        <Section title="Now">
+          <div class="space-y-4">
+            <p class="ui-body">{latestNow.data.summary}</p>
+
+            <div class="flex items-center gap-3">
+              <span class="ui-body text-text-muted">
+                Updated {formatNowUpdatedAt(latestNow.data.updatedAt)}
+              </span>
+
+              <span class="text-border">/</span>
+
+              <a href="/now" class="inline-link">
+                Read more
+              </a>
+            </div>
+          </div>
+        </Section>
+      )
+    }
     <ContentLinkPreview previewLinks={[]} />
   </Container>
 </BaseLayout>

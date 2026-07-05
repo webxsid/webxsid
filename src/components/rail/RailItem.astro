@@ -32,8 +32,8 @@ const {
     >
       <div class="space-y-1">
         <span
-            class={[
-            "ui-rail-primary block transition",
+          class={[
+            "ui-rail-primary block transition line-clamp-1",
             active ? "text-text" : "text-text-muted group-hover:text-text",
           ].join(" ")}
         >
@@ -45,6 +45,7 @@ const {
             class={[
               "ui-rail-meta block font-mono uppercase",
               active ? "text-text-muted" : "text-text-muted/60",
+              "line-clamp-1",
             ].join(" ")}
           >
             {item.secondary}
@@ -56,6 +57,7 @@ const {
             class={[
               "ui-rail-summary max-w-[12rem]",
               active ? "text-text-muted" : "text-text-muted/70",
+              "line-clamp-2",
             ].join(" ")}
           >
             {item.secondary}
@@ -80,15 +82,13 @@ const {
         mobileDensity === "compact"
           ? "min-w-[9.5rem] max-w-[9.5rem] gap-0.5 px-2.5 py-1.5"
           : "min-w-[11rem] max-w-[11rem] gap-1 px-3 py-2",
-        active
-          ? "shell-item-active"
-          : "text-text-muted hover:text-text",
+        active ? "shell-item-active" : "text-text-muted hover:text-text",
       ].join(" ")}
       style="border-radius: var(--radius-dock);"
     >
       <span
         class={[
-          "block truncate leading-5",
+          "block truncate leading-5 lint-clamp-1",
           "ui-rail-primary",
         ].join(" ")}
       >
@@ -98,7 +98,7 @@ const {
       {item.secondary && secondaryVariant === "meta" && (
         <span
           class={[
-            "ui-rail-meta block truncate font-mono uppercase",
+            "ui-rail-meta block truncate font-mono uppercase line-clamp-1",
             active ? "text-text-muted" : "text-text-muted/70",
           ].join(" ")}
         >
@@ -109,7 +109,7 @@ const {
       {item.secondary && secondaryVariant === "summary" && (
         <span
           class={[
-            "ui-rail-summary block truncate",
+            "ui-rail-summary block truncate line-clamp-2",
             active ? "text-text-muted" : "text-text-muted/70",
           ].join(" ")}
         >

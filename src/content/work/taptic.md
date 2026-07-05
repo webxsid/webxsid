@@ -9,13 +9,17 @@ order: 0
 seo:
   description: Work on interview infrastructure, automation, and operational tooling at Taptic.
 ---
+Remote interviews look deceptively simple. Someone schedules a meeting, joins a call, shares a screen, writes code, and leaves.
 
-The work here involved the kind of systems that are invisible when they work and impossible to ignore when they do not. Interview platforms have a lot of moving parts, but the useful ones should still feel calm to the people using them.
+Behind that are dozens of systems that all need to behave predictably under imperfect conditions. Meetings fail, recordings need to recover from partial uploads, emails have to arrive on time, browsers disconnect unexpectedly, and automation has to continue even after individual services stop cooperating.
 
-That means scheduling, recording, automation, and operational recovery all have to line up behind a simple story. If the surface feels confusing, the product has already lost some of its value.
+My work sits almost entirely behind that surface.
 
-I keep comparing that problem to [CRONA](/projects/crona) and [Pebbles](/projects/pebbles), because both reward a narrow, legible interface even when the underlying state is not trivial.
+Over the last few years I've worked across the backend platform powering interviews, building and maintaining APIs, scheduling workflows, recording pipelines, webhook infrastructure, operational tooling, and the internal systems that support recruiters, interviewers, and  candidates throughout the interview lifecycle.
 
-The best outcome is usually one where the user only notices the system when it helps them. That is the standard I keep in mind when shaping infrastructure-heavy products.
+A large part of the work has involved reducing operational complexity rather than simply adding features. That meant replacing manual processes with automation, making failure modes observable, improving deployment reliability, introducing tracing and telemetry, and building tooling that allows problems to be diagnosed before they become customer-facing incidents.
 
-External reference for the company: [Taptic](https://www.taptic.com/) is a useful outbound target for the work page footer and head hints.
+Much of the engineering effort goes into situations that hopefully never happen. Recovering interrupted recordings, handling distributed workflow retries, coordinating long-running background jobs, managing infrastructure across multiple AWS services, and making systems resilient to partial failure are often more valuable than the features users immediately notice.
+
+One lesson that has stayed with me throughout this work is that reliability is largely an interface problem. The more predictable the behaviour of a system becomes internally, the simpler the experience can remain externally. The goal isn't to expose complexity—it is to absorb it.
+

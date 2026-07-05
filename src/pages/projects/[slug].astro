@@ -89,7 +89,7 @@ const declaredProjectUrls = [
         {
           companyLabel && (
             <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <p class="ui-tag leading-6">Built at:</p>
+              <p class="ui-tag leading-6 font-bold">Built at:</p>
               {companyHref ? (
                 <a href={companyHref} class="meta-link">
                   {companyLabel}
@@ -118,6 +118,52 @@ const declaredProjectUrls = [
                 <span class="font-bold">Tags:</span> {tagLabel}
               </p>
             </div>
+          )
+        }
+      </div>
+      <div
+        class={[
+          "flex flex-wrap items-center gap-x-3 gap-y-2",
+          !declaredProjectUrls.length && "hidden",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        <p class="ui-tag leading-6">Links:</p>
+        {
+          entry.data.source && (
+            <a
+              href={entry.data.source}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-link"
+            >
+              Source Code
+            </a>
+          )
+        }
+        {
+          entry.data.website && (
+            <a
+              href={entry.data.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-link"
+            >
+              Website
+            </a>
+          )
+        }
+        {
+          entry.data.demo && (
+            <a
+              href={entry.data.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-link"
+            >
+              Demo
+            </a>
           )
         }
       </div>

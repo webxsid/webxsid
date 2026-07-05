@@ -28,94 +28,150 @@ const seo = withAutoOgImage(
         <Section title="Colophon">
           <div class="space-y-7">
             <p class="ui-lead max-w-3xl font-semibold tracking-tight text-text">
-              A small record of how this site is put together, revised, and kept
-              in use.
+              A compact record of how this site is built, what constraints shape
+              it, and which tools are doing the real work.
             </p>
             <ContentDocument class="mt-2">
-              <h2>Why this site exists</h2>
-
-              <p>
-                Most portfolio sites eventually become snapshots. They capture a
-                moment in time, then slowly drift out of sync with the work they
-                were meant to represent.
-              </p>
-
-              <p>
-                This site is an attempt to avoid that. Rather than treating it
-                as a finished artifact, I treat it as a working document.
-                Projects evolve, ideas change, old assumptions get replaced, and
-                the site changes alongside them.
-              </p>
-
-              <p>
-                The goal is not completeness. The goal is to maintain a place
-                where the work, the reasoning behind it, and the things that
-                influence it can live together.
-              </p>
-
-              <h2>How it is built</h2>
-
-              <p>
-                The site is built with Astro and styled with Tailwind CSS.
-                Content is stored as Markdown and rendered through Astro Content
-                Collections.
-              </p>
-
-              <p>
-                Pages are intentionally simple. There is no CMS, very little
-                client-side JavaScript, and no attempt to optimise for
-                engagement. Most of the site is static HTML generated at build
-                time.
-              </p>
-
-              <p>The structure mirrors the way I think about my work:</p>
+              <h2>Technology</h2>
 
               <ul>
-                <li>Projects for systems and tools.</li>
-                <li>Writing for essays, observations, and technical thinking.</li>
                 <li>
-                  References for books, articles, songs, and ideas that stayed
-                  with me.
+                  <strong>Astro</strong> is the foundation of the site. I wanted something
+                  that treated content as content, not another React application pretending
+                  to be one.
                 </li>
+
                 <li>
-                  Work for the teams and systems that shaped my approach to
-                  engineering.
+                  <strong>TypeScript</strong> keeps the content model, build tooling,
+                  and page generation honest as the site grows.
                 </li>
-                <li>Now for whatever currently has my attention.</li>
+
+                <li>
+                  <strong>Tailwind CSS v4</strong> handles almost all of the styling.
+                  Beyond a handful of shared components, most of the UI is just utilities
+                  and typography.
+                </li>
+
+                <li>
+                  <strong>Astro Content Collections</strong> and
+                  <strong>Zod</strong> keep every content type using explicit, typed
+                  schemas instead of relying on convention.
+                </li>
+
+                <li>
+                  Everything is written in <strong>Markdown</strong> by default.
+                  <strong>MDX</strong> only appears when a page genuinely benefits
+                  from interactive components.
+                </li>
+
+                <li>
+                  <strong>React</strong> is only used where interaction makes sense.
+                  Most pages never hydrate any client-side JavaScript.
+                </li>
+
+                <li>
+                  <strong>Cloudflare Pages</strong> hosts the site as static files.
+                  That keeps deployment simple and close to the shape of what actually
+                  gets built.
+                </li>
+              </ul>
+
+              <h2>Design Principles</h2>
+
+              <ul>
+                <li>Static unless there's a good reason not to be.</li>
+                <li>Markdown before databases.</li>
+                <li>Client-side JavaScript earns its place.</li>
+                <li>Fast before clever.</li>
+                <li>Content first, animation second.</li>
+                <li>Stable URLs should stay stable.</li>
+                <li>Readable without JavaScript wherever possible.</li>
+                <li>Progressive enhancement over framework magic.</li>
+                <li>
+                  If something feels decorative, it probably doesn't belong.
+                </li>
               </ul>
 
               <h2>Design</h2>
 
-              <p>The visual design is intentionally restrained.</p>
-
               <p>
-                Over time I've found myself preferring software that becomes
-                clearer the closer you get to it. The same idea applies here.
-                Typography, spacing, and structure carry most of the interface.
-                The goal is to make reading feel effortless rather than
-                decorative.
+                I spend most of my day reading code, documentation, logs, and
+                terminal output. Unsurprisingly, that's the kind of interface I
+                enjoy spending time in.
               </p>
 
               <p>
-                Many modern portfolios feel like products. I wanted this site to
-                feel more like a notebook.
+                I wanted this site to feel closer to a notebook than a product
+                landing page. Typography, spacing, and structure do most of the
+                work. If the design disappears while you're reading, it's doing
+                exactly what I hoped it would.
               </p>
 
-              <h2>Maintenance</h2>
+              <h2>Implementation Details</h2>
 
-              <p>
-                The site is maintained intermittently, usually alongside
-                whatever project or idea I'm currently exploring.
-              </p>
+              <ul>
+                <li>
+                  Open Graph images are generated automatically, including
+                  reading time for writing pages.
+                </li>
+                <li>
+                  Metadata is generated centrally so canonical URLs, Open Graph
+                  tags, RSS, and structured data all stay in sync.
+                </li>
+                <li>
+                  Writing, projects, work, references, and now pages all flow
+                  through content collections with typed frontmatter rather than
+                  ad-hoc parsing.
+                </li>
+                <li>
+                  The theme system is driven by CSS variables, multiple theme
+                  families, and an early bootstrap script so theme choice
+                  applies before the page settles.
+                </li>
+                <li>
+                  RSS and sitemap output are generated from the same content
+                  sources as the pages, so syndication and indexing do not need
+                  separate maintenance.
+                </li>
+                <li>
+                  The site builds a small internal link and reference graph from
+                  content bodies, which powers connected writing, external
+                  references, preview data, and resource hints.
+                </li>
+                <li>
+                  A few small scripts automate creating new entries, keeping
+                  lists in sync, and handling content mirrors so writing stays
+                  file-first.
+                </li>
+              </ul>
 
-              <p>
-                Most updates are small: a note added, a page rewritten, a
-                project updated, a thought recorded before it disappears.
-              </p>
+              <h2>Credits</h2>
+              <ul>
+                <li>
+                  <strong>Astro</strong> for making content-first websites fun again.
+                </li>
 
-              <p>
-                There is no roadmap. Only whatever seems worth documenting next.
-              </p>
+                <li>
+                  <strong>Tailwind CSS</strong> for staying out of the way.
+                </li>
+
+                <li>
+                  <strong>Cloudflare Pages</strong> for hosting that I rarely have
+                  to think about.
+                </li>
+
+                <li>
+                  <strong>Lucide</strong> for the icons scattered throughout the site.
+                </li>
+
+                <li>
+                  <strong>Sharp</strong> for the Open Graph image pipeline.
+                </li>
+
+                <li>
+                  <strong>IBM Plex</strong> for giving the site most of its voice.
+                </li>
+              </ul>
             </ContentDocument>
           </div>
         </Section>

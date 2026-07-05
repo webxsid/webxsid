@@ -1,0 +1,135 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/shell/Container.astro";
+import Section from "../../components/content/Section.astro";
+import ContentDocument from "../../components/content/ContentDocument.astro";
+import { SITE_URL } from "../../lib/site";
+import { getStaticOgImagePath } from "../../lib/og-image";
+import { withAutoOgImage } from "../../lib/seo";
+
+const feedUrl = new URL("/rss.xml", SITE_URL).toString();
+const seo = withAutoOgImage(
+  {
+    title: "RSS · Webxsid",
+    description: "Subscribe to new writing from Webxsid through RSS.",
+    canonical: "/rss",
+  },
+  getStaticOgImagePath(),
+);
+---
+
+<BaseLayout
+  title="RSS · Webxsid"
+  description="Subscribe to new writing from Webxsid through RSS."
+  seo={seo}
+  backHref="/"
+>
+  <Container>
+    <div class="py-8 lg:py-14">
+      <div class="max-w-4xl space-y-14 lg:space-y-16">
+        <Section title="RSS">
+          <div class="space-y-7">
+            <p class="ui-lead max-w-3xl font-semibold tracking-tight text-text">
+              A simple way to keep up with everything I publish here without
+              depending on timelines, newsletters, or social feeds.
+            </p>
+
+            <ContentDocument class="mt-2">
+              <p>
+                Everything published on this site appears in the RSS feed. If you
+                already use a reader, this is the cleanest way to keep new writing
+                in one place.
+              </p>
+
+              <p>
+                RSS is still one of the simplest ways to follow websites on your
+                own terms. No ranking, no recommendation engine, and no need to
+                hand the reading experience over to someone else.
+              </p>
+
+              <p class="font-mono text-text">
+                <code>{feedUrl}</code>
+              </p>
+
+              <div class="flex flex-wrap items-center gap-4">
+                <button
+                  type="button"
+                  class="ui-shell inline-flex items-center font-mono uppercase text-text-muted transition terminal-button hover:text-text"
+                  data-copy-feed-url
+                  data-default-label="Copy feed URL"
+                  data-copied-label="Copied"
+                  data-fallback-label="Copy unavailable"
+                  data-feed-url={feedUrl}
+                >
+                  Copy feed URL
+                </button>
+
+                <a href="/rss.xml" class="meta-link">
+                  Open raw XML
+                </a>
+              </div>
+
+              <h2>Readers</h2>
+
+              <p>
+                The feed works with common readers including NetNewsWire, Reeder,
+                Feedbin, Inoreader, FreshRSS, and NewsBlur.
+              </p>
+
+              <h2>Note</h2>
+
+              <p>
+                One of the things I still appreciate about RSS is how little
+                stands between the writer and the reader.
+              </p>
+
+              <p>
+                No recommendation algorithms. No engagement metrics. Just the
+                sites you've chosen to follow.
+              </p>
+            </ContentDocument>
+          </div>
+        </Section>
+      </div>
+    </div>
+  </Container>
+</BaseLayout>
+
+<script is:inline>
+  (() => {
+    const button = document.querySelector("[data-copy-feed-url]");
+    if (!(button instanceof HTMLButtonElement)) return;
+
+    const defaultLabel = button.dataset.defaultLabel ?? "Copy feed URL";
+    const copiedLabel = button.dataset.copiedLabel ?? "Copied";
+    const fallbackLabel = button.dataset.fallbackLabel ?? "Copy unavailable";
+    const feedUrl = button.dataset.feedUrl ?? "";
+    let resetTimer = 0;
+
+    const setLabel = (label) => {
+      button.textContent = label;
+    };
+
+    const scheduleReset = () => {
+      window.clearTimeout(resetTimer);
+      resetTimer = window.setTimeout(() => setLabel(defaultLabel), 1800);
+    };
+
+    button.addEventListener("click", async () => {
+      if (!feedUrl || !navigator.clipboard?.writeText) {
+        setLabel(fallbackLabel);
+        scheduleReset();
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(feedUrl);
+        setLabel(copiedLabel);
+      } catch {
+        setLabel(fallbackLabel);
+      }
+
+      scheduleReset();
+    });
+  })();
+</script>

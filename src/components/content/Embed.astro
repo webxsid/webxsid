@@ -1,0 +1,56 @@
+---
+type Props = {
+  src: string;
+  title: string;
+  width?: number | string;
+  height?: number | string;
+  aspectRatio?: number | string;
+};
+
+const { src, title, width, height, aspectRatio } = Astro.props as Props;
+
+const normalizeDimension = (value?: number | string) => {
+  if (value === undefined || value === null || value === "") {
+    return undefined;
+  }
+
+  return typeof value === "number" ? `${value}px` : value;
+};
+
+const normalizeAspectRatio = (value?: number | string) => {
+  if (value === undefined || value === null || value === "") {
+    return undefined;
+  }
+
+  return typeof value === "number" ? String(value) : value;
+};
+
+const maxWidth = normalizeDimension(width);
+const frameHeight = normalizeDimension(height);
+const frameAspectRatio =
+  normalizeAspectRatio(aspectRatio) ??
+  (width !== undefined && height !== undefined && Number(width) > 0 && Number(height) > 0
+    ? `${width} / ${height}`
+    : undefined);
+
+const frameStyle = [
+  maxWidth ? `--embed-max-width:${maxWidth}` : undefined,
+  frameHeight ? `--embed-height:${frameHeight}` : undefined,
+  frameAspectRatio ? `--embed-aspect-ratio:${frameAspectRatio}` : undefined,
+]
+  .filter(Boolean)
+  .join(";");
+---
+
+<figure class="content-embed" style={frameStyle || undefined}>
+  <div class="content-embed__frame">
+    <iframe
+      src={src}
+      title={title}
+      loading="lazy"
+      allow="fullscreen"
+      referrerpolicy="strict-origin-when-cross-origin"
+    />
+  </div>
+  <figcaption>{title}</figcaption>
+</figure>

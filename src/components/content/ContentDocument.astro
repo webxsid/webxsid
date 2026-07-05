@@ -5,9 +5,7 @@ type Props = {
 };
 
 const { note = false, class: className = "" } = Astro.props as Props;
-const classes = [note ? "content-note" : "content-document", className]
-  .filter(Boolean)
-  .join(" ");
+const classes = ["content-note", className].filter(Boolean).join(" ");
 ---
 
 <div class={classes}>

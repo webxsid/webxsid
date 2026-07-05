@@ -19,7 +19,7 @@ export const footerSocialLinks = [
   { href: "https://bsky.app/profile/webxsid.bsky.social", label: "Bluesky", icon: "bluesky" },
   { href: "https://instagram.com/webxsid", label: "Instagram", icon: "instagram" },
   { href: "mailto:me@webxsid.com", label: "Mail", icon: "mail" },
-  { href: "/rss.xml", label: "RSS", icon: "rss" },
+  { href: "/rss", label: "RSS", icon: "rss" },
 ] as const;
 
 export const footerLinkColumns = [

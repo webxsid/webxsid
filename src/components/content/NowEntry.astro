@@ -13,12 +13,18 @@ type Props = {
       title: string;
       summary: string;
       updatedAt: Date;
+      links?: Array<{
+        heading?: string;
+        title: string;
+        url: string;
+      }>;
     };
   };
   linkProfile?: ContentLinkProfile;
 };
 
 const { entry, linkProfile } = Astro.props as Props;
+const relatedLinks = entry.data.links ?? [];
 ---
 
 <div class="motion-page max-w-3xl space-y-12 lg:space-y-16" data-content-preview-scope>
@@ -30,6 +36,53 @@ const { entry, linkProfile } = Astro.props as Props;
     <slot />
   </ContentDocument>
 
-  <ContentLinkFooter profile={linkProfile} />
+  {
+    relatedLinks.length > 0 && (
+      <section class="motion-page max-w-4xl border-t border-border/70 pt-8 sm:pt-10 lg:pt-12">
+        <div class="space-y-4">
+          <p class="ui-label font-mono uppercase text-text-muted">
+            Related Links
+          </p>
+
+          <div class="overflow-x-auto">
+            <table class="w-full border-separate border-spacing-0">
+              <tbody>
+                {relatedLinks.map((item) => {
+                  const isExternal = /^https?:\/\//.test(item.url);
+
+                  return (
+                    <tr class="align-top">
+                      <td class="ui-table block w-full pb-2 pr-0 font-mono uppercase text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
+                        {item.heading ?? "Link"}
+                      </td>
+                      <td class="block pb-5 md:table-cell md:pb-4">
+                        <a
+                          href={item.url}
+                          {...(isExternal
+                            ? {
+                                target: "_blank",
+                                rel: "noopener noreferrer",
+                              }
+                            : {})}
+                          class="meta-link text-text"
+                        >
+                          {item.title}
+                        </a>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <ContentLinkFooter
+    profile={linkProfile}
+    declaredUrls={relatedLinks.map((item) => item.url)}
+  />
   <ContentLinkPreview previewLinks={linkProfile?.previewLinks ?? []} />
 </div>

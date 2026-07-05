@@ -3,9 +3,30 @@ import type { ContentLinkProfile } from "../../lib/content-links";
 
 type Props = {
   profile?: ContentLinkProfile;
+  declaredUrls?: string[];
 };
 
-const { profile } = Astro.props as Props;
+const { profile, declaredUrls = [] } = Astro.props as Props;
+
+const normalizeExternalLink = (value: string) => {
+  try {
+    const url = new URL(value);
+    const pathname = url.pathname.replace(/\/+$/, "") || "/";
+    return `${url.origin}${pathname}${url.search}`;
+  } catch {
+    return value;
+  }
+};
+
+const getDisplayUrl = (value: string) => {
+  try {
+    const url = new URL(value);
+    const pathname = url.pathname.replace(/\/+$/, "");
+    return `${url.hostname.replace(/^www\./, "")}${pathname}${url.search}`;
+  } catch {
+    return value;
+  }
+};
 
 const groupItems = <T,>(items: T[], getKey: (item: T) => string) => {
   const groups = new Map<string, T[]>();
@@ -32,8 +53,21 @@ const backlinkGroups = groupItems(profile?.backlinks ?? [], (item) => item.secti
   }),
 );
 
+const declaredUrlSet = new Set(declaredUrls.map(normalizeExternalLink));
+const filteredReferences = (profile?.references ?? []).filter(
+  (item) => !declaredUrlSet.has(normalizeExternalLink(item.href)),
+);
+
+const seenReferenceUrls = new Set<string>();
+const externalReferences = filteredReferences.filter((item) => {
+  const normalized = normalizeExternalLink(item.href);
+  if (seenReferenceUrls.has(normalized)) return false;
+  seenReferenceUrls.add(normalized);
+  return true;
+});
+
 const hasConnectedWriting = backlinkGroups.length > 0;
-const hasExternalReferences = (profile?.references.length ?? 0) > 0;
+const hasExternalReferences = externalReferences.length > 0;
 ---
 {
   (hasConnectedWriting || hasExternalReferences) && (
@@ -87,7 +121,7 @@ const hasExternalReferences = (profile?.references.length ?? 0) > 0;
               <div class="overflow-x-auto">
                 <table class="w-full border-separate border-spacing-0">
                   <tbody>
-                    {profile?.references.map((item) => (
+                    {externalReferences.map((item) => (
                       <tr class="align-top">
                         <td class="ui-table block w-full pb-2 pr-0 font-mono uppercase text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
                           {item.origin}
@@ -101,7 +135,7 @@ const hasExternalReferences = (profile?.references.length ?? 0) > 0;
                                 rel="noopener noreferrer"
                                 class="meta-link"
                               >
-                                {item.displayUrl}
+                                {item.displayUrl || getDisplayUrl(item.href)}
                               </a>
                             </p>
 

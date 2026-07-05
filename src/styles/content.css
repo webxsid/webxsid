@@ -182,4 +182,28 @@
   .content-note pre code {
     @apply bg-transparent p-0;
   }
+
+  .content-embed {
+    @apply my-8 w-full max-w-full;
+    max-width: var(--embed-max-width, 100%);
+  }
+
+  .content-embed__frame {
+    @apply relative w-full overflow-hidden rounded-none border border-border/70;
+    aspect-ratio: var(--embed-aspect-ratio, auto);
+    min-height: var(--embed-height, 0);
+    height: var(--embed-height, auto);
+    background-color: rgb(var(--surface-elevated) / 0.12);
+  }
+
+  .content-embed__frame iframe {
+    @apply block h-full w-full border-0;
+  }
+
+  .content-embed figcaption {
+    @apply mt-3 font-mono uppercase text-text-muted;
+    font-size: var(--ui-meta-size);
+    letter-spacing: var(--ui-meta-tracking);
+    line-height: 1.5;
+  }
 }

@@ -64,7 +64,7 @@ const writing = defineCollection({
 
 const now = defineCollection({
   loader: glob({
-    pattern: "**/*.md",
+    pattern: "**/*.{md,mdx}",
     base: "./src/content/now",
   }),
   schema: z.object({
@@ -72,7 +72,15 @@ const now = defineCollection({
     summary: z.string(),
     updatedAt: z.coerce.date(),
     tags: z.array(z.string()).default([]),
-    links: z.array(z.object({ title: z.string(), url: z.url() })).default([]),
+    links: z
+      .array(
+        z.object({
+          heading: z.string().optional(),
+          title: z.string(),
+          url: z.string(),
+        }),
+      )
+      .default([]),
     seo: seoSchema,
   }),
 });

@@ -8,12 +8,14 @@ period: 2022 - 2024
 order: 1
 ---
 
-The work at Appyhigh sat in a useful middle ground between product surface and production reality. The systems had to be reliable enough to ship, but small enough to keep changing as the requirements shifted.
+Appyhigh was where software stopped being something I built for assignments and became something people relied on every day.
 
-That experience lines up with the same pattern you see in [CRONA](/projects/crona): the best tool is usually the one that keeps the operational shape small enough for the team to understand without constant re-explaining.
+I joined as a full-stack developer and worked across both frontend and backend systems, building customer-facing features, internal tools, APIs, dashboards, and the operational workflows that supported them. It was the first time I experienced what happens after software ships—requirements change, customers discover edge cases, infrastructure fails in unexpected ways, and every technical decision eventually becomes an operational one.
 
-It also connects to [Building projects for focus](/writing/building-projects-for-focus), because both contexts reward interfaces that reduce context switching and avoid unnecessary ceremony.
+Unlike smaller personal projects, production systems rarely present isolated problems. A seemingly simple feature could touch databases, background jobs, third-party integrations, deployment pipelines, and customer support at the same time. Learning to navigate those dependencies became just as important as writing the code itself.
 
-Over time, the most useful systems were the ones that made the next action obvious. When that happens, the team spends less time interpreting the interface and more time using it.
+Looking back, the most valuable part of that experience wasn't a particular framework or technology. It was learning how to reason about software after it leaves the editor. Debugging production issues, investigating failures, reading logs, improving existing systems, and gradually understanding the trade-offs behind earlier engineering decisions taught me far more than building greenfield features ever could.
 
-External reference for the company space: [Appyhigh](https://www.appyhigh.com/) is a sensible outbound link for testing the footer and preconnect behavior.
+It was also where I started appreciating engineering as a process of simplification. The best solutions were rarely the most clever ones—they were the ones that made the next engineer's job a little easier, reduced operational overhead, and kept the system understandable as it continued to grow.
+
+Many of the ideas that now shape the way I build software—keeping systems observable, preferring straightforward designs over clever abstractions, and treating maintainability as a feature—can be traced back to the lessons I learned during those years.

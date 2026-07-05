@@ -72,6 +72,7 @@
 }
 
 .meta-link {
+  color: var(--text-muted);
   font-family: var(--font-sans);
   font-size: var(--ui-meta-link-size);
   line-height: var(--ui-meta-link-line-height);
@@ -80,7 +81,6 @@
   text-decoration: underline;
   text-decoration-style: var(--link-underline-style);
   text-underline-offset: var(--link-underline-offset);
-  color: inherit;
   transition:
     color var(--motion-duration-soft) var(--motion-ease),
     text-decoration-color var(--motion-duration-soft) var(--motion-ease);

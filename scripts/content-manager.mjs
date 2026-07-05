@@ -18,6 +18,10 @@ const vaultRoot = path.join(
 const collectionNames = ["projects", "writing", "references", "work", "now"];
 const collections = new Set(collectionNames);
 
+function getCollectionExtension(collection) {
+  return collection === "now" ? ".mdx" : ".md";
+}
+
 function fail(message) {
   console.error(message);
   process.exit(1);
@@ -72,11 +76,11 @@ function getSlugPromptDefault(collection) {
 }
 
 function repoFilePath(collection, slug) {
-  return path.join(contentRoot, collection, `${slug}.md`);
+  return path.join(contentRoot, collection, `${slug}${getCollectionExtension(collection)}`);
 }
 
 function vaultFilePath(collection, slug) {
-  return path.join(vaultRoot, collection, `${slug}.md`);
+  return path.join(vaultRoot, collection, `${slug}${getCollectionExtension(collection)}`);
 }
 
 async function pathExists(targetPath) {
@@ -111,7 +115,7 @@ async function resolveSymlinkTarget(linkPath) {
 
 function splitRelativeFile(relFile) {
   const [collection, ...rest] = relFile.split(path.sep);
-  const slug = rest.join(path.sep).replace(/\.md$/, "");
+  const slug = rest.join(path.sep).replace(/\.(md|mdx)$/, "");
 
   return { collection, slug };
 }
@@ -229,7 +233,7 @@ async function getVaultOnlyIssues() {
     const vaultFiles = await collectRepoFiles(collectionDir);
 
     for (const relFile of vaultFiles) {
-      const slug = relFile.replace(/\.md$/, "");
+      const slug = relFile.replace(/\.(md|mdx)$/, "");
       const repoPath = repoFilePath(collection, slug);
       const vaultPath = vaultFilePath(collection, slug);
       const repoExists = await pathExists(repoPath);
@@ -314,7 +318,7 @@ async function collectRepoFiles(dirPath, collection = "") {
       continue;
     }
 
-    if (entry.isFile() && entry.name.endsWith(".md")) {
+    if (entry.isFile() && (entry.name.endsWith(".md") || entry.name.endsWith(".mdx"))) {
       files.push(nextRelative);
     }
   }
