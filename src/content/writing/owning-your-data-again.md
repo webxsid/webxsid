@@ -1,6 +1,6 @@
 ---
 title: Owning your data again
-summary: Softwares have shifted from ownership to permissions. Here's why it matters and why we should all care about the shift.
+summary: Software have shifted from ownership to permissions. Here's why it matters and why we should all care about the shift.
 kind: blog
 publishedAt: 2026-07-05
 featured: true
@@ -52,7 +52,7 @@ But I do think every piece of software should begin by asking a simple question:
 
 **Who should own the data this application creates?**
 
-f the answer is the user, then ownership shouldn’t be an afterthought. It should be the foundation the rest of the system is built on. 
+If the answer is the user, then ownership shouldn’t be an afterthought. It should be the foundation the rest of the system is built on. 
 Cloud sync, collaboration, backups, and AI can all be layered on top, but they should enhance ownership rather than replace it.
 
 That one question has shaped how I think about software over the last few years. 
@@ -60,7 +60,7 @@ It’s why projects like [Crona](/projects/crona) are local-first by default. It
 that works without an internet connection, degrades gracefully when services disappear, 
 and treats exporting your data as a basic expectation rather than a premium feature.
 
-See I'll be honest, I don’t think we’re going back to the days of boxed software and physical media (atleast on a global scale). 
+See I'll be honest, I don’t think we’re going back to the days of boxed software and physical media (at least on a global scale). 
 We’ve gained far too much convenience to abandon it now. But I do hope we can move toward software that gives people both: 
 the convenience of the cloud, and the confidence that the things they buy or create ultimately belong to them.
 
