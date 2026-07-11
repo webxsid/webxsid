@@ -5,30 +5,33 @@
     const LEGACY_KEY = "theme";
     const DEFAULT_FAMILY = "graphite";
     const DEFAULT_MODE = "system";
+    const themeColors = {
+      paper: "#f7f4ee",
+      graphite: "#121214",
+      "e-ink": "#f2efe7",
+      "e-ink-dark": "#1c1c1a",
+      "phosphor-light": "#f0f7ec",
+      phosphor: "#0a0f0a",
+      retro: "#eef0df",
+      "retro-dark": "#222945",
+    };
+
     const families = {
       graphite: {
         light: "paper",
         dark: "graphite",
-        colors: {
-          paper: "#f7f4ee",
-          graphite: "#121214",
-        },
+      },
+      "e-ink": {
+        light: "e-ink",
+        dark: "e-ink-dark",
       },
       phosphor: {
         light: "phosphor-light",
         dark: "phosphor",
-        colors: {
-          "phosphor-light": "#f0f7ec",
-          phosphor: "#0a0f0a",
-        },
       },
       retro: {
         light: "retro",
         dark: "retro-dark",
-        colors: {
-          retro: "#eef0df",
-          "retro-dark": "#222945",
-        },
       },
     };
 
@@ -40,6 +43,9 @@
         case "paper":
         case "graphite":
           return "graphite";
+        case "e-ink":
+        case "e-ink-dark":
+          return "e-ink";
         case "phosphor-light":
         case "phosphor":
           return "phosphor";
@@ -54,10 +60,12 @@
     const getModeFromLegacy = (theme) => {
       switch (theme) {
         case "paper":
+        case "e-ink":
         case "phosphor-light":
         case "retro":
           return "light";
         case "graphite":
+        case "e-ink-dark":
         case "phosphor":
         case "retro-dark":
           return "dark";
@@ -75,15 +83,7 @@
       return prefersDark() ? group.dark : group.light;
     };
 
-    const resolveThemeColor = (variant) => {
-      for (const family of Object.values(families)) {
-        if (variant in family.colors) {
-          return family.colors[variant];
-        }
-      }
-
-      return "#121214";
-    };
+    const resolveThemeColor = (variant) => themeColors[variant] ?? themeColors.graphite;
 
     const applyTheme = () => {
       const storedFamily = localStorage.getItem(FAMILY_KEY);

@@ -12,6 +12,12 @@ export const themeFamilies = [
     darkVariant: "graphite",
   },
   {
+    value: "e-ink",
+    label: "E-Ink",
+    lightVariant: "e-ink",
+    darkVariant: "e-ink-dark",
+  },
+  {
     value: "phosphor",
     label: "Phosphor",
     lightVariant: "phosphor-light",
@@ -24,6 +30,17 @@ export const themeFamilies = [
     darkVariant: "retro-dark",
   },
 ] as const;
+
+export const themeColors = {
+  paper: "#f7f4ee",
+  graphite: "#121214",
+  "e-ink": "#f2efe7",
+  "e-ink-dark": "#1c1c1a",
+  "phosphor-light": "#f0f7ec",
+  phosphor: "#0a0f0a",
+  retro: "#eef0df",
+  "retro-dark": "#222945",
+} as const;
 
 export type ThemeFamily = (typeof themeFamilies)[number]["value"];
 
@@ -75,6 +92,9 @@ export const resolveThemeFamilyFromVariant = (variant: string | null | undefined
     case "paper":
     case "graphite":
       return "graphite" as const;
+    case "e-ink":
+    case "e-ink-dark":
+      return "e-ink" as const;
     case "phosphor-light":
     case "phosphor":
       return "phosphor" as const;
@@ -89,10 +109,12 @@ export const resolveThemeFamilyFromVariant = (variant: string | null | undefined
 export const resolveThemeModeFromVariant = (variant: string | null | undefined) => {
   switch (variant) {
     case "paper":
+    case "e-ink":
     case "phosphor-light":
     case "retro":
       return "light" as const;
     case "graphite":
+    case "e-ink-dark":
     case "phosphor":
     case "retro-dark":
       return "dark" as const;
@@ -110,6 +132,9 @@ export const resolveThemeFamilyAndMode = (family: string | null | undefined, mod
     mode: nextMode,
   } as const;
 };
+
+export const getThemeColor = (variant: string | null | undefined) =>
+  themeColors[variant as keyof typeof themeColors] ?? themeColors.graphite;
 
 export const normalizePath = (value: string) => {
   const next = value.replace(/\/+$/, "");

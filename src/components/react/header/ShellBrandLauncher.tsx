@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { motion } from "motion/react";
 import {
+  getThemeColor,
   resolveThemeVariant,
   THEME_FAMILY_STORAGE_KEY,
   THEME_MODE_STORAGE_KEY,
@@ -13,6 +14,12 @@ import { ShellHeaderBrand } from "./ShellHeaderBrand";
 import { ShellHeaderMenu } from "./ShellHeaderMenu";
 import { ShellThemePicker } from "./ShellThemePicker";
 import { useShellHeaderBehavior } from "./useShellHeaderBehavior";
+
+declare global {
+  interface Window {
+    __webxsidTriggerThemeFx?: () => void;
+  }
+}
 
 type Props = {
   backHref?: string;
@@ -59,6 +66,17 @@ export function ShellBrandLauncher({
   const isSystemDark = () =>
     window.matchMedia("(prefers-color-scheme: dark)").matches;
 
+  const applyThemeColor = (variant: string) => {
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) {
+      themeColor.setAttribute("content", getThemeColor(variant));
+    }
+  };
+
+  const triggerThemeFx = () => {
+    window.__webxsidTriggerThemeFx?.();
+  };
+
   const applyThemeFamily = (nextFamily: ThemeFamily) => {
     const nextVariant = resolveThemeVariant(
       nextFamily,
@@ -69,6 +87,8 @@ export function ShellBrandLauncher({
     document.documentElement.dataset.themeFamily = nextFamily;
     document.documentElement.dataset.themeMode = themeMode;
     document.documentElement.dataset.theme = nextVariant;
+    applyThemeColor(nextVariant);
+    triggerThemeFx();
     localStorage.setItem(THEME_FAMILY_STORAGE_KEY, nextFamily);
     localStorage.setItem(THEME_MODE_STORAGE_KEY, themeMode);
     setThemeFamily(nextFamily);
@@ -84,6 +104,8 @@ export function ShellBrandLauncher({
     document.documentElement.dataset.themeFamily = themeFamily;
     document.documentElement.dataset.themeMode = nextMode;
     document.documentElement.dataset.theme = nextVariant;
+    applyThemeColor(nextVariant);
+    triggerThemeFx();
     localStorage.setItem(THEME_FAMILY_STORAGE_KEY, themeFamily);
     localStorage.setItem(THEME_MODE_STORAGE_KEY, nextMode);
     setThemeMode(nextMode);

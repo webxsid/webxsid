@@ -18,6 +18,10 @@
   --motion-duration-page: 180ms;
   --motion-lift-distance: 0px;
   --motion-route-shift: 1px;
+  --theme-quirk-duration: 210ms;
+  --theme-quirk-overlay-opacity: 0.22;
+  --theme-quirk-secondary-opacity: 0.16;
+  --theme-quirk-shift-distance: 1px;
 
   --link-underline-style: solid;
   --link-underline-offset: 0.14em;

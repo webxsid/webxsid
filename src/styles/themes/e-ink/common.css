@@ -1,0 +1,120 @@
+:where([data-theme="e-ink"], [data-theme="e-ink-dark"]) {
+  color-scheme: light dark;
+
+  --font-sans-stack:
+    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "IBM Plex Serif", serif;
+  --font-mono-stack:
+    "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
+  --font-display-stack:
+    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "IBM Plex Serif", serif;
+
+  --radius-shell: 0.18rem;
+  --radius-dock: 0.16rem;
+  --radius-control: 0.14rem;
+  --radius-preview: 0.04rem;
+  --radius-code: 0.04rem;
+
+  --motion-duration-soft: 110ms;
+  --motion-duration-surface: 125ms;
+  --motion-duration-page: 190ms;
+  --motion-lift-distance: 0px;
+  --motion-route-shift: 0px;
+  --theme-quirk-duration: 280ms;
+  --theme-quirk-overlay-opacity: 0.24;
+  --theme-quirk-secondary-opacity: 0.18;
+  --theme-quirk-shift-distance: 1.2px;
+  --eink-refresh-duration: var(--theme-quirk-duration);
+  --eink-refresh-ghost-opacity: 0.2;
+  --eink-refresh-flash-opacity: 0.24;
+  --eink-refresh-jitter-distance: var(--theme-quirk-shift-distance);
+
+  --link-underline-style: solid;
+  --link-underline-offset: 0.12em;
+  --link-external-marker: "";
+
+  --loader-splash-background:
+    radial-gradient(circle at 50% 22%, rgb(var(--text-primary) / 0.035), transparent 24%),
+    linear-gradient(180deg, rgb(var(--surface-elevated) / 0.82), transparent 46%),
+    rgb(var(--surface-page));
+  --loader-splash-glyph-size: clamp(2.6rem, 6vw, 3.5rem);
+  --loader-splash-label-size: 10px;
+  --loader-route-height: 1px;
+  --loader-route-scale-start: 0.14;
+  --loader-route-scale-mid: 0.34;
+  --loader-route-scale-end: 0.16;
+
+  --shell-nav-background: rgb(var(--surface-page));
+  --shell-nav-border-opacity: 1;
+  --shell-dock-background: rgb(var(--surface-page));
+  --shell-dock-border-opacity: 1;
+  --shell-item-background: rgb(var(--surface-page));
+  --shell-item-active-background: rgb(var(--surface-elevated));
+  --shell-item-active-text: rgb(var(--text-primary));
+  --shell-item-border-opacity: 0.88;
+  --shell-item-active-border-opacity: 1;
+  --shell-item-label-background: rgb(var(--surface-elevated));
+  --shell-back-background: rgb(var(--surface-page));
+  --shell-back-text: rgb(var(--text-muted));
+  --shell-back-border-opacity: var(--shell-nav-border-opacity);
+  --shell-back-hover-text: rgb(var(--text-primary));
+  --shell-back-shadow: var(--shadow-nav);
+
+  --preview-width: min(22rem, calc(100vw - 1.5rem));
+  --preview-body-gap: 0.56rem;
+  --preview-body-padding: 0.9rem;
+
+  --ui-title-size: clamp(1.24rem, 2.7vw, 2.28rem);
+  --ui-title-line-height: 1.08;
+  --ui-lead-size: 0.98rem;
+  --ui-lead-line-height: 1.6;
+  --ui-prose-size: 0.95rem;
+  --ui-prose-line-height: 1.74;
+  --ui-heading-size: 0.84rem;
+  --ui-body-size: 0.95rem;
+  --ui-body-line-height: 1.76;
+  --ui-link-size: 0.95rem;
+  --ui-meta-link-size: 0.78rem;
+  --ui-meta-link-line-height: 1.42;
+  --ui-meta-link-tracking: 0.04em;
+  --ui-meta-size: 0.62rem;
+  --ui-meta-tracking: 0.18em;
+  --ui-tag-size: 0.68rem;
+  --ui-tag-line-height: 1.34;
+  --ui-tag-tracking: 0.14em;
+  --ui-label-size: 0.58rem;
+  --ui-label-tracking: 0.22em;
+  --ui-shell-size: 0.58rem;
+  --ui-shell-tracking: 0.18em;
+  --ui-table-size: 0.56rem;
+  --ui-table-tracking: 0.2em;
+  --ui-rail-primary-size: 0.84rem;
+  --ui-rail-meta-size: 0.58rem;
+  --ui-rail-summary-size: 0.66rem;
+
+  --footer-title-size: clamp(1.42rem, 3vw, 2rem);
+  --footer-title-line-height: 1.08;
+  --footer-title-font-family:
+    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "IBM Plex Serif", serif;
+
+  --footer-nav-link-size: clamp(0.78rem, 1.9vw, 0.92rem);
+  --footer-nav-link-line-height: 1.26;
+
+  --content-title-size: clamp(1.62rem, 3.4vw, 2.5rem);
+  --content-title-line-height: 1.06;
+  --content-heading-size: 0.76rem;
+  --content-heading-line-height: 1.28;
+  --content-subheading-size: 0.66rem;
+  --content-subheading-line-height: 1.34;
+  --content-label-size: 0.5rem;
+  --content-label-tracking: 0.2em;
+  --content-body-size: 0.97rem;
+  --content-body-line-height: 1.76;
+  --content-note-title-size: clamp(1.32rem, 2.6vw, 1.88rem);
+  --content-note-title-line-height: 1.1;
+  --content-note-heading-size: 0.82rem;
+  --content-note-heading-line-height: 1.26;
+  --content-note-subheading-size: 0.58rem;
+  --content-note-subheading-line-height: 1.32;
+  --content-note-body-size: 0.88rem;
+  --content-note-body-line-height: 1.7;
+}

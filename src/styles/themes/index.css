@@ -2,6 +2,9 @@
 @import "./graphite/common.css";
 @import "./graphite/light.css";
 @import "./graphite/dark.css";
+@import "./e-ink/common.css";
+@import "./e-ink/light.css";
+@import "./e-ink/dark.css";
 @import "./phosphor/common.css";
 @import "./phosphor/light.css";
 @import "./phosphor/dark.css";

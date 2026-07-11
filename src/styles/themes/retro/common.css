@@ -15,6 +15,10 @@
   --motion-duration-page: 170ms;
   --motion-lift-distance: 0px;
   --motion-route-shift: 1px;
+  --theme-quirk-duration: 180ms;
+  --theme-quirk-overlay-opacity: 0.24;
+  --theme-quirk-secondary-opacity: 0.18;
+  --theme-quirk-shift-distance: 2px;
 
   --cursor-default: url("/cursors/retro-default.svg") 1 1, default;
   --cursor-interactive: url("/cursors/retro-interactive.svg") 12 12, pointer;

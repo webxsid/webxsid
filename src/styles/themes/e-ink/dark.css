@@ -1,0 +1,40 @@
+[data-theme="e-ink-dark"] {
+  color-scheme: dark;
+  --surface-page: 26 26 24;
+  --surface-elevated: 34 34 31;
+  --surface-overlay: 22 22 20;
+  --surface-preview-media: 30 30 28;
+
+  --text-primary: 231 226 216;
+  --text-muted: 150 146 138;
+  --text-accent: 206 201 190;
+
+  --border-default: 98 95 88;
+  --border-subtle-opacity: 0.56;
+  --border-strong-opacity: 0.94;
+
+  --accent-primary: 206 201 190;
+  --accent-soft-opacity: 0.04;
+  --accent-strong-opacity: 0.72;
+  --selection-opacity: 0.14;
+
+  --color-status-active: 206 201 190;
+  --color-status-building: 165 151 124;
+  --color-status-maintained: 132 143 127;
+  --color-status-archived: 129 125 118;
+  --color-status-prototype: 126 134 137;
+  --color-status-experimental: 140 133 142;
+
+  --shadow-nav:
+    inset 0 0 0 1px rgba(239, 235, 224, 0.04),
+    0 0 0 1px rgba(8, 8, 7, 0.92);
+  --shadow-dock:
+    inset 0 0 0 1px rgba(239, 235, 224, 0.035),
+    0 0 0 1px rgba(8, 8, 7, 0.92);
+  --shadow-preview:
+    inset 0 0 0 1px rgba(239, 235, 224, 0.035),
+    0 0 0 1px rgba(8, 8, 7, 0.94);
+  --shadow-active-inset:
+    inset 0 0 0 1px rgba(239, 235, 224, 0.08),
+    inset 0 0 0 2px rgba(239, 235, 224, 0.03);
+}
