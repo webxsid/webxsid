@@ -1,0 +1,120 @@
+[data-theme="doodle"],
+[data-theme="doodle-dark"] {
+  color-scheme: light dark;
+
+  --font-sans-stack: "Shantell Sans", "IBM Plex Sans", "Inter Tight", system-ui, sans-serif;
+  --font-mono-stack: "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
+  --font-display-stack: "Shantell Sans", "IBM Plex Sans", system-ui, sans-serif;
+
+  --radius-shell: 1.35rem;
+  --radius-dock: 1.15rem;
+  --radius-control: 0.95rem;
+  --radius-preview: 0.9rem;
+  --radius-code: 0.45rem;
+
+  --motion-duration-soft: 155ms;
+  --motion-duration-surface: 195ms;
+  --motion-duration-page: 280ms;
+  --motion-lift-distance: -1px;
+  --motion-route-shift: 2px;
+  --theme-quirk-duration: 300ms;
+  --theme-quirk-overlay-opacity: 0.16;
+  --theme-quirk-secondary-opacity: 0.12;
+  --theme-quirk-shift-distance: 1.4px;
+
+  --link-underline-style: wavy;
+  --link-underline-offset: 0.18em;
+  --link-external-marker: " ↗";
+
+  --button-primary-font-family: var(--font-sans);
+  --button-primary-font-size: var(--ui-shell-size);
+  --button-primary-font-weight: 700;
+  --button-primary-line-height: 1;
+  --button-primary-text-transform: uppercase;
+  --button-primary-letter-spacing: 0.12em;
+  --button-primary-padding-x: 0.9rem;
+  --button-primary-padding-y: 0.54rem;
+  --button-primary-gap: 0;
+  --button-primary-radius: 0.48rem 0.62rem 0.52rem 0.58rem;
+  --button-primary-border-width: 1px;
+  --button-primary-background:
+    linear-gradient(180deg, rgb(var(--surface-elevated)) 0%, rgb(var(--surface-page)) 100%);
+  --button-primary-color: rgb(var(--text-primary));
+  --button-primary-before-color: rgb(var(--color-status-building) / 0.82);
+  --button-primary-after-color: rgb(var(--accent-primary) / 0.72);
+  --button-primary-hover-color: rgb(var(--text-primary));
+  --button-primary-before-content: "";
+  --button-primary-after-content: "";
+  --button-primary-chrome-gap: 0.22em;
+  --button-primary-hover-shift: 0px;
+
+  --loader-splash-background:
+    radial-gradient(circle at 24% 18%, rgb(var(--color-status-building) / 0.16), transparent 20%),
+    radial-gradient(circle at 82% 14%, rgb(var(--color-status-active) / 0.14), transparent 18%),
+    linear-gradient(180deg, rgb(var(--surface-elevated) / 0.78), transparent 40%),
+    rgb(var(--surface-page));
+  --loader-splash-glyph-size: clamp(2.8rem, 6.8vw, 4rem);
+  --loader-splash-label-size: 10px;
+  --loader-route-height: 3px;
+  --loader-route-scale-start: 0.22;
+  --loader-route-scale-mid: 0.58;
+  --loader-route-scale-end: 0.28;
+
+  --preview-width: min(23rem, calc(100vw - 1.5rem));
+  --preview-body-gap: 0.72rem;
+  --preview-body-padding: 0.98rem;
+
+  --ui-title-size: clamp(1.42rem, 3.2vw, 2.7rem);
+  --ui-title-line-height: 1.08;
+  --ui-lead-size: 1rem;
+  --ui-lead-line-height: 1.58;
+  --ui-prose-size: 0.98rem;
+  --ui-prose-line-height: 1.72;
+  --ui-heading-size: 0.92rem;
+  --ui-body-size: 0.98rem;
+  --ui-body-line-height: 1.74;
+  --ui-link-size: 0.98rem;
+  --ui-meta-link-size: 0.84rem;
+  --ui-meta-link-line-height: 1.46;
+  --ui-meta-link-tracking: 0.04em;
+  --ui-meta-size: 0.66rem;
+  --ui-meta-tracking: 0.2em;
+  --ui-tag-size: 0.78rem;
+  --ui-tag-line-height: 1.4;
+  --ui-tag-tracking: 0.14em;
+  --ui-label-size: 0.62rem;
+  --ui-label-tracking: 0.22em;
+  --ui-shell-size: 0.62rem;
+  --ui-shell-tracking: 0.18em;
+  --ui-table-size: 0.58rem;
+  --ui-table-tracking: 0.2em;
+  --ui-rail-primary-size: 0.92rem;
+  --ui-rail-meta-size: 0.62rem;
+  --ui-rail-summary-size: 0.72rem;
+
+  --footer-title-size: clamp(1.64rem, 3.4vw, 2.35rem);
+  --footer-title-line-height: 1.08;
+  --footer-title-font-family: "Shantell Sans", "IBM Plex Sans", system-ui, sans-serif;
+
+  --footer-nav-link-size: clamp(0.82rem, 2.1vw, 0.98rem);
+  --footer-nav-link-line-height: 1.3;
+
+  --content-title-size: clamp(1.82rem, 3.8vw, 2.85rem);
+  --content-title-line-height: 1.06;
+  --content-heading-size: 0.8rem;
+  --content-heading-line-height: 1.28;
+  --content-subheading-size: 0.68rem;
+  --content-subheading-line-height: 1.34;
+  --content-label-size: 0.54rem;
+  --content-label-tracking: 0.22em;
+  --content-body-size: 0.98rem;
+  --content-body-line-height: 1.74;
+  --content-note-title-size: clamp(1.42rem, 2.8vw, 2rem);
+  --content-note-title-line-height: 1.1;
+  --content-note-heading-size: 0.92rem;
+  --content-note-heading-line-height: 1.28;
+  --content-note-subheading-size: 0.62rem;
+  --content-note-subheading-line-height: 1.32;
+  --content-note-body-size: 0.92rem;
+  --content-note-body-line-height: 1.7;
+}

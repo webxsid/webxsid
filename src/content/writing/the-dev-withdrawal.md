@@ -1,6 +1,6 @@
 ---
 title: "The Dev Withdrawal"
-publishedAt: 2026-07-14
+publishedAt: 2026-07-18
 summary: "What happens when the project that consumed your routine finally ships? A short reflection on
   finishing Crona, losing the chaos of constant building, and learning to sit with the silence that
   follows."
@@ -14,7 +14,7 @@ tags:
 featured: false
 order: 0
 kind: blog
-draft: true
+draft: false
 seo:
   title: "The Dev Withdrawal"
   description: "A personal reflection on finishing Crona, the strange emptiness that follows a long
@@ -22,7 +22,7 @@ seo:
 ---
 
 The CI pipelines were green, release workflow finished with the same [few](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXU1ajZwNmdibHY0OXF5d3pxYmE2cnhlMTFiYzV5cHl2czQyZWg1OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/dwLk9Qb116F3y/giphy.gif) warnings I'd been ignoring for months. [Crona](https://crona.work) was finally stable.
-I'd done it, built the app. I lean back in your chair, equal parts exhausted and ecstatic, tell myself “good job,” and call it a day.
+I'd done it, built the app. I lean back in my chair, equal parts exhausted and ecstatic, tell myself “good job,” and call it a day.
 
 Next day, I sat down at my desk, slipped into the same routine I'd followed for months.
 
@@ -40,9 +40,9 @@ I'd started looking for problems to fix.
 Maybe the warnings are worth solving now, maybe I can refactor the codebase to be "cleaner", maybe SQLite wasn't the right choice,
 maybe, maybe, maybe.
 
-It took me a while to realise, I wasn't looking for work, I was looking for the feeling of having work. I don't know if _withdrawal_ is the right word for it, but it wasn't boredom. It felt like finishing a really good book, instinctively reaching for the next chapter only to find _About the Author_.
+It took me a while to realise, I wasn't looking for work, I was looking for the feeling of having work. I don't know if _withdrawal_ is the right word for it, but it wasn't [boredom](https://www.youtube.com/watch?v=OVXt8jBAGkc). It felt like finishing a really good book, instinctively reaching for the next chapter only to find _About the Author_.
 
-However it wasn't the codebase I was attached to, it was the routine. At some point, building Crona became more than a chore, it became a part of my daily routine and to some extent me. So when the codebase stopped demanding that of me, I suddenly had to answer a question I hadn't asked myself in a long time.
+I'd gotten attached to the routine more than the codebase. At some point, building Crona became more than a chore, it became a part of my daily routine and to some extent me. So when the codebase stopped demanding that of me, I suddenly had to answer a question I hadn't asked myself in a long time.
 
 **What do i do now?**
 
@@ -53,4 +53,4 @@ Part of me realise it's just another way to avoid the silence. To replace one ob
 Perhaps I'll find another project to occupy my time, perhaps I won't.
 
 For now I'm trying to learn something I haven't considered before:
-Sitting in the quiet.
+_Sitting in the quiet_.

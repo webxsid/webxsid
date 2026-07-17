@@ -1,0 +1,70 @@
+[data-theme="doodle"] {
+  color-scheme: light;
+  --surface-page: 248 241 223;
+  --surface-elevated: 255 249 236;
+  --surface-overlay: 240 232 214;
+  --surface-preview-media: 242 236 221;
+
+  --text-primary: 61 52 47;
+  --text-muted: 125 108 97;
+  --text-accent: 58 121 120;
+
+  --border-default: 146 120 102;
+  --border-subtle-opacity: 0.56;
+  --border-strong-opacity: 0.96;
+
+  --accent-primary: 69 138 137;
+  --accent-soft-opacity: 0.12;
+  --accent-strong-opacity: 0.86;
+  --selection-opacity: 0.22;
+
+  --color-status-active: 69 138 137;
+  --color-status-building: 226 149 88;
+  --color-status-maintained: 118 163 102;
+  --color-status-archived: 151 131 119;
+  --color-status-prototype: 112 111 186;
+  --color-status-experimental: 196 105 137;
+
+  --shadow-nav:
+    0 0 0 1px rgba(146, 120, 102, 0.18),
+    0 10px 24px rgba(109, 88, 74, 0.1);
+  --shadow-dock:
+    0 0 0 1px rgba(146, 120, 102, 0.16),
+    0 12px 26px rgba(109, 88, 74, 0.11);
+  --shadow-preview:
+    0 0 0 1px rgba(146, 120, 102, 0.16),
+    0 14px 30px rgba(109, 88, 74, 0.12);
+  --shadow-active-inset:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.24),
+    inset 0 -1px 0 rgba(61, 52, 47, 0.08);
+
+  --shell-nav-background:
+    linear-gradient(180deg, rgb(255 249 236 / 0.98) 0%, rgb(247 239 220 / 0.98) 100%);
+  --shell-nav-border-opacity: 1;
+  --shell-dock-background:
+    linear-gradient(180deg, rgb(255 249 236 / 0.98) 0%, rgb(246 238 219 / 0.98) 100%);
+  --shell-dock-border-opacity: 1;
+  --shell-item-background:
+    linear-gradient(180deg, rgb(255 249 236) 0%, rgb(249 242 226) 100%);
+  --shell-item-active-background:
+    linear-gradient(180deg, rgb(255 230 199) 0%, rgb(248 215 181) 100%);
+  --shell-item-active-text: rgb(61 52 47);
+  --shell-item-border-opacity: 0.9;
+  --shell-item-active-border-opacity: 1;
+  --shell-item-label-background:
+    linear-gradient(180deg, rgb(255 250 239) 0%, rgb(247 240 223) 100%);
+  --shell-back-background:
+    linear-gradient(180deg, rgb(255 249 236) 0%, rgb(246 238 219) 100%);
+  --shell-back-text: rgb(125 108 97);
+  --shell-back-border-opacity: 1;
+  --shell-back-hover-text: rgb(61 52 47);
+  --shell-back-shadow: none;
+
+  --button-primary-border-color: rgb(var(--border-default) / 0.72);
+  --button-primary-shadow: none;
+  --button-primary-hover-border-color: rgb(var(--accent-primary) / 0.44);
+  --button-primary-hover-background:
+    linear-gradient(180deg, rgb(255 246 228) 0%, rgb(251 238 214) 100%);
+  --button-primary-hover-shadow: none;
+  --button-primary-focus-ring: 0 0 0 2px rgb(var(--accent-primary) / 0.14);
+}

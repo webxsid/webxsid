@@ -29,6 +29,12 @@ export const themeFamilies = [
     lightVariant: "retro",
     darkVariant: "retro-dark",
   },
+  // {
+  //   value: "doodle",
+  //   label: "Doodle",
+  //   lightVariant: "doodle",
+  //   darkVariant: "doodle-dark",
+  // },
 ] as const;
 
 export const themeColors = {
@@ -40,6 +46,8 @@ export const themeColors = {
   phosphor: "#0a0f0a",
   retro: "#eef0df",
   "retro-dark": "#222945",
+  doodle: "#f8f1df",
+  "doodle-dark": "#24211d",
 } as const;
 
 export type ThemeFamily = (typeof themeFamilies)[number]["value"];
@@ -101,6 +109,9 @@ export const resolveThemeFamilyFromVariant = (variant: string | null | undefined
     case "retro":
     case "retro-dark":
       return "retro" as const;
+    case "doodle":
+    case "doodle-dark":
+      return "doodle" as const;
     default:
       return defaultThemeFamily;
   }
@@ -112,11 +123,13 @@ export const resolveThemeModeFromVariant = (variant: string | null | undefined) 
     case "e-ink":
     case "phosphor-light":
     case "retro":
+    case "doodle":
       return "light" as const;
     case "graphite":
     case "e-ink-dark":
     case "phosphor":
     case "retro-dark":
+    case "doodle-dark":
       return "dark" as const;
     default:
       return defaultThemeMode;

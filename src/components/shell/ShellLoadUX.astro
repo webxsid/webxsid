@@ -39,7 +39,8 @@
     const triggerThemeFx = () => {
       if (prefersReducedMotion()) return;
       const family = root.dataset.themeFamily;
-      if (!family || !["e-ink", "graphite", "phosphor", "retro"].includes(family)) return;
+      if (!family || !["e-ink", "graphite", "phosphor", "retro", "doodle"].includes(family))
+        return;
 
       root.dataset.themeFx = "idle";
 

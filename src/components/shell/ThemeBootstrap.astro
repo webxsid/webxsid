@@ -14,6 +14,8 @@
       phosphor: "#0a0f0a",
       retro: "#eef0df",
       "retro-dark": "#222945",
+      doodle: "#f8f1df",
+      "doodle-dark": "#24211d",
     };
 
     const families = {
@@ -32,6 +34,10 @@
       retro: {
         light: "retro",
         dark: "retro-dark",
+      },
+      doodle: {
+        light: "doodle",
+        dark: "doodle-dark",
       },
     };
 
@@ -52,6 +58,9 @@
         case "retro":
         case "retro-dark":
           return "retro";
+        case "doodle":
+        case "doodle-dark":
+          return "doodle";
         default:
           return DEFAULT_FAMILY;
       }
@@ -63,11 +72,13 @@
         case "e-ink":
         case "phosphor-light":
         case "retro":
+        case "doodle":
           return "light";
         case "graphite":
         case "e-ink-dark":
         case "phosphor":
         case "retro-dark":
+        case "doodle-dark":
           return "dark";
         default:
           return DEFAULT_MODE;

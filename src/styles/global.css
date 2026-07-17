@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Shantell+Sans:wght@400;500;600;700&family=VT323&display=swap");
 @import "./themes/index.css";
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
@@ -437,6 +437,19 @@
     mix-blend-mode: multiply;
   }
 
+  html[data-theme-family="doodle"] [data-theme-refresh-overlay] {
+    background:
+      linear-gradient(110deg, rgb(var(--accent-primary) / 0) 0%, rgb(var(--accent-primary) / var(--theme-quirk-overlay-opacity)) 48%, rgb(var(--accent-primary) / 0) 100%),
+      repeating-linear-gradient(
+        180deg,
+        rgb(var(--text-primary) / 0.05) 0,
+        rgb(var(--text-primary) / 0.05) 1px,
+        transparent 1px,
+        transparent 30px
+      );
+    mix-blend-mode: multiply;
+  }
+
   html[data-theme-fx="active"][data-theme-family="e-ink"] [data-theme-refresh-overlay] {
     animation: eink-refresh-overlay var(--eink-refresh-duration) steps(4, end) both;
   }
@@ -472,6 +485,15 @@
   html[data-theme-family="retro"] body::after,
   html[data-theme-family="retro-dark"] body::after {
     animation: retro-ambient 6s steps(2, end) infinite;
+  }
+
+  html[data-theme-fx="active"][data-theme-family="doodle"] [data-theme-refresh-overlay] {
+    animation: doodle-refresh-overlay var(--theme-quirk-duration) ease-out both;
+  }
+
+  html[data-theme-family="doodle"] body::before,
+  html[data-theme-family="doodle"] body::after {
+    animation: doodle-ambient 9s ease-in-out infinite;
   }
 }
 
@@ -813,6 +835,26 @@
   }
 }
 
+@keyframes doodle-refresh-overlay {
+  0% {
+    opacity: 0;
+    transform: translate3d(-1.5%, -0.5%, 0) rotate(-0.4deg);
+    filter: blur(0px);
+  }
+
+  35% {
+    opacity: 0.9;
+    transform: translate3d(0.6%, 0, 0) rotate(0.22deg);
+    filter: blur(0.4px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(1.4%, 0.5%, 0) rotate(0.4deg);
+    filter: blur(0px);
+  }
+}
+
 @keyframes graphite-ambient {
   0%,
   100% {
@@ -851,6 +893,19 @@
 
   50% {
     opacity: 0.94;
+  }
+}
+
+@keyframes doodle-ambient {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    opacity: 0.96;
+    transform: translate3d(0, 1px, 0);
   }
 }
 
@@ -1141,4 +1196,147 @@ a:hover {
 [data-theme="e-ink-dark"] .shell-control,
 [data-theme="e-ink-dark"] .shell-menu-item {
   box-shadow: inset 0 0 0 1px rgb(var(--border-default) / 0.12);
+}
+
+[data-theme="doodle"] body,
+[data-theme="doodle-dark"] body {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-theme="doodle"] body::before,
+[data-theme="doodle-dark"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(90deg, rgb(var(--accent-primary) / 0.12) 0, rgb(var(--accent-primary) / 0.12) 2px, transparent 2px, transparent 100%),
+    repeating-linear-gradient(
+      180deg,
+      rgb(var(--text-primary) / 0.045) 0,
+      rgb(var(--text-primary) / 0.045) 1px,
+      transparent 1px,
+      transparent 30px
+    );
+  background-size: 100% 100%, 100% 30px;
+  background-position: 2.4rem 0, 0 8rem;
+  opacity: 0.3;
+}
+
+[data-theme="doodle"] body::after,
+[data-theme="doodle-dark"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 8% 12%, rgb(var(--color-status-building) / 0.18) 0 3px, transparent 3.5px),
+    radial-gradient(circle at 8.7% 12%, rgb(var(--color-status-building) / 0.18) 0 3px, transparent 3.5px),
+    linear-gradient(rgb(var(--color-status-building) / 0.18), rgb(var(--color-status-building) / 0.18)),
+    radial-gradient(circle at 89% 16%, rgb(var(--color-status-active) / 0.2) 0 2px, transparent 2.5px),
+    radial-gradient(circle at 91.1% 16.9%, rgb(var(--color-status-active) / 0.2) 0 2px, transparent 2.5px),
+    radial-gradient(circle at 90% 18.5%, rgb(var(--color-status-active) / 0.2) 0 2px, transparent 2.5px),
+    linear-gradient(rgb(var(--color-status-experimental) / 0.18), rgb(var(--color-status-experimental) / 0.18)),
+    linear-gradient(rgb(var(--color-status-experimental) / 0.18), rgb(var(--color-status-experimental) / 0.18)),
+    linear-gradient(140deg, rgb(var(--text-primary) / 0.014), transparent 42%, rgb(var(--text-primary) / 0.008) 100%);
+  background-size:
+    100% 100%,
+    100% 100%,
+    14px 2px,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    2px 18px,
+    18px 2px,
+    100% 100%;
+  background-position:
+    0 0,
+    0 0,
+    8.5% 13.7%,
+    0 0,
+    0 0,
+    0 0,
+    82% 74%,
+    82% 74%,
+    0 0;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+}
+
+[data-theme="doodle"] .shell-nav-frame,
+[data-theme="doodle"] .shell-dock-frame,
+[data-theme="doodle"] .shell-brand-button,
+[data-theme="doodle"] .shell-menu-panel,
+[data-theme="doodle-dark"] .shell-nav-frame,
+[data-theme="doodle-dark"] .shell-dock-frame,
+[data-theme="doodle-dark"] .shell-brand-button,
+[data-theme="doodle-dark"] .shell-menu-panel {
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+[data-theme="doodle"] .shell-brand-badge,
+[data-theme="doodle"] .shell-control,
+[data-theme="doodle"] .shell-menu-item,
+[data-theme="doodle-dark"] .shell-brand-badge,
+[data-theme="doodle-dark"] .shell-control,
+[data-theme="doodle-dark"] .shell-menu-item {
+  border-radius: 0.44rem 0.58rem 0.48rem 0.54rem;
+  box-shadow: none;
+}
+
+[data-theme="doodle"] .primary-button,
+[data-theme="doodle-dark"] .primary-button {
+  position: relative;
+}
+
+[data-theme="doodle"] .primary-button::before,
+[data-theme="doodle-dark"] .primary-button::before {
+  transform: none;
+}
+
+[data-theme="doodle"] .shell-brand-badge,
+[data-theme="doodle-dark"] .shell-brand-badge,
+[data-theme="doodle"] .shell-control,
+[data-theme="doodle-dark"] .shell-control,
+[data-theme="doodle"] .shell-menu-item,
+[data-theme="doodle-dark"] .shell-menu-item,
+[data-theme="doodle"] .status-badge,
+[data-theme="doodle-dark"] .status-badge,
+[data-theme="doodle"] .ui-tag,
+[data-theme="doodle-dark"] .ui-tag {
+  background:
+    linear-gradient(180deg, rgb(var(--surface-elevated) / 0.9) 0%, rgb(var(--surface-page) / 0.98) 100%);
+  border: 1px solid rgb(var(--border-default) / 0.52);
+}
+
+[data-theme="doodle"] .status-badge,
+[data-theme="doodle-dark"] .status-badge {
+  padding: 0.18rem 0.46rem 0.14rem;
+  border-radius: 0.4rem 0.54rem 0.42rem 0.5rem;
+  letter-spacing: 0.1em;
+  box-shadow: none;
+}
+
+[data-theme="doodle"] .ui-tag,
+[data-theme="doodle-dark"] .ui-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  padding: 0.12rem 0.42rem 0.1rem;
+  border-radius: 0.38rem 0.5rem 0.4rem 0.46rem;
+  box-shadow: none;
+}
+
+[data-theme="doodle"] .ui-tag::before,
+[data-theme="doodle-dark"] .ui-tag::before {
+  content: "";
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 9999px;
+  background: rgb(var(--accent-primary) / 0.72);
+  line-height: 1;
 }

@@ -10,7 +10,7 @@ const tone = `status-${status.toLowerCase().replace(/\s+/g, "-")}`;
 ---
 
 <span
-  class={`motion-soft ui-shell inline-flex items-center font-mono uppercase ${tone} ${className ?? ""}`.trim()}
+  class={`status-badge motion-soft ui-shell inline-flex items-center font-mono uppercase ${tone} ${className ?? ""}`.trim()}
 >
   {status}
 </span>

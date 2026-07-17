@@ -1,0 +1,75 @@
+[data-theme="doodle-dark"] {
+  color-scheme: dark;
+  --surface-page: 36 33 29;
+  --surface-elevated: 49 44 39;
+  --surface-overlay: 28 25 22;
+  --surface-preview-media: 44 39 35;
+
+  --text-primary: 239 226 207;
+  --text-muted: 186 168 150;
+  --text-accent: 123 203 198;
+
+  --border-default: 141 118 102;
+  --border-subtle-opacity: 0.58;
+  --border-strong-opacity: 0.94;
+
+  --accent-primary: 123 203 198;
+  --accent-soft-opacity: 0.12;
+  --accent-strong-opacity: 0.72;
+  --selection-opacity: 0.2;
+
+  --color-status-active: 123 203 198;
+  --color-status-building: 244 168 112;
+  --color-status-maintained: 144 193 124;
+  --color-status-archived: 164 144 131;
+  --color-status-prototype: 167 160 244;
+  --color-status-experimental: 233 142 176;
+
+  --shadow-nav:
+    0 0 0 1px rgba(141, 118, 102, 0.18),
+    0 14px 32px rgba(10, 8, 7, 0.34);
+  --shadow-dock:
+    0 0 0 1px rgba(141, 118, 102, 0.16),
+    0 14px 34px rgba(10, 8, 7, 0.36);
+  --shadow-preview:
+    0 0 0 1px rgba(141, 118, 102, 0.16),
+    0 16px 38px rgba(10, 8, 7, 0.4);
+  --shadow-active-inset:
+    inset 0 0 0 1px rgba(255, 248, 235, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.24);
+
+  --shell-nav-background:
+    linear-gradient(180deg, rgb(51 46 40 / 0.98) 0%, rgb(39 35 31 / 0.98) 100%);
+  --shell-nav-border-opacity: 1;
+  --shell-dock-background:
+    linear-gradient(180deg, rgb(51 46 40 / 0.98) 0%, rgb(38 34 30 / 0.98) 100%);
+  --shell-dock-border-opacity: 1;
+  --shell-item-background:
+    linear-gradient(180deg, rgb(56 50 44) 0%, rgb(45 40 35) 100%);
+  --shell-item-active-background:
+    linear-gradient(180deg, rgb(78 67 58) 0%, rgb(64 55 48) 100%);
+  --shell-item-active-text: rgb(239 226 207);
+  --shell-item-border-opacity: 0.92;
+  --shell-item-active-border-opacity: 1;
+  --shell-item-label-background:
+    linear-gradient(180deg, rgb(56 50 44) 0%, rgb(42 37 33) 100%);
+  --shell-back-background:
+    linear-gradient(180deg, rgb(50 45 39) 0%, rgb(38 34 30) 100%);
+  --shell-back-text: rgb(186 168 150);
+  --shell-back-border-opacity: 1;
+  --shell-back-hover-text: rgb(239 226 207);
+  --shell-back-shadow: none;
+
+  --button-primary-border-color: rgb(var(--border-default) / 0.72);
+  --button-primary-background:
+    linear-gradient(180deg, rgb(64 57 50) 0%, rgb(46 41 36) 100%);
+  --button-primary-color: rgb(var(--text-primary));
+  --button-primary-before-color: rgb(var(--color-status-experimental) / 0.92);
+  --button-primary-after-color: rgb(var(--accent-primary) / 0.92);
+  --button-primary-shadow: none;
+  --button-primary-hover-border-color: rgb(var(--accent-primary) / 0.48);
+  --button-primary-hover-background:
+    linear-gradient(180deg, rgb(69 61 54) 0%, rgb(50 44 39) 100%);
+  --button-primary-hover-shadow: none;
+  --button-primary-focus-ring: 0 0 0 2px rgb(var(--accent-primary) / 0.16);
+}

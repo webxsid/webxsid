@@ -11,3 +11,6 @@
 @import "./retro/common.css";
 @import "./retro/light.css";
 @import "./retro/dark.css";
+@import "./doodle/common.css";
+@import "./doodle/light.css";
+@import "./doodle/dark.css";
