@@ -53,6 +53,33 @@
   --link-underline-offset: 0.18em;
   --link-external-marker: " ↗";
 
+  --button-primary-font-family: var(--font-mono);
+  --button-primary-font-size: var(--ui-shell-size);
+  --button-primary-font-weight: 500;
+  --button-primary-line-height: 1;
+  --button-primary-text-transform: uppercase;
+  --button-primary-letter-spacing: var(--ui-shell-tracking);
+  --button-primary-padding-x: 1rem;
+  --button-primary-padding-y: 0.7rem;
+  --button-primary-gap: 0;
+  --button-primary-radius: var(--radius-control);
+  --button-primary-border-width: 1px;
+  --button-primary-border-color: rgb(var(--border-default) / var(--border-strong-opacity));
+  --button-primary-background: rgb(var(--surface-elevated) / 0.52);
+  --button-primary-shadow: none;
+  --button-primary-color: rgb(var(--text-muted));
+  --button-primary-before-color: currentColor;
+  --button-primary-after-color: currentColor;
+  --button-primary-hover-color: rgb(var(--accent-primary));
+  --button-primary-hover-border-color: rgb(var(--accent-primary) / 0.5);
+  --button-primary-hover-background: rgb(var(--surface-elevated) / 0.78);
+  --button-primary-hover-shadow: none;
+  --button-primary-before-content: "[";
+  --button-primary-after-content: "]";
+  --button-primary-chrome-gap: 0.45em;
+  --button-primary-hover-shift: var(--motion-lift-distance);
+  --button-primary-focus-ring: 0 0 0 1px rgb(var(--accent-primary) / 0.38);
+
   --loader-splash-background:
     radial-gradient(circle at 50% 38%, rgb(var(--surface-elevated) / 0.42), transparent 38%),
     rgb(var(--surface-page));

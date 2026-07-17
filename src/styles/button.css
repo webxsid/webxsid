@@ -1,25 +1,55 @@
-.terminal-button {
-  font-family: var(--font-mono);
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--button-primary-gap);
+  font-family: var(--button-primary-font-family);
+  font-size: var(--button-primary-font-size);
+  font-weight: var(--button-primary-font-weight);
+  line-height: var(--button-primary-line-height);
+  letter-spacing: var(--button-primary-letter-spacing);
+  text-transform: var(--button-primary-text-transform);
+  padding: var(--button-primary-padding-y) var(--button-primary-padding-x);
+  border: var(--button-primary-border-width) solid var(--button-primary-border-color);
+  border-radius: var(--button-primary-radius);
+  background: var(--button-primary-background);
+  box-shadow: var(--button-primary-shadow);
   transition:
     transform var(--motion-duration-soft) var(--motion-ease),
-    color var(--motion-duration-soft) var(--motion-ease);
-  color: inherit;
+    color var(--motion-duration-soft) var(--motion-ease),
+    border-color var(--motion-duration-soft) var(--motion-ease),
+    background var(--motion-duration-soft) var(--motion-ease),
+    box-shadow var(--motion-duration-soft) var(--motion-ease);
+  color: var(--button-primary-color);
   cursor: var(--cursor-interactive);
+  text-decoration: none;
 }
 
-.terminal-button::before {
-  content: "[ ";
-  padding-right: 0.25em;
+.primary-button::before {
+  content: var(--button-primary-before-content);
+  margin-right: var(--button-primary-chrome-gap);
+  color: var(--button-primary-before-color);
 }
 
-.terminal-button::after {
-  content: " ]";
-  padding-left: 0.25em;
+.primary-button::after {
+  content: var(--button-primary-after-content);
+  margin-left: var(--button-primary-chrome-gap);
+  color: var(--button-primary-after-color);
 }
 
-.terminal-button:hover {
-  transform: translateY(var(--motion-lift-distance));
-  color: var(--color-accent);
+.primary-button:hover {
+  transform: translateY(var(--button-primary-hover-shift));
+  color: var(--button-primary-hover-color);
+  border-color: var(--button-primary-hover-border-color);
+  background: var(--button-primary-hover-background);
+  box-shadow: var(--button-primary-hover-shadow);
+}
+
+.primary-button:focus-visible {
+  outline: none;
+  box-shadow:
+    var(--button-primary-hover-shadow),
+    var(--button-primary-focus-ring);
 }
 
 .title-link {

@@ -27,6 +27,39 @@
   --link-underline-offset: 0.12em;
   --link-external-marker: " >>";
 
+  --button-primary-font-family: var(--font-mono);
+  --button-primary-font-size: var(--ui-shell-size);
+  --button-primary-font-weight: 400;
+  --button-primary-line-height: 1.1;
+  --button-primary-text-transform: uppercase;
+  --button-primary-letter-spacing: 0.14em;
+  --button-primary-padding-x: 1rem;
+  --button-primary-padding-y: 0.75rem;
+  --button-primary-gap: 0;
+  --button-primary-radius: 0.35rem;
+  --button-primary-border-width: 2px;
+  --button-primary-border-color: rgb(var(--border-default));
+  --button-primary-background:
+    linear-gradient(180deg, rgb(var(--surface-elevated)) 0%, rgb(var(--surface-page)) 100%);
+  --button-primary-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 3px 0 rgba(var(--border-default) / 0.9);
+  --button-primary-color: rgb(var(--text-muted));
+  --button-primary-before-color: currentColor;
+  --button-primary-after-color: currentColor;
+  --button-primary-hover-color: rgb(var(--accent-primary));
+  --button-primary-hover-border-color: rgb(var(--accent-primary));
+  --button-primary-hover-background:
+    linear-gradient(180deg, rgb(var(--surface-elevated)) 0%, rgb(var(--surface-overlay)) 100%);
+  --button-primary-hover-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 3px 0 rgba(var(--accent-primary) / 0.86);
+  --button-primary-before-content: "[";
+  --button-primary-after-content: "]";
+  --button-primary-chrome-gap: 0.45em;
+  --button-primary-hover-shift: 0px;
+  --button-primary-focus-ring: 0 0 0 2px rgb(var(--accent-primary) / 0.24);
+
   --loader-splash-glyph-size: clamp(2.15rem, 6vw, 3rem);
   --loader-splash-label-size: 10px;
   --loader-route-height: 4px;

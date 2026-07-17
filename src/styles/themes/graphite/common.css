@@ -1,10 +1,11 @@
-:where([data-theme="graphite"], [data-theme="paper"]) {
+[data-theme="graphite"],
+[data-theme="paper"] {
   color-scheme: light dark;
   --font-sans-stack: "Fraunces", "IBM Plex Sans", "Inter Tight", "Inter", system-ui, serif;
   --font-mono-stack: "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
   --font-display-stack: "Fraunces", "Iowan Old Style", "Palatino Linotype", serif;
 
-  --radius-shell: 1.15rem;
+  --radius-shell: 1.5rem;
   --radius-dock: 1rem;
   --radius-control: 9999px;
   --radius-preview: 0.4rem;
@@ -22,6 +23,35 @@
 
   --link-underline-style: solid;
   --link-underline-offset: 0.16em;
+
+  --button-primary-font-family: var(--font-mono);
+  --button-primary-font-size: var(--ui-shell-size);
+  --button-primary-font-weight: 600;
+  --button-primary-line-height: 1;
+  --button-primary-text-transform: uppercase;
+  --button-primary-letter-spacing: 0.16em;
+  --button-primary-padding-x: 1.05rem;
+  --button-primary-padding-y: 0.8rem;
+  --button-primary-gap: 0;
+  --button-primary-radius: 9999px;
+  --button-primary-border-width: 1px;
+  --button-primary-border-color: rgb(var(--border-default) / 0.72);
+  --button-primary-background:
+    linear-gradient(180deg, rgb(var(--surface-elevated) / 0.92), rgb(var(--surface-page) / 0.92));
+  --button-primary-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+  --button-primary-color: rgb(var(--text-muted));
+  --button-primary-before-color: rgb(var(--accent-primary) / 0.9);
+  --button-primary-after-color: currentColor;
+  --button-primary-hover-color: rgb(var(--text-primary));
+  --button-primary-hover-border-color: rgb(var(--accent-primary) / 0.38);
+  --button-primary-hover-background:
+    linear-gradient(180deg, rgb(var(--surface-elevated) / 0.98), rgb(var(--surface-page) / 0.96));
+  --button-primary-hover-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+  --button-primary-before-content: "→";
+  --button-primary-after-content: "";
+  --button-primary-chrome-gap: 0.6em;
+  --button-primary-hover-shift: -1px;
+  --button-primary-focus-ring: 0 0 0 1px rgb(var(--accent-primary) / 0.32);
 
   --loader-splash-background:
     radial-gradient(circle at 50% 24%, rgb(var(--accent-primary) / 0.09), transparent 30%),

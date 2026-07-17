@@ -1,4 +1,5 @@
-:where([data-theme="e-ink"], [data-theme="e-ink-dark"]) {
+[data-theme="e-ink"],
+[data-theme="e-ink-dark"] {
   color-scheme: light dark;
 
   --font-sans-stack:
@@ -8,9 +9,9 @@
   --font-display-stack:
     "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "IBM Plex Serif", serif;
 
-  --radius-shell: 0.18rem;
-  --radius-dock: 0.16rem;
-  --radius-control: 0.14rem;
+  --radius-shell: 1.5rem;
+  --radius-dock: 1rem;
+  --radius-control: 1.5rem;
   --radius-preview: 0.04rem;
   --radius-code: 0.04rem;
 
@@ -31,6 +32,39 @@
   --link-underline-style: solid;
   --link-underline-offset: 0.12em;
   --link-external-marker: "";
+
+  --button-primary-font-family: var(--font-sans);
+  --button-primary-font-size: var(--ui-shell-size);
+  --button-primary-font-weight: 600;
+  --button-primary-line-height: 1;
+  --button-primary-text-transform: uppercase;
+  --button-primary-letter-spacing: 0.18em;
+  --button-primary-padding-x: 1rem;
+  --button-primary-padding-y: 0.78rem;
+  --button-primary-gap: 0;
+  --button-primary-radius: 9999px;
+  --button-primary-border-width: 1px;
+  --button-primary-border-color: rgb(var(--border-default) / 0.9);
+  --button-primary-background:
+    linear-gradient(180deg, rgb(var(--surface-page)) 0%, rgb(var(--surface-elevated)) 100%);
+  --button-primary-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 0 1px rgba(69, 64, 55, 0.06);
+  --button-primary-color: rgb(var(--text-primary));
+  --button-primary-before-color: currentColor;
+  --button-primary-after-color: rgb(var(--text-primary) / 0.9);
+  --button-primary-hover-color: rgb(var(--text-primary));
+  --button-primary-hover-border-color: rgb(var(--text-primary) / 0.72);
+  --button-primary-hover-background:
+    linear-gradient(180deg, rgb(var(--surface-elevated)) 0%, rgb(var(--surface-page)) 100%);
+  --button-primary-hover-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+    0 0 0 1px rgba(69, 64, 55, 0.1);
+  --button-primary-before-content: "";
+  --button-primary-after-content: " →";
+  --button-primary-chrome-gap: 0.3em;
+  --button-primary-hover-shift: 0px;
+  --button-primary-focus-ring: 0 0 0 1px rgb(var(--text-primary) / 0.18);
 
   --loader-splash-background:
     radial-gradient(circle at 50% 22%, rgb(var(--text-primary) / 0.035), transparent 24%),
