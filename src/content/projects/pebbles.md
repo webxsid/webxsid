@@ -18,12 +18,12 @@ featured: true
 detailsPage: true
 ---
 
-In my experience the best things I've read, watched or listened to, all same through recommendations from the people around me, not from an algorithm shouting the loudest online.
+In my experience the best things I've read, watched or listened to all came through recommendations from the people around me, not from an algorithm shouting the loudest online.
 
 The problem is that those recommendations rarely live anywhere permanent. They disappear into conversations, get buried in group chats, 
 or are forgotten entirely. Coming back to them months later is surprisingly difficult, and that’s the problem I’m trying to solve with Pebbles.
 
-Inspired by the notion of [Pebbling](https://en.wikipedia.org/wiki/Pebbling), the goal of this project to build a personalised recommendation feed curated by the people whose opinion you already trust.
+Inspired by the notion of [Pebbling](https://en.wikipedia.org/wiki/Pebbling), the goal of this project is to build a personalised recommendation feed curated by the people whose opinion you already trust.
 
 Recommendations shouldn’t have to become social content to remain useful. Pebbles isn’t built around likes, follower counts, or engagement metrics. 
 It’s built around preserving the context behind a recommendation—who shared it, why they thought it was worth your time, and making it easy to return to later.
@@ -34,4 +34,3 @@ The goal is to help small circles of people share things they genuinely enjoy, n
 
 Like all of my projects, Pebbles is growing slowly. Rather than trying to compete with existing social platforms, 
 I’m focusing on making one part of the experience genuinely better: *remembering the things that mattered enough for someone you trust to recommend them in the first place*.
-

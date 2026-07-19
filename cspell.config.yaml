@@ -1,0 +1,36 @@
+version: "0.2"
+language: en-GB,en-US
+files:
+  - README.md
+  - docs/**/*.md
+  - src/**/*.md
+  - src/**/*.astro
+ignorePaths:
+  - node_modules/**
+  - dist/**
+  - .astro/**
+  - docs/grammar-audit.md
+words:
+  - Appyhigh
+  - Astro
+  - backpressure
+  - backlink
+  - backlinks
+  - Bluesky
+  - colophon
+  - Crona
+  - Feedbin
+  - frontmatter
+  - gifs
+  - IMDB
+  - Inoreader
+  - lucide
+  - Lucide
+  - Mittal
+  - Pebbles
+  - Reeder
+  - Siddharth
+  - Taptic
+  - TMDB
+  - webxsid
+  - Webxsid

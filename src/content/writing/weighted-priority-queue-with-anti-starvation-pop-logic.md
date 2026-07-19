@@ -21,7 +21,7 @@ seo:
 
 While working on a new feature recently, the requirements called for a task manager that accepts jobs from different app environments - Development, QA, Staging, & Production - and feeds them to a processing worker thread.
 
-The main challenge was balancing the task priority. Production tasks obviously needed to processed first but that might leave the other jobs starving in queue, especially during periods of heavy load. So I implemented a rudimentary weighted priority queue with a `4:3:2:1 `pop ratio with a few guardrails to make sure lower-priority tasks still got picked.
+The main challenge was balancing task priority. Production tasks obviously needed to be processed first, but that might leave the other jobs starving in the queue, especially during periods of heavy load. So I implemented a rudimentary weighted priority queue with a `4:3:2:1 `pop ratio and a few guardrails to make sure lower-priority tasks still got picked.
 
 
 ### Table of Contents
@@ -43,7 +43,7 @@ The main challenge was balancing the task priority. Production tasks obviously n
 
 ## Design Overview
 
-The task manager processes jobs from different environments with varying priority. The goal is to ensure high-priority jobs are processed promptly, while still proving a fair change for lower-priority jobs.
+The task manager processes jobs from different environments with varying priority. The goal is to ensure high-priority jobs are processed promptly, while still providing a fair chance for lower-priority jobs.
 
 ### Key Design Points
 
@@ -55,7 +55,7 @@ The task manager processes jobs from different environments with varying priorit
 
 4. **Fair Task Distribution with Independent Counters**: Each environment has its own independent counter to track task processing. This helps maintain the 4:3:2:1 weighted ratio between environments.
 
-By combining this env based job prioritization, and periodic syncing to MongoDB for fault tolerance, the task manager ensure efficiency & fairness in handling tasks from different environments.
+By combining this env-based job prioritization and periodic syncing to MongoDB for fault tolerance, the task manager ensures efficiency and fairness in handling tasks from different environments.
 
 
 ## How It Works
@@ -77,8 +77,8 @@ def insert(self, job_id: str, job_data: Dict[str, Any]) -> None:
 ```
 
 2. **Queue Management**:
-  - Each environment has it's own queue, which ensure the priorities of each env task doesn't get mixed up
-  - Independent counters are maintained for each environment to maintain the 4:3:2:1 ration
+  - Each environment has its own queue, which ensures the priorities of each env task don't get mixed up
+  - Independent counters are maintained for each environment to maintain the 4:3:2:1 ratio
 
   ```python
   def __init__(self) -> None:
@@ -181,5 +181,4 @@ Most mature queue systems are tightly coupled with Redis. In this case, persiste
 	
 5. **Lightweight and Purpose-Built**
 The goal was a minimal and fast in-memory queue with periodic sync. Building from scratch made it easy to optimize for this specific use case.
-
 

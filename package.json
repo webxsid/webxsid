@@ -10,6 +10,7 @@
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
     "check": "ASTRO_TELEMETRY_DISABLED=1 astro check",
+    "prose:check": "cspell --no-progress \"README.md\" \"docs/**/*.md\" \"src/**/*.md\" \"src/**/*.astro\"",
     "content:sync": "node scripts/content-manager.mjs sync",
     "content:new": "node scripts/content-manager.mjs new",
     "content:delete": "node scripts/content-manager.mjs delete",
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "cspell": "^10.0.1",
     "eslint": "^10.3.0",
     "eslint-plugin-astro": "^1.7.0",
     "prettier": "^3.8.3",
