@@ -391,7 +391,7 @@ export function getStaticOgImagePath() {
   return "/og";
 }
 
-export function getListOgImagePath(kind: "projects" | "writing" | "references") {
+export function getListOgImagePath(kind: "projects" | "writing" | "references" | "notes") {
   return `/og-list/${kind}.png`;
 }
 

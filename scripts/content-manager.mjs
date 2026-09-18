@@ -15,11 +15,11 @@ const vaultRoot = path.join(
   "Webxsid",
   "Portfolio",
 );
-const collectionNames = ["projects", "writing", "references", "work", "now"];
+const collectionNames = ["projects", "writing", "notes", "references", "work", "now"];
 const collections = new Set(collectionNames);
 
-function getCollectionExtension(collection) {
-  return collection === "now" ? ".mdx" : ".md";
+function getCollectionExtension() {
+  return ".md";
 }
 
 function fail(message) {
@@ -32,6 +32,14 @@ function getTodayLocalDate() {
   const offsetMs = now.getTimezoneOffset() * 60_000;
 
   return new Date(now.getTime() - offsetMs).toISOString().slice(0, 10);
+}
+
+function getLocalTimestamp() {
+  const now = new Date();
+  const offsetMs = now.getTimezoneOffset() * 60_000;
+  const local = new Date(now.getTime() - offsetMs).toISOString();
+
+  return `${local.slice(0, 10)}-${local.slice(11, 19).replaceAll(":", "")}`;
 }
 
 function normalizeSlug(value) {
@@ -64,6 +72,8 @@ function getSlugPromptDefault(collection) {
       return "new-project";
     case "writing":
       return "new-writing";
+    case "notes":
+      return getLocalTimestamp();
     case "references":
       return "new-reference";
     case "work":
@@ -377,6 +387,8 @@ async function createNew(collection, slugArg) {
     (await promptForSlug(
       resolvedCollection === "now"
         ? "Slug for this now entry"
+        : resolvedCollection === "notes"
+          ? "Timestamp for this note (YYYY-MM-DD-HHmmss)"
         : `Slug for the new ${resolvedCollection} entry`,
       getSlugPromptDefault(resolvedCollection),
     ));
@@ -384,6 +396,10 @@ async function createNew(collection, slugArg) {
 
   if (!slug) {
     fail(`A slug is required for "${resolvedCollection}".`);
+  }
+
+  if (resolvedCollection === "notes" && !/^\d{4}-\d{2}-\d{2}-\d{6}$/.test(slug)) {
+    fail('Notes must use a timestamp slug: YYYY-MM-DD-HHmmss.');
   }
 
   const sourcePath = repoFilePath(resolvedCollection, slug);

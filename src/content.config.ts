@@ -1,6 +1,8 @@
 import { defineCollection } from "astro:content";
-import { glob } from "astro/loaders";
+import { glob, type Loader, type LoaderContext } from "astro/loaders";
 import { z } from "astro/zod";
+import { readdir } from "node:fs/promises";
+import { join } from "node:path";
 
 const seoSchema = z
   .object({
@@ -85,11 +87,55 @@ const now = defineCollection({
   }),
 });
 
-const references = defineCollection({
-  loader: glob({
+async function hasMarkdownFiles(path: string): Promise<boolean> {
+  const entries = await readdir(path, { withFileTypes: true }).catch(() => []);
+
+  for (const entry of entries) {
+    if (entry.isDirectory() && (await hasMarkdownFiles(join(path, entry.name)))) {
+      return true;
+    }
+
+    if (entry.isFile() && entry.name.endsWith(".md")) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function optionalMarkdownCollectionLoader(name: string, base: string): Loader {
+  const markdownGlobLoader = glob({
     pattern: "**/*.md",
-    base: "./src/content/references",
-  }),
+    base,
+  });
+
+  return {
+    ...markdownGlobLoader,
+    name: `${name}-loader`,
+    async load(context: LoaderContext) {
+    const emptyCollectionKey = `__empty_${name}_collection__`;
+    const hasEntries = await hasMarkdownFiles(base);
+
+    if (!hasEntries) {
+      context.store.clear();
+      context.store.set({
+        id: emptyCollectionKey,
+        data: {},
+        body: "",
+        filePath: "",
+        digest: emptyCollectionKey,
+      });
+      context.store.delete(emptyCollectionKey);
+      return;
+    }
+
+    await markdownGlobLoader.load(context);
+    },
+  };
+}
+
+const references = defineCollection({
+  loader: optionalMarkdownCollectionLoader("references", "./src/content/references"),
   schema: z.object({
     title: z.string(),
     type: z.enum([
@@ -113,6 +159,11 @@ const references = defineCollection({
   }),
 });
 
+const notes = defineCollection({
+  loader: optionalMarkdownCollectionLoader("notes", "./src/content/notes"),
+  schema: z.object({}),
+});
+
 const work = defineCollection({
   loader: glob({
     pattern: "**/*.md",
@@ -130,4 +181,4 @@ const work = defineCollection({
   }),
 });
 
-export const collections = { projects, writing, now, references, work };
+export const collections = { projects, writing, now, references, notes, work };

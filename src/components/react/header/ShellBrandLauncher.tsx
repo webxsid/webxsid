@@ -30,6 +30,7 @@ type Props = {
   currentPath?: string;
   variant?: "default" | "rail";
   hasReferences?: boolean;
+  hasNotes?: boolean;
   hasNow?: boolean;
 };
 export function ShellBrandLauncher({
@@ -41,6 +42,7 @@ export function ShellBrandLauncher({
   currentPath = "/",
   variant = "default",
   hasReferences = false,
+  hasNotes = false,
   hasNow = false,
 }: Props) {
   const brandTriggerRef = useRef<HTMLButtonElement | null>(null);
@@ -176,6 +178,7 @@ export function ShellBrandLauncher({
             onClose={() => setOpen(false)}
             navItems={filterSharedNavItems(globalNavItems, {
               hasReferences,
+              hasNotes,
               hasNow,
             })}
           />

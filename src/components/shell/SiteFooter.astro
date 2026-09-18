@@ -12,13 +12,15 @@ import {
 } from "../../lib/site-links";
 
 const currentYear = new Date().getFullYear();
-const [references, nowEntries] = await Promise.all([
+const [references, notes, nowEntries] = await Promise.all([
   getCollection("references"),
+  getCollection("notes"),
   getCollection("now"),
 ]);
 const footerColumns = footerLinkColumns.map((column) =>
   filterSharedNavItems(column as readonly { href: string; label: string }[], {
     hasReferences: references.length > 0,
+    hasNotes: notes.length > 0,
     hasNow: nowEntries.length > 0,
   }),
 );

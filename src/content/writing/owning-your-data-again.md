@@ -6,7 +6,7 @@ publishedAt: 2026-07-05
 featured: true
 order: 0
 seo:
-  descriptions: Softwares have shifted from ownership to permissions. Here's why it matters and why we should all care about the shift
+  description: Softwares have shifted from ownership to permissions. Here's why it matters and why we should all care about the shift
 ---
 
 Not too long ago, buying something meant owning it perpetually. Your files lived on your machine, your photos on your hard drive,
@@ -68,4 +68,3 @@ Because if software is meant to help us build our lives, it shouldn’t require 
 
 ---
 *P.S. There’s a certain irony in relying on external links to make an argument about digital ownership. If some of them stop working in a few years, consider that an unintended—but rather fitting—demonstration.*
-

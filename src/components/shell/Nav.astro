@@ -3,6 +3,7 @@ import {
   BookOpenText,
   BookHeart,
   Clock3,
+  NotepadText,
   House,
   BriefcaseBusiness,
 } from "lucide-astro";
@@ -10,12 +11,14 @@ import { getCollection } from "astro:content";
 import { filterSharedNavItems, globalNavItems } from "../../lib/site-links";
 
 const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
-const [references, nowEntries] = await Promise.all([
+const [references, notes, nowEntries] = await Promise.all([
   getCollection("references"),
+  getCollection("notes"),
   getCollection("now"),
 ]);
 const navItems = filterSharedNavItems(globalNavItems, {
   hasReferences: references.length > 0,
+  hasNotes: notes.length > 0,
   hasNow: nowEntries.length > 0,
 });
 
@@ -34,6 +37,7 @@ const iconsMap = {
   briefcase: BriefcaseBusiness,
   book: BookOpenText,
   bookmark: BookHeart,
+  notepad: NotepadText,
   clock: Clock3,
 };
 

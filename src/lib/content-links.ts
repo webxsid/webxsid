@@ -1,13 +1,14 @@
 import { getCollection } from "astro:content";
 import { SITE_URL } from "./site";
 import { getWritingPath } from "./writing";
+import { getNoteExcerpt, getNoteLabel, getNotePath } from "./notes";
 import { getProjectHref, isProjectDetailPage } from "./projects";
 import type {
   LinkPreviewKind,
   LinkPreviewRecord,
 } from "./link-preview-shared";
 
-type PageKind = "projects" | "writing" | "references" | "work" | "now";
+type PageKind = "projects" | "writing" | "references" | "notes" | "work" | "now";
 
 type ContentNode = {
   path: string;
@@ -59,6 +60,8 @@ const getSectionLabel = (path: string) => {
   if (normalized.startsWith("/projects/")) return "Projects";
   if (normalized === "/references") return "References";
   if (normalized.startsWith("/references/")) return "References";
+  if (normalized === "/notes") return "Notes";
+  if (normalized.startsWith("/notes/")) return "Notes";
   if (normalized === "/work") return "Work";
   if (normalized.startsWith("/work/")) return "Work";
   if (normalized === "/now") return "Now";
@@ -337,10 +340,11 @@ export async function getContentLinkProfiles() {
 }
 
 async function buildContentLinkProfiles() {
-  const [projects, writing, references, work, now] = await Promise.all([
+  const [projects, writing, references, notes, work, now] = await Promise.all([
     getCollection("projects"),
     getCollection("writing"),
     getCollection("references"),
+    getCollection("notes"),
     getCollection("work"),
     getCollection("now"),
   ]);
@@ -373,6 +377,15 @@ async function buildContentLinkProfiles() {
         entry.data.title,
         entry.data.summary,
         "references",
+        entry.body ?? "",
+      ),
+    ),
+    ...notes.map((entry) =>
+      buildNode(
+        getNotePath(entry),
+        getNoteLabel(entry),
+        getNoteExcerpt(entry),
+        "notes",
         entry.body ?? "",
       ),
     ),

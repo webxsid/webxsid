@@ -13,8 +13,9 @@ type Props = {
 
 const { backHref, backLabel, sectionLabel } = Astro.props as Props;
 
-const [references, nowEntries] = await Promise.all([
+const [references, notes, nowEntries] = await Promise.all([
   getCollection("references"),
+  getCollection("notes"),
   getCollection("now"),
 ]);
 
@@ -38,6 +39,7 @@ const brandIcon = await getImage({
       pageTitle={sectionLabel}
       currentPath={Astro.url.pathname}
       hasReferences={references.length > 0}
+      hasNotes={notes.length > 0}
       hasNow={nowEntries.length > 0}
     />
   </Container>
