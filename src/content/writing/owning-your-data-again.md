@@ -4,7 +4,7 @@ summary: Software have shifted from ownership to permissions. Here's why it matt
 kind: blog
 publishedAt: 2026-07-05
 featured: true
-order: 0
+order: 1
 seo:
   description: Softwares have shifted from ownership to permissions. Here's why it matters and why we should all care about the shift
 ---

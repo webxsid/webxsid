@@ -10,7 +10,7 @@ tags:
   - product-design
   - pebbles
 featured: true
-order: 2
+order: 3
 kind: blog
 seo:
   title: "The Same Show, Different Links: Solving Cross-Platform Content Matching"
