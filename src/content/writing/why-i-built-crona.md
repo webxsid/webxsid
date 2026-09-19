@@ -6,6 +6,7 @@ summary: Crona started as a collection of Markdown files, JavaScript macros and
   local-first work tracker built around a daemon, TUI and CLI.
 featured: false
 order: 0
+tags: []
 kind: blog
 draft: true
 seo:
@@ -59,4 +60,4 @@ I built this because I wanted a record of what I was doing without changing how 
 Ten months later, that's still the idea  
 
   
-[⁠Website](https://crona.work) ·  [⁠GitHub](https://github.com/webxsid/crona)
+[Website](https://crona.work) · [GitHub](https://github.com/webxsid/crona)
