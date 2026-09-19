@@ -4,7 +4,7 @@ publishedAt: 2026-09-19
 summary: Crona started as a collection of Markdown files, JavaScript macros and
   Obsidian dashboards. This is the story of why I turned that setup into a
   local-first work tracker built around a daemon, TUI and CLI.
-featured: false
+featured: true
 order: 0
 tags:
   - crona
