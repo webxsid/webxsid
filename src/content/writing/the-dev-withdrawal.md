@@ -12,7 +12,7 @@ tags:
   - burnout
   - crona
 featured: false
-order: 0
+order: 2
 kind: blog
 draft: false
 seo:

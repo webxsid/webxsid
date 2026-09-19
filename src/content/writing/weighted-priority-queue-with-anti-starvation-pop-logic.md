@@ -13,7 +13,7 @@ tags:
 kind: blog
 publishedAt: 2025-04-19
 featured: true
-order: 1
+order: 4
 seo:
   title: "Weighted Priority Queue with Anti-Starvation Pop Logic"
   description: "A practical backend write-up on building a weighted in-memory priority queue with anti-starvation behavior, per-environment fairness, and MongoDB-backed recovery."
