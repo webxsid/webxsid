@@ -14,7 +14,7 @@ tags:
   - productivity
   - open-source
 kind: blog
-draft: true
+draft: false
 seo:
   title: Why I Built Crona — A Local-First Work Tracker
   description: How an over-engineered Obsidian setup became Crona, a local-first
@@ -65,5 +65,4 @@ I built this because I wanted a record of what I was doing without changing how 
 
 Ten months later, that's still the idea  
 
-  
 [Website](https://crona.work) · [GitHub](https://github.com/webxsid/crona)
