@@ -6,7 +6,13 @@ summary: Crona started as a collection of Markdown files, JavaScript macros and
   local-first work tracker built around a daemon, TUI and CLI.
 featured: false
 order: 0
-tags: []
+tags:
+  - crona
+  - local-first
+  - developer-tools
+  - terminal
+  - productivity
+  - open-source
 kind: blog
 draft: true
 seo:
