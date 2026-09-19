@@ -2,6 +2,7 @@ import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 import { SITE_URL } from "../lib/site";
 import { filterPublicWritingEntries, getWritingPath } from "../lib/writing";
+import { getNotePath, parseNoteTimestamp } from "../lib/notes";
 
 type SitemapEntry = {
   loc: string;
@@ -15,10 +16,11 @@ const normalizeCanonical = (pathname: string, canonical?: string) =>
   new URL(canonical ?? pathname, SITE_URL).toString();
 
 export const GET: APIRoute = async () => {
-  const [projects, writing, references, nowEntries, work] = await Promise.all([
+  const [projects, writing, references, notes, nowEntries, work] = await Promise.all([
     getCollection("projects"),
     getCollection("writing"),
     getCollection("references"),
+    getCollection("notes"),
     getCollection("now"),
     getCollection("work"),
   ]);
@@ -28,6 +30,7 @@ export const GET: APIRoute = async () => {
     "/me",
     "/projects",
     "/writing",
+    "/notes",
     "/references",
     "/now",
     "/colophon",
@@ -71,6 +74,11 @@ export const GET: APIRoute = async () => {
       lastmod: entry.data.publishedAt.toISOString(),
     }));
 
+  const notePages = notes.map((entry) => ({
+    loc: toAbsoluteUrl(getNotePath(entry)),
+    lastmod: parseNoteTimestamp(entry.id).toISOString(),
+  }));
+
   const nowPages = nowEntries
     .filter((entry) => !entry.data.seo?.noindex)
     .map((entry) => ({
@@ -83,6 +91,7 @@ export const GET: APIRoute = async () => {
     ...projectPages,
     ...workPages,
     ...writingPages,
+    ...notePages,
     ...referencePages,
     ...nowPages,
   ];

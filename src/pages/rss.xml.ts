@@ -4,6 +4,7 @@ import rss from "@astrojs/rss";
 import SiteIcon from "../../assets/SiteIcon.png";
 import { SITE_URL } from "../lib/site";
 import { filterPublicWritingEntries, getWritingPath } from "../lib/writing";
+import { getNoteExcerpt, getNoteLabel, getNotePath, parseNoteTimestamp } from "../lib/notes";
 
 const canonicalHomeUrl = new URL("/", SITE_URL).toString();
 const canonicalFeedUrl = new URL("/rss.xml", SITE_URL).toString();
@@ -51,10 +52,10 @@ const appendCanonicalFooter = (content: string) =>
 <p>Originally published on <a href="${canonicalHomeUrl}">${canonicalHomeUrl}</a>.</p>`;
 
 export async function GET() {
-  const writing = await getCollection("writing");
+  const [writing, notes] = await Promise.all([getCollection("writing"), getCollection("notes")]);
   const container = await AstroContainer.create();
 
-  const items = await Promise.all(
+  const writingItems = await Promise.all(
     filterPublicWritingEntries(writing).map(async (entry) => {
       const { Content } = await render(entry);
       const pagePath = getWritingPath(entry);
@@ -72,6 +73,26 @@ export async function GET() {
       };
     }),
   );
+
+  const noteItems = await Promise.all(
+    notes.map(async (entry) => {
+      const { Content } = await render(entry);
+      const pagePath = getNotePath(entry);
+      const content = appendCanonicalFooter(
+        absolutizeRenderedContent(await container.renderToString(Content), pagePath),
+      );
+
+      return {
+        title: getNoteLabel(entry),
+        description: getNoteExcerpt(entry),
+        link: pagePath,
+        pubDate: parseNoteTimestamp(entry.id),
+        content,
+      };
+    }),
+  );
+
+  const items = [...writingItems, ...noteItems];
 
   const sortedItems = items
     .sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime())

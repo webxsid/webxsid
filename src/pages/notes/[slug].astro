@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import NotesBoard from "../../components/notes/NotesBoard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getStaticOgImagePath } from "../../lib/og-image";
+import { getNoteExcerpt, getNoteLabel, getNotePath } from "../../lib/notes";
+import { withAutoOgImage } from "../../lib/seo";
+
+export async function getStaticPaths() {
+  const notes = await getCollection("notes");
+
+  return notes.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const label = getNoteLabel(entry);
+const seo = withAutoOgImage(
+  {
+    title: `${label} · Notes · Webxsid`,
+    description: getNoteExcerpt(entry),
+    canonical: getNotePath(entry),
+  },
+  getStaticOgImagePath(),
+);
+---
+
+<BaseLayout
+  title={`${label} · Notes · Webxsid`}
+  description={getNoteExcerpt(entry)}
+  seo={seo}
+  backHref="/notes"
+  backLabel="Back to notes"
+  hideRail
+>
+  <NotesBoard selectedNoteId={entry.id} />
+</BaseLayout>

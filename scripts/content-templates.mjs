@@ -20,6 +20,8 @@ function bodyStub(collection) {
       return "Write the project overview here.\n";
     case "writing":
       return "Start writing here.\n";
+    case "notes":
+      return "Start noting here.\n";
     case "references":
       return "## What stayed with me\n\nAdd the notes here.\n";
     case "work":
@@ -91,6 +93,8 @@ seo:
 ---
 
 ${bodyStub(collection)}`;
+    case "notes":
+      return bodyStub(collection);
     case "references":
       return `---
 title: ${JSON.stringify(title || "New Reference")}

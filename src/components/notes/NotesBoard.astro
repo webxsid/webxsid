@@ -1,0 +1,325 @@
+---
+import { getCollection, render } from "astro:content";
+import { ChevronDown, ChevronUp, Copy } from "lucide-astro";
+import ContentDocument from "../content/ContentDocument.astro";
+import ContentLinkFooter from "../content/ContentLinkFooter.astro";
+import ContentLinkPreview from "../content/ContentLinkPreview.astro";
+import {
+  getContentLinkProfiles,
+  getEmptyContentLinkProfile,
+} from "../../lib/content-links";
+import {
+  formatNoteTimestamp,
+  getNoteExcerpt,
+  getNotePath,
+  parseNoteTimestamp,
+  sortNotes,
+  type NoteEntry,
+} from "../../lib/notes";
+
+type Props = {
+  selectedNoteId?: string;
+};
+
+const { selectedNoteId } = Astro.props as Props;
+const notes = sortNotes(await getCollection("notes"));
+const linkProfiles = await getContentLinkProfiles();
+const renderedNotes = await Promise.all(
+  notes.map(async (entry) => ({
+    entry,
+    Content: (await render(entry)).Content,
+    profile:
+      linkProfiles.get(getNotePath(entry)) ?? getEmptyContentLinkProfile(),
+  })),
+);
+const previewLinks = renderedNotes.flatMap((note) => note.profile.previewLinks);
+
+const noteDetailsId = (entry: NoteEntry) => `note-details-${entry.id}`;
+---
+
+<section
+  class="notes-board min-h-[calc(100svh-7rem)] py-8 sm:py-10 lg:py-12"
+  aria-labelledby="notes-title"
+>
+  <div class="notes-grid" data-notes-masonry>
+    <div class="notes-grid-sizer" aria-hidden="true"></div>
+    <div class="notes-grid-gutter" aria-hidden="true"></div>
+    <article class="notes-card notes-intro p-4 sm:p-5">
+      <p class="ui-label mb-3 font-mono uppercase text-text-muted">Pinned</p>
+      <h1 id="notes-title" class="ui-heading font-mono font-semibold text-text">
+        Notes
+      </h1>
+      <p class="ui-prose mt-3 text-text-muted">
+        Small thoughts, unfinished ideas, and things worth keeping nearby.
+      </p>
+    </article>
+
+    {
+      renderedNotes.map(({ entry, Content, profile }) => {
+        const isExpanded = entry.id === selectedNoteId;
+        const detailsId = noteDetailsId(entry);
+        const path = getNotePath(entry);
+
+        return (
+          <article
+            class="notes-card relative p-4 pb-14 sm:p-5 sm:pb-16"
+            data-note-card={path}
+            data-note-id={entry.id}
+            data-expanded={isExpanded ? "true" : "false"}
+          >
+            <a
+              class="notes-card-link absolute inset-0"
+              href={path}
+              aria-label={`Open note from ${formatNoteTimestamp(entry)}`}
+              data-note-link
+            />
+            <div class="relative z-10 mb-4 flex items-center justify-between gap-3">
+              <time
+                class="ui-meta font-mono text-text-muted"
+                datetime={parseNoteTimestamp(entry.id).toISOString()}
+              >
+                {formatNoteTimestamp(entry)}
+              </time>
+              <button
+                type="button"
+                class="notes-toggle inline-flex h-7 w-7 shrink-0 items-center justify-center"
+                aria-label={isExpanded ? "Collapse note" : "Expand note"}
+                aria-controls={detailsId}
+                aria-expanded={isExpanded ? "true" : "false"}
+                data-note-toggle
+              >
+                <ChevronDown
+                  size={14}
+                  strokeWidth={1.8}
+                  aria-hidden="true"
+                  data-note-expand-icon
+                  hidden={isExpanded}
+                />
+                <ChevronUp
+                  size={14}
+                  strokeWidth={1.8}
+                  aria-hidden="true"
+                  data-note-collapse-icon
+                  hidden={!isExpanded}
+                />
+              </button>
+            </div>
+
+            <p
+              class="notes-excerpt relative z-10 ui-prose text-text"
+              data-note-excerpt
+              hidden={isExpanded}
+            >
+              {getNoteExcerpt(entry)}
+            </p>
+
+            <div
+              id={detailsId}
+              class="notes-details relative z-10"
+              data-note-details
+              hidden={!isExpanded}
+            >
+              <ContentDocument class="space-y-4">
+                <Content />
+              </ContentDocument>
+              <ContentLinkFooter profile={profile} />
+            </div>
+
+            <button
+              type="button"
+              class="notes-copy-link absolute bottom-4 left-4 z-20 inline-flex h-7 w-7 items-center justify-center sm:bottom-5 sm:left-5"
+              aria-label="Copy link to this note"
+              title="Copy link"
+              data-copy-note-link={path}
+            >
+              <Copy size={14} strokeWidth={1.8} aria-hidden="true" />
+            </button>
+          </article>
+        );
+      })
+    }
+  </div>
+</section>
+
+<ContentLinkPreview previewLinks={previewLinks} />
+
+<script is:inline>
+  (() => {
+    const cards = Array.from(
+      document.querySelectorAll("[data-note-card]"),
+    ).filter((element) => element instanceof HTMLElement);
+
+    const getNoteIdFromPath = (pathname) => {
+      const match = pathname.replace(/\/+$/, "").match(/^\/notes\/([^/]+)$/);
+      return match?.[1] ?? null;
+    };
+
+    const setExpanded = (nextId, updateHistory) => {
+      cards.forEach((card) => {
+        const isExpanded = card.dataset.noteId === nextId;
+        card.dataset.expanded = String(isExpanded);
+
+        const excerpt = card.querySelector("[data-note-excerpt]");
+        const details = card.querySelector("[data-note-details]");
+        const toggle = card.querySelector("[data-note-toggle]");
+
+        if (excerpt instanceof HTMLElement) excerpt.hidden = isExpanded;
+        if (details instanceof HTMLElement) details.hidden = !isExpanded;
+        if (toggle instanceof HTMLButtonElement) {
+          toggle.setAttribute("aria-expanded", String(isExpanded));
+          toggle.setAttribute(
+            "aria-label",
+            isExpanded ? "Collapse note" : "Expand note",
+          );
+          const expandIcon = toggle.querySelector("[data-note-expand-icon]");
+          const collapseIcon = toggle.querySelector(
+            "[data-note-collapse-icon]",
+          );
+          if (expandIcon instanceof SVGElement) expandIcon.hidden = isExpanded;
+          if (collapseIcon instanceof SVGElement)
+            collapseIcon.hidden = !isExpanded;
+        }
+      });
+
+      if (!updateHistory) return;
+
+      document.dispatchEvent(new CustomEvent("notes:layout"));
+
+      const nextPath = nextId ? `/notes/${nextId}` : "/notes";
+      if (window.location.pathname !== nextPath) {
+        window.history.pushState({}, "", nextPath);
+      }
+    };
+
+    cards.forEach((card) => {
+      const activate = () => setExpanded(card.dataset.noteId ?? null, true);
+
+      card
+        .querySelector("[data-note-link]")
+        ?.addEventListener("click", (event) => {
+          if (
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey
+          )
+            return;
+
+          event.preventDefault();
+          activate();
+        });
+
+      card.addEventListener("click", (event) => {
+        const target = event.target;
+        const selection = window.getSelection()?.toString();
+
+        if (
+          card.dataset.expanded === "true" ||
+          selection ||
+          !(target instanceof Element) ||
+          target.closest("a, button, input, textarea, select, summary")
+        ) {
+          return;
+        }
+
+        activate();
+      });
+
+      card
+        .querySelector("[data-note-toggle]")
+        ?.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          setExpanded(
+            card.dataset.expanded === "true"
+              ? null
+              : (card.dataset.noteId ?? null),
+            true,
+          );
+        });
+    });
+
+    window.addEventListener("popstate", () => {
+      setExpanded(getNoteIdFromPath(window.location.pathname), false);
+    });
+
+    document.querySelectorAll("[data-copy-note-link]").forEach((element) => {
+      if (!(element instanceof HTMLButtonElement)) return;
+
+      const defaultLabel = "Copy link to this note";
+      let resetTimer = 0;
+
+      element.addEventListener("click", async () => {
+        const path = element.dataset.copyNoteLink;
+        const url = path ? new URL(path, window.location.origin).href : "";
+
+        if (!url || !navigator.clipboard?.writeText) return;
+
+        try {
+          await navigator.clipboard.writeText(url);
+          element.setAttribute("aria-label", "Link copied");
+          element.title = "Link copied";
+          window.clearTimeout(resetTimer);
+          resetTimer = window.setTimeout(() => {
+            element.setAttribute("aria-label", defaultLabel);
+            element.title = "Copy link";
+          }, 1800);
+        } catch {
+          // Keep the affordance quiet if a browser denies clipboard access.
+        }
+      });
+    });
+  })();
+</script>
+
+<script>
+  import Masonry from "masonry-layout";
+
+  let activeMasonry: { grid: HTMLElement } | null = null;
+
+  const initializeNotesMasonry = () => {
+    const grid = document.querySelector("[data-notes-masonry]");
+    if (!(grid instanceof HTMLElement)) return;
+    if (activeMasonry?.grid === grid) return;
+
+    const masonry = new Masonry(grid, {
+      itemSelector: ".notes-card",
+      columnWidth: ".notes-grid-sizer",
+      gutter: ".notes-grid-gutter",
+      percentPosition: true,
+      transitionDuration: "var(--motion-duration-surface)",
+    });
+
+    let frame = 0;
+    const relayout = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => masonry.layout());
+    };
+    const observer = new ResizeObserver(relayout);
+    activeMasonry = { grid };
+
+    grid.querySelectorAll("[data-note-card]").forEach((card) => {
+      if (card instanceof HTMLElement) observer.observe(card);
+    });
+    document.fonts?.ready.then(relayout);
+    window.addEventListener("resize", relayout, { passive: true });
+    document.addEventListener("notes:layout", relayout);
+
+    document.addEventListener(
+      "astro:before-swap",
+      () => {
+        window.cancelAnimationFrame(frame);
+        window.removeEventListener("resize", relayout);
+        document.removeEventListener("notes:layout", relayout);
+        observer.disconnect();
+        masonry.destroy();
+        activeMasonry = null;
+      },
+      { once: true },
+    );
+  };
+
+  initializeNotesMasonry();
+  document.addEventListener("astro:page-load", initializeNotesMasonry);
+</script>

@@ -10,6 +10,7 @@ type Props = {
   currentPath?: string;
   variant?: "default" | "rail";
   hasReferences?: boolean;
+  hasNotes?: boolean;
   hasNow?: boolean;
 };
 
@@ -22,6 +23,7 @@ export function ShellHeader({
   currentPath = "/",
   variant = "default",
   hasReferences = false,
+  hasNotes = false,
   hasNow = false,
 }: Props) {
   return (
@@ -34,6 +36,7 @@ export function ShellHeader({
       currentPath={currentPath}
       variant={variant}
       hasReferences={hasReferences}
+      hasNotes={hasNotes}
       hasNow={hasNow}
     />
   );

@@ -1,0 +1,389 @@
+media:
+  name: images
+  label: Images
+  input: public/images
+  output: /images
+  categories: [image]
+  rename: safe
+
+components:
+  seo:
+    type: object
+    label: SEO
+    description: Optional search and sharing overrides.
+    fields:
+      - name: title
+        label: SEO title
+        type: string
+      - name: description
+        label: SEO description
+        type: text
+      - name: image
+        label: SEO image path or URL
+        type: string
+        description: Use an absolute URL or a site path such as /images/example.png.
+      - name: canonical
+        label: Canonical URL or path
+        type: string
+      - name: noindex
+        label: Exclude from search indexes
+        type: boolean
+        default: false
+
+content:
+  - name: writing
+    label: Writing
+    type: collection
+    path: src/content/writing
+    format: yaml-frontmatter
+    subfolders: false
+    filename:
+      template: "{title}.md"
+      field: create
+    operations:
+      rename: false
+    view:
+      fields: [title, publishedAt, draft, kind, featured]
+      primary: title
+      sort: [publishedAt, title]
+      search: [title, summary, tags]
+      default:
+        sort: publishedAt
+        order: desc
+    fields:
+      - name: title
+        type: string
+        required: true
+      - name: summary
+        label: Summary
+        type: text
+        required: true
+      - name: publishedAt
+        label: Publication date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: tags
+        type: string
+        list: true
+        default: []
+      - name: kind
+        type: select
+        default: blog
+        options:
+          values: [blog, note]
+      - name: draft
+        label: Draft
+        type: boolean
+        default: true
+        description: Drafts publish only at /writing/draft/[slug] and are excluded from RSS and the public writing index.
+      - name: featured
+        type: boolean
+        default: false
+      - name: order
+        type: number
+        default: 0
+      - name: seo
+        component: seo
+      - name: body
+        label: Body
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          switcher: true
+          media: images
+
+  - name: projects
+    label: Projects
+    type: collection
+    path: src/content/projects
+    format: yaml-frontmatter
+    subfolders: false
+    filename:
+      template: "{title}.md"
+      field: create
+    operations:
+      rename: false
+    view:
+      fields: [title, status, updatedAt, featured, detailsPage]
+      primary: title
+      sort: [order, updatedAt, title]
+      search: [title, summary, stack, tags]
+      default:
+        sort: order
+        order: asc
+    fields:
+      - name: title
+        type: string
+        required: true
+      - name: summary
+        type: text
+        required: true
+      - name: status
+        type: select
+        default: active
+        options:
+          values:
+            [active, building, maintained, archived, prototype, experimental]
+      - name: stack
+        type: string
+        list: true
+        default: []
+      - name: tags
+        type: string
+        list: true
+        default: []
+      - name: company
+        type: object
+        fields:
+          - name: name
+            type: string
+            required: true
+          - name: slug
+            label: Work entry slug
+            type: string
+            required: true
+            description: Must match an entry in src/content/work.
+      - name: yearStarted
+        label: Year started
+        type: number
+      - name: yearEnded
+        label: Year ended
+        type: number
+      - name: order
+        type: number
+        default: 0
+      - name: updatedAt
+        label: Updated date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: featured
+        type: boolean
+        default: false
+      - name: source
+        label: Source URL
+        type: string
+      - name: website
+        label: Website URL
+        type: string
+      - name: demo
+        label: Demo URL
+        type: string
+      - name: detailsPage
+        label: Create project detail page
+        type: boolean
+        default: false
+      - name: seo
+        component: seo
+      - name: body
+        label: Body
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          switcher: true
+          media: images
+
+  - name: notes
+    label: Notes
+    type: collection
+    path: src/content/notes
+    format: raw
+    subfolders: false
+    exclude: [.gitkeep]
+    filename:
+      template: "{year}-{month}-{day}-{hour}{minute}{second}.md"
+      field: false
+    operations:
+      rename: false
+
+  - name: now
+    label: Now
+    type: collection
+    path: src/content/now
+    format: yaml-frontmatter
+    subfolders: false
+    filename:
+      template: "{updatedAt}.md"
+      field: false
+    operations:
+      rename: false
+    view:
+      fields: [title, updatedAt, tags]
+      primary: title
+      sort: [updatedAt]
+      search: [title, summary, tags]
+      default:
+        sort: updatedAt
+        order: desc
+    fields:
+      - name: title
+        type: string
+        default: Current focus
+      - name: summary
+        type: text
+        required: true
+      - name: updatedAt
+        label: Updated date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: tags
+        type: string
+        list: true
+        default: []
+      - name: links
+        label: Related links
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{title}"
+        default: []
+        fields:
+          - name: heading
+            type: string
+          - name: title
+            type: string
+            required: true
+          - name: url
+            type: string
+            required: true
+      - name: seo
+        component: seo
+      - name: body
+        label: Body (Markdown or MDX source)
+        type: code
+        required: true
+        description: Use source editing to preserve any MDX components or custom syntax.
+        options:
+          language: markdown
+
+  - name: references
+    label: References
+    type: collection
+    path: src/content/references
+    format: yaml-frontmatter
+    subfolders: false
+    filename:
+      template: "{title}.md"
+      field: create
+    operations:
+      rename: false
+    view:
+      fields: [title, type, creator, publishedAt, featured]
+      primary: title
+      sort: [publishedAt, title]
+      search: [title, creator, summary]
+      default:
+        sort: publishedAt
+        order: desc
+    fields:
+      - name: title
+        type: string
+        required: true
+      - name: type
+        type: select
+        required: true
+        options:
+          values:
+            [
+              book,
+              article,
+              essay,
+              paper,
+              video,
+              podcast,
+              song,
+              album,
+              movie,
+              other,
+            ]
+      - name: creator
+        type: string
+      - name: year
+        type: number
+      - name: summary
+        type: text
+        required: true
+      - name: featured
+        type: boolean
+        default: false
+      - name: publishedAt
+        label: Publication date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: seo
+        component: seo
+      - name: body
+        label: Body
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          switcher: true
+          media: images
+
+  - name: work
+    label: Work
+    type: collection
+    path: src/content/work
+    format: yaml-frontmatter
+    subfolders: false
+    filename:
+      template: "{title}.md"
+      field: create
+    operations:
+      rename: false
+    view:
+      fields: [company, title, role, period, order]
+      primary: company
+      sort: [order, company]
+      search: [company, title, role, summary]
+      default:
+        sort: order
+        order: asc
+    fields:
+      - name: title
+        type: string
+        required: true
+      - name: summary
+        type: text
+        required: true
+      - name: company
+        type: string
+        required: true
+      - name: url
+        label: Company URL
+        type: string
+        required: true
+      - name: role
+        type: string
+        required: true
+      - name: period
+        type: string
+        required: true
+      - name: order
+        type: number
+        default: 0
+      - name: seo
+        component: seo
+      - name: body
+        label: Body
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          switcher: true
+          media: images
+
+settings:
+  content:
+    merge: true

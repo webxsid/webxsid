@@ -67,14 +67,18 @@ export const LEGACY_THEME_STORAGE_KEY = "theme";
 export const defaultThemeFamily: ThemeFamily = "graphite";
 export const defaultThemeMode: ThemeMode = "system";
 
-export const isThemeFamily = (value: string | null | undefined): value is ThemeFamily =>
+export const isThemeFamily = (
+  value: string | null | undefined,
+): value is ThemeFamily =>
   themeFamilies.some((option) => option.value === value);
 
-export const isThemeMode = (value: string | null | undefined): value is ThemeMode =>
-  themeModes.some((option) => option.value === value);
+export const isThemeMode = (
+  value: string | null | undefined,
+): value is ThemeMode => themeModes.some((option) => option.value === value);
 
 export const getThemeVariants = (family: ThemeFamily) => {
-  const theme = themeFamilies.find((option) => option.value === family) ?? themeFamilies[0];
+  const theme =
+    themeFamilies.find((option) => option.value === family) ?? themeFamilies[0];
 
   return {
     light: theme.lightVariant,
@@ -95,7 +99,9 @@ export const resolveThemeVariant = (
   return prefersDark ? variants.dark : variants.light;
 };
 
-export const resolveThemeFamilyFromVariant = (variant: string | null | undefined) => {
+export const resolveThemeFamilyFromVariant = (
+  variant: string | null | undefined,
+) => {
   switch (variant) {
     case "paper":
     case "graphite":
@@ -117,7 +123,9 @@ export const resolveThemeFamilyFromVariant = (variant: string | null | undefined
   }
 };
 
-export const resolveThemeModeFromVariant = (variant: string | null | undefined) => {
+export const resolveThemeModeFromVariant = (
+  variant: string | null | undefined,
+) => {
   switch (variant) {
     case "paper":
     case "e-ink":
@@ -136,7 +144,10 @@ export const resolveThemeModeFromVariant = (variant: string | null | undefined) 
   }
 };
 
-export const resolveThemeFamilyAndMode = (family: string | null | undefined, mode: string | null | undefined) => {
+export const resolveThemeFamilyAndMode = (
+  family: string | null | undefined,
+  mode: string | null | undefined,
+) => {
   const nextFamily = isThemeFamily(family) ? family : defaultThemeFamily;
   const nextMode = isThemeMode(mode) ? mode : defaultThemeMode;
 
@@ -163,6 +174,9 @@ export const getSectionLabel = (value: string, fallback = "Page") => {
   }
   if (normalized === "/references" || normalized.startsWith("/references/")) {
     return "References";
+  }
+  if (normalized === "/notes" || normalized.startsWith("/notes/")) {
+    return "Notes";
   }
   if (normalized === "/work" || normalized.startsWith("/work/")) {
     return "Work";
