@@ -192,7 +192,7 @@ content:
     label: Notes
     type: collection
     path: src/content/notes
-    format: raw
+    format: yaml-frontmatter
     subfolders: false
     exclude: [.gitkeep]
     filename:
@@ -200,6 +200,15 @@ content:
       field: false
     operations:
       rename: false
+    fields:
+      - name: body
+        label: Body
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          switcher: true
+          media: images
 
   - name: now
     label: Now
