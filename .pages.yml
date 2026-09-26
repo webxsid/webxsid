@@ -192,7 +192,7 @@ content:
     label: Notes
     type: collection
     path: src/content/notes
-    format: yaml-frontmatter
+    format: raw
     subfolders: false
     exclude: [.gitkeep]
     filename:
