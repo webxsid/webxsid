@@ -195,6 +195,8 @@ content:
     format: raw
     subfolders: false
     exclude: [.gitkeep]
+    view:
+      primary: filename
     filename:
       template: "{year}-{month}-{day}-{hour}{minute}{second}.md"
       field: false
