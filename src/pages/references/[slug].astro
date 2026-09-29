@@ -1,12 +1,16 @@
 ---
 import { getCollection, render } from "astro:content";
-import ReferenceLayout from "../../layouts/ReferenceLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
 import ContentDocument from "../../components/content/ContentDocument.astro";
 import ContentHeader from "../../components/content/ContentHeader.astro";
 import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro";
 import ContentLinkPreview from "../../components/content/ContentLinkPreview.astro";
-import { formatReferenceMeta, sortReferenceEntries } from "../../lib/references";
-import { getContentLinkProfiles, getEmptyContentLinkProfile } from "../../lib/content-links";
+import { formatReferenceMeta } from "../../lib/references";
+import {
+  getContentLinkProfiles,
+  getEmptyContentLinkProfile,
+} from "../../lib/content-links";
 
 export async function getStaticPaths() {
   const references = await getCollection("references");
@@ -19,38 +23,38 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const referenceItems = sortReferenceEntries(await getCollection("references")).map((item) => ({
-  id: item.id,
-  title: item.data.title,
-  type: item.data.type,
-  creator: item.data.creator,
-  year: item.data.year,
-  publishedAt: item.data.publishedAt,
-  featured: item.data.featured,
-}));
 const linkProfiles = await getContentLinkProfiles();
-const linkProfile = linkProfiles.get(`/references/${entry.id}`) ?? getEmptyContentLinkProfile();
+const linkProfile =
+  linkProfiles.get(`/references/${entry.id}`) ?? getEmptyContentLinkProfile();
 ---
 
-<ReferenceLayout
+<BaseLayout
   title={`${entry.data.title} · References · Webxsid`}
   description={entry.data.summary}
   seo={entry.data.seo}
   resourceHints={linkProfile.resourceHints}
+  seoType="article"
+  articleSection="References"
   articlePublishedTime={entry.data.publishedAt.toISOString()}
-  referenceItems={referenceItems}
-  activeId={entry.id}
+  backHref="/references"
+  backLabel="Back to references"
 >
-  <div class="max-w-4xl space-y-12 lg:space-y-16" data-content-preview-scope>
-    <ContentHeader eyebrow="Reference" title={entry.data.title} summary={entry.data.summary}>
-      <span slot="meta">{formatReferenceMeta(entry)}</span>
-    </ContentHeader>
+  <ContentPageFrame>
+    <div class="max-w-4xl space-y-12 lg:space-y-16" data-content-preview-scope>
+      <ContentHeader
+        eyebrow="Reference"
+        title={entry.data.title}
+        summary={entry.data.summary}
+      >
+        <span slot="meta">{formatReferenceMeta(entry)}</span>
+      </ContentHeader>
 
-    <ContentDocument class="space-y-4">
-      <Content />
-    </ContentDocument>
+      <ContentDocument class="space-y-4">
+        <Content />
+      </ContentDocument>
 
-    <ContentLinkFooter profile={linkProfile} />
-    <ContentLinkPreview previewLinks={linkProfile.previewLinks} />
-  </div>
-</ReferenceLayout>
+      <ContentLinkFooter profile={linkProfile} />
+      <ContentLinkPreview previewLinks={linkProfile.previewLinks} />
+    </div>
+  </ContentPageFrame>
+</BaseLayout>

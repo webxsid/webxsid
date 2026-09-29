@@ -182,7 +182,7 @@ export function ShellThemePicker({
         aria-expanded={open}
         aria-label="Theme picker"
         onClick={onToggle}
-        className="shell-brand-button motion-surface inline-flex items-center justify-center px-3 py-3 text-text"
+        className="shell-brand-button motion-surface inline-flex items-center justify-center px-4 py-4 text-text"
       >
         <ThemePickerIcon className="h-[15px] w-[15px]" />
       </motion.button>

@@ -4,9 +4,14 @@ import type { ContentLinkProfile } from "../../lib/content-links";
 type Props = {
   profile?: ContentLinkProfile;
   declaredUrls?: string[];
+  showConnectedWriting?: boolean;
 };
 
-const { profile, declaredUrls = [] } = Astro.props as Props;
+const {
+  profile,
+  declaredUrls = [],
+  showConnectedWriting = true,
+} = Astro.props as Props;
 
 const normalizeExternalLink = (value: string) => {
   try {
@@ -66,7 +71,7 @@ const externalReferences = filteredReferences.filter((item) => {
   return true;
 });
 
-const hasConnectedWriting = backlinkGroups.length > 0;
+const hasConnectedWriting = showConnectedWriting && backlinkGroups.length > 0;
 const hasExternalReferences = externalReferences.length > 0;
 ---
 {

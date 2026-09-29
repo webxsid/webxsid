@@ -1,8 +1,11 @@
 ---
 import { getCollection, render } from "astro:content";
-import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
 import ContentDocument from "../../components/content/ContentDocument.astro";
 import ProjectMetadataFooter from "../../components/content/ProjectMetadataFooter.astro";
+import ContentMetadata from "../../components/content/ContentMetadata.astro";
+import ContentTags from "../../components/content/ContentTags.astro";
 import ContentLinkPreview from "../../components/content/ContentLinkPreview.astro";
 import StatusBadge from "../../components/content/StatusBadge.astro";
 import {
@@ -14,10 +17,10 @@ import {
   getProjectCompanyHref,
   getProjectStackLabel,
   isProjectDetailPage,
-  getProjectTagsLabel,
 } from "../../lib/projects";
 import { getProjectOgImagePath } from "../../lib/og-image";
 import { withAutoOgImage } from "../../lib/seo";
+import { formatDate } from "../../lib/dates";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -33,25 +36,12 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const seo = withAutoOgImage(entry.data.seo, getProjectOgImagePath(entry.id));
-const projectItems = (await getCollection("projects"))
-  .filter((item) => isProjectDetailPage(item))
-  .map((item) => ({
-    id: item.id,
-    title: item.data.title,
-    status: item.data.status,
-    updatedAt: item.data.updatedAt,
-    order: item.data.order,
-    yearStarted: item.data.yearStarted,
-    yearEnded: item.data.yearEnded,
-    detailsPage: item.data.detailsPage,
-  }));
 const linkProfiles = await getContentLinkProfiles();
 const linkProfile =
   linkProfiles.get(`/projects/${entry.id}`) ?? getEmptyContentLinkProfile();
 const companyLabel = getProjectCompanyLabel(entry);
 const stackLabel = getProjectStackLabel(entry);
 const companyHref = getProjectCompanyHref(entry);
-const tagLabel = getProjectTagsLabel(entry);
 const declaredProjectUrls = [
   entry.data.source,
   entry.data.website,
@@ -59,124 +49,104 @@ const declaredProjectUrls = [
 ].filter((url): url is string => Boolean(url));
 ---
 
-<ProjectLayout
+<BaseLayout
   title={`${entry.data.title} · Projects · Webxsid`}
   description={entry.data.summary}
   seo={seo}
   resourceHints={linkProfile.resourceHints}
+  seoType="article"
   articlePublishedTime={entry.data.updatedAt.toISOString()}
   articleModifiedTime={entry.data.updatedAt.toISOString()}
-  projectItems={projectItems}
-  activeId={entry.id}
+  articleSection="Projects"
+  backHref="/projects"
+  backLabel="Back to projects"
 >
-  <div class="max-w-4xl space-y-12 lg:space-y-14" data-content-preview-scope>
-    <header class="motion-page max-w-3xl space-y-6">
-      <div class="space-y-3">
-        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-          <h1 class="ui-title font-semibold tracking-tight text-text">
-            {entry.data.title}
-          </h1>
+  <ContentPageFrame>
+    <div class="max-w-4xl space-y-12 lg:space-y-14" data-content-preview-scope>
+      <header class="motion-page max-w-3xl space-y-7">
+        <div class="space-y-4">
+          <div
+            class="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <h1 class="ui-title font-semibold tracking-tight text-text">
+              {entry.data.title}
+            </h1>
 
-          <StatusBadge status={entry.data.status} />
+            <StatusBadge
+              status={entry.data.status}
+              class="rounded-full px-2.5 py-1 text-[0.7rem] tracking-[0.14em]"
+            />
+          </div>
+
+          <p class="ui-lead max-w-xl text-text">
+            {entry.data.summary}
+          </p>
         </div>
 
-        <p class="ui-body max-w-3xl text-text-muted">
-          {entry.data.summary}
-        </p>
-      </div>
-
-      <div class="ui-body space-y-1 text-text-muted">
         {
-          companyLabel && (
-            <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <p class="ui-tag leading-6 font-bold">Built at:</p>
-              {companyHref ? (
-                <a href={companyHref} class="meta-link">
-                  {companyLabel}
+          <ContentMetadata
+            items={[
+              ...(companyLabel
+                ? [{ label: "Company", value: companyLabel, href: companyHref ?? undefined }]
+                : []),
+              ...(stackLabel ? [{ label: "Built with", value: stackLabel }] : []),
+              { label: "Updated", value: formatDate(entry.data.updatedAt) },
+            ]}
+          />
+        }
+
+        {
+          declaredProjectUrls.length > 0 && (
+            <nav
+              aria-label="Project links"
+              class="flex flex-wrap gap-x-6 gap-y-3 border-t border-border/70 pt-5"
+            >
+              {entry.data.source && (
+                <a
+                  href={entry.data.source}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-link"
+                >
+                  Source code
                 </a>
-              ) : (
-                <p class="ui-tag">{companyLabel}</p>
               )}
-            </div>
+              {entry.data.website && (
+                <a
+                  href={entry.data.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-link"
+                >
+                  Website
+                </a>
+              )}
+              {entry.data.demo && (
+                <a
+                  href={entry.data.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-link"
+                >
+                  Demo
+                </a>
+              )}
+            </nav>
           )
         }
 
-        {
-          stackLabel && (
-            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 ">
-              <p class="ui-tag leading-6">
-                <span class="font-bold"> Built With:</span> {stackLabel}
-              </p>
-            </div>
-          )
-        }
+        <ContentTags tags={entry.data.tags} />
+      </header>
 
-        {
-          tagLabel && (
-            <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <p class="ui-tag leading-6">
-                <span class="font-bold">Tags:</span> {tagLabel}
-              </p>
-            </div>
-          )
-        }
-      </div>
-      <div
-        class={[
-          "flex flex-wrap items-center gap-x-3 gap-y-2",
-          !declaredProjectUrls.length && "hidden",
-        ]
-          .filter(Boolean)
-          .join(" ")}
-      >
-        <p class="ui-tag leading-6">Links:</p>
-        {
-          entry.data.source && (
-            <a
-              href={entry.data.source}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-link"
-            >
-              Source Code
-            </a>
-          )
-        }
-        {
-          entry.data.website && (
-            <a
-              href={entry.data.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-link"
-            >
-              Website
-            </a>
-          )
-        }
-        {
-          entry.data.demo && (
-            <a
-              href={entry.data.demo}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-link"
-            >
-              Demo
-            </a>
-          )
-        }
-      </div>
-    </header>
+      <ContentDocument class="space-y-4">
+        <Content />
+      </ContentDocument>
 
-    <ContentDocument class="space-y-4">
-      <Content />
-    </ContentDocument>
-
-    <ProjectMetadataFooter
-      profile={linkProfile}
-      declaredUrls={declaredProjectUrls}
-    />
-    <ContentLinkPreview previewLinks={linkProfile.previewLinks} />
-  </div>
-</ProjectLayout>
+      <ProjectMetadataFooter
+        profile={linkProfile}
+        declaredUrls={declaredProjectUrls}
+      />
+      <ContentLinkPreview previewLinks={linkProfile.previewLinks} />
+    </div>
+  </ContentPageFrame>
+</BaseLayout>

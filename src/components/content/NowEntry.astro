@@ -1,6 +1,8 @@
 ---
 import ContentDocument from "./ContentDocument.astro";
 import ContentHeader from "./ContentHeader.astro";
+import ContentMetadata from "./ContentMetadata.astro";
+import ContentTags from "./ContentTags.astro";
 import ContentLinkFooter from "./ContentLinkFooter.astro";
 import ContentLinkPreview from "./ContentLinkPreview.astro";
 import type { ContentLinkProfile } from "../../lib/content-links";
@@ -13,6 +15,7 @@ type Props = {
       title: string;
       summary: string;
       updatedAt: Date;
+      tags?: string[];
       links?: Array<{
         heading?: string;
         title: string;
@@ -21,15 +24,32 @@ type Props = {
     };
   };
   linkProfile?: ContentLinkProfile;
+  showDetailMetadata?: boolean;
 };
 
-const { entry, linkProfile } = Astro.props as Props;
+const { entry, linkProfile, showDetailMetadata = false } = Astro.props as Props;
 const relatedLinks = entry.data.links ?? [];
 ---
 
 <div class="motion-page max-w-3xl space-y-12 lg:space-y-16" data-content-preview-scope>
-  <ContentHeader eyebrow="Now" title={entry.data.title} summary={entry.data.summary}>
-    <span slot="meta">updated {formatNowUpdatedAt(entry.data.updatedAt)}</span>
+  <ContentHeader
+    eyebrow="Now"
+    title={entry.data.title}
+    summary={entry.data.summary}
+    metaClass={showDetailMetadata ? "space-y-2" : "ui-tag uppercase text-text-muted"}
+  >
+    {
+      showDetailMetadata ? (
+        <div slot="meta" class="space-y-2">
+          <ContentMetadata
+            items={[{ label: "Updated", value: formatNowUpdatedAt(entry.data.updatedAt) }]}
+          />
+          <ContentTags tags={entry.data.tags} />
+        </div>
+      ) : (
+        <span slot="meta">updated {formatNowUpdatedAt(entry.data.updatedAt)}</span>
+      )
+    }
   </ContentHeader>
 
   <ContentDocument class="space-y-4">

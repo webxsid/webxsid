@@ -44,40 +44,229 @@ const iconsMap = {
 const getIconComponent = (icon: keyof typeof iconsMap) => {
   return iconsMap[icon] || Clock3;
 };
+
+const activeNavItem = navItems.find(({ href }) => isActive(href)) ?? navItems[0];
+const ActiveIcon = activeNavItem
+  ? getIconComponent(activeNavItem.icon)
+  : Clock3;
 ---
 
-<nav
-  aria-label="Primary"
-  class="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom)+var(--dock-viewport-offset,0px))] left-1/2 z-50 flex -translate-x-1/2 items-center justify-center px-3 lg:relative lg:bottom-auto lg:left-auto lg:translate-x-0 lg:justify-start lg:px-0"
+<div
+  data-mobile-nav
+  data-mobile-nav-frame
+  data-collapsed="false"
+  class="shell-nav-frame shell-mobile-nav shell-mobile-nav-frame fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom)+var(--dock-viewport-offset,0px))] left-1/2 z-50 inline-flex flex-row items-center justify-center gap-1 p-1 lg:relative lg:bottom-auto lg:left-auto lg:flex-col lg:justify-start"
 >
-  <div
-    class="shell-nav-frame inline-flex flex-row items-center gap-1 p-1 lg:flex-col"
+  <nav
+    id="primary-mobile-navigation"
+    aria-label="Primary"
+    data-mobile-nav-expanded
+    class="shell-mobile-nav-rail inline-flex flex-row items-center gap-1 lg:flex-col"
   >
-    {
-      navItems.map(({ href, label, icon }) => {
-        const active = isActive(href);
-        const Icon = getIconComponent(icon);
+    <div class="flex flex-row items-center gap-1 lg:flex-col">
+      {
+        navItems.map(({ href, label, icon }) => {
+          const active = isActive(href);
+          const Icon = getIconComponent(icon);
 
-        return (
-          <a
-            href={href}
-            aria-label={label}
-            aria-current={active ? "page" : undefined}
-            class={[
-              "shell-control shell-item motion-surface group relative inline-flex h-10 w-10 items-center justify-center border",
-              active
-                ? "shell-item-active"
-                : "border-transparent text-text-muted hover:text-text",
-            ].join(" ")}
-          >
-            <Icon size={16} strokeWidth={1.9} aria-hidden="true" />
-            <span class="sr-only">{label}</span>
-            <label class="shell-tooltip ui-tag pointer-events-none absolute left-[120%] w-max px-4 py-1 text-text opacity-0 group-hover:opacity-100 transition-opacity z-[1000]">
-              {label}
-            </label>
-          </a>
-        );
-      })
+          return (
+            <a
+              href={href}
+              aria-label={label}
+              aria-current={active ? "page" : undefined}
+              class={[
+                "shell-control shell-item motion-surface group relative inline-flex h-10 w-10 items-center justify-center border",
+                active
+                  ? "shell-item-active"
+                  : "border-transparent text-text-muted hover:text-text",
+              ].join(" ")}
+            >
+              <Icon size={16} strokeWidth={1.9} aria-hidden="true" />
+              <span class="sr-only">{label}</span>
+              <label class="shell-tooltip ui-tag pointer-events-none absolute left-[120%] w-max px-4 py-1 text-text opacity-0 group-hover:opacity-100 transition-opacity z-[1000]">
+                {label}
+              </label>
+            </a>
+          );
+        })
+      }
+    </div>
+  </nav>
+
+  {
+    activeNavItem && (
+      <button
+        type="button"
+        data-mobile-nav-toggle
+        aria-controls="primary-mobile-navigation"
+        aria-expanded="true"
+        aria-label={`Expand navigation. Current section: ${activeNavItem.label}`}
+        aria-hidden="true"
+        tabindex="-1"
+        class="shell-control shell-mobile-nav-pill inline-flex h-10 items-center gap-2 px-3 text-text"
+      >
+        <ActiveIcon size={16} strokeWidth={1.9} aria-hidden="true" />
+        <span class="ui-shell font-mono uppercase">{activeNavItem.label}</span>
+      </button>
+    )
+  }
+</div>
+
+<script>
+  const mobileNavQuery = "[data-mobile-nav]";
+  const mobileNavFrameQuery = "[data-mobile-nav-frame]";
+  const expandedNavQuery = "[data-mobile-nav-expanded]";
+  const toggleNavQuery = "[data-mobile-nav-toggle]";
+  const mobileViewport = window.matchMedia("(max-width: 1023px)");
+  let previousScrollY = window.scrollY;
+  let direction = 0;
+  let directionDistance = 0;
+
+  const getMobileNav = () => {
+    const nav = document.querySelector<HTMLElement>(mobileNavQuery);
+    const expanded = nav?.querySelector<HTMLElement>(expandedNavQuery);
+    const toggle = nav?.querySelector<HTMLButtonElement>(toggleNavQuery);
+    const frame = nav?.matches(mobileNavFrameQuery) ? nav : null;
+
+    return frame && expanded && toggle
+      ? { frame, expanded, toggle }
+      : null;
+  };
+
+  const setCollapsed = (shouldCollapse: boolean) => {
+    const elements = getMobileNav();
+    if (!elements) return;
+
+    const { frame, expanded, toggle } = elements;
+    const collapsed = mobileViewport.matches && shouldCollapse;
+    if ((frame.dataset.collapsed === "true") === collapsed) return;
+    if (frame.dataset.expanding === "true") return;
+
+    if (
+      !mobileViewport.matches ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      frame.dataset.collapsed = String(collapsed);
+      frame.style.removeProperty("width");
+      toggle.setAttribute("aria-expanded", String(!collapsed));
+      toggle.setAttribute("aria-hidden", String(!collapsed));
+      toggle.tabIndex = collapsed ? 0 : -1;
+      expanded.toggleAttribute("inert", collapsed);
+      expanded.setAttribute("aria-hidden", String(collapsed));
+      return;
     }
-  </div>
-</nav>
+
+    const currentWidth = frame.getBoundingClientRect().width;
+    const targetWidth = collapsed
+      ? toggle.offsetWidth + 10
+      : expanded.scrollWidth + 10;
+
+    frame.style.width = `${currentWidth}px`;
+    void frame.offsetWidth;
+
+    if (collapsed) {
+      frame.dataset.collapsed = "true";
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-hidden", "false");
+      toggle.tabIndex = 0;
+      expanded.setAttribute("inert", "");
+      expanded.setAttribute("aria-hidden", "true");
+    } else {
+      frame.dataset.expanding = "true";
+      toggle.disabled = true;
+    }
+
+    frame.style.width = `${targetWidth}px`;
+  };
+
+  const resetMobileNav = () => {
+    const elements = getMobileNav();
+    if (!elements) return;
+
+    elements.frame.dataset.collapsed = "false";
+    delete elements.frame.dataset.expanding;
+    elements.frame.style.removeProperty("width");
+    elements.toggle.setAttribute("aria-expanded", "true");
+    elements.toggle.setAttribute("aria-hidden", "true");
+    elements.toggle.tabIndex = -1;
+    elements.toggle.disabled = false;
+    elements.expanded.removeAttribute("inert");
+    elements.expanded.setAttribute("aria-hidden", "false");
+    previousScrollY = window.scrollY;
+    direction = 0;
+    directionDistance = 0;
+  };
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const toggle = target.closest<HTMLButtonElement>(toggleNavQuery);
+    if (!toggle) return;
+
+    event.preventDefault();
+    setCollapsed(false);
+  });
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!mobileViewport.matches) return;
+
+      const scrollY = Math.max(0, window.scrollY);
+      const delta = scrollY - previousScrollY;
+      previousScrollY = scrollY;
+
+      if (scrollY <= 24) {
+        direction = 0;
+        directionDistance = 0;
+        setCollapsed(false);
+        return;
+      }
+
+      if (Math.abs(delta) < 2) return;
+
+      const nextDirection = Math.sign(delta);
+      if (nextDirection !== direction) {
+        direction = nextDirection;
+        directionDistance = 0;
+      }
+
+      directionDistance += Math.abs(delta);
+      if (direction < 0 && directionDistance >= 8) {
+        setCollapsed(false);
+      } else if (direction > 0 && scrollY >= 80 && directionDistance >= 20) {
+        setCollapsed(true);
+      }
+    },
+    { passive: true },
+  );
+
+  window.addEventListener("resize", resetMobileNav, { passive: true });
+  document.addEventListener("astro:after-swap", resetMobileNav);
+  document.addEventListener("astro:page-load", resetMobileNav);
+
+  document.addEventListener("transitionend", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (!target.matches(mobileNavFrameQuery) || event.propertyName !== "width") return;
+
+    if (target.dataset.expanding === "true") {
+      target.dataset.collapsed = "false";
+      delete target.dataset.expanding;
+
+      const expanded = target.querySelector<HTMLElement>(expandedNavQuery);
+      const toggle = target.querySelector<HTMLButtonElement>(toggleNavQuery);
+      expanded?.removeAttribute("inert");
+      expanded?.setAttribute("aria-hidden", "false");
+      toggle?.setAttribute("aria-expanded", "true");
+      toggle?.setAttribute("aria-hidden", "true");
+      if (toggle) {
+        toggle.tabIndex = -1;
+        toggle.disabled = false;
+      }
+    }
+
+    target.style.removeProperty("width");
+  });
+</script>

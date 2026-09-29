@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Container from "../../components/shell/Container.astro";
+import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
 import Section from "../../components/content/Section.astro";
 import {
   getWritingPath,
@@ -17,7 +17,7 @@ const entries = sortWritingEntries(filterPublicWritingEntries(writing));
 const seo = withAutoOgImage(
   {
     title: "Writing · Webxsid",
-    description: "Writing from Webxsid.",
+    description: "Essays and notes on software, developer tools, and the work of building them.",
     canonical: "/writing",
   },
   getListOgImagePath("writing"),
@@ -26,13 +26,12 @@ const seo = withAutoOgImage(
 
 <BaseLayout
   title="Writing · Webxsid"
-  description="Writing."
+  description="Essays and notes on software, developer tools, and the work of building them."
   seo={seo}
   backHref="/"
 >
-  <Container class="min-h-screen">
-    <div class="py-8 lg:py-14">
-      <div class="space-y-10">
+  <ContentPageFrame>
+    <div class="space-y-10">
         <Section>
           <div class="space-y-5 text-text-muted">
             <p
@@ -41,8 +40,8 @@ const seo = withAutoOgImage(
               Writing
             </p>
             <p class="ui-prose">
-              Longer essays, shorter observations, and everything in between
-              live here now as one continuous body of writing.
+              Essays and notes on software, developer tools, and the work of
+              building them.
             </p>
           </div>
         </Section>
@@ -123,7 +122,6 @@ const seo = withAutoOgImage(
             </table>
           </div>
         </div>
-      </div>
     </div>
-  </Container>
+  </ContentPageFrame>
 </BaseLayout>

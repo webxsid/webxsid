@@ -19,22 +19,22 @@ const LIST_CONTENT: Record<ListKind, { title: string; summary: string; sectionLa
 {
   projects: {
     title: "Projects",
-    summary: "Systems, tools, and ongoing experiments shaped through use rather than planning.",
+    summary: "Tools and apps I've built, with notes on how they work and why I made them.",
     sectionLabel: "Projects",
   },
   writing: {
     title: "Writing",
-    summary: "Essays, observations, and longer thoughts on software, systems, and the work around them.",
+    summary: "Essays and notes on software, developer tools, and the work of building them.",
     sectionLabel: "Writing",
   },
   references: {
     title: "References",
-    summary: "Books, articles, songs, and ideas that changed how I think or stayed with me afterwards.",
+    summary: "Books, essays, films, talks, and music I want to remember.",
     sectionLabel: "References",
   },
   notes: {
     title: "Notes",
-    summary: "Informal notes from Webxsid.",
+    summary: "Short notes and ideas I want to come back to.",
     sectionLabel: "Notes",
   },
 };

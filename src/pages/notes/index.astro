@@ -7,7 +7,7 @@ import { withAutoOgImage } from "../../lib/seo";
 const seo = withAutoOgImage(
   {
     title: "Notes · Webxsid",
-    description: "Informal notes from Webxsid.",
+    description: "Short notes and ideas I want to come back to.",
     canonical: "/notes",
   },
   getListOgImagePath("notes"),
@@ -16,10 +16,9 @@ const seo = withAutoOgImage(
 
 <BaseLayout
   title="Notes · Webxsid"
-  description="Informal notes."
+  description="Short notes and ideas I want to come back to."
   seo={seo}
   backHref="/"
-  hideRail
 >
   <NotesBoard />
 </BaseLayout>

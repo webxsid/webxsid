@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Container from "../../components/shell/Container.astro";
+import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
 import Section from "../../components/content/Section.astro";
 import StatusBadge from "../../components/content/StatusBadge.astro";
 import {
@@ -19,25 +19,24 @@ const projects = (await getCollection("projects")).sort(
 const seo = withAutoOgImage(
   {
     title: "Projects · Webxsid",
-    description: "Selected projects and infrastructure notes from Webxsid.",
+    description: "Tools and apps I've built, with notes on how they work and why I made them.",
     canonical: "/projects",
   },
   getListOgImagePath("projects"),
 );
 
 const introCopy =
-  "Most of these exist because I underestimated both the problem and my willingness to keep working on it.";
+  "Tools and apps I've built, with notes on how they work and why I made them.";
 ---
 
 <BaseLayout
   title="Projects · Webxsid"
-  description="Projects and infrastructure notes."
+  description="Tools and apps I've built, with notes on how they work and why I made them."
   seo={seo}
   backHref="/"
 >
-  <Container class="min-h-screen">
-    <div class="py-8 lg:py-14">
-      <div class="space-y-10">
+  <ContentPageFrame>
+    <div class="space-y-10">
         <Section>
           <div class="space-y-5 text-text-muted">
             <p
@@ -179,7 +178,6 @@ const introCopy =
             </table>
           </div>
         </div>
-      </div>
     </div>
-  </Container>
+  </ContentPageFrame>
 </BaseLayout>

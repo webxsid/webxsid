@@ -29,6 +29,7 @@ type Props = {
   pageTitle?: string;
   currentPath?: string;
   variant?: "default" | "rail";
+  desktopRail?: boolean;
   hasReferences?: boolean;
   hasNotes?: boolean;
   hasNow?: boolean;
@@ -41,6 +42,7 @@ export function ShellBrandLauncher({
   pageTitle,
   currentPath = "/",
   variant = "default",
+  desktopRail = false,
   hasReferences = false,
   hasNotes = false,
   hasNow = false,
@@ -119,45 +121,42 @@ export function ShellBrandLauncher({
       layout
       transition={spring}
       data-variant={variant}
-      className="flex items-center gap-3"
+      data-desktop-rail={desktopRail ? "true" : "false"}
+      className="shell-header flex items-center gap-3"
     >
       <motion.div
         layout
-        animate={{
-          width: backHref ? 40 : 0,
-          marginRight: backHref ? 0 : -12,
-        }}
         transition={spring}
-        className="relative"
-        aria-hidden={backHref ? undefined : "true"}
+        data-visible={backHref ? "true" : "false"}
+        className="shell-header-back-slot relative flex shrink-0 justify-center overflow-visible"
       >
-        {backHref ? (
-          <motion.a
-            type="button"
-            href={backHref}
-            aria-label={backLabel}
-            initial={false}
-            transition={spring}
-            layout
-            className="shell-brand-button motion-surface inline-flex items-center py-3 px-3 justify-center"
+        <motion.a
+          href={backHref}
+          aria-label={backLabel}
+          aria-hidden={!backHref}
+          tabIndex={backHref ? undefined : -1}
+          initial={false}
+          animate={{ opacity: backHref ? 1 : 0 }}
+          transition={spring}
+          layout
+          className={`shell-brand-button shell-back-button motion-surface inline-flex items-center justify-center py-4 px-4 ${backHref ? "" : "pointer-events-none"}`}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.9"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="relative -left-[1px] h-[14px] w-[14px]"
+            aria-hidden="true"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.9"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-[14px] w-[14px] relative -left-[1px] "
-              aria-hidden="true"
-            >
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </motion.a>
-        ) : null}
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </motion.a>
       </motion.div>
 
-      <div className="flex items-center gap-2">
+      <div className="shell-header-brand-group flex items-center gap-2">
         <div className="relative">
           <ShellHeaderBrand
             triggerRef={brandTriggerRef}

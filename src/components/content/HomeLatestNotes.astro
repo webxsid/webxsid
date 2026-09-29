@@ -1,0 +1,56 @@
+---
+import Section from "./Section.astro";
+import { ArrowRight } from "lucide-astro";
+import {
+  formatNoteTimestamp,
+  getNoteExcerpt,
+  getNotePath,
+  parseNoteTimestamp,
+  type NoteEntry,
+} from "../../lib/notes";
+
+type Props = {
+  notes: NoteEntry[];
+};
+
+const { notes } = Astro.props as Props;
+---
+
+{notes.length > 0 && (
+  <Section title="Latest Notes">
+    <ul class="home-notes-grid list-none" aria-label="Latest notes">
+      {
+        notes.map((note) => (
+          <li class="notes-card home-note-card motion-surface">
+            <a
+              class="home-note-link flex h-full flex-col p-4 sm:p-5"
+              href={getNotePath(note)}
+            >
+              <time
+                class="ui-label mb-3 block font-mono uppercase text-text-muted"
+                datetime={parseNoteTimestamp(note.id).toISOString()}
+              >
+                {formatNoteTimestamp(note)}
+              </time>
+              <p class="home-note-excerpt ui-prose text-text">
+                {getNoteExcerpt(note)}
+              </p>
+            </a>
+          </li>
+        ))
+      }
+      <li class="notes-card home-note-card home-note-more motion-surface">
+        <a
+          class="home-note-more-link flex h-full flex-col justify-between p-4 sm:p-5"
+          href="/notes"
+        >
+          <span class="ui-label font-mono uppercase text-text-muted">THE ARCHIVE</span>
+          <span class="flex items-center justify-between gap-3">
+            <span class="ui-heading font-mono text-text">View all Notes</span>
+            <ArrowRight aria-hidden="true" class="size-5 shrink-0 text-text-muted" />
+          </span>
+        </a>
+      </li>
+    </ul>
+  </Section>
+)}

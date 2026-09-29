@@ -63,11 +63,17 @@
   }
 
   .content-document a {
-    @apply text-text underline decoration-border underline-offset-4;
+    color: var(--link-text-color);
+    text-decoration-line: underline;
+    text-decoration-color: var(--link-decoration-color);
+    text-decoration-style: var(--link-underline-style);
+    text-decoration-thickness: var(--link-decoration-thickness);
+    text-underline-offset: var(--link-underline-offset);
   }
 
   .content-document a:hover {
-    @apply decoration-text;
+    color: var(--link-hover-text-color);
+    text-decoration-color: var(--link-hover-decoration-color);
   }
 
   .content-document blockquote {
@@ -83,8 +89,12 @@
   }
 
   .content-document code {
-    @apply bg-bg-elevated/40 px-1 py-0.5 font-mono text-[0.9em] text-text;
+    @apply px-1 py-0.5 font-mono text-[0.9em];
+    color: var(--code-foreground);
+    background-color: rgb(var(--surface-elevated) / 0.72);
+    border: 1px solid rgb(var(--border-default) / 0.52);
     border-radius: var(--radius-code);
+    box-decoration-break: clone;
   }
 
   .content-document code::before,
@@ -93,12 +103,22 @@
   }
 
   .content-document pre {
-    @apply my-8 rounded-none border border-border/70 p-4;
-    background-color: rgb(var(--surface-elevated) / 0.2);
+    @apply my-8 overflow-x-auto rounded-none p-4;
+    color: var(--code-foreground);
+    background-color: var(--code-background);
+    border: 1px solid var(--code-border);
+    line-height: 1.65;
+    tab-size: 4;
   }
 
   .content-document pre code {
-    @apply bg-transparent p-0;
+    @apply block bg-transparent p-0;
+    color: inherit;
+    border: 0;
+    border-radius: 0;
+    font-size: 0.88rem;
+    line-height: inherit;
+    white-space: pre;
   }
 
   .content-note {
@@ -149,11 +169,17 @@
   }
 
   .content-note a {
-    @apply text-text underline decoration-border underline-offset-4;
+    color: var(--link-text-color);
+    text-decoration-line: underline;
+    text-decoration-color: var(--link-decoration-color);
+    text-decoration-style: var(--link-underline-style);
+    text-decoration-thickness: var(--link-decoration-thickness);
+    text-underline-offset: var(--link-underline-offset);
   }
 
   .content-note a:hover {
-    @apply decoration-text;
+    color: var(--link-hover-text-color);
+    text-decoration-color: var(--link-hover-decoration-color);
   }
 
   .content-note blockquote {
@@ -165,8 +191,12 @@
   }
 
   .content-note code {
-    @apply bg-bg-elevated/40 px-1 py-0.5 font-mono text-[0.9em] text-text;
+    @apply px-1 py-0.5 font-mono text-[0.9em];
+    color: var(--code-foreground);
+    background-color: rgb(var(--surface-elevated) / 0.72);
+    border: 1px solid rgb(var(--border-default) / 0.52);
     border-radius: var(--radius-code);
+    box-decoration-break: clone;
   }
 
   .content-note code::before,
@@ -175,12 +205,22 @@
   }
 
   .content-note pre {
-    @apply my-6 rounded-none border border-border/70 p-4;
-    background-color: rgb(var(--surface-elevated) / 0.2);
+    @apply my-6 overflow-x-auto rounded-none p-4;
+    color: var(--code-foreground);
+    background-color: var(--code-background);
+    border: 1px solid var(--code-border);
+    line-height: 1.65;
+    tab-size: 4;
   }
 
   .content-note pre code {
-    @apply bg-transparent p-0;
+    @apply block bg-transparent p-0;
+    color: inherit;
+    border: 0;
+    border-radius: 0;
+    font-size: 0.88rem;
+    line-height: inherit;
+    white-space: pre;
   }
 
   .content-embed {

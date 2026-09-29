@@ -9,6 +9,7 @@ type Props = {
   pageTitle?: string;
   currentPath?: string;
   variant?: "default" | "rail";
+  desktopRail?: boolean;
   hasReferences?: boolean;
   hasNotes?: boolean;
   hasNow?: boolean;
@@ -22,6 +23,7 @@ export function ShellHeader({
   pageTitle,
   currentPath = "/",
   variant = "default",
+  desktopRail = false,
   hasReferences = false,
   hasNotes = false,
   hasNow = false,
@@ -35,6 +37,7 @@ export function ShellHeader({
       pageTitle={pageTitle}
       currentPath={currentPath}
       variant={variant}
+      desktopRail={desktopRail}
       hasReferences={hasReferences}
       hasNotes={hasNotes}
       hasNow={hasNow}

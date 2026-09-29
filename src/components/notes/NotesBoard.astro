@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
-import { ChevronDown, ChevronUp, Copy } from "lucide-astro";
+import { ChevronDown, ChevronUp } from "lucide-astro";
 import ContentDocument from "../content/ContentDocument.astro";
 import ContentLinkFooter from "../content/ContentLinkFooter.astro";
 import ContentLinkPreview from "../content/ContentLinkPreview.astro";
@@ -50,7 +50,7 @@ const noteDetailsId = (entry: NoteEntry) => `note-details-${entry.id}`;
         Notes
       </h1>
       <p class="ui-prose mt-3 text-text-muted">
-        Small thoughts, unfinished ideas, and things worth keeping nearby.
+        Short notes and ideas I want to come back to.
       </p>
     </article>
 
@@ -125,15 +125,6 @@ const noteDetailsId = (entry: NoteEntry) => `note-details-${entry.id}`;
               <ContentLinkFooter profile={profile} />
             </div>
 
-            <button
-              type="button"
-              class="notes-copy-link absolute bottom-4 left-4 z-20 inline-flex h-7 w-7 items-center justify-center sm:bottom-5 sm:left-5"
-              aria-label="Copy link to this note"
-              title="Copy link"
-              data-copy-note-link={path}
-            >
-              <Copy size={14} strokeWidth={1.8} aria-hidden="true" />
-            </button>
           </article>
         );
       })
@@ -244,32 +235,6 @@ const noteDetailsId = (entry: NoteEntry) => `note-details-${entry.id}`;
       setExpanded(getNoteIdFromPath(window.location.pathname), false);
     });
 
-    document.querySelectorAll("[data-copy-note-link]").forEach((element) => {
-      if (!(element instanceof HTMLButtonElement)) return;
-
-      const defaultLabel = "Copy link to this note";
-      let resetTimer = 0;
-
-      element.addEventListener("click", async () => {
-        const path = element.dataset.copyNoteLink;
-        const url = path ? new URL(path, window.location.origin).href : "";
-
-        if (!url || !navigator.clipboard?.writeText) return;
-
-        try {
-          await navigator.clipboard.writeText(url);
-          element.setAttribute("aria-label", "Link copied");
-          element.title = "Link copied";
-          window.clearTimeout(resetTimer);
-          resetTimer = window.setTimeout(() => {
-            element.setAttribute("aria-label", defaultLabel);
-            element.title = "Copy link";
-          }, 1800);
-        } catch {
-          // Keep the affordance quiet if a browser denies clipboard access.
-        }
-      });
-    });
   })();
 </script>
 

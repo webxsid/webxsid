@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
-import WorkLayout from "../../layouts/WorkLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
 import ContentDocument from "../../components/content/ContentDocument.astro";
 import ContentHeader from "../../components/content/ContentHeader.astro";
 import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro";
@@ -23,47 +24,45 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const workItems = (await getCollection("work")).map((item) => ({
-  id: item.id,
-  company: item.data.company,
-  period: item.data.period,
-  order: item.data.order,
-}));
 const linkProfiles = await getContentLinkProfiles();
 const linkProfile =
   linkProfiles.get(`/work/${entry.id}`) ?? getEmptyContentLinkProfile();
 const seo = withAutoOgImage(entry.data.seo, getStaticOgImagePath());
 ---
 
-<WorkLayout
+<BaseLayout
   title={`${entry.data.company} · Work · Webxsid`}
   description={entry.data.summary}
   seo={seo}
   resourceHints={linkProfile.resourceHints}
-  workItems={workItems}
-  activeId={entry.id}
+  seoType="article"
+  articleSection="Work"
+  backHref="/"
+  backLabel="Back to Home"
 >
-  <div class="max-w-3xl space-y-10" data-content-preview-scope>
-    <ContentHeader
-      eyebrow={entry.data.company}
-      title={entry.data.title}
-      summary={entry.data.summary}
-    >
-      <span slot="meta"
-        >{entry.data.role} · {entry.data.period} - <a
-          href={entry.data.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="meta-link">{entry.data.company}</a
-        >
-      </span>
-    </ContentHeader>
+  <ContentPageFrame>
+    <div class="max-w-3xl space-y-10" data-content-preview-scope>
+      <ContentHeader
+        eyebrow={entry.data.company}
+        title={entry.data.title}
+        summary={entry.data.summary}
+      >
+        <span slot="meta"
+          >{entry.data.role} · {entry.data.period} - <a
+            href={entry.data.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="meta-link">{entry.data.company}</a
+          >
+        </span>
+      </ContentHeader>
 
-    <ContentDocument class="space-y-4">
-      <Content />
-    </ContentDocument>
+      <ContentDocument class="space-y-4">
+        <Content />
+      </ContentDocument>
 
-    <ContentLinkFooter profile={linkProfile} />
-    <ContentLinkPreview previewLinks={linkProfile.previewLinks} />
-  </div>
-</WorkLayout>
+      <ContentLinkFooter profile={linkProfile} />
+      <ContentLinkPreview previewLinks={linkProfile.previewLinks} />
+    </div>
+  </ContentPageFrame>
+</BaseLayout>

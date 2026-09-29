@@ -14,11 +14,14 @@ import {
 import { getStaticOgImagePath } from "../lib/og-image";
 import { withAutoOgImage } from "../lib/seo";
 import { formatNowUpdatedAt, getLatestNowEntry } from "../lib/now";
+import HomeLatestNotes from "../components/content/HomeLatestNotes.astro";
+import { sortNotes } from "../lib/notes";
 
-const [projects, writing, nowEntries] = await Promise.all([
+const [projects, writing, nowEntries, notes] = await Promise.all([
   getCollection("projects"),
   getCollection("writing"),
   getCollection("now"),
+  getCollection("notes"),
 ]);
 
 const featuredProjects = [...projects]
@@ -26,9 +29,8 @@ const featuredProjects = [...projects]
   .filter((project) => project.data.featured)
   .slice(0, 2);
 
-const latestWriting = sortWritingEntries(filterPublicWritingEntries(writing))
-  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
-  .slice(0, 3);
+const latestWriting = sortWritingEntries(filterPublicWritingEntries(writing)).slice(0, 3);
+const latestNotes = sortNotes(notes).slice(0, 3);
 
 const latestNow = getLatestNowEntry(nowEntries);
 
@@ -148,6 +150,7 @@ const seo = withAutoOgImage(
         </div>
       </Section>
     </div>
+    <HomeLatestNotes notes={latestNotes} />
     {
       latestNow && (
         <Section title="Now">

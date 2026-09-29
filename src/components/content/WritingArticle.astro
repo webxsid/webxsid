@@ -2,34 +2,59 @@
 import ContentDocument from "./ContentDocument.astro";
 import ArticleFooter from "./ArticleFooter.astro";
 import ContentHeader from "./ContentHeader.astro";
+import ContentMetadata from "./ContentMetadata.astro";
+import ContentTags from "./ContentTags.astro";
 import ContentLinkFooter from "./ContentLinkFooter.astro";
 import ContentLinkPreview from "./ContentLinkPreview.astro";
+import RelatedArticles from "./RelatedArticles.astro";
 import type { ContentLinkProfile } from "../../lib/content-links";
 import { formatDate } from "../../lib/dates";
 
 type Props = {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   summary: string;
   publishedAt: Date;
   tags?: string[];
   linkProfile?: ContentLinkProfile;
+  showConnectedWriting?: boolean;
+  relatedArticles?: Array<{
+    href: string;
+    title: string;
+    publishedAt: Date;
+    sharedTags: string[];
+    linked: boolean;
+  }>;
 };
 
-const { eyebrow, title, summary, publishedAt, tags = [], linkProfile } = Astro.props as Props;
+const {
+  eyebrow,
+  title,
+  summary,
+  publishedAt,
+  tags = [],
+  linkProfile,
+  showConnectedWriting = true,
+  relatedArticles = [],
+} = Astro.props as Props;
 ---
 
-<div class="motion-page max-w-3xl space-y-12 lg:space-y-16" data-content-preview-scope>
-  <ContentHeader eyebrow={eyebrow} title={title} summary={summary}>
-    <span slot="meta">
-      published {formatDate(publishedAt)}
-      {tags.length > 0 && (
-        <>
-          <br />
-          <span class="ui-tag">{tags.join(" · ")}</span>
-        </>
-      )}
-    </span>
+<div
+  class="motion-page max-w-3xl space-y-12 lg:space-y-16"
+  data-content-preview-scope
+>
+  <ContentHeader
+    eyebrow={eyebrow}
+    title={title}
+    summary={summary}
+    metaClass="space-y-2"
+  >
+    <div slot="meta" class="space-y-2">
+      <ContentMetadata
+        items={[{ label: "Published", value: formatDate(publishedAt) }]}
+      />
+      <ContentTags tags={tags} />
+    </div>
   </ContentHeader>
 
   <ContentDocument note class="space-y-4">
@@ -37,6 +62,10 @@ const { eyebrow, title, summary, publishedAt, tags = [], linkProfile } = Astro.p
   </ContentDocument>
 
   <ArticleFooter />
-  <ContentLinkFooter profile={linkProfile} />
+  <ContentLinkFooter
+    profile={linkProfile}
+    showConnectedWriting={showConnectedWriting}
+  />
   <ContentLinkPreview previewLinks={linkProfile?.previewLinks ?? []} />
+  <RelatedArticles articles={relatedArticles} />
 </div>

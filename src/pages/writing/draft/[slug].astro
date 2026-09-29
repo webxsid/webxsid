@@ -1,8 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
-import WritingLayout from "../../../layouts/WritingLayout.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ContentPageFrame from "../../../components/shell/ContentPageFrame.astro";
 import WritingArticle from "../../../components/content/WritingArticle.astro";
-import { sortWritingEntries, getWritingPath } from "../../../lib/writing";
+import { getWritingPath } from "../../../lib/writing";
 import {
   getContentLinkProfiles,
   getEmptyContentLinkProfile,
@@ -23,17 +24,6 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const writing = await getCollection("writing");
-const draftWriting = sortWritingEntries(
-  writing.filter((item) => item.data.draft),
-).map((item) => ({
-  id: item.id,
-  title: item.data.title,
-  publishedAt: item.data.publishedAt,
-  order: item.data.order,
-  kind: item.data.kind,
-  draft: item.data.draft,
-}));
 const linkProfiles = await getContentLinkProfiles();
 const linkProfile =
   linkProfiles.get(getWritingPath(entry)) ?? getEmptyContentLinkProfile();
@@ -46,27 +36,29 @@ const seo = withAutoOgImage(
 );
 ---
 
-<WritingLayout
+<BaseLayout
   title={`${entry.data.title} · Draft Writing · Webxsid`}
   description={entry.data.summary}
   seo={seo}
   keywords={entry.data.tags}
   articleTags={entry.data.tags}
   resourceHints={linkProfile.resourceHints}
+  seoType="article"
   articlePublishedTime={entry.data.publishedAt.toISOString()}
-  writingItems={draftWriting}
-  activeId={entry.id}
+  articleSection="Writing"
   backHref="/writing"
   backLabel="Back to writing"
 >
-  <WritingArticle
-    eyebrow="Draft Writing"
-    title={entry.data.title}
-    summary={entry.data.summary}
-    publishedAt={entry.data.publishedAt}
-    tags={entry.data.tags}
-    linkProfile={linkProfile}
-  >
-    <Content />
-  </WritingArticle>
-</WritingLayout>
+  <ContentPageFrame>
+    <WritingArticle
+      eyebrow="Draft Writing"
+      title={entry.data.title}
+      summary={entry.data.summary}
+      publishedAt={entry.data.publishedAt}
+      tags={entry.data.tags}
+      linkProfile={linkProfile}
+    >
+      <Content />
+    </WritingArticle>
+  </ContentPageFrame>
+</BaseLayout>

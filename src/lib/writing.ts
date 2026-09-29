@@ -17,7 +17,9 @@ export function filterPublicWritingEntries(entries: WritingEntry[]) {
 }
 
 export function sortWritingEntries(entries: WritingEntry[]) {
-  return [...entries].sort((a, b) => a.data.order - b.data.order);
+  return [...entries].sort(
+    (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
+  );
 }
 
 export function filterWritingEntries(entries: WritingEntry[], kind: WritingKind) {

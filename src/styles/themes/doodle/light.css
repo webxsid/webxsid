@@ -8,6 +8,7 @@
   --text-primary: 61 52 47;
   --text-muted: 125 108 97;
   --text-accent: 58 121 120;
+  --link-text-color: rgb(var(--text-primary));
 
   --border-default: 146 120 102;
   --border-subtle-opacity: 0.56;

@@ -1,57 +1,57 @@
 ---
 import { getCollection, render } from "astro:content";
-import NowLayout from "../../layouts/NowLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
 import NowEntry from "../../components/content/NowEntry.astro";
-import { getLatestNowEntry, sortNowEntries } from "../../lib/now";
+import { getLatestNowEntry } from "../../lib/now";
 import { getStaticOgImagePath } from "../../lib/og-image";
 import { withAutoOgImage } from "../../lib/seo";
 
 const nowEntries = await getCollection("now");
-const sortedNowEntries = sortNowEntries(nowEntries);
 const latest = getLatestNowEntry(nowEntries);
 const hasNowEntries = Boolean(latest);
 const { Content } = hasNowEntries ? await render(latest) : { Content: null };
+const pageDescription = latest?.data.summary ?? "A current snapshot of what has my attention.";
 
 const seo = withAutoOgImage(
   {
     title: "Now · Webxsid",
-    description: "A current snapshot of what has my attention.",
+    description: pageDescription,
     canonical: "/now",
   },
   getStaticOgImagePath(),
 );
 ---
 
-<NowLayout
+<BaseLayout
   title="Now · Webxsid"
-  description={latest?.data.summary ?? "A current snapshot of what has my attention."}
+  description={pageDescription}
   seo={seo}
-  nowItems={sortedNowEntries.map((item) => ({
-    id: item.id,
-    summary: item.data.summary,
-  }))}
-  activeId={latest?.id ?? ""}
+  seoType="article"
+  articleSection="Now"
+  backHref="/"
+  backLabel="Back home"
 >
-  {
-    hasNowEntries && Content ? (
-      <NowEntry entry={latest}>
-        <Content />
-      </NowEntry>
-    ) : (
-      <section class="motion-page space-y-6 py-6 sm:py-8">
-        <div class="space-y-3 border-y border-border/70 py-8 sm:py-10">
-          <p class="ui-label font-mono uppercase text-text-muted">
-            Now
-          </p>
-          <h1 class="ui-title max-w-2xl font-mono font-semibold tracking-tight text-text">
-            Nothing current is published here right now.
-          </h1>
-          <p class="ui-prose max-w-2xl text-text-muted">
-            This page stays available, but the running log is empty until the next
-            update is published.
-          </p>
-        </div>
-      </section>
-    )
-  }
-</NowLayout>
+  <ContentPageFrame>
+    {
+      hasNowEntries && Content ? (
+        <NowEntry entry={latest}>
+          <Content />
+        </NowEntry>
+      ) : (
+        <section class="motion-page space-y-6">
+          <div class="space-y-3 border-y border-border/70 pt-0 pb-8 sm:pb-10">
+            <p class="ui-label font-mono uppercase text-text-muted">Now</p>
+            <h1 class="ui-title max-w-2xl font-mono font-semibold tracking-tight text-text">
+              Nothing current is published here right now.
+            </h1>
+            <p class="ui-prose max-w-2xl text-text-muted">
+              This page stays available, but the running log is empty until the
+              next update is published.
+            </p>
+          </div>
+        </section>
+      )
+    }
+  </ContentPageFrame>
+</BaseLayout>

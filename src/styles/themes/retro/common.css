@@ -22,6 +22,11 @@
 
   --link-underline-style: solid;
   --link-underline-offset: 0.12em;
+  --link-text-color: rgb(var(--text-accent));
+  --link-decoration-color: rgb(var(--text-accent));
+  --link-decoration-thickness: 0.12em;
+  --link-hover-text-color: rgb(var(--text-accent));
+  --link-hover-decoration-color: rgb(var(--text-accent));
   --link-external-marker: " >>";
 
   --button-primary-font-family: var(--font-mono);

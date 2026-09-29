@@ -53,6 +53,7 @@
 }
 
 .title-link {
+  color: var(--link-text-color);
   font-family: var(--font-sans);
   font-size: var(--ui-link-size);
   font-weight: 500;
@@ -60,6 +61,8 @@
   text-decoration: underline;
   text-decoration-style: var(--link-underline-style);
   text-underline-offset: var(--link-underline-offset);
+  text-decoration-color: var(--link-decoration-color);
+  text-decoration-thickness: var(--link-decoration-thickness);
   transition:
     transform var(--motion-duration-soft) var(--motion-ease),
     color var(--motion-duration-soft) var(--motion-ease),
@@ -68,6 +71,8 @@
 }
 
 .title-link:hover {
+  color: var(--link-hover-text-color);
+  text-decoration-color: var(--link-hover-decoration-color);
   text-decoration-style: solid;
   transform: translateY(var(--motion-lift-distance));
 }
@@ -83,7 +88,9 @@
   text-decoration: underline;
   text-decoration-style: var(--link-underline-style);
   text-underline-offset: var(--link-underline-offset);
-  color: inherit;
+  color: var(--link-text-color);
+  text-decoration-color: var(--link-decoration-color);
+  text-decoration-thickness: var(--link-decoration-thickness);
   transition:
     transform var(--motion-duration-soft) var(--motion-ease),
     color var(--motion-duration-soft) var(--motion-ease),
@@ -92,7 +99,8 @@
 }
 
 .inline-link:hover {
-  color: var(--color-accent);
+  color: var(--link-hover-text-color);
+  text-decoration-color: var(--link-hover-decoration-color);
   text-decoration-style: solid;
   transform: translateY(var(--motion-lift-distance));
 }
@@ -102,7 +110,7 @@
 }
 
 .meta-link {
-  color: var(--text-muted);
+  color: var(--link-text-color);
   font-family: var(--font-sans);
   font-size: var(--ui-meta-link-size);
   line-height: var(--ui-meta-link-line-height);
@@ -111,6 +119,8 @@
   text-decoration: underline;
   text-decoration-style: var(--link-underline-style);
   text-underline-offset: var(--link-underline-offset);
+  text-decoration-color: var(--link-decoration-color);
+  text-decoration-thickness: var(--link-decoration-thickness);
   transition:
     color var(--motion-duration-soft) var(--motion-ease),
     text-decoration-color var(--motion-duration-soft) var(--motion-ease);
@@ -118,7 +128,8 @@
 }
 
 .meta-link:hover {
-  color: var(--color-accent);
+  color: var(--link-hover-text-color);
+  text-decoration-color: var(--link-hover-decoration-color);
   text-decoration-style: solid;
 }
 

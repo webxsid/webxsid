@@ -18,6 +18,13 @@ type Props = {
   title?: string;
   description?: string;
   seo?: SeoMeta;
+  resourceHints?: string[];
+  seoType?: "website" | "article";
+  keywords?: string[];
+  articleTags?: string[];
+  articleSection?: string;
+  articlePublishedTime?: string;
+  articleModifiedTime?: string;
   backHref?: string;
   backLabel?: string;
   fullBleed?: boolean;
@@ -28,6 +35,13 @@ const {
   title = "Webxsid",
   description = "Sid's personal portfolio.",
   seo,
+  resourceHints = [],
+  seoType = "website",
+  keywords = [],
+  articleTags = [],
+  articleSection,
+  articlePublishedTime,
+  articleModifiedTime,
   backHref,
   backLabel = "Back",
   fullBleed = false,
@@ -67,6 +81,13 @@ const brandIcon = await getImage({
       description={description}
       pathname={Astro.url.pathname}
       seo={seo}
+      type={seoType}
+      keywords={keywords}
+      articleTags={articleTags}
+      resourceHints={resourceHints}
+      articleSection={articleSection}
+      articlePublishedTime={articlePublishedTime}
+      articleModifiedTime={articleModifiedTime}
     />
     <ClientRouter />
     <ThemeBootstrap />
@@ -94,6 +115,7 @@ const brandIcon = await getImage({
           backLabel={backLabel}
           brandIcon={brandIcon}
           currentPath={Astro.url.pathname}
+          desktopRail={!hideRail && !fullBleed}
           hasReferences={references.length > 0}
           hasNotes={notes.length > 0}
           hasNow={nowEntries.length > 0}

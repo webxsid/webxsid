@@ -31,7 +31,26 @@
 
   --link-underline-style: solid;
   --link-underline-offset: 0.12em;
+  --link-text-color: rgb(var(--text-accent));
+  --link-decoration-color: rgb(var(--text-primary) / 0.92);
+  --link-decoration-thickness: 0.12em;
+  --link-hover-text-color: rgb(var(--text-primary));
+  --link-hover-decoration-color: rgb(var(--text-primary));
   --link-external-marker: "";
+
+  --code-background: rgb(var(--surface-elevated));
+  --code-border: rgb(var(--border-default));
+  --code-token-comment: rgb(var(--text-muted));
+  --code-token-string: rgb(var(--text-primary));
+  --code-token-constant: rgb(var(--text-primary));
+  --code-token-keyword: rgb(var(--text-primary));
+  --code-token-parameter: rgb(var(--text-muted));
+  --code-token-function: rgb(var(--text-primary));
+  --code-token-string-expression: rgb(var(--text-primary));
+  --code-token-punctuation: rgb(var(--text-primary));
+  --code-token-link: rgb(var(--text-primary));
+  --code-token-inserted: rgb(var(--text-primary));
+  --code-token-deleted: rgb(var(--text-muted));
 
   --button-primary-font-family: var(--font-sans);
   --button-primary-font-size: var(--ui-shell-size);

@@ -17,6 +17,21 @@
   --accent-strong-opacity: 0.82;
   --selection-opacity: 0.18;
 
+  --code-background: rgb(var(--surface-elevated) / 0.76);
+  --code-border: rgb(var(--border-default) / 0.9);
+  --code-foreground: rgb(var(--text-primary));
+  --code-token-comment: rgb(var(--text-muted));
+  --code-token-string: rgb(var(--color-status-maintained));
+  --code-token-constant: rgb(var(--color-status-prototype));
+  --code-token-keyword: rgb(var(--text-accent));
+  --code-token-parameter: rgb(var(--color-status-building));
+  --code-token-function: rgb(var(--color-status-experimental));
+  --code-token-string-expression: rgb(var(--color-status-maintained));
+  --code-token-punctuation: rgb(var(--text-primary));
+  --code-token-link: rgb(var(--text-accent));
+  --code-token-inserted: rgb(var(--color-status-maintained));
+  --code-token-deleted: rgb(var(--color-status-archived));
+
   --color-status-active: 124 145 255;
   --color-status-building: 224 170 44;
   --color-status-maintained: 102 187 106;
@@ -51,6 +66,11 @@
 
   --link-underline-style: dotted;
   --link-underline-offset: 0.18em;
+  --link-text-color: rgb(var(--text-accent));
+  --link-decoration-color: rgb(var(--accent-primary) / 0.88);
+  --link-decoration-thickness: 0.09em;
+  --link-hover-text-color: rgb(var(--text-accent));
+  --link-hover-decoration-color: rgb(var(--accent-primary));
   --link-external-marker: " ↗";
 
   --button-primary-font-family: var(--font-mono);

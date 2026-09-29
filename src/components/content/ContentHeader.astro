@@ -4,9 +4,16 @@ type Props = {
   title: string;
   summary: string;
   class?: string;
+  metaClass?: string;
 };
 
-const { eyebrow, title, summary, class: className = "" } = Astro.props as Props;
+const {
+  eyebrow,
+  title,
+  summary,
+  class: className = "",
+  metaClass = "ui-tag uppercase text-text-muted",
+} = Astro.props as Props;
 const hasMeta = Astro.slots.has("meta");
 ---
 
@@ -30,7 +37,7 @@ const hasMeta = Astro.slots.has("meta");
 
     {
       hasMeta && (
-        <div class="ui-tag uppercase text-text-muted">
+        <div class={metaClass}>
           <slot name="meta" />
         </div>
       )
