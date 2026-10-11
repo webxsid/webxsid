@@ -1,0 +1,14 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import ProjectDetail from "../../../components/portfolio/ProjectDetail.astro";
+export async function getStaticPaths() {
+  return (await getCollection("portfolioProjects")).map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+type Props = { entry: CollectionEntry<"portfolioProjects"> };
+const { entry } = Astro.props;
+---
+
+<ProjectDetail entry={entry} />

@@ -1,0 +1,39 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+type Props = { entries: CollectionEntry<"portfolioExperience">[] };
+const entries = await Promise.all(
+  Astro.props.entries
+    .sort((a, b) => a.data.order - b.data.order)
+    .map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
+);
+---
+
+<div class="experience-list">
+  {
+    entries.map(({ entry, Content }) => (
+      <article class="experience-entry">
+        <>
+          <div class="experience-topline">
+            <>
+              <h2>
+                <a href={entry.data.website}>
+                  {entry.data.company} <span aria-hidden="true">↗</span>
+                </a>
+              </h2>
+              <p>{entry.data.period}</p>
+            </>
+          </div>
+          <p class="experience-role">{entry.data.role}</p>
+          <div class="portfolio-prose">
+            <Content />
+          </div>
+          <ul>
+            {entry.data.highlights.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </>
+      </article>
+    ))
+  }
+</div>

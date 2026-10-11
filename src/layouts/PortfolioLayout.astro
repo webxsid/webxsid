@@ -1,0 +1,59 @@
+---
+import "../styles/portfolio.css";
+import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
+import SeoHead from "../components/shell/SeoHead.astro";
+import PortfolioHeader from "../components/portfolio/PortfolioHeader.astro";
+import { portfolioCanonical } from "../lib/portfolio";
+
+type Props = {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  structuredData?: Record<string, unknown>;
+};
+const { title, description, noindex = false, structuredData } = Astro.props;
+const canonical = portfolioCanonical(Astro.url.pathname);
+---
+
+<!doctype html>
+<html
+  lang="en"
+  data-theme="graphite"
+  data-theme-family="graphite"
+  data-theme-mode="system"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#121214" />
+    <ThemeBootstrap />
+    <SeoHead
+      title={title}
+      description={description}
+      pathname={Astro.url.pathname}
+      seo={{ canonical, noindex }}
+    />
+    {
+      structuredData && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(structuredData).replace(/</g, "\\u003c")}
+        />
+      )
+    }
+  </head>
+  <body>
+    <a class="portfolio-skip" href="#main">Skip to content</a>
+    <PortfolioHeader />
+    <slot />
+    <footer class="portfolio-footer page-width">
+      <p>© {new Date().getFullYear()} Siddharth Mittal</p>
+      <div>
+        <a href="/portfolio/projects">Projects</a><a href="/portfolio/contact"
+          >Get in touch <span aria-hidden="true">↗</span></a
+        ><a href="#main">Back to top <span aria-hidden="true">↑</span></a>
+      </div>
+    </footer>
+  </body>
+</html>

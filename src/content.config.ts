@@ -1,3 +1,4 @@
+import { portfolioProfile, portfolioExperience, portfolioCaseStudies, portfolioProjects } from "./schemas/portfolio";
 import { defineCollection } from "astro:content";
 import { glob, type Loader, type LoaderContext } from "astro/loaders";
 import { z } from "astro/zod";
@@ -181,4 +182,4 @@ const work = defineCollection({
   }),
 });
 
-export const collections = { projects, writing, now, references, notes, work };
+export const collections = { projects, writing, now, references, notes, work, portfolioProfile, portfolioExperience, portfolioCaseStudies, portfolioProjects };

@@ -1,5 +1,6 @@
 import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
+import { portfolioCanonical } from "../lib/portfolio";
 import { SITE_URL } from "../lib/site";
 import { filterPublicWritingEntries, getWritingPath } from "../lib/writing";
 import { getNotePath, parseNoteTimestamp } from "../lib/notes";
@@ -16,14 +17,15 @@ const normalizeCanonical = (pathname: string, canonical?: string) =>
   new URL(canonical ?? pathname, SITE_URL).toString();
 
 export const GET: APIRoute = async () => {
-  const [projects, writing, references, notes, nowEntries, work] = await Promise.all([
-    getCollection("projects"),
-    getCollection("writing"),
-    getCollection("references"),
-    getCollection("notes"),
-    getCollection("now"),
-    getCollection("work"),
-  ]);
+  const [projects, writing, references, notes, nowEntries, work] =
+    await Promise.all([
+      getCollection("projects"),
+      getCollection("writing"),
+      getCollection("references"),
+      getCollection("notes"),
+      getCollection("now"),
+      getCollection("work"),
+    ]);
 
   const staticPages: SitemapEntry[] = [
     "/",
@@ -39,7 +41,9 @@ export const GET: APIRoute = async () => {
   }));
 
   const projectPages = projects
-    .filter((entry) => !entry.data.seo?.noindex && entry.data.detailsPage !== false)
+    .filter(
+      (entry) => !entry.data.seo?.noindex && entry.data.detailsPage !== false,
+    )
     .map((entry) => ({
       loc: normalizeCanonical(
         `/projects/${entry.id}`,
@@ -57,10 +61,7 @@ export const GET: APIRoute = async () => {
   const writingPages = filterPublicWritingEntries(writing)
     .filter((entry) => !entry.data.seo?.noindex)
     .map((entry) => ({
-      loc: normalizeCanonical(
-        getWritingPath(entry),
-        entry.data.seo?.canonical,
-      ),
+      loc: normalizeCanonical(getWritingPath(entry), entry.data.seo?.canonical),
       lastmod: entry.data.publishedAt.toISOString(),
     }));
 
@@ -86,8 +87,26 @@ export const GET: APIRoute = async () => {
       lastmod: entry.data.updatedAt.toISOString(),
     }));
 
+  const [portfolioProjects, portfolioCases] = await Promise.all([
+    getCollection("portfolioProjects"),
+    getCollection(
+      "portfolioCaseStudies",
+      ({ data }) => data.visibility === "public" && !data.draft,
+    ),
+  ]);
+  const portfolioPages = [
+    "/portfolio",
+    "/portfolio/work",
+    "/portfolio/projects",
+    "/portfolio/experience",
+    "/portfolio/contact",
+    ...portfolioProjects.map((entry) => `/portfolio/projects/${entry.id}`),
+    ...portfolioCases.map((entry) => `/portfolio/work/${entry.id}`),
+  ].map((pathname) => ({ loc: portfolioCanonical(pathname) }));
+
   const pages: SitemapEntry[] = [
     ...staticPages,
+    ...portfolioPages,
     ...projectPages,
     ...workPages,
     ...writingPages,
@@ -105,8 +124,12 @@ export const GET: APIRoute = async () => {
 ${uniquePages
   .map(
     (page) => `  <url>
-    <loc>${page.loc}</loc>${page.lastmod ? `
-    <lastmod>${page.lastmod}</lastmod>` : ""}
+    <loc>${page.loc}</loc>${
+      page.lastmod
+        ? `
+    <lastmod>${page.lastmod}</lastmod>`
+        : ""
+    }
   </url>`,
   )
   .join("\n")}

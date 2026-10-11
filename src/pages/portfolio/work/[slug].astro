@@ -1,0 +1,14 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import CaseStudy from "../../../components/portfolio/CaseStudy.astro";
+export async function getStaticPaths() {
+  return (await getCollection("portfolioCaseStudies")).map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+type Props = { entry: CollectionEntry<"portfolioCaseStudies"> };
+const { entry } = Astro.props;
+---
+
+<CaseStudy entry={entry} />

@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import PortfolioLayout from "../../../layouts/PortfolioLayout.astro";
+import PortfolioPageHeading from "../../../components/portfolio/PortfolioPageHeading.astro";
+import PortfolioListing from "../../../components/portfolio/PortfolioListing.astro";
+const entries = (
+  await getCollection(
+    "portfolioCaseStudies",
+    ({ data }) => data.visibility === "public" && !data.draft,
+  )
+).sort(
+  (a, b) =>
+    Number(b.data.featured) - Number(a.data.featured) ||
+    a.data.order - b.data.order,
+);
+---
+
+<PortfolioLayout
+  title="Engineering case studies — Siddharth Mittal"
+  description="Selected engineering problems, technical decisions, and lessons from building software."
+>
+  <main id="main" class="page-width portfolio-page">
+    <PortfolioPageHeading
+      eyebrow="Work / Engineering case studies"
+      title="Inside the decisions."
+      description="A closer look at the problems, constraints, and trade-offs behind the software."
+    /><PortfolioListing
+      entries={entries.map((entry) => ({
+        title: entry.data.title,
+        description: entry.data.summary,
+        href: `/portfolio/work/${entry.id}`,
+        label: entry.data.category,
+        technologies: entry.data.technologies,
+        featured: entry.data.featured,
+      }))}
+    />
+  </main>
+</PortfolioLayout>
