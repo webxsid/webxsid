@@ -43,7 +43,7 @@ export const footerLinkColumns = [
     { href: "/references", label: "References" },
   ],
   [
-    { href: "/work", label: "Work" },
+    { href: "/portfolio", label: "Portfolio" },
     { href: "/now", label: "Now" },
     { href: "/colophon", label: "Colophon" },
   ],

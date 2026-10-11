@@ -178,7 +178,18 @@ const noteDetailsId = (entry: NoteEntry) => `note-details-${entry.id}`;
 
       const nextPath = nextId ? `/notes/${nextId}` : "/notes";
       if (window.location.pathname !== nextPath) {
-        window.history.pushState({}, "", nextPath);
+        // Keep Astro's router bookkeeping (index) so the header's Back button
+        // can tell this is an in-app page.
+        const index = window.history.state?.index;
+        window.history.pushState(
+          {
+            index: (typeof index === "number" ? index : 0) + 1,
+            scrollX: 0,
+            scrollY: 0,
+          },
+          "",
+          nextPath,
+        );
       }
     };
 

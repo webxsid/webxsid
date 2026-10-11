@@ -1,5 +1,6 @@
-import { useRef, type ReactNode } from "react";
+import { useRef, type MouseEvent, type ReactNode } from "react";
 import { motion } from "motion/react";
+import { navigate } from "astro:transitions/client";
 import { type ShellBrandIcon } from "./header-utils";
 import { filterSharedNavItems, globalNavItems } from "../../../lib/site-links";
 import { ShellHeaderBrand } from "./ShellHeaderBrand";
@@ -23,7 +24,6 @@ type Props = {
 };
 export function ShellBrandLauncher({
   backHref,
-  backLabel = "Back",
   brandIcon,
   logoLabel = "Webxsid",
   pageTitle,
@@ -48,6 +48,37 @@ export function ShellBrandLauncher({
     pageTitle,
   });
 
+  // Back means "wherever I just was". Astro numbers each in-app navigation in
+  // history.state.index, so index > 0 means there is a previous in-app page to
+  // return to. On a first load (a deep link, a new tab, a refresh of the first
+  // page) there is none, so go to the page's parent instead, replacing the
+  // current entry so the parent's own back button cannot bounce back here.
+  const handleBack = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const index = window.history.state?.index;
+
+    if (typeof index === "number" && index > 0) {
+      window.history.back();
+      return;
+    }
+
+    if (backHref) {
+      navigate(backHref, { history: "replace" });
+    }
+  };
+
   return (
     <motion.div
       ref={shellRef}
@@ -65,7 +96,8 @@ export function ShellBrandLauncher({
       >
         <motion.a
           href={backHref}
-          aria-label={backLabel}
+          aria-label="Back"
+          onClick={handleBack}
           aria-hidden={!backHref}
           tabIndex={backHref ? undefined : -1}
           initial={false}
