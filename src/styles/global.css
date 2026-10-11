@@ -1,5 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Shantell+Sans:wght@400;500;600;700&family=VT323&display=swap");
+@import "./fonts.css";
 @import "./themes/index.css";
+@import "./themes/calm.css";
+@import "./theme-picker.css";
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @import "./button.css";

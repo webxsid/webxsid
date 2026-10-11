@@ -57,12 +57,12 @@ const seo = withAutoOgImage(
           <div class="space-y-5">
             <div id="intro-head" class="space-y-1">
               <h1
-                class="ui-title max-w-2xl font-mono font-semibold tracking-tight text-text"
+                class="ui-title max-w-2xl font-display font-semibold tracking-tight text-text"
               >
                 Siddharth Mittal
               </h1>
             </div>
-            <div id="intro-copy" class="ui-body space-y-5 text-text">
+            <div id="intro-copy" class="ui-body max-w-[62ch] space-y-5 text-text">
               <p>
                 I'm the guy behind the scenes, keeping systems moving. Most days
                 that means tracing failures, simplifying workflows, making
@@ -85,25 +85,23 @@ const seo = withAutoOgImage(
                   href="https://threads.com/@webxsid"
                   target="_blank"
                   class="inline-link text-text">@webxsid</a
-                ><a
+                >{" "}<a
                   href="/gifs/old-man-yells-at-clouds.gif"
                   class="inline-link text-text"
                   aria-label="Open gif preview"
-                >
-                  ( evidence )
-                </a>.
+                >(evidence)</a>.
               </p>
             </div>
           </div>
         </div>
 
-        <hr class="my-8 border-border/70" />
+        <hr class="my-12 border-border/45" />
         <div class="grid gap-10 lg:grid-cols-2 lg:gap-8">
           <Section title="Featured Projects">
-            <ul class="border-t border-border/70">
+            <ul class="border-t border-border/45">
               {
                 featuredProjects.map((project, idx) => (
-                  <li class={idx === 0 ? "" : "border-t border-border/70"}>
+                  <li class={idx === 0 ? "" : "border-t border-border/45"}>
                     <HomePreviewItem
                       href={getProjectHref(project) ?? undefined}
                       title={project.data.title}
@@ -126,10 +124,10 @@ const seo = withAutoOgImage(
           </Section>
 
           <Section title="Latest Writing">
-            <ul class="border-t border-border/70">
+            <ul class="border-t border-border/45">
               {
                 latestWriting.map((entry, idx) => (
-                  <li class={idx === 0 ? "" : "border-t border-border/70"}>
+                  <li class={idx === 0 ? "" : "border-t border-border/45"}>
                     <HomePreviewItem
                       href={getWritingPath(entry)}
                       title={entry.data.title}

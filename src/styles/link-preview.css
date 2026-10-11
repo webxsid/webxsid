@@ -44,7 +44,7 @@
     font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.24em;
-    text-transform: uppercase;
+    text-transform: none;
     color: rgb(var(--text-muted));
   }
 
@@ -52,7 +52,7 @@
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.18em;
-    text-transform: uppercase;
+    text-transform: none;
     color: rgb(var(--text-muted));
   }
 

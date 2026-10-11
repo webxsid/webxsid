@@ -3,6 +3,7 @@ html {
   color: rgb(var(--text-primary));
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
+  font-synthesis-weight: none;
   cursor: var(--cursor-default);
 }
 

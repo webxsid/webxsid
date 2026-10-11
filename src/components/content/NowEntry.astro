@@ -36,7 +36,7 @@ const relatedLinks = entry.data.links ?? [];
     eyebrow="Now"
     title={entry.data.title}
     summary={entry.data.summary}
-    metaClass={showDetailMetadata ? "space-y-2" : "ui-tag uppercase text-text-muted"}
+    metaClass={showDetailMetadata ? "space-y-2" : "ui-tag text-text-muted"}
   >
     {
       showDetailMetadata ? (
@@ -58,9 +58,9 @@ const relatedLinks = entry.data.links ?? [];
 
   {
     relatedLinks.length > 0 && (
-      <section class="motion-page max-w-4xl border-t border-border/70 pt-8 sm:pt-10 lg:pt-12">
+      <section class="motion-page max-w-4xl border-t border-border/45 pt-8 sm:pt-10 lg:pt-12">
         <div class="space-y-4">
-          <p class="ui-label font-mono uppercase text-text-muted">
+          <p class="ui-label font-mono text-text-muted">
             Related Links
           </p>
 
@@ -72,7 +72,7 @@ const relatedLinks = entry.data.links ?? [];
 
                   return (
                     <tr class="align-top">
-                      <td class="ui-table block w-full pb-2 pr-0 font-mono uppercase text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
+                      <td class="ui-table block w-full pb-2 pr-0 font-mono text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
                         {item.heading ?? "Link"}
                       </td>
                       <td class="block pb-5 md:table-cell md:pb-4">

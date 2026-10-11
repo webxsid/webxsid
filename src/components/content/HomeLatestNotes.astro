@@ -27,7 +27,7 @@ const { notes } = Astro.props as Props;
               href={getNotePath(note)}
             >
               <time
-                class="ui-label mb-3 block font-mono uppercase text-text-muted"
+                class="ui-label mb-3 block font-mono text-text-muted"
                 datetime={parseNoteTimestamp(note.id).toISOString()}
               >
                 {formatNoteTimestamp(note)}
@@ -44,7 +44,7 @@ const { notes } = Astro.props as Props;
           class="home-note-more-link flex h-full flex-col justify-between p-4 sm:p-5"
           href="/notes"
         >
-          <span class="ui-label font-mono uppercase text-text-muted">THE ARCHIVE</span>
+          <span class="ui-label font-mono text-text-muted">THE ARCHIVE</span>
           <span class="flex items-center justify-between gap-3">
             <span class="ui-heading font-mono text-text">View all Notes</span>
             <ArrowRight aria-hidden="true" class="size-5 shrink-0 text-text-muted" />

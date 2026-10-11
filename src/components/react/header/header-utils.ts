@@ -29,12 +29,12 @@ export const themeFamilies = [
     lightVariant: "retro",
     darkVariant: "retro-dark",
   },
-  // {
-  //   value: "doodle",
-  //   label: "Doodle",
-  //   lightVariant: "doodle",
-  //   darkVariant: "doodle-dark",
-  // },
+  {
+    value: "doodle",
+    label: "Doodle",
+    lightVariant: "doodle",
+    darkVariant: "doodle-dark",
+  },
 ] as const;
 
 export const themeColors = {

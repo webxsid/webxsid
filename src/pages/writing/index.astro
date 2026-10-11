@@ -35,7 +35,7 @@ const seo = withAutoOgImage(
         <Section>
           <div class="space-y-5 text-text-muted">
             <p
-              class="ui-title max-w-2xl font-mono font-semibold tracking-tight text-text"
+              class="ui-title max-w-2xl font-display font-semibold tracking-tight text-text"
             >
               Writing
             </p>
@@ -46,7 +46,7 @@ const seo = withAutoOgImage(
           </div>
         </Section>
 
-        <div class="overflow-x-auto border-y border-border/70">
+        <div class="overflow-x-auto border-y border-border/45">
           <div class="divide-y divide-border/70 md:hidden">
             {
               entries.map((entry) => (
@@ -74,9 +74,9 @@ const seo = withAutoOgImage(
           </div>
 
           <div class="hidden md:block">
-            <table class="min-w-[56rem] w-full table-fixed border-collapse">
-              <thead class="border-b border-border/70">
-                <tr class="ui-table font-mono uppercase text-text-muted">
+            <table class="min-w-[44rem] w-full table-fixed border-collapse">
+              <thead class="border-b border-border/45">
+                <tr class="ui-table font-mono text-text-muted">
                   <th class="w-[28%] py-3 pr-6 text-left font-medium">Title</th>
                   <th class="w-[52%] py-3 pr-6 text-left font-medium"
                     >Summary</th
@@ -87,7 +87,7 @@ const seo = withAutoOgImage(
               <tbody>
                 {
                   entries.map((entry) => (
-                    <tr class="border-b border-border/70 last:border-b-0">
+                    <tr class="border-b border-border/45 last:border-b-0">
                       <td class="align-top py-5 pr-6">
                         <a
                           href={getWritingPath(entry)}

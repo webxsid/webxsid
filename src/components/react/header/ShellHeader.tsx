@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { ShellBrandLauncher } from "./ShellBrandLauncher";
 import type { ShellBrandIcon } from "./header-utils";
 
@@ -13,6 +14,7 @@ type Props = {
   hasReferences?: boolean;
   hasNotes?: boolean;
   hasNow?: boolean;
+  children?: ReactNode;
 };
 
 export function ShellHeader({
@@ -27,6 +29,7 @@ export function ShellHeader({
   hasReferences = false,
   hasNotes = false,
   hasNow = false,
+  children,
 }: Props) {
   return (
     <ShellBrandLauncher
@@ -41,6 +44,8 @@ export function ShellHeader({
       hasReferences={hasReferences}
       hasNotes={hasNotes}
       hasNow={hasNow}
-    />
+    >
+      {children}
+    </ShellBrandLauncher>
   );
 }

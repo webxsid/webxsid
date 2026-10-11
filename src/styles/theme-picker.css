@@ -1,0 +1,214 @@
+/* One theme picker for the whole site: used by the portfolio page and, slotted
+   into the React header, by the personal site. Colours come straight from the
+   active theme's tokens, so it follows every palette. */
+.theme-picker {
+  --tp-line: rgb(var(--border-default));
+  --tp-bg: rgb(var(--surface-page));
+  --tp-surface: rgb(var(--surface-elevated));
+  --tp-text: rgb(var(--text-primary));
+  --tp-muted: var(--portfolio-muted, rgb(var(--text-muted)));
+  --tp-accent: rgb(var(--accent-primary));
+  font-family: var(--font-sans-stack);
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 440;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--tp-text);
+}
+/* Inside the personal site's header the trigger sits at the left, so the panel
+   opens from its left edge, and on phones it centres under the header. */
+.theme-picker[data-align="start"] .theme-picker-panel {
+  left: 0;
+  right: auto;
+}
+.theme-picker[data-align="start"] > summary {
+  width: auto;
+  height: auto;
+  padding: 0.95rem;
+  border-radius: var(--radius-shell);
+}
+@media (max-width: 639px) {
+  .theme-picker[data-align="start"] .theme-picker-panel {
+    position: fixed;
+    top: 4.75rem;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+}
+.theme-picker {
+  position: relative;
+  z-index: 5;
+}
+.theme-picker > summary {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  list-style: none;
+  border: 1px solid var(--tp-line);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 180ms ease;
+}
+.theme-picker > summary::-webkit-details-marker {
+  display: none;
+}
+.theme-picker > summary:hover,
+.theme-picker[open] > summary {
+  background: var(--tp-surface);
+}
+.theme-picker svg {
+  width: 18px;
+  height: 18px;
+}
+/* Follow the saved mode, including System even when it resolves to dark. */
+.theme-picker [data-mode-icon] {
+  display: none;
+}
+:root[data-theme-mode="system"]
+  .theme-picker
+  [data-mode-icon="system"],
+:root[data-theme-mode="light"] .theme-picker [data-mode-icon="light"],
+:root[data-theme-mode="dark"] .theme-picker [data-mode-icon="dark"] {
+  display: block;
+}
+.theme-picker-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: min(320px, calc(100vw - 40px));
+  padding: 18px;
+  border: 1px solid var(--tp-line);
+  border-radius: 12px;
+  background: var(--tp-bg);
+  box-shadow: var(--shadow-preview);
+}
+.theme-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+}
+.theme-close {
+  width: 44px;
+  height: 44px;
+  margin: -10px -10px -10px 0;
+  border: 0;
+  background: transparent;
+  color: var(--tp-muted);
+  font: inherit;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.theme-close:hover {
+  background: var(--tp-surface);
+  color: var(--tp-text);
+}
+.theme-picker-panel fieldset {
+  border: 0;
+  margin: 20px 0 0;
+  padding: 0;
+  min-width: 0;
+}
+.theme-picker-panel legend {
+  padding: 0;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tp-muted);
+}
+.theme-palettes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.theme-palette,
+.theme-modes label {
+  position: relative;
+  cursor: pointer;
+}
+.theme-picker-panel input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.theme-swatch {
+  display: grid;
+  grid-template-columns: 1fr 16px;
+  gap: 5px;
+  padding: 12px;
+  height: 66px;
+  border: 1px solid var(--tp-line);
+  border-radius: 6px;
+  background: rgb(var(--surface-page));
+  color: rgb(var(--text-primary));
+}
+.theme-swatch > span {
+  /* Each swatch redeclares its own theme tokens, so this is that theme's face. */
+  font-family: var(--font-display-stack);
+  font-weight: 500;
+  grid-row: span 2;
+  font-size: 27px;
+  letter-spacing: -0.08em;
+  line-height: 1.4;
+}
+.theme-swatch i {
+  background: rgb(var(--accent-primary));
+  border-radius: 2px;
+}
+.theme-swatch i:last-child {
+  background: rgb(var(--text-muted));
+}
+.theme-palette-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  margin-top: 6px;
+}
+.theme-check {
+  visibility: hidden;
+  color: var(--tp-accent);
+}
+.theme-palette input:checked ~ .theme-swatch {
+  outline: 2px solid var(--tp-accent);
+  outline-offset: 2px;
+}
+.theme-palette input:checked ~ .theme-palette-name .theme-check {
+  visibility: visible;
+}
+.theme-palette:hover .theme-swatch {
+  border-color: var(--tp-accent);
+}
+.theme-modes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--tp-line);
+  border-radius: 7px;
+  background: var(--tp-surface);
+}
+.theme-modes label > span {
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  font-size: 12px;
+  border-radius: 4px;
+  color: var(--tp-muted);
+}
+.theme-modes input:checked + span {
+  background: var(--tp-text);
+  color: var(--tp-bg);
+}
+.theme-picker-panel input:focus-visible + span,
+.theme-close:focus-visible {
+  outline: 2px solid var(--tp-accent);
+  outline-offset: 3px;
+}

@@ -1,25 +1,10 @@
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import { motion } from "motion/react";
-import {
-  getThemeColor,
-  resolveThemeVariant,
-  THEME_FAMILY_STORAGE_KEY,
-  THEME_MODE_STORAGE_KEY,
-  type ShellBrandIcon,
-  type ThemeFamily,
-  type ThemeMode,
-} from "./header-utils";
+import { type ShellBrandIcon } from "./header-utils";
 import { filterSharedNavItems, globalNavItems } from "../../../lib/site-links";
 import { ShellHeaderBrand } from "./ShellHeaderBrand";
 import { ShellHeaderMenu } from "./ShellHeaderMenu";
-import { ShellThemePicker } from "./ShellThemePicker";
 import { useShellHeaderBehavior } from "./useShellHeaderBehavior";
-
-declare global {
-  interface Window {
-    __webxsidTriggerThemeFx?: () => void;
-  }
-}
 
 type Props = {
   backHref?: string;
@@ -33,6 +18,8 @@ type Props = {
   hasReferences?: boolean;
   hasNotes?: boolean;
   hasNow?: boolean;
+  /** Static content from the Astro layout, rendered beside the brand button. */
+  children?: ReactNode;
 };
 export function ShellBrandLauncher({
   backHref,
@@ -46,9 +33,9 @@ export function ShellBrandLauncher({
   hasReferences = false,
   hasNotes = false,
   hasNow = false,
+  children,
 }: Props) {
   const brandTriggerRef = useRef<HTMLButtonElement | null>(null);
-  const themeTriggerRef = useRef<HTMLButtonElement | null>(null);
   const {
     shellRef,
     open,
@@ -56,64 +43,10 @@ export function ShellBrandLauncher({
     activePath,
     activeTitle,
     spring,
-    themeFamily,
-    setThemeFamily,
-    themeMode,
-    setThemeMode,
-    themeOpen,
-    setThemeOpen,
   } = useShellHeaderBehavior({
     currentPath,
     pageTitle,
   });
-
-  const isSystemDark = () =>
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  const applyThemeColor = (variant: string) => {
-    const themeColor = document.querySelector('meta[name="theme-color"]');
-    if (themeColor) {
-      themeColor.setAttribute("content", getThemeColor(variant));
-    }
-  };
-
-  const triggerThemeFx = () => {
-    window.__webxsidTriggerThemeFx?.();
-  };
-
-  const applyThemeFamily = (nextFamily: ThemeFamily) => {
-    const nextVariant = resolveThemeVariant(
-      nextFamily,
-      themeMode,
-      isSystemDark(),
-    );
-
-    document.documentElement.dataset.themeFamily = nextFamily;
-    document.documentElement.dataset.themeMode = themeMode;
-    document.documentElement.dataset.theme = nextVariant;
-    applyThemeColor(nextVariant);
-    triggerThemeFx();
-    localStorage.setItem(THEME_FAMILY_STORAGE_KEY, nextFamily);
-    localStorage.setItem(THEME_MODE_STORAGE_KEY, themeMode);
-    setThemeFamily(nextFamily);
-  };
-
-  const applyThemeMode = (nextMode: ThemeMode) => {
-    const nextVariant = resolveThemeVariant(
-      themeFamily,
-      nextMode,
-      isSystemDark(),
-    );
-
-    document.documentElement.dataset.themeFamily = themeFamily;
-    document.documentElement.dataset.themeMode = nextMode;
-    document.documentElement.dataset.theme = nextVariant;
-    applyThemeColor(nextVariant);
-    triggerThemeFx();
-    localStorage.setItem(THEME_FAMILY_STORAGE_KEY, themeFamily);
-    localStorage.setItem(THEME_MODE_STORAGE_KEY, nextMode);
-    setThemeMode(nextMode);
-  };
 
   return (
     <motion.div
@@ -165,7 +98,6 @@ export function ShellBrandLauncher({
             activeTitle={activeTitle}
             open={open}
             onToggle={() => {
-              setThemeOpen(false);
               setOpen((value) => !value);
             }}
           />
@@ -183,19 +115,11 @@ export function ShellBrandLauncher({
           />
         </div>
 
-        <ShellThemePicker
-          triggerRef={themeTriggerRef}
-          activeFamily={themeFamily}
-          activeMode={themeMode}
-          open={themeOpen}
-          onToggle={() => {
-            setOpen(false);
-            setThemeOpen((value) => !value);
-          }}
-          onClose={() => setThemeOpen(false)}
-          onSelectFamily={applyThemeFamily}
-          onSelectMode={applyThemeMode}
-        />
+        {children ? (
+          <div className="relative shrink-0" onPointerDown={() => setOpen(false)}>
+            {children}
+          </div>
+        ) : null}
       </div>
     </motion.div>
   );

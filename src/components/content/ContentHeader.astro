@@ -12,7 +12,7 @@ const {
   title,
   summary,
   class: className = "",
-  metaClass = "ui-tag uppercase text-text-muted",
+  metaClass = "ui-tag text-text-muted",
 } = Astro.props as Props;
 const hasMeta = Astro.slots.has("meta");
 ---
@@ -23,11 +23,11 @@ const hasMeta = Astro.slots.has("meta");
   <div class="space-y-3">
     {
       eyebrow && (
-        <p class="ui-label font-mono uppercase text-text-muted">{eyebrow}</p>
+        <p class="ui-label font-mono text-text-muted">{eyebrow}</p>
       )
     }
 
-    <h1 class="ui-title max-w-3xl font-semibold tracking-tight text-text">
+    <h1 class="ui-title max-w-3xl font-display font-semibold tracking-tight text-text">
       {title}
     </h1>
   </div>

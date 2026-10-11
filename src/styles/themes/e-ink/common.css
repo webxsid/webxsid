@@ -2,12 +2,10 @@
 [data-theme="e-ink-dark"] {
   color-scheme: light dark;
 
-  --font-sans-stack:
-    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "IBM Plex Serif", serif;
+  --font-sans-stack: "Literata Variable", "Literata", "Iowan Old Style", Georgia, serif;
   --font-mono-stack:
     "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
-  --font-display-stack:
-    "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "IBM Plex Serif", serif;
+  --font-display-stack: "Literata Variable", "Literata", "Iowan Old Style", Georgia, serif;
 
   --radius-shell: 1.5rem;
   --radius-dock: 1rem;

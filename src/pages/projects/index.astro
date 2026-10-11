@@ -40,7 +40,7 @@ const introCopy =
         <Section>
           <div class="space-y-5 text-text-muted">
             <p
-              class="ui-title max-w-2xl font-mono font-semibold tracking-tight text-text"
+              class="ui-title max-w-2xl font-display font-semibold tracking-tight text-text"
             >
               Projects
             </p>
@@ -48,7 +48,7 @@ const introCopy =
           </div>
         </Section>
 
-        <div class="overflow-x-auto border-y border-border/70">
+        <div class="overflow-x-auto border-y border-border/45">
           <div class="divide-y divide-border/70 md:hidden">
             {
               projects.map((project) => {
@@ -99,18 +99,18 @@ const introCopy =
           </div>
 
           <div class="hidden md:block">
-            <table class="min-w-[58rem] w-full table-fixed border-collapse">
-              <thead class="border-b border-border/70">
-                <tr class="ui-table font-mono uppercase text-text-muted">
-                  <th class="w-[22%] py-3 pr-6 text-left font-medium"
+            <table class="min-w-[44rem] w-full table-fixed border-collapse">
+              <thead class="border-b border-border/45">
+                <tr class="ui-table font-mono text-text-muted">
+                  <th class="w-[21%] py-3 pr-6 text-left font-medium"
                     >Project</th
                   >
                   <th class="w-[18%] py-3 pr-6 text-left font-medium"
                     >Built With</th
                   >
-                  <th class="w-[14%] py-3 pr-6 text-left font-medium">Status</th
+                  <th class="w-[16%] py-3 pr-6 text-left font-medium">Status</th
                   >
-                  <th class="w-[46%] py-3 pr-6 text-left font-medium"
+                  <th class="w-[45%] py-3 pr-6 text-left font-medium"
                     >Summary</th
                   >
                 </tr>
@@ -129,7 +129,7 @@ const introCopy =
                     return (
                       <tr
                         id={project.id}
-                        class="border-b border-border/70 last:border-b-0"
+                        class="border-b border-border/45 last:border-b-0"
                       >
                         <td class="align-top py-5 pr-6">
                           <div class="space-y-2.5">

@@ -1,19 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion, type AnimationGeneratorType } from "motion/react";
-import {
-  defaultThemeFamily,
-  defaultThemeMode,
-  getSectionLabel,
-  normalizePath,
-  resolveThemeFamilyAndMode,
-  resolveThemeFamilyFromVariant,
-  resolveThemeModeFromVariant,
-  THEME_FAMILY_STORAGE_KEY,
-  THEME_MODE_STORAGE_KEY,
-  LEGACY_THEME_STORAGE_KEY,
-  type ThemeFamily,
-  type ThemeMode,
-} from "./header-utils";
+import { getSectionLabel, normalizePath } from "./header-utils";
 
 
 type Options = {
@@ -31,9 +18,6 @@ export function useShellHeaderBehavior({ currentPath, pageTitle }: Options) {
   const [activeTitle, setActiveTitle] = useState(() =>
     getSectionLabel(currentPath, pageTitle),
   );
-  const [themeFamily, setThemeFamily] = useState<ThemeFamily>(defaultThemeFamily);
-  const [themeMode, setThemeMode] = useState<ThemeMode>(defaultThemeMode);
-  const [themeOpen, setThemeOpen] = useState(false);
 
   const spring = reduceMotion
     ? { duration: 0 }
@@ -47,23 +31,10 @@ export function useShellHeaderBehavior({ currentPath, pageTitle }: Options) {
   useEffect(() => {
     const syncState = () => {
       const pathname = normalizePath(window.location.pathname);
-      const storedFamily = localStorage.getItem(THEME_FAMILY_STORAGE_KEY);
-      const storedMode = localStorage.getItem(THEME_MODE_STORAGE_KEY);
-      const legacyTheme = localStorage.getItem(LEGACY_THEME_STORAGE_KEY);
-      const datasetFamily = document.documentElement.dataset.themeFamily;
-      const datasetMode = document.documentElement.dataset.themeMode;
-      const nextPreference = resolveThemeFamilyAndMode(
-        storedFamily ?? datasetFamily ?? resolveThemeFamilyFromVariant(legacyTheme),
-        storedMode ?? datasetMode ?? resolveThemeModeFromVariant(legacyTheme),
-      );
-
       setActivePath(pathname);
       setActiveTitle(getSectionLabel(pathname, pageTitle));
       setOpen(false);
-      setThemeOpen(false);
       setHidden(false);
-      setThemeFamily(nextPreference.family);
-      setThemeMode(nextPreference.mode);
     };
 
     const handlePointerDown = (event: PointerEvent) => {
@@ -74,15 +45,13 @@ export function useShellHeaderBehavior({ currentPath, pageTitle }: Options) {
 
       if (!shellRef.current.contains(event.target as Node)) {
         setOpen(false);
-        setThemeOpen(false);
-      }
+        }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setOpen(false);
-        setThemeOpen(false);
-      }
+        }
     };
 
 
@@ -115,7 +84,6 @@ export function useShellHeaderBehavior({ currentPath, pageTitle }: Options) {
     setActivePath(pathname);
     setActiveTitle(getSectionLabel(pathname, pageTitle));
     setOpen(false);
-    setThemeOpen(false);
     setHidden(false);
 
   }, [currentPath, pageTitle]);
@@ -124,12 +92,6 @@ export function useShellHeaderBehavior({ currentPath, pageTitle }: Options) {
     shellRef,
     open,
     setOpen,
-    themeFamily,
-    setThemeFamily,
-    themeMode,
-    setThemeMode,
-    themeOpen,
-    setThemeOpen,
     hidden,
     activePath,
     activeTitle,

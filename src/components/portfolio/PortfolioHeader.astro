@@ -1,5 +1,5 @@
 ---
-import PortfolioThemePicker from "./PortfolioThemePicker.astro";
+import ThemePicker from "../shell/ThemePicker.astro";
 import { portfolio } from "../../data/portfolio";
 ---
 
@@ -13,7 +13,7 @@ import { portfolio } from "../../data/portfolio";
     ><div class="portfolio-header-actions">
       <a class="header-personal-link" href={portfolio.personalWebsite}
         >Personal site <span aria-hidden="true">↗</span></a
-      ><PortfolioThemePicker />
+      ><ThemePicker />
     </div>
   </div>
 </header>

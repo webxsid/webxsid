@@ -1,9 +1,9 @@
 [data-theme="graphite"],
 [data-theme="paper"] {
   color-scheme: light dark;
-  --font-sans-stack: "Fraunces", "IBM Plex Sans", "Inter Tight", "Inter", system-ui, serif;
-  --font-mono-stack: "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
-  --font-display-stack: "Fraunces", "Iowan Old Style", "Palatino Linotype", serif;
+  --font-sans-stack: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono-stack: "JetBrains Mono Variable", "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
+  --font-display-stack: "Instrument Serif", "Iowan Old Style", Georgia, serif;
 
   --radius-shell: 1.5rem;
   --radius-dock: 1rem;
@@ -92,7 +92,7 @@
   --preview-body-gap: 0.72rem;
   --preview-body-padding: 1rem;
 
-  --ui-title-size: clamp(1.34rem, 3vw, 2.6rem);
+  --ui-title-size: clamp(2rem, 4.4vw, 3.3rem);
   --ui-title-line-height: 1.08;
   --ui-lead-size: 1.02rem;
   --ui-lead-line-height: 1.6;

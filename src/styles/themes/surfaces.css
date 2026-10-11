@@ -246,31 +246,15 @@
   isolation: isolate;
 }
 
-[data-theme="doodle"] body::before,
-[data-theme="doodle-dark"] body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    linear-gradient(90deg,
-      rgb(var(--accent-primary) / 0.12) 0,
-      rgb(var(--accent-primary) / 0.12) 2px,
-      transparent 2px,
-      transparent 100%),
-    repeating-linear-gradient(180deg,
-      rgb(var(--text-primary) / 0.045) 0,
-      rgb(var(--text-primary) / 0.045) 1px,
-      transparent 1px,
-      transparent 30px);
-  background-size:
-    100% 100%,
-    100% 30px;
-  background-position:
-    2.4rem 0,
-    0 8rem;
-  opacity: 0.3;
+/* Margin doodles: a notebook page that has been scribbled on. The tile is
+   large so the repetition is hard to spot, and the middle of the page fades
+   out so reading text stays clean. */
+[data-theme="doodle"] body::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='880' height='880' viewBox='0 0 880 880' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M0 -15 L4.2 -4.6 L15 -4 L6.6 3 L9.4 14 L0.4 8 L-9.6 14.4 L-6.4 3.2 L-15 -3.6 L-4 -4.4 Z' transform='translate(451 645) rotate(-24) scale(0.97)' stroke='rgb(118 163 102)' stroke-opacity='0.62'/%3E%3Cpath d='M0 0 c2.5 -2.5 6 -1 6 2.5 c0 5.5 -9 7 -11.5 0 c-3.5 -10 11 -14.5 17.5 -5.5 c9 12.5 -7 25 -20.5 15.5' transform='translate(751 613) rotate(-3) scale(1.37)' stroke='rgb(146 120 102)' stroke-opacity='0.5'/%3E%3Cpath d='M-24 0 q6 -11 12 0 t12 0 t12 0 t12 0' transform='translate(804 264) rotate(9) scale(1.18)' stroke='rgb(146 120 102)' stroke-opacity='0.5'/%3E%3Cpath d='M-30 8 c16 -22 44 -22 60 2 M30 10 l-12 -1 M30 10 l-2 -12' transform='translate(132 660) rotate(19) scale(1.30)' stroke='rgb(146 120 102)' stroke-opacity='0.5'/%3E%3Cpath d='M0 11 C-19 -4 -8 -19 0 -8 C8 -19 19 -4 0 11 Z' transform='translate(592 773) rotate(-24) scale(1.33)' stroke='rgb(146 120 102)' stroke-opacity='0.5'/%3E%3Cpath d='M-6 0 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0 M0 -13 v-6 M0 13 v6 M-13 0 h-6 M13 0 h6 M-9 -9 l-4 -4 M9 9 l4 4 M9 -9 l4 -4 M-9 9 l-4 4' transform='translate(294 606) rotate(26) scale(1.37)' stroke='rgb(146 120 102)' stroke-opacity='0.5'/%3E%3Cpath d='M-16 8 c-9 0 -9 -11 0 -11 c2 -10 17 -10 19 0 c10 -2 12 11 2 11 z' transform='translate(62 124) rotate(-2) scale(1.44)' stroke='rgb(146 120 102)' stroke-opacity='0.5'/%3E%3Cpath d='M6 -17 L-5 2 L3 2 L-6 18' transform='translate(402 275) rotate(16) scale(1.08)' stroke='rgb(146 120 102)' stroke-opacity='0.5'/%3E%3Cpath d='M-7 0.5 H7 M0.5 -7 V7' transform='translate(73 833) rotate(14) scale(1.01)' stroke='rgb(146 120 102)' stroke-opacity='0.5'/%3E%3Cpath d='M-18 6 c-6 -22 30 -22 22 -2 c-5 12 -26 8 -22 -6 c2 -8 14 -10 20 -6' transform='translate(229 401) rotate(17) scale(1.04)' stroke='rgb(196 105 137)' stroke-opacity='0.62'/%3E%3Cpath d='M-6 -9 L-15 0 L-6 9 M6 -9 L15 0 L6 9 M2.5 -11 L-2.5 11' transform='translate(89 307) rotate(15) scale(1.16)' stroke='rgb(146 120 102)' stroke-opacity='0.5'/%3E%3Cpath d='M-4 -13 c-7 0 -5 7 -5 10 c0 4 -3 3 -6 3 c3 0 6 -1 6 3 c0 4 -2 11 5 11 M14 -13 c7 0 5 7 5 10 c0 4 3 3 6 3 c-3 0 -6 -1 -6 3 c0 4 2 11 -5 11' transform='translate(79 483) rotate(-28) scale(1.38)' stroke='rgb(118 163 102)' stroke-opacity='0.62'/%3E%3Cpath d='M-16 -2 L18 -13 L8 14 L2 4 Z M2 4 L18 -13' transform='translate(423 474) rotate(-16) scale(1.15)' stroke='rgb(118 163 102)' stroke-opacity='0.62'/%3E%3Cpath d='M-18 0 h.1 M-9 -3 h.1 M0 0 h.1 M9 3 h.1 M18 0 h.1' transform='translate(229 835) rotate(-16) scale(1.08)' stroke='rgb(112 111 186)' stroke-opacity='0.62'/%3E%3Cpath d='M-9 -2 h18 v13 c0 6 -4 8 -9 8 s-9 -2 -9 -8 z M9 1 c7 0 7 9 0 9 M-3 -7 q-3 -4 0 -8 M3 -7 q-3 -4 0 -8' transform='translate(469 78) rotate(-24) scale(1.05)' stroke='rgb(69 138 137)' stroke-opacity='0.62'/%3E%3Cpath d='M-26 2 c14 -6 30 5 52 -3' transform='translate(625 77) rotate(-3) scale(1.43)' stroke='rgb(146 120 102)' stroke-opacity='0.5'/%3E%3Cpath d='M-8 -8 L8 8 M8 -8 L-8 8' transform='translate(799 120) rotate(-18) scale(1.03)' stroke='rgb(118 163 102)' stroke-opacity='0.62'/%3E%3Cpath d='M-12 0 c0 -9 10 -13 17 -8 c8 6 5 18 -5 20 c-10 2 -18 -4 -13 -14' transform='translate(242 61) rotate(13) scale(1.42)' stroke='rgb(146 120 102)' stroke-opacity='0.5'/%3E%3Cpath d='M-15 0 c8 -12 22 -12 30 0 c-8 12 -22 12 -30 0 M-3 0 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0' transform='translate(304 298) rotate(6) scale(1.16)' stroke='rgb(146 120 102)' stroke-opacity='0.5'/%3E%3C/svg%3E");
+}
+
+[data-theme="doodle-dark"] body::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='880' height='880' viewBox='0 0 880 880' fill='none' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M0 -15 L4.2 -4.6 L15 -4 L6.6 3 L9.4 14 L0.4 8 L-9.6 14.4 L-6.4 3.2 L-15 -3.6 L-4 -4.4 Z' transform='translate(451 645) rotate(-24) scale(0.97)' stroke='rgb(144 193 124)' stroke-opacity='0.55'/%3E%3Cpath d='M0 0 c2.5 -2.5 6 -1 6 2.5 c0 5.5 -9 7 -11.5 0 c-3.5 -10 11 -14.5 17.5 -5.5 c9 12.5 -7 25 -20.5 15.5' transform='translate(751 613) rotate(-3) scale(1.37)' stroke='rgb(186 168 150)' stroke-opacity='0.42'/%3E%3Cpath d='M-24 0 q6 -11 12 0 t12 0 t12 0 t12 0' transform='translate(804 264) rotate(9) scale(1.18)' stroke='rgb(186 168 150)' stroke-opacity='0.42'/%3E%3Cpath d='M-30 8 c16 -22 44 -22 60 2 M30 10 l-12 -1 M30 10 l-2 -12' transform='translate(132 660) rotate(19) scale(1.30)' stroke='rgb(186 168 150)' stroke-opacity='0.42'/%3E%3Cpath d='M0 11 C-19 -4 -8 -19 0 -8 C8 -19 19 -4 0 11 Z' transform='translate(592 773) rotate(-24) scale(1.33)' stroke='rgb(186 168 150)' stroke-opacity='0.42'/%3E%3Cpath d='M-6 0 a6 6 0 1 0 12 0 a6 6 0 1 0 -12 0 M0 -13 v-6 M0 13 v6 M-13 0 h-6 M13 0 h6 M-9 -9 l-4 -4 M9 9 l4 4 M9 -9 l4 -4 M-9 9 l-4 4' transform='translate(294 606) rotate(26) scale(1.37)' stroke='rgb(186 168 150)' stroke-opacity='0.42'/%3E%3Cpath d='M-16 8 c-9 0 -9 -11 0 -11 c2 -10 17 -10 19 0 c10 -2 12 11 2 11 z' transform='translate(62 124) rotate(-2) scale(1.44)' stroke='rgb(186 168 150)' stroke-opacity='0.42'/%3E%3Cpath d='M6 -17 L-5 2 L3 2 L-6 18' transform='translate(402 275) rotate(16) scale(1.08)' stroke='rgb(186 168 150)' stroke-opacity='0.42'/%3E%3Cpath d='M-7 0.5 H7 M0.5 -7 V7' transform='translate(73 833) rotate(14) scale(1.01)' stroke='rgb(186 168 150)' stroke-opacity='0.42'/%3E%3Cpath d='M-18 6 c-6 -22 30 -22 22 -2 c-5 12 -26 8 -22 -6 c2 -8 14 -10 20 -6' transform='translate(229 401) rotate(17) scale(1.04)' stroke='rgb(233 142 176)' stroke-opacity='0.55'/%3E%3Cpath d='M-6 -9 L-15 0 L-6 9 M6 -9 L15 0 L6 9 M2.5 -11 L-2.5 11' transform='translate(89 307) rotate(15) scale(1.16)' stroke='rgb(186 168 150)' stroke-opacity='0.42'/%3E%3Cpath d='M-4 -13 c-7 0 -5 7 -5 10 c0 4 -3 3 -6 3 c3 0 6 -1 6 3 c0 4 -2 11 5 11 M14 -13 c7 0 5 7 5 10 c0 4 3 3 6 3 c-3 0 -6 -1 -6 3 c0 4 2 11 -5 11' transform='translate(79 483) rotate(-28) scale(1.38)' stroke='rgb(144 193 124)' stroke-opacity='0.55'/%3E%3Cpath d='M-16 -2 L18 -13 L8 14 L2 4 Z M2 4 L18 -13' transform='translate(423 474) rotate(-16) scale(1.15)' stroke='rgb(144 193 124)' stroke-opacity='0.55'/%3E%3Cpath d='M-18 0 h.1 M-9 -3 h.1 M0 0 h.1 M9 3 h.1 M18 0 h.1' transform='translate(229 835) rotate(-16) scale(1.08)' stroke='rgb(167 160 244)' stroke-opacity='0.55'/%3E%3Cpath d='M-9 -2 h18 v13 c0 6 -4 8 -9 8 s-9 -2 -9 -8 z M9 1 c7 0 7 9 0 9 M-3 -7 q-3 -4 0 -8 M3 -7 q-3 -4 0 -8' transform='translate(469 78) rotate(-24) scale(1.05)' stroke='rgb(123 203 198)' stroke-opacity='0.55'/%3E%3Cpath d='M-26 2 c14 -6 30 5 52 -3' transform='translate(625 77) rotate(-3) scale(1.43)' stroke='rgb(186 168 150)' stroke-opacity='0.42'/%3E%3Cpath d='M-8 -8 L8 8 M8 -8 L-8 8' transform='translate(799 120) rotate(-18) scale(1.03)' stroke='rgb(144 193 124)' stroke-opacity='0.55'/%3E%3Cpath d='M-12 0 c0 -9 10 -13 17 -8 c8 6 5 18 -5 20 c-10 2 -18 -4 -13 -14' transform='translate(242 61) rotate(13) scale(1.42)' stroke='rgb(186 168 150)' stroke-opacity='0.42'/%3E%3Cpath d='M-15 0 c8 -12 22 -12 30 0 c-8 12 -22 12 -30 0 M-3 0 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0' transform='translate(304 298) rotate(6) scale(1.16)' stroke='rgb(186 168 150)' stroke-opacity='0.42'/%3E%3C/svg%3E");
 }
 
 [data-theme="doodle"] body::after,
@@ -280,54 +264,20 @@
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background:
-    radial-gradient(circle at 8% 12%,
-      rgb(var(--color-status-building) / 0.18) 0 3px,
-      transparent 3.5px),
-    radial-gradient(circle at 8.7% 12%,
-      rgb(var(--color-status-building) / 0.18) 0 3px,
-      transparent 3.5px),
-    linear-gradient(rgb(var(--color-status-building) / 0.18),
-      rgb(var(--color-status-building) / 0.18)),
-    radial-gradient(circle at 89% 16%,
-      rgb(var(--color-status-active) / 0.2) 0 2px,
-      transparent 2.5px),
-    radial-gradient(circle at 91.1% 16.9%,
-      rgb(var(--color-status-active) / 0.2) 0 2px,
-      transparent 2.5px),
-    radial-gradient(circle at 90% 18.5%,
-      rgb(var(--color-status-active) / 0.2) 0 2px,
-      transparent 2.5px),
-    linear-gradient(rgb(var(--color-status-experimental) / 0.18),
-      rgb(var(--color-status-experimental) / 0.18)),
-    linear-gradient(rgb(var(--color-status-experimental) / 0.18),
-      rgb(var(--color-status-experimental) / 0.18)),
-    linear-gradient(140deg,
-      rgb(var(--text-primary) / 0.014),
-      transparent 42%,
-      rgb(var(--text-primary) / 0.008) 100%);
-  background-size:
-    100% 100%,
-    100% 100%,
-    14px 2px,
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    2px 18px,
-    18px 2px,
-    100% 100%;
-  background-position:
-    0 0,
-    0 0,
-    8.5% 13.7%,
-    0 0,
-    0 0,
-    0 0,
-    82% 74%,
-    82% 74%,
-    0 0;
-  background-repeat: no-repeat;
-  opacity: 0.5;
+  background-size: 880px 880px;
+  background-repeat: repeat;
+  background-position: 40px 24px;
+  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(50% - 560px), rgb(0 0 0 / 0.18) calc(50% - 470px), rgb(0 0 0 / 0.18) calc(50% + 470px), #000 calc(50% + 560px), #000 100%);
+  mask-image: linear-gradient(90deg, #000 0, #000 calc(50% - 560px), rgb(0 0 0 / 0.18) calc(50% - 470px), rgb(0 0 0 / 0.18) calc(50% + 470px), #000 calc(50% + 560px), #000 100%);
+}
+
+@media (max-width: 1023px) {
+  [data-theme="doodle"] body::after,
+  [data-theme="doodle-dark"] body::after {
+    -webkit-mask-image: none;
+    mask-image: none;
+    opacity: 0.32;
+  }
 }
 
 [data-theme="doodle"] .shell-nav-frame,
@@ -378,12 +328,51 @@
   border: 1px solid rgb(var(--border-default) / 0.52);
 }
 
+/* The nav rail keeps a single hand-drawn outline: only the current page is
+   boxed, the rest sit flat inside it. */
+[data-theme="doodle"] .shell-nav-frame,
+[data-theme="doodle-dark"] .shell-nav-frame {
+  padding: 0.4rem;
+  border-radius: 1.2rem 1.35rem 1.15rem 1.3rem;
+}
+
+[data-theme="doodle"] .shell-nav-frame a.shell-control.shell-item,
+[data-theme="doodle-dark"] .shell-nav-frame a.shell-control.shell-item {
+  background: transparent;
+  border-color: transparent;
+}
+
+[data-theme="doodle"] .shell-nav-frame a.shell-control.shell-item:hover,
+[data-theme="doodle-dark"] .shell-nav-frame a.shell-control.shell-item:hover {
+  border-color: rgb(var(--border-default) / 0.6);
+}
+
+[data-theme="doodle"] .shell-nav-frame a.shell-control.shell-item-active,
+[data-theme="doodle-dark"] .shell-nav-frame a.shell-control.shell-item-active {
+  background: var(--shell-item-active-background);
+  border-color: rgb(var(--border-default) / var(--shell-item-active-border-opacity));
+}
+
 [data-theme="doodle"] .status-badge,
 [data-theme="doodle-dark"] .status-badge {
   padding: 0.18rem 0.46rem 0.14rem;
   border-radius: 0.4rem 0.54rem 0.42rem 0.5rem;
   letter-spacing: 0.1em;
   box-shadow: none;
+}
+
+/* Status icons are drawn at the badge's left edge; give them room inside the
+   padded doodle badge so they sit beside the label, not on the border. */
+[data-theme="doodle"] .status-badge,
+[data-theme="doodle-dark"] .status-badge {
+  padding-inline-start: 1.35rem;
+}
+
+[data-theme="doodle"] .status-badge::before,
+[data-theme="doodle"] .status-badge::after,
+[data-theme="doodle-dark"] .status-badge::before,
+[data-theme="doodle-dark"] .status-badge::after {
+  translate: 0.42rem 0;
 }
 
 [data-theme="doodle"] .ui-tag,
@@ -401,6 +390,7 @@
   content: "";
   width: 0.32rem;
   height: 0.32rem;
+  flex: none;
   border-radius: 9999px;
   background: rgb(var(--accent-primary) / 0.72);
   line-height: 1;

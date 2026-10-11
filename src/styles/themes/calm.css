@@ -1,0 +1,39 @@
+/* Calm layer: quieter labels, softer links and buttons, applied over every
+   palette. Each theme keeps its own fonts, underline style, button chrome and
+   background effects; only the loudness comes down. Loaded after the themes. */
+:root[data-theme] {
+  --ui-meta-size: 0.78rem;
+  --ui-meta-tracking: 0.05em;
+  --ui-tag-size: 0.8rem;
+  --ui-tag-tracking: 0.02em;
+  --ui-label-size: 0.78rem;
+  --ui-label-tracking: 0.04em;
+  --ui-shell-size: 0.78rem;
+  --ui-shell-tracking: 0.04em;
+  --ui-table-size: 0.74rem;
+  --ui-table-tracking: 0.04em;
+  --ui-rail-meta-size: 0.76rem;
+  --content-label-size: 0.72rem;
+  --content-label-tracking: 0.04em;
+
+  --button-primary-text-transform: none;
+  --button-primary-letter-spacing: 0.03em;
+
+  /* Links read as text first; the theme's underline style carries the accent. */
+  --link-text-color: rgb(var(--text-primary));
+  --link-decoration-color: rgb(var(--accent-primary) / 0.5);
+  --link-hover-text-color: rgb(var(--text-accent));
+  --link-hover-decoration-color: rgb(var(--accent-primary));
+}
+
+/* Pixel faces are wide at small sizes, so they get smaller labels. */
+:root[data-theme-family="retro"] {
+  --ui-heading-size: 0.78rem;
+  --ui-meta-size: 0.68rem;
+  --ui-tag-size: 0.95rem;
+  --ui-label-size: 0.66rem;
+  --ui-shell-size: 0.64rem;
+  --ui-table-size: 0.66rem;
+  --ui-rail-meta-size: 0.64rem;
+  --content-label-size: 0.58rem;
+}

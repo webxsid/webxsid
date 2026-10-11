@@ -46,11 +46,11 @@ export function ShellHeaderBrand({
       </span>
 
       <span className="flex flex-col items-start gap-0.5">
-        <span className="motion-soft ui-shell font-mono uppercase text-text">
+        <span className="motion-soft ui-shell font-mono text-text">
           {logoLabel}
         </span>
 
-        <span className="motion-soft ui-shell flex items-center gap-1 font-mono uppercase text-text-muted">
+        <span className="motion-soft ui-shell flex items-center gap-1 font-mono text-text-muted">
           <span>{activeTitle}</span>
 
           <svg

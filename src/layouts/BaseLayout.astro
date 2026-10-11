@@ -6,6 +6,7 @@ import Container from "../components/shell/Container.astro";
 import Nav from "../components/shell/Nav.astro";
 import ShellLoadBoot from "../components/shell/ShellLoadBoot.astro";
 import ShellLoadUX from "../components/shell/ShellLoadUX.astro";
+import ThemePicker from "../components/shell/ThemePicker.astro";
 import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 import SeoHead from "../components/shell/SeoHead.astro";
 import SiteFooter from "../components/shell/SiteFooter.astro";
@@ -119,7 +120,12 @@ const brandIcon = await getImage({
           hasReferences={references.length > 0}
           hasNotes={notes.length > 0}
           hasNow={nowEntries.length > 0}
-        />
+        >
+          <ThemePicker
+            align="start"
+            triggerClass="shell-brand-button motion-surface"
+          />
+        </ShellHeader>
       </div>
     </header>
 

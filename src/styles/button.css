@@ -57,7 +57,7 @@
   font-family: var(--font-sans);
   font-size: var(--ui-link-size);
   font-weight: 500;
-  text-transform: capitalize;
+  text-transform: none;
   text-decoration: underline;
   text-decoration-style: var(--link-underline-style);
   text-underline-offset: var(--link-underline-offset);

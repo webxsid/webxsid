@@ -12,4 +12,5 @@
   --color-accent: rgb(var(--accent-primary));
   --font-sans: var(--font-sans-stack);
   --font-mono: var(--font-mono-stack);
+  --font-display: var(--font-display-stack);
 }

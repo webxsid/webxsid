@@ -17,7 +17,7 @@ type Props = {
 const { entries } = Astro.props as Props;
 ---
 
-<div class="border-t border-border/70">
+<div class="border-t border-border/45">
   {
     [...entries]
       .sort((a, b) => a.data.order - b.data.order)
@@ -32,7 +32,7 @@ const { entries } = Astro.props as Props;
                 </p>
               </div>
 
-              <span class="ui-meta shrink-0 font-mono uppercase text-text-muted">
+              <span class="ui-meta shrink-0 font-mono text-text-muted">
                 {entry.data.publishedAt.toLocaleDateString(undefined, {
                   month: "short",
                   day: "2-digit",
@@ -41,7 +41,7 @@ const { entries } = Astro.props as Props;
               </span>
             </div>
 
-            <div class="ui-meta flex flex-wrap items-center gap-x-3 gap-y-2 font-mono uppercase text-text-muted">
+            <div class="ui-meta flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-text-muted">
               <span>Published {entry.data.publishedAt.getFullYear()}</span>
             </div>
           </a>

@@ -17,7 +17,7 @@
   .content-document h2 {
     font-size: var(--content-heading-size);
     line-height: var(--content-heading-line-height);
-    @apply mt-20 mb-6 flex items-center gap-4 border-b border-border/70 pb-3 font-mono font-medium uppercase tracking-[0.26em] text-text;
+    @apply mt-20 mb-6 flex items-center gap-4 border-b border-border/70 pb-3 font-mono font-semibold tracking-normal text-text;
   }
 
   .content-document h2::before {
@@ -140,7 +140,7 @@
   .content-note h3 {
     font-size: var(--content-note-subheading-size);
     line-height: var(--content-note-subheading-line-height);
-    @apply mt-9 mb-3 font-mono uppercase tracking-[0.24em] text-text-muted;
+    @apply mt-9 mb-3 font-mono font-semibold tracking-normal text-text-muted;
   }
 
   .content-note p {

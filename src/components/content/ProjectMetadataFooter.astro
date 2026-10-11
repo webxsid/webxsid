@@ -73,11 +73,11 @@ const hasExternalReferences = externalReferences.length > 0;
 
 {
   (hasConnectedWriting || hasExternalReferences) && (
-    <footer class="motion-page max-w-4xl border-t border-border/70 pt-8 sm:pt-10 lg:pt-12">
+    <footer class="motion-page max-w-4xl border-t border-border/45 pt-8 sm:pt-10 lg:pt-12">
       <div class="space-y-8 sm:space-y-10">
         {hasConnectedWriting && (
           <section class="space-y-4">
-            <p class="ui-label font-mono uppercase text-text-muted">
+            <p class="ui-label font-mono text-text-muted">
               Connected Writing
             </p>
 
@@ -86,7 +86,7 @@ const hasExternalReferences = externalReferences.length > 0;
                 <tbody>
                   {backlinkGroups.map((group) => (
                     <tr class="align-top">
-                      <td class="ui-table block w-full pb-2 pr-0 font-mono uppercase text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
+                      <td class="ui-table block w-full pb-2 pr-0 font-mono text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
                         {group.label} ({group.count})
                       </td>
                       <td class="block pb-5 md:table-cell md:pb-4">
@@ -113,7 +113,7 @@ const hasExternalReferences = externalReferences.length > 0;
 
         {hasExternalReferences && (
           <section class="space-y-4">
-            <p class="ui-label font-mono uppercase text-text-muted">
+            <p class="ui-label font-mono text-text-muted">
               External References
             </p>
 
@@ -122,7 +122,7 @@ const hasExternalReferences = externalReferences.length > 0;
                 <tbody>
                   {externalReferences.map((item) => (
                     <tr class="align-top">
-                      <td class="ui-table block w-full pb-2 pr-0 font-mono uppercase text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
+                      <td class="ui-table block w-full pb-2 pr-0 font-mono text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
                         {item.origin}
                       </td>
                       <td class="block pb-5 md:table-cell md:pb-4">

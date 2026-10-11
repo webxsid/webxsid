@@ -2,9 +2,9 @@
 [data-theme="doodle-dark"] {
   color-scheme: light dark;
 
-  --font-sans-stack: "Shantell Sans", "IBM Plex Sans", "Inter Tight", system-ui, sans-serif;
+  --font-sans-stack: "Shantell Sans Variable", "Shantell Sans", system-ui, sans-serif;
   --font-mono-stack: "IBM Plex Mono", "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
-  --font-display-stack: "Shantell Sans", "IBM Plex Sans", system-ui, sans-serif;
+  --font-display-stack: "Shantell Sans Variable", "Shantell Sans", system-ui, sans-serif;
 
   --radius-shell: 1.35rem;
   --radius-dock: 1.15rem;

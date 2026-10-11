@@ -1,6 +1,6 @@
-@import "@fontsource-variable/inter";
-@import "@fontsource/instrument-serif/400.css";
+@import "./fonts.css";
 @import "./themes/index.css";
+@import "./theme-picker.css";
 
 /* Loaded only by PortfolioLayout; the personal site's stylesheet is separate.
    One calm reading column on a sheet, colours driven by the shared themes. */
@@ -13,8 +13,11 @@
   --portfolio-line: rgb(var(--border-default));
   --portfolio-accent: rgb(var(--accent-primary));
   --portfolio-underline: color-mix(in srgb, var(--portfolio-text) 28%, transparent);
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-voice: "Instrument Serif", Georgia, "Times New Roman", serif;
+  /* Fonts follow the active theme; graphite is Inter with Instrument Serif. */
+  --font-sans: var(--font-sans-stack);
+  --font-voice: var(--font-display-stack);
+  --voice-scale: 1;
+  --voice-leading: 1.1;
   --col: 560px;
   --edge: 12px;
   --gutter: clamp(20px, 5vw, 32px);
@@ -26,6 +29,26 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   scroll-padding-top: 24px;
+}
+/* Each theme's display face is set for a different size and rhythm. */
+:root[data-theme-family="phosphor"] {
+  --voice-scale: 0.62;
+  --voice-leading: 1.3;
+}
+:root[data-theme-family="retro"] {
+  --voice-scale: 0.4;
+  --voice-leading: 1.5;
+}
+:root[data-theme-family="retro"] body {
+  font-size-adjust: 0.5;
+}
+:root[data-theme-family="doodle"] {
+  --voice-scale: 0.82;
+  --voice-leading: 1.2;
+}
+:root[data-theme-family="e-ink"] {
+  --voice-scale: 0.86;
+  --voice-leading: 1.2;
 }
 /* Site-wide muted text misses 4.5:1 on these two light palettes. */
 :root[data-theme="doodle"] {
@@ -184,8 +207,8 @@ summary:focus-visible {
   margin-top: 28px;
   font-family: var(--font-voice);
   font-weight: 400;
-  font-size: clamp(34px, 7.4vw, 44px);
-  line-height: 1.1;
+  font-size: calc(clamp(34px, 7.4vw, 44px) * var(--voice-scale));
+  line-height: var(--voice-leading);
   letter-spacing: 0;
   text-wrap: balance;
 }
@@ -530,179 +553,4 @@ summary:focus-visible {
     transition: none !important;
     animation: none !important;
   }
-}
-
-/* Existing palette picker, shared preferences retained. */
-.portfolio-theme-picker {
-  position: relative;
-  z-index: 5;
-}
-.portfolio-theme-picker > summary {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  list-style: none;
-  border: 1px solid var(--portfolio-line);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 180ms ease;
-}
-.portfolio-theme-picker > summary::-webkit-details-marker {
-  display: none;
-}
-.portfolio-theme-picker > summary:hover,
-.portfolio-theme-picker[open] > summary {
-  background: var(--portfolio-surface);
-}
-.portfolio-theme-picker svg {
-  width: 18px;
-  height: 18px;
-}
-/* Follow the saved mode, including System even when it resolves to dark. */
-.portfolio-theme-picker [data-mode-icon] {
-  display: none;
-}
-:root[data-theme-mode="system"]
-  .portfolio-theme-picker
-  [data-mode-icon="system"],
-:root[data-theme-mode="light"] .portfolio-theme-picker [data-mode-icon="light"],
-:root[data-theme-mode="dark"] .portfolio-theme-picker [data-mode-icon="dark"] {
-  display: block;
-}
-.portfolio-theme-panel {
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
-  width: min(320px, calc(100vw - 40px));
-  padding: 18px;
-  border: 1px solid var(--portfolio-line);
-  border-radius: 12px;
-  background: var(--portfolio-bg);
-  box-shadow: var(--shadow-preview);
-}
-.theme-panel-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  font-size: 14px;
-  letter-spacing: -0.02em;
-}
-.theme-close {
-  width: 44px;
-  height: 44px;
-  margin: -10px -10px -10px 0;
-  border: 0;
-  background: transparent;
-  color: var(--portfolio-muted);
-  font: inherit;
-  font-size: 24px;
-  cursor: pointer;
-  border-radius: 6px;
-}
-.theme-close:hover {
-  background: var(--portfolio-surface);
-  color: var(--portfolio-text);
-}
-.portfolio-theme-panel fieldset {
-  border: 0;
-  margin: 20px 0 0;
-  padding: 0;
-  min-width: 0;
-}
-.portfolio-theme-panel legend {
-  padding: 0;
-  margin-bottom: 10px;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--portfolio-muted);
-}
-.theme-palettes {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.theme-palette,
-.theme-modes label {
-  position: relative;
-  cursor: pointer;
-}
-.portfolio-theme-panel input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-.theme-swatch {
-  display: grid;
-  grid-template-columns: 1fr 16px;
-  gap: 5px;
-  padding: 12px;
-  height: 66px;
-  border: 1px solid var(--portfolio-line);
-  border-radius: 6px;
-  background: rgb(var(--surface-page));
-  color: rgb(var(--text-primary));
-}
-.theme-swatch > span {
-  grid-row: span 2;
-  font-size: 27px;
-  letter-spacing: -0.08em;
-  line-height: 1.4;
-}
-.theme-swatch i {
-  background: rgb(var(--accent-primary));
-  border-radius: 2px;
-}
-.theme-swatch i:last-child {
-  background: rgb(var(--text-muted));
-}
-.theme-palette-name {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-  margin-top: 6px;
-}
-.theme-check {
-  visibility: hidden;
-  color: var(--portfolio-accent);
-}
-.theme-palette input:checked ~ .theme-swatch {
-  outline: 2px solid var(--portfolio-accent);
-  outline-offset: 2px;
-}
-.theme-palette input:checked ~ .theme-palette-name .theme-check {
-  visibility: visible;
-}
-.theme-palette:hover .theme-swatch {
-  border-color: var(--portfolio-accent);
-}
-.theme-modes {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 3px;
-  padding: 3px;
-  border: 1px solid var(--portfolio-line);
-  border-radius: 7px;
-  background: var(--portfolio-surface);
-}
-.theme-modes label > span {
-  display: grid;
-  place-items: center;
-  min-height: 44px;
-  font-size: 12px;
-  border-radius: 4px;
-  color: var(--portfolio-muted);
-}
-.theme-modes input:checked + span {
-  background: var(--portfolio-text);
-  color: var(--portfolio-bg);
-}
-.portfolio-theme-panel input:focus-visible + span,
-.theme-close:focus-visible {
-  outline: 2px solid var(--portfolio-accent);
-  outline-offset: 3px;
 }

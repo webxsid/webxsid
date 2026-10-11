@@ -16,10 +16,10 @@ const { articles } = Astro.props as Props;
 
 {
   articles.length > 0 && (
-    <section class="motion-page max-w-4xl border-t border-border/70 pt-8 sm:pt-10 lg:pt-12">
+    <section class="motion-page max-w-4xl border-t border-border/45 pt-8 sm:pt-10 lg:pt-12">
       <div class="space-y-4">
-        <h2 class="ui-label font-mono uppercase text-text-muted">Related Articles</h2>
-        <ul class="divide-y divide-border/70 border-y border-border/70">
+        <h2 class="ui-label font-mono text-text-muted">Related Articles</h2>
+        <ul class="divide-y divide-border/70 border-y border-border/45">
           {articles.map((article) => (
             <li class="flex flex-col gap-2 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
               <a href={article.href} class="title-link ui-link motion-soft">

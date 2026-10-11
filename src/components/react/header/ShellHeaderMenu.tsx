@@ -79,7 +79,7 @@ export function ShellHeaderMenu({
                   initial={false}
                   onClick={onClose}
                   className={[
-                    "shell-menu-item motion-surface ui-shell flex items-center justify-between border px-3 py-2 font-mono uppercase",
+                    "shell-menu-item motion-surface ui-shell flex items-center justify-between border px-3 py-2 font-mono ",
                     active
                       ? "shell-item-active"
                       : "border-transparent bg-bg text-text-muted hover:border-border/60 hover:bg-bg-elevated hover:text-text",

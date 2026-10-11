@@ -1,9 +1,22 @@
 ---
 import { themeFamilies, themeModes } from "../react/header/header-utils";
+
+type Props = {
+  /** Which edge of the trigger the panel opens from. */
+  align?: "end" | "start";
+  /** Extra classes for the trigger, e.g. the header's themed button chrome. */
+  triggerClass?: string;
+};
+
+const { align = "end", triggerClass = "" } = Astro.props as Props;
 ---
 
-<details class="portfolio-theme-picker">
-  <summary aria-label="Choose theme" title="Choose theme">
+<details class="theme-picker" data-theme-picker data-align={align}>
+  <summary
+    class={triggerClass}
+    aria-label="Choose theme"
+    title="Choose theme"
+  >
     <svg
       data-mode-icon="system"
       viewBox="0 0 24 24"
@@ -40,7 +53,7 @@ import { themeFamilies, themeModes } from "../react/header/header-utils";
       ></path>
     </svg>
   </summary>
-  <div class="portfolio-theme-panel">
+  <div class="theme-picker-panel">
     <div class="theme-panel-heading">
       <span>Make yourself at home.</span><button
         type="button"
@@ -56,7 +69,7 @@ import { themeFamilies, themeModes } from "../react/header/header-utils";
             <label class="theme-palette">
               <input
                 type="radio"
-                name="portfolio-palette"
+                name="theme-picker-palette"
                 value={theme.value}
               />
               <span
@@ -88,7 +101,7 @@ import { themeFamilies, themeModes } from "../react/header/header-utils";
             <label>
                 <input
                   type="radio"
-                  name="portfolio-appearance"
+                  name="theme-picker-appearance"
                   value={mode.value}
                 />
                 <span>{mode.label}</span>
@@ -110,16 +123,16 @@ import { themeFamilies, themeModes } from "../react/header/header-utils";
   } from "../react/header/header-utils";
 
   const picker = document.querySelector<HTMLDetailsElement>(
-    ".portfolio-theme-picker",
+    "[data-theme-picker]",
   );
   const families = [
     ...document.querySelectorAll<HTMLInputElement>(
-      'input[name="portfolio-palette"]',
+      'input[name="theme-picker-palette"]',
     ),
   ];
   const modes = [
     ...document.querySelectorAll<HTMLInputElement>(
-      'input[name="portfolio-appearance"]',
+      'input[name="theme-picker-appearance"]',
     ),
   ];
 
@@ -176,6 +189,7 @@ import { themeFamilies, themeModes } from "../react/header/header-utils";
       } catch {
         /* Keep the picker usable when storage is unavailable. */
       }
+      window.__webxsidTriggerThemeFx?.();
       sync();
     };
 
@@ -190,6 +204,8 @@ import { themeFamilies, themeModes } from "../react/header/header-utils";
     picker.querySelector(".theme-close")?.addEventListener("click", close);
     picker.addEventListener("toggle", sync);
     window.addEventListener("pageshow", sync);
+    document.addEventListener("astro:page-load", sync);
+    document.addEventListener("astro:after-swap", sync);
     document.addEventListener("pointerdown", (event) => {
       if (event.target instanceof Node && !picker.contains(event.target))
         picker.open = false;
