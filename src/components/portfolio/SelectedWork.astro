@@ -1,0 +1,68 @@
+---
+import { portfolio } from "../../data/portfolio";
+---
+
+<section id="work" class="portfolio-section" aria-labelledby="work-heading">
+  <div class="section-heading">
+    <h2 id="work-heading">Work</h2>
+  </div>
+  {
+    portfolio.work.map((work) => (
+      <article class="work-entry" aria-labelledby={`work-${work.id}`}>
+        <div class="work-identity">
+          <p class="work-category">{work.category}</p>
+          <h3 id={`work-${work.id}`}>{work.name}</h3>
+          <p class="work-subtitle">{work.subtitle}</p>
+          {work.employer && <p class="work-employer">{work.employer}</p>}
+          {work.roles && (
+            <ol class="work-roles" role="list" aria-label={`Roles at ${work.name}`}>
+              {work.roles.map((role) => (
+                <li>
+                  <p class="work-role">{role.title}</p>
+                  <p class="work-period">{role.period}</p>
+                </li>
+              ))}
+            </ol>
+          )}
+          <ul
+            class="technologies"
+            role="list"
+            aria-label={`${work.name} technologies`}
+          >
+            {work.technologies.map((technology) => (
+              <li>{technology}</li>
+            ))}
+          </ul>
+        </div>
+        <div class="work-description">
+          <p class="work-lead">{work.description}</p>
+          <p class="body-copy">{work.contribution}</p>
+          {work.supporting && <p class="work-supporting">{work.supporting}</p>}
+          <details class="work-details">
+            <summary>
+              {work.detailsLabel} <span aria-hidden="true">+</span>
+            </summary>
+            <div class="technical-notes">
+              {work.details.map((detail) => (
+                <div>
+                  <h4>{detail.title}</h4>
+                  <p class="body-copy">{detail.text}</p>
+                </div>
+              ))}
+            </div>
+          </details>
+          <div class="work-links">
+            {work.links.map((link) => (
+              <a class="text-link" href={link.href}>
+                {link.label}
+                {link.href.startsWith("http") && (
+                  <span aria-hidden="true">↗</span>
+                )}
+              </a>
+            ))}
+          </div>
+        </div>
+      </article>
+    ))
+  }
+</section>

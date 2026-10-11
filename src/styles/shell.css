@@ -1,0 +1,181 @@
+@layer components {
+  .shell-mobile-nav {
+    transform: translateX(-50%);
+  }
+
+  .shell-mobile-nav-frame {
+    transition: width var(--motion-duration-surface) var(--ease-smooth);
+  }
+
+  .shell-mobile-nav-rail {
+    position: relative;
+    z-index: 0;
+    transform: scale(1);
+    transform-origin: center;
+    transition:
+      opacity var(--motion-duration-surface) var(--ease-smooth),
+      transform var(--motion-duration-surface) var(--ease-smooth),
+      visibility 0s;
+  }
+
+  .shell-mobile-nav-pill {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    width: max-content;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.96);
+    transform-origin: center;
+    transition:
+      opacity var(--motion-duration-surface) var(--ease-smooth),
+      transform var(--motion-duration-surface) var(--ease-smooth),
+      visibility 0s linear var(--motion-duration-surface);
+    visibility: hidden;
+  }
+
+  .shell-mobile-nav-frame[data-collapsed="true"] .shell-mobile-nav-rail {
+    position: absolute;
+    inset: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.96);
+    transition:
+      opacity var(--motion-duration-surface) var(--ease-smooth),
+      transform var(--motion-duration-surface) var(--ease-smooth),
+      visibility 0s linear var(--motion-duration-surface);
+    visibility: hidden;
+  }
+
+  .shell-mobile-nav-frame[data-collapsed="true"] .shell-mobile-nav-pill {
+    position: relative;
+    top: auto;
+    left: auto;
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+    transition:
+      opacity var(--motion-duration-surface) var(--ease-smooth),
+      transform var(--motion-duration-surface) var(--ease-smooth),
+      visibility 0s;
+    visibility: visible;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+
+    .shell-mobile-nav-frame,
+    .shell-mobile-nav-rail,
+    .shell-mobile-nav-pill {
+      transition: none !important;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .shell-mobile-nav {
+      transform: none;
+    }
+
+    .shell-mobile-nav-frame {
+      transition: none;
+      width: auto !important;
+    }
+
+    .shell-mobile-nav-rail,
+    .shell-mobile-nav-frame[data-collapsed="true"] .shell-mobile-nav-rail {
+      position: relative;
+      inset: auto;
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
+      transition: none;
+      visibility: visible;
+    }
+
+    .shell-mobile-nav-pill {
+      display: none !important;
+    }
+  }
+
+  .shell-header-back-slot {
+    width: 0;
+    margin-right: -0.75rem;
+  }
+
+  .shell-header-back-slot[data-visible="true"] {
+    width: 2.5rem;
+    margin-right: 0;
+  }
+
+  .shell-nav-frame {
+    border-radius: var(--radius-shell);
+    border: 1px solid rgb(var(--border-default) / var(--shell-nav-border-opacity));
+    background: var(--shell-nav-background);
+    box-shadow: var(--shadow-nav);
+  }
+
+  .shell-dock-frame {
+    border-radius: var(--radius-dock);
+    border: 1px solid rgb(var(--border-default) / var(--shell-dock-border-opacity));
+    background: var(--shell-dock-background);
+    box-shadow: var(--shadow-dock);
+  }
+
+  .shell-control {
+    border-radius: var(--radius-control);
+    cursor: var(--cursor-interactive);
+  }
+
+  .shell-item {
+    background: var(--shell-item-background);
+    border-color: rgb(var(--border-default) / var(--shell-item-border-opacity));
+  }
+
+  .shell-item-active {
+    background: var(--shell-item-active-background);
+    border-color: rgb(var(--border-default) / var(--shell-item-active-border-opacity));
+    box-shadow: var(--shadow-active-inset);
+    color: var(--shell-item-active-text);
+  }
+
+  .shell-tooltip {
+    border-radius: var(--radius-control);
+    background: var(--shell-item-label-background);
+    border: 1px solid rgb(var(--border-default) / var(--shell-nav-border-opacity));
+    box-shadow: var(--shadow-preview);
+  }
+
+  .shell-brand-button {
+    border-radius: var(--radius-shell);
+    border: 1px solid rgb(var(--border-default) / var(--shell-nav-border-opacity));
+    background: var(--shell-nav-background);
+    box-shadow: var(--shadow-nav);
+    cursor: var(--cursor-interactive);
+  }
+
+  .shell-brand-badge {
+    border-radius: var(--radius-control);
+    border: 1px solid rgb(var(--border-default) / var(--shell-nav-border-opacity));
+    background: var(--shell-item-background);
+  }
+
+  .shell-back-button {
+    color: var(--shell-back-text);
+  }
+
+  .shell-back-button:hover {
+    color: var(--shell-back-hover-text);
+  }
+
+  .shell-menu-panel {
+    border-radius: var(--radius-dock);
+    border: 1px solid rgb(var(--border-default) / var(--shell-nav-border-opacity));
+    background: rgb(var(--surface-page));
+    box-shadow: var(--shadow-preview);
+  }
+
+  .shell-menu-item {
+    border-radius: var(--radius-dock);
+    cursor: var(--cursor-interactive);
+  }
+}

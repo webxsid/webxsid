@@ -1,0 +1,26 @@
+---
+import { portfolio } from "../../data/portfolio";
+---
+
+<section
+  id="expertise"
+  class="portfolio-section"
+  aria-labelledby="expertise-heading"
+>
+  <div class="section-heading">
+    <h2 id="expertise-heading">What I do</h2>
+  </div>
+  <div class="expertise-list">
+    {
+      portfolio.expertise.map((area) => (
+        <article class="expertise-row">
+            <div>
+                <h3>{area.title}</h3>
+                <p class="expertise-focus">{area.focus}</p>
+            </div>
+            <p class="body-copy">{area.description}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>

@@ -1,0 +1,27 @@
+html {
+  background: rgb(var(--surface-page));
+  color: rgb(var(--text-primary));
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  cursor: var(--cursor-default);
+}
+
+body {
+  background: rgb(var(--surface-page));
+}
+
+::selection {
+  background: rgb(var(--accent-primary) / var(--selection-opacity));
+  color: rgb(var(--text-primary));
+}
+
+a {
+  text-decoration-color: var(--link-decoration-color);
+  text-decoration-thickness: var(--link-decoration-thickness);
+  text-underline-offset: var(--link-underline-offset);
+}
+
+a:hover {
+  text-decoration-color: var(--link-hover-decoration-color);
+  cursor: var(--cursor-interactive);
+}

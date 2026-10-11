@@ -1,0 +1,45 @@
+@keyframes notes-expand {
+  from {
+    opacity: 0;
+    transform: translateY(0.35rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notes-details:not([hidden]) {
+    animation: none;
+  }
+}
+
+@keyframes splash-slash {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes route-progress {
+  0% {
+    transform: translateX(-42%) scaleX(var(--loader-route-scale-start));
+  }
+
+  50% {
+    transform: translateX(12%) scaleX(var(--loader-route-scale-mid));
+  }
+
+  100% {
+    transform: translateX(104%) scaleX(var(--loader-route-scale-end));
+  }
+}

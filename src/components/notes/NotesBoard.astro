@@ -172,9 +172,9 @@ const noteDetailsId = (entry: NoteEntry) => `note-details-${entry.id}`;
         }
       });
 
-      if (!updateHistory) return;
-
       document.dispatchEvent(new CustomEvent("notes:layout"));
+
+      if (!updateHistory) return;
 
       const nextPath = nextId ? `/notes/${nextId}` : "/notes";
       if (window.location.pathname !== nextPath) {
@@ -231,9 +231,13 @@ const noteDetailsId = (entry: NoteEntry) => `note-details-${entry.id}`;
         });
     });
 
-    window.addEventListener("popstate", () => {
+    const onPopState = () => {
       setExpanded(getNoteIdFromPath(window.location.pathname), false);
-    });
+    };
+    window.addEventListener("popstate", onPopState);
+    document.addEventListener("astro:before-swap", () => {
+      window.removeEventListener("popstate", onPopState);
+    }, { once: true });
 
   })();
 </script>

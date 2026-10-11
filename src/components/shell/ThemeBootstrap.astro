@@ -96,10 +96,18 @@
 
     const resolveThemeColor = (variant) => themeColors[variant] ?? themeColors.graphite;
 
+    const readStored = (key) => {
+      try {
+        return localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    };
+
     const applyTheme = () => {
-      const storedFamily = localStorage.getItem(FAMILY_KEY);
-      const storedMode = localStorage.getItem(MODE_KEY);
-      const legacyTheme = localStorage.getItem(LEGACY_KEY);
+      const storedFamily = readStored(FAMILY_KEY);
+      const storedMode = readStored(MODE_KEY);
+      const legacyTheme = readStored(LEGACY_KEY);
       const nextFamily = storedFamily ?? getFamilyFromLegacy(legacyTheme);
       const nextMode = storedMode ?? getModeFromLegacy(legacyTheme);
       const resolvedFamily = families[nextFamily] ? nextFamily : DEFAULT_FAMILY;
@@ -107,8 +115,12 @@
       const nextVariant = resolveVariant(resolvedFamily, resolvedMode);
 
       if (!storedFamily && !storedMode && legacyTheme) {
-        localStorage.setItem(FAMILY_KEY, resolvedFamily);
-        localStorage.setItem(MODE_KEY, resolvedMode);
+        try {
+          localStorage.setItem(FAMILY_KEY, resolvedFamily);
+          localStorage.setItem(MODE_KEY, resolvedMode);
+        } catch {
+          /* Storage unavailable; the theme still applies for this page. */
+        }
       }
 
       document.documentElement.dataset.themeFamily = resolvedFamily;

@@ -1,0 +1,31 @@
+---
+import { portfolio } from "../../data/portfolio";
+---
+
+<section
+  id="beyond-work"
+  class="section-grid"
+  aria-labelledby="beyond-heading"
+>
+  <div class="section-intro">
+    <h2 id="beyond-heading">Beyond work</h2>
+  </div><div class="beyond-content">
+    <p class="work-lead">{portfolio.beyondWork.introduction}</p><p
+      class="body-copy"
+    >
+      {portfolio.beyondWork.description}
+    </p><div class="beyond-links">
+      {
+        portfolio.beyondWork.links.map((link) => (
+          <a href={link.href}>
+            {link.label}
+            {link.href.startsWith("http") && (
+              <span aria-hidden="true">↗</span>
+            )}
+          </a>
+        ))
+      }
+    </div><a class="personal-site-link" href={portfolio.personalWebsite}
+      >Explore my personal website <span aria-hidden="true">↗</span></a>
+  </div>
+</section>

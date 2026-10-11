@@ -1,0 +1,15 @@
+@theme {
+  --ease-smooth: var(--motion-ease);
+}
+
+@theme {
+  --color-bg: rgb(var(--surface-page));
+  --color-bg-elevated: rgb(var(--surface-elevated));
+  --color-text: rgb(var(--text-primary));
+  --color-text-muted: rgb(var(--text-muted));
+  --color-text-accent: rgb(var(--text-accent));
+  --color-border: rgb(var(--border-default));
+  --color-accent: rgb(var(--accent-primary));
+  --font-sans: var(--font-sans-stack);
+  --font-mono: var(--font-mono-stack);
+}

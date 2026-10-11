@@ -1,0 +1,182 @@
+@layer utilities {
+  .ui-title {
+    font-size: var(--ui-title-size);
+    line-height: var(--ui-title-line-height);
+  }
+
+  .ui-lead {
+    font-size: var(--ui-lead-size);
+    line-height: var(--ui-lead-line-height);
+  }
+
+  .ui-prose {
+    font-size: var(--ui-prose-size);
+    line-height: var(--ui-prose-line-height);
+    font-family: var(--font-sans);
+  }
+
+  .ui-heading {
+    font-size: var(--ui-heading-size);
+  }
+
+  .ui-body {
+    font-size: var(--ui-body-size);
+    line-height: var(--ui-body-line-height);
+  }
+
+  .ui-link {
+    font-size: var(--ui-link-size);
+  }
+
+  .ui-meta {
+    font-size: var(--ui-meta-size);
+    letter-spacing: var(--ui-meta-tracking);
+  }
+
+  .ui-tag {
+    font-size: var(--ui-tag-size);
+    line-height: var(--ui-tag-line-height);
+    letter-spacing: var(--ui-tag-tracking);
+  }
+
+  .ui-label {
+    font-size: var(--ui-label-size);
+    letter-spacing: var(--ui-label-tracking);
+  }
+
+  .ui-shell {
+    font-size: var(--ui-shell-size);
+    letter-spacing: var(--ui-shell-tracking);
+  }
+
+  .ui-table {
+    font-size: var(--ui-table-size);
+    letter-spacing: var(--ui-table-tracking);
+  }
+
+  .ui-rail-primary {
+    font-size: var(--ui-rail-primary-size);
+  }
+
+  .ui-rail-meta {
+    font-size: var(--ui-rail-meta-size);
+    letter-spacing: var(--ui-meta-tracking);
+  }
+
+  .ui-rail-summary {
+    font-size: var(--ui-rail-summary-size);
+    line-height: 1.5;
+  }
+
+  .footer-title {
+    font-family: var(--footer-title-font-family);
+    font-size: var(--footer-title-size);
+    line-height: var(--footer-title-line-height);
+  }
+
+  .footer-nav-link {
+    font-size: var(--footer-nav-link-size);
+    line-height: var(--footer-nav-link-line-height);
+  }
+
+  .motion-page {
+    animation: page-rise var(--motion-duration-page) var(--ease-smooth) both;
+  }
+
+  .motion-surface {
+    transition-property:
+      transform, border-color, background-color, color, box-shadow, opacity;
+    transition-duration: var(--motion-duration-surface);
+    transition-timing-function: var(--ease-smooth);
+  }
+
+  .motion-surface:hover {
+    transform: translateY(var(--motion-lift-distance));
+  }
+
+  .motion-soft {
+    transition-property:
+      color, background-color, border-color, text-decoration-color, opacity,
+      transform;
+    transition-duration: var(--motion-duration-soft);
+    transition-timing-function: var(--ease-smooth);
+  }
+
+  .motion-soft:hover {
+    transform: translateY(var(--motion-lift-distance));
+  }
+
+  .motion-lift {
+    transition-property: transform, box-shadow, border-color, background-color;
+    transition-duration: var(--motion-duration-surface);
+    transition-timing-function: var(--ease-smooth);
+  }
+
+  .motion-lift:hover {
+    transform: translateY(var(--motion-lift-distance));
+  }
+
+  @media (min-width: 64rem) {
+    .shell-header[data-desktop-rail="true"] {
+      display: grid;
+      width: 100%;
+      grid-template-columns: 50px minmax(0, 1fr);
+      column-gap: 2rem;
+    }
+
+    .shell-header[data-desktop-rail="true"] .shell-header-back-slot {
+      width: 50px;
+      margin-right: 0;
+    }
+
+    .shell-header[data-desktop-rail="true"] .shell-header-brand-group {
+      margin-left: 1.2rem;
+    }
+  }
+
+  .home-notes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .home-note-card {
+    width: auto;
+    height: 13rem;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .home-note-excerpt {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    line-clamp: 4;
+    -webkit-line-clamp: 4;
+  }
+
+  .home-note-more-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .home-note-more:hover {
+    border-color: rgb(var(--border-strong));
+    background: rgb(var(--surface-elevated));
+  }
+
+  @media (min-width: 64rem) {
+    .home-notes-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .home-note-card {
+      height: 14rem;
+    }
+
+    .home-note-excerpt {
+      -webkit-line-clamp: 5;
+    }
+  }
+}

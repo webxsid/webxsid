@@ -65,11 +65,9 @@ import { themeFamilies, themeModes } from "../react/header/header-utils";
                 data-theme={theme.value === "graphite" ? "paper" : theme.value}
                 aria-hidden="true"
               >
-                <>
                   <span>Aa</span>
                   <i />
                   <i />
-                </>
               </span>
               <span class="theme-palette-name">
                 {theme.label}
@@ -88,14 +86,12 @@ import { themeFamilies, themeModes } from "../react/header/header-utils";
         {
           themeModes.map((mode) => (
             <label>
-              <>
                 <input
                   type="radio"
                   name="portfolio-appearance"
                   value={mode.value}
                 />
                 <span>{mode.label}</span>
-              </>
             </label>
           ))
         }

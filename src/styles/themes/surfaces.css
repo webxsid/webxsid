@@ -1,0 +1,407 @@
+[data-theme="retro"],
+[data-theme="retro-dark"] {
+  image-rendering: pixelated;
+}
+
+[data-theme="retro"] body,
+[data-theme="retro-dark"] body {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-theme="retro"] body::after,
+[data-theme="retro-dark"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    repeating-linear-gradient(90deg,
+      rgb(var(--text-primary) / 0.018) 0,
+      rgb(var(--text-primary) / 0.018) 2px,
+      transparent 2px,
+      transparent 4px),
+    linear-gradient(180deg,
+      transparent 0%,
+      rgb(var(--accent-primary) / 0.035) 100%);
+  opacity: 0.42;
+}
+
+[data-theme="graphite"] body,
+[data-theme="paper"] body {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-theme="graphite"] body::before,
+[data-theme="paper"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 14% 18%,
+      rgb(var(--accent-primary) / 0.05),
+      transparent 22%),
+    radial-gradient(circle at 82% 14%,
+      rgb(var(--surface-elevated) / 0.32),
+      transparent 26%),
+    radial-gradient(circle at 50% 120%,
+      rgb(var(--surface-elevated) / 0.24),
+      transparent 34%);
+}
+
+[data-theme="graphite"] body::after,
+[data-theme="paper"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 58%, rgb(0 0 0 / 0.1) 100%),
+    linear-gradient(135deg,
+      rgb(var(--text-primary) / 0.012),
+      transparent 38%,
+      rgb(var(--text-primary) / 0.01) 72%,
+      transparent 100%);
+}
+
+[data-theme="paper"] body::before {
+  background:
+    radial-gradient(circle at 16% 18%,
+      rgb(var(--accent-primary) / 0.035),
+      transparent 20%),
+    radial-gradient(circle at 84% 12%,
+      rgb(255 255 255 / 0.24),
+      transparent 24%),
+    radial-gradient(circle at 50% 120%,
+      rgb(208 194 176 / 0.22),
+      transparent 30%);
+}
+
+[data-theme="paper"] body::after {
+  background:
+    radial-gradient(circle at 50% 50%,
+      transparent 62%,
+      rgb(62 49 34 / 0.045) 100%),
+    linear-gradient(125deg,
+      rgb(74 60 45 / 0.018),
+      transparent 42%,
+      rgb(255 255 255 / 0.08) 100%);
+}
+
+[data-theme="graphite"] .shell-nav-frame,
+[data-theme="graphite"] .shell-dock-frame,
+[data-theme="graphite"] .shell-brand-button,
+[data-theme="graphite"] .shell-menu-panel,
+[data-theme="paper"] .shell-nav-frame,
+[data-theme="paper"] .shell-dock-frame,
+[data-theme="paper"] .shell-brand-button,
+[data-theme="paper"] .shell-menu-panel {
+  backdrop-filter: blur(14px);
+}
+
+[data-theme="graphite"] .shell-brand-badge,
+[data-theme="graphite"] .shell-control,
+[data-theme="graphite"] .shell-menu-item,
+[data-theme="paper"] .shell-brand-badge,
+[data-theme="paper"] .shell-control,
+[data-theme="paper"] .shell-menu-item {
+  box-shadow: inset 0 0 0 1px rgb(var(--border-default) / 0.06);
+}
+
+[data-theme="phosphor"] body,
+[data-theme="phosphor-light"] body {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-theme="phosphor"] body::before,
+[data-theme="phosphor-light"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgb(var(--accent-primary) / 0.06), transparent 20%),
+    repeating-linear-gradient(180deg,
+      rgb(var(--accent-primary) / 0.075) 0,
+      rgb(var(--accent-primary) / 0.075) 1px,
+      transparent 1px,
+      transparent 3px);
+}
+
+[data-theme="phosphor"] body::after,
+[data-theme="phosphor-light"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 50% 0%,
+      rgb(var(--accent-primary) / 0.09),
+      transparent 43%),
+    radial-gradient(circle at 50% 50%, transparent 58%, rgb(0 0 0 / 0.08) 100%);
+}
+
+[data-theme="phosphor-light"] body::before {
+  background:
+    linear-gradient(180deg, rgb(var(--accent-primary) / 0.08), transparent 16%),
+    repeating-linear-gradient(180deg,
+      rgb(24 76 33 / 0.13) 0,
+      rgb(24 76 33 / 0.13) 1px,
+      transparent 1px,
+      transparent 3px);
+}
+
+[data-theme="phosphor-light"] body::after {
+  background:
+    radial-gradient(circle at 50% 0%,
+      rgb(var(--accent-primary) / 0.12),
+      transparent 40%),
+    radial-gradient(circle at 50% 50%,
+      transparent 56%,
+      rgb(35 58 32 / 0.06) 100%);
+}
+
+[data-theme="phosphor"] .shell-menu-panel,
+[data-theme="phosphor-light"] .shell-menu-panel {
+  background: var(--shell-dock-background);
+}
+
+[data-theme="phosphor"] .shell-control,
+[data-theme="phosphor"] .shell-menu-item,
+[data-theme="phosphor-light"] .shell-control,
+[data-theme="phosphor-light"] .shell-menu-item {
+  outline: 1px solid rgb(var(--border-default) / 0.16);
+  outline-offset: -1px;
+}
+
+[data-theme="phosphor"] .shell-back-button,
+[data-theme="phosphor-light"] .shell-back-button {
+  background: var(--shell-back-background);
+  box-shadow: var(--shell-back-shadow);
+}
+
+[data-theme="e-ink"] body,
+[data-theme="e-ink-dark"] body {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-theme="e-ink"] body::before,
+[data-theme="e-ink-dark"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(180deg,
+      rgb(var(--text-primary) / 0.018),
+      transparent 16%);
+}
+
+[data-theme="e-ink"] body::after,
+[data-theme="e-ink-dark"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 50% 42%, transparent 62%, rgb(0 0 0 / 0.04) 100%),
+    linear-gradient(135deg,
+      rgb(var(--text-primary) / 0.012),
+      transparent 42%,
+      rgb(var(--text-primary) / 0.008) 100%);
+  opacity: 0.52;
+}
+
+[data-theme="e-ink"] .shell-nav-frame,
+[data-theme="e-ink"] .shell-dock-frame,
+[data-theme="e-ink"] .shell-brand-button,
+[data-theme="e-ink"] .shell-menu-panel,
+[data-theme="e-ink-dark"] .shell-nav-frame,
+[data-theme="e-ink-dark"] .shell-dock-frame,
+[data-theme="e-ink-dark"] .shell-brand-button,
+[data-theme="e-ink-dark"] .shell-menu-panel {
+  backdrop-filter: none;
+}
+
+[data-theme="e-ink"] .shell-control,
+[data-theme="e-ink"] .shell-menu-item,
+[data-theme="e-ink-dark"] .shell-control,
+[data-theme="e-ink-dark"] .shell-menu-item {
+  box-shadow: inset 0 0 0 1px rgb(var(--border-default) / 0.12);
+}
+
+[data-theme="doodle"] body,
+[data-theme="doodle-dark"] body {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-theme="doodle"] body::before,
+[data-theme="doodle-dark"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(90deg,
+      rgb(var(--accent-primary) / 0.12) 0,
+      rgb(var(--accent-primary) / 0.12) 2px,
+      transparent 2px,
+      transparent 100%),
+    repeating-linear-gradient(180deg,
+      rgb(var(--text-primary) / 0.045) 0,
+      rgb(var(--text-primary) / 0.045) 1px,
+      transparent 1px,
+      transparent 30px);
+  background-size:
+    100% 100%,
+    100% 30px;
+  background-position:
+    2.4rem 0,
+    0 8rem;
+  opacity: 0.3;
+}
+
+[data-theme="doodle"] body::after,
+[data-theme="doodle-dark"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 8% 12%,
+      rgb(var(--color-status-building) / 0.18) 0 3px,
+      transparent 3.5px),
+    radial-gradient(circle at 8.7% 12%,
+      rgb(var(--color-status-building) / 0.18) 0 3px,
+      transparent 3.5px),
+    linear-gradient(rgb(var(--color-status-building) / 0.18),
+      rgb(var(--color-status-building) / 0.18)),
+    radial-gradient(circle at 89% 16%,
+      rgb(var(--color-status-active) / 0.2) 0 2px,
+      transparent 2.5px),
+    radial-gradient(circle at 91.1% 16.9%,
+      rgb(var(--color-status-active) / 0.2) 0 2px,
+      transparent 2.5px),
+    radial-gradient(circle at 90% 18.5%,
+      rgb(var(--color-status-active) / 0.2) 0 2px,
+      transparent 2.5px),
+    linear-gradient(rgb(var(--color-status-experimental) / 0.18),
+      rgb(var(--color-status-experimental) / 0.18)),
+    linear-gradient(rgb(var(--color-status-experimental) / 0.18),
+      rgb(var(--color-status-experimental) / 0.18)),
+    linear-gradient(140deg,
+      rgb(var(--text-primary) / 0.014),
+      transparent 42%,
+      rgb(var(--text-primary) / 0.008) 100%);
+  background-size:
+    100% 100%,
+    100% 100%,
+    14px 2px,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    2px 18px,
+    18px 2px,
+    100% 100%;
+  background-position:
+    0 0,
+    0 0,
+    8.5% 13.7%,
+    0 0,
+    0 0,
+    0 0,
+    82% 74%,
+    82% 74%,
+    0 0;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+}
+
+[data-theme="doodle"] .shell-nav-frame,
+[data-theme="doodle"] .shell-dock-frame,
+[data-theme="doodle"] .shell-brand-button,
+[data-theme="doodle"] .shell-menu-panel,
+[data-theme="doodle-dark"] .shell-nav-frame,
+[data-theme="doodle-dark"] .shell-dock-frame,
+[data-theme="doodle-dark"] .shell-brand-button,
+[data-theme="doodle-dark"] .shell-menu-panel {
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+[data-theme="doodle"] .shell-brand-badge,
+[data-theme="doodle"] .shell-control,
+[data-theme="doodle"] .shell-menu-item,
+[data-theme="doodle-dark"] .shell-brand-badge,
+[data-theme="doodle-dark"] .shell-control,
+[data-theme="doodle-dark"] .shell-menu-item {
+  border-radius: 0.44rem 0.58rem 0.48rem 0.54rem;
+  box-shadow: none;
+}
+
+[data-theme="doodle"] .primary-button,
+[data-theme="doodle-dark"] .primary-button {
+  position: relative;
+}
+
+[data-theme="doodle"] .primary-button::before,
+[data-theme="doodle-dark"] .primary-button::before {
+  transform: none;
+}
+
+[data-theme="doodle"] .shell-brand-badge,
+[data-theme="doodle-dark"] .shell-brand-badge,
+[data-theme="doodle"] .shell-control,
+[data-theme="doodle-dark"] .shell-control,
+[data-theme="doodle"] .shell-menu-item,
+[data-theme="doodle-dark"] .shell-menu-item,
+[data-theme="doodle"] .status-badge,
+[data-theme="doodle-dark"] .status-badge,
+[data-theme="doodle"] .ui-tag,
+[data-theme="doodle-dark"] .ui-tag {
+  background: linear-gradient(180deg,
+      rgb(var(--surface-elevated) / 0.9) 0%,
+      rgb(var(--surface-page) / 0.98) 100%);
+  border: 1px solid rgb(var(--border-default) / 0.52);
+}
+
+[data-theme="doodle"] .status-badge,
+[data-theme="doodle-dark"] .status-badge {
+  padding: 0.18rem 0.46rem 0.14rem;
+  border-radius: 0.4rem 0.54rem 0.42rem 0.5rem;
+  letter-spacing: 0.1em;
+  box-shadow: none;
+}
+
+[data-theme="doodle"] .ui-tag,
+[data-theme="doodle-dark"] .ui-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  padding: 0.12rem 0.42rem 0.1rem;
+  border-radius: 0.38rem 0.5rem 0.4rem 0.46rem;
+  box-shadow: none;
+}
+
+[data-theme="doodle"] .ui-tag::before,
+[data-theme="doodle-dark"] .ui-tag::before {
+  content: "";
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 9999px;
+  background: rgb(var(--accent-primary) / 0.72);
+  line-height: 1;
+}

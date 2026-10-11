@@ -30,25 +30,28 @@ export function parseNoteTimestamp(id: string) {
   }
 
   const [, year, month, day, hour, minute, second] = match;
-  const date = new Date(
+  // Filenames record the author's local time in Asia/Kolkata (UTC+05:30).
+  const localDate = new Date(Date.UTC(
     Number(year),
     Number(month) - 1,
     Number(day),
     Number(hour),
     Number(minute),
     Number(second),
-  );
+  ));
 
   if (
-    date.getFullYear() !== Number(year) ||
-    date.getMonth() !== Number(month) - 1 ||
-    date.getDate() !== Number(day) ||
-    date.getHours() !== Number(hour) ||
-    date.getMinutes() !== Number(minute) ||
-    date.getSeconds() !== Number(second)
+    localDate.getUTCFullYear() !== Number(year) ||
+    localDate.getUTCMonth() !== Number(month) - 1 ||
+    localDate.getUTCDate() !== Number(day) ||
+    localDate.getUTCHours() !== Number(hour) ||
+    localDate.getUTCMinutes() !== Number(minute) ||
+    localDate.getUTCSeconds() !== Number(second)
   ) {
     throw new Error(`Invalid note timestamp in filename "${id}".`);
   }
+
+  const date = new Date(localDate.getTime() - 330 * 60 * 1000);
 
   return date;
 }
@@ -71,6 +74,7 @@ export function formatNoteTimestamp(entry: NoteEntry | string) {
     day: "2-digit",
     month: "short",
     year: "numeric",
+    timeZone: "Asia/Kolkata",
     hour: "2-digit",
     minute: "2-digit",
   }).format(parseNoteTimestamp(id));

@@ -1,0 +1,17 @@
+---
+import { portfolio } from "../../data/portfolio";
+import ContactLinks from "./ContactLinks.astro";
+---
+
+<section id="about" class="hero" aria-labelledby="portfolio-name">
+  <h1 id="portfolio-name">{portfolio.name}</h1>
+  <p class="hero-role">{portfolio.role}</p>
+  <p class="availability">
+    <span aria-hidden="true"></span>{portfolio.availability}
+  </p>
+  <p class="hero-tagline">{portfolio.headline}</p>
+  <div class="hero-description">
+    <p>{portfolio.introduction}</p>
+    <ContactLinks />
+  </div>
+</section>

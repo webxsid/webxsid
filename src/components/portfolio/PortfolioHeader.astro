@@ -1,46 +1,19 @@
 ---
 import PortfolioThemePicker from "./PortfolioThemePicker.astro";
-import { portfolioNavigation } from "../../lib/portfolio";
-const current = Astro.url.pathname.replace(/\/$/, "");
-const active = (href: string) =>
-  href === "/portfolio" ? current === href : current.startsWith(href);
+import { portfolio } from "../../data/portfolio";
 ---
 
-<header class="portfolio-header page-width">
-  <a
-    class="wordmark"
-    href="/portfolio"
-    aria-label="Siddharth Mittal, portfolio home"
-    >SM<span aria-hidden="true">.</span></a
-  >
-  <div class="portfolio-header-actions">
-    <nav class="portfolio-desktop-nav" aria-label="Portfolio navigation">
-      {
-        portfolioNavigation.map((item) => (
-          <a
-            href={item.href}
-            aria-current={active(item.href) ? "page" : undefined}
-          >
-            {item.label}
-          </a>
-        ))
-      }
-    </nav>
-    <details class="portfolio-mobile-nav">
-      <summary>Menu <span aria-hidden="true">+</span></summary>
-      <nav aria-label="Portfolio mobile navigation">
-        {
-          portfolioNavigation.map((item) => (
-            <a
-              href={item.href}
-              aria-current={active(item.href) ? "page" : undefined}
-            >
-              {item.label}
-            </a>
-          ))
-        }
-      </nav>
-    </details>
-    <PortfolioThemePicker />
+<header class="portfolio-header">
+  <div class="header-inner">
+    <a
+      class="wordmark"
+      href="#about"
+      aria-label="Siddharth Mittal, introduction"
+      >SM<span aria-hidden="true">.</span></a
+    ><div class="portfolio-header-actions">
+      <a class="header-personal-link" href={portfolio.personalWebsite}
+        >Personal site <span aria-hidden="true">↗</span></a
+      ><PortfolioThemePicker />
+    </div>
   </div>
 </header>

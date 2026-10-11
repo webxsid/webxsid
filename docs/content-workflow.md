@@ -117,7 +117,7 @@ Pages reads the root [`.pages.yml`](../.pages.yml) configuration. Uploaded artic
 
 Writing entries default to `draft: true`. Drafts are available at `/writing/draft/[slug]`, are marked `noindex`, and are excluded from the public writing index, RSS feed, and sitemap until `draft` is disabled.
 
-Notes live in `src/content/notes` and contain Markdown body text only: do not add frontmatter. Their `YYYY-MM-DD-HHmmss.md` filenames are their permanent URLs and publication timestamps; committing a note publishes it to `/notes`, the RSS feed, and the sitemap.
+Notes live in `src/content/notes` and contain Markdown body text only: do not add frontmatter. Their `YYYY-MM-DD-HHmmss.md` filenames are their permanent URLs and publication timestamps, interpreted in `Asia/Kolkata` (UTC+05:30); committing a note publishes it to `/notes`, the RSS feed, and the sitemap.
 
 Writing, projects, work, and references use Pages' Markdown editor with a Source mode for Markdown that needs exact control. The `now` collection permits both Markdown and MDX, so Pages intentionally exposes its body as source-only Markdown/MDX; do not use a visual editor for MDX components or custom syntax.
 

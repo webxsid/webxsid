@@ -206,6 +206,7 @@ const getYouTubePreview = async (url: URL): Promise<Partial<LinkPreviewRecord>> 
   try {
     const response = await fetch(url.href, {
       redirect: "follow",
+      signal: AbortSignal.timeout(4500),
       headers: {
         "user-agent":
         `Mozilla/5.0 (compatible; WebxsidPreviewBot/1.0; +${SITE_URL})`,
@@ -270,20 +271,15 @@ const getExternalPreview = (() => {
       }
 
       try {
-        const controller = new AbortController();
-        const timeout = globalThis.setTimeout(() => controller.abort(), 4500);
-
         const response = await fetch(url.href, {
           redirect: "follow",
-          signal: controller.signal,
+          signal: AbortSignal.timeout(4500),
           headers: {
             "user-agent":
               `Mozilla/5.0 (compatible; WebxsidPreviewBot/1.0; +${SITE_URL})`,
             accept: "text/html,application/xhtml+xml",
           },
         });
-
-        globalThis.clearTimeout(timeout);
 
         if (!response.ok) {
           return {

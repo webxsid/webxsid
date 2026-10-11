@@ -29,7 +29,6 @@ export const GET: APIRoute = async () => {
 
   const staticPages: SitemapEntry[] = [
     "/",
-    "/me",
     "/projects",
     "/writing",
     "/notes",
@@ -87,26 +86,9 @@ export const GET: APIRoute = async () => {
       lastmod: entry.data.updatedAt.toISOString(),
     }));
 
-  const [portfolioProjects, portfolioCases] = await Promise.all([
-    getCollection("portfolioProjects"),
-    getCollection(
-      "portfolioCaseStudies",
-      ({ data }) => data.visibility === "public" && !data.draft,
-    ),
-  ]);
-  const portfolioPages = [
-    "/portfolio",
-    "/portfolio/work",
-    "/portfolio/projects",
-    "/portfolio/experience",
-    "/portfolio/contact",
-    ...portfolioProjects.map((entry) => `/portfolio/projects/${entry.id}`),
-    ...portfolioCases.map((entry) => `/portfolio/work/${entry.id}`),
-  ].map((pathname) => ({ loc: portfolioCanonical(pathname) }));
-
   const pages: SitemapEntry[] = [
     ...staticPages,
-    ...portfolioPages,
+    { loc: portfolioCanonical() },
     ...projectPages,
     ...workPages,
     ...writingPages,

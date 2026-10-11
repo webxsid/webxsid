@@ -1,0 +1,117 @@
+@layer components {
+  [data-theme-refresh-overlay] {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 95;
+    opacity: 0;
+  }
+
+  html[data-theme-family="e-ink"] [data-theme-refresh-overlay] {
+    background:
+      linear-gradient(180deg,
+        rgb(var(--text-primary) / var(--eink-refresh-flash-opacity)),
+        transparent 28%),
+      linear-gradient(0deg,
+        rgb(var(--surface-elevated) / 0.08),
+        transparent 24%);
+    mix-blend-mode: multiply;
+  }
+
+  html[data-theme-family="graphite"] [data-theme-refresh-overlay] {
+    background:
+      radial-gradient(circle at 50% 38%,
+        rgb(var(--accent-primary) / var(--theme-quirk-overlay-opacity)),
+        transparent 34%),
+      linear-gradient(180deg, rgb(255 255 255 / 0.08), transparent 30%);
+    mix-blend-mode: screen;
+  }
+
+  html[data-theme-family="phosphor"] [data-theme-refresh-overlay] {
+    background:
+      linear-gradient(180deg,
+        rgb(var(--accent-primary) / 0) 0%,
+        rgb(var(--accent-primary) / var(--theme-quirk-overlay-opacity)) 50%,
+        rgb(var(--accent-primary) / 0) 100%),
+      repeating-linear-gradient(180deg,
+        rgb(var(--accent-primary) / 0.06) 0,
+        rgb(var(--accent-primary) / 0.06) 1px,
+        transparent 1px,
+        transparent 3px);
+    mix-blend-mode: screen;
+  }
+
+  html[data-theme-family="retro"] [data-theme-refresh-overlay] {
+    background:
+      linear-gradient(180deg,
+        rgb(var(--accent-primary) / var(--theme-quirk-overlay-opacity)),
+        transparent 26%),
+      repeating-linear-gradient(90deg,
+        rgb(var(--text-primary) / 0.08) 0,
+        rgb(var(--text-primary) / 0.08) 2px,
+        transparent 2px,
+        transparent 4px);
+    image-rendering: pixelated;
+    mix-blend-mode: multiply;
+  }
+
+  html[data-theme-family="doodle"] [data-theme-refresh-overlay] {
+    background:
+      linear-gradient(110deg,
+        rgb(var(--accent-primary) / 0) 0%,
+        rgb(var(--accent-primary) / var(--theme-quirk-overlay-opacity)) 48%,
+        rgb(var(--accent-primary) / 0) 100%),
+      repeating-linear-gradient(180deg,
+        rgb(var(--text-primary) / 0.05) 0,
+        rgb(var(--text-primary) / 0.05) 1px,
+        transparent 1px,
+        transparent 30px);
+    mix-blend-mode: multiply;
+  }
+
+  html[data-theme-fx="active"][data-theme-family="e-ink"] [data-theme-refresh-overlay] {
+    animation: eink-refresh-overlay var(--eink-refresh-duration) steps(4, end) both;
+  }
+
+  html[data-theme-fx="active"][data-theme-family="e-ink"] body::before {
+    animation: eink-refresh-ghost var(--eink-refresh-duration) steps(4, end) both;
+  }
+
+  html[data-theme-fx="active"][data-theme-family="e-ink"] body::after {
+    animation: eink-refresh-wash var(--eink-refresh-duration) steps(4, end) both;
+  }
+
+  html[data-theme-fx="active"][data-theme-family="graphite"] [data-theme-refresh-overlay] {
+    animation: graphite-refresh-overlay var(--theme-quirk-duration) ease-out both;
+  }
+
+  html[data-theme-family="graphite"] body::before {
+    animation: graphite-ambient 10s ease-in-out infinite;
+  }
+
+  html[data-theme-fx="active"][data-theme-family="phosphor"] [data-theme-refresh-overlay] {
+    animation: phosphor-refresh-overlay var(--theme-quirk-duration) linear both;
+  }
+
+  html[data-theme-family="phosphor"] body::after {
+    animation: phosphor-ambient 4.2s linear infinite;
+  }
+
+  html[data-theme-fx="active"][data-theme-family="retro"] [data-theme-refresh-overlay] {
+    animation: retro-refresh-overlay var(--theme-quirk-duration) steps(3, end) both;
+  }
+
+  html[data-theme-family="retro"] body::after,
+  html[data-theme-family="retro-dark"] body::after {
+    animation: retro-ambient 6s steps(2, end) infinite;
+  }
+
+  html[data-theme-fx="active"][data-theme-family="doodle"] [data-theme-refresh-overlay] {
+    animation: doodle-refresh-overlay var(--theme-quirk-duration) ease-out both;
+  }
+
+  html[data-theme-family="doodle"] body::before,
+  html[data-theme-family="doodle"] body::after {
+    animation: doodle-ambient 9s ease-in-out infinite;
+  }
+}

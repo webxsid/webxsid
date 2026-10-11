@@ -1,0 +1,12 @@
+---
+import { portfolio } from "../../data/portfolio";
+import ContactLinks from "./ContactLinks.astro";
+---
+
+<section id="contact" class="contact-section" aria-labelledby="contact-heading">
+  <div class="page-width">
+    <h2 id="contact-heading">Contact</h2><a class="contact-email" href={`mailto:${portfolio.email}`}
+      >{portfolio.email}<span aria-hidden="true">↗</span></a
+    ><ContactLinks includeEmail={false} />
+  </div>
+</section>

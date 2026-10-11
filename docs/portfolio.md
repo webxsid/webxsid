@@ -1,46 +1,33 @@
 # Portfolio
 
-The statically generated `/portfolio/*` experience is independent of the personal site's layout and navigation. It reuses the portfolio typography, spacing, and the site's existing theme palettes. Every page shares `PortfolioLayout.astro`, navigation, footer, and the theme picker. Preferences carry across the personal site and portfolio.
+`/portfolio` is one statically generated professional introduction. Its six sections are Introduction, Expertise, Selected Work, Experience, Beyond Work, and Contact. The header retains the wordmark, personal-site link, and theme picker without section navigation. The personal site's routes, content, layout, and navigation remain separate.
 
-## Routes and templates
+## Updating content
 
-- `/portfolio`: overview and selected projects/case studies.
-- `/portfolio/work`: public engineering case studies.
-- `/portfolio/work/[slug]`: technical narratives organized around an engineering problem.
-- `/portfolio/projects`: independently built software.
-- `/portfolio/projects/[slug]`: project descriptions, metadata, optional screenshots, and related case studies.
-- `/portfolio/experience`: professional timeline.
-- `/portfolio/contact`: email, GitHub, and an optional resume link.
+Edit `src/data/portfolio.ts`. It contains positioning, contact links, three expertise areas, selected work, employment history, and links to the personal website. There are no portfolio content collections, detail pages, or content-management dependencies.
 
-The reusable templates live in `src/components/portfolio`: `CaseStudy`, `ProjectDetail`, `ExperienceTimeline`, and `PortfolioListing`. Detail pages include breadcrumbs. The mobile navigation uses native disclosure markup and works without JavaScript. Theme selection is the only portfolio-specific client script; no client framework or SSR is used.
+Selected work covers Taptic, Crona, and Appyhigh. Keep product context, personal contributions, and engineering challenges specific. Technologies are plain text; optional technical notes use native browser disclosures. Link to existing personal-site articles and projects instead of duplicating their full content.
 
-## Content
+The résumé is deliberately a non-interactive “Résumé — coming soon” stub. Replace `resume.href: null` with a real URL when available. Dynamic résumé generation is a separate future task. LinkedIn is `https://linkedin.com/in/webxsid`.
 
-Schemas are in `src/schemas/portfolio.ts`, registered in `src/content.config.ts`. All portfolio collections accept Markdown or MDX and live separately under `src/content/portfolio`:
+The portfolio uses the finalized formal titles: Platform Developer (February 2024–April 2025), then Senior Platform Developer (May 2025–Present), under Galent / Taptic.ai. Existing personal-site employment entries remain unchanged. `resume/facts.md` records sources and qualifications. The scheduling result is explicitly a POC observation from February–May 2025; the replacement platform is preparing for rollout as of October 2026. Unadopted k6 experimentation and stale GitHub star counts are omitted.
 
-- `portfolioProfile`: positioning, contact information, focus, and an approach body. An optional resume accepts `label` and `href`. No placeholder resume is shown.
-- `portfolioProjects`: description, status (`active`, `maintained`, `archived`), optional stage, role, technologies, optional start date, website/repository links, featured flag, ordering, screenshots, and case-study references.
-- `portfolioCaseStudies`: title, summary, organization or project reference, role, optional period, technologies, category, featured flag, visibility, and Markdown narrative. Optional problem/contribution/outcome fields support short summaries. Sections in the body are optional, not schema-mandated. Related case-study references are supported.
-- `portfolioExperience`: company, role, period, website, responsibilities/achievements, ordering, and introductory body.
+## Design and behavior
 
-Projects and case studies use validated Astro collection references. A case study can reference a project; a project can explicitly select related case studies. Project pages also discover public case studies that reference them. Related content never lists draft or unlisted entries.
+`PortfolioLayout.astro` loads the isolated portfolio stylesheet and shared theme bootstrap. Astro section components render the page without framework hydration. The existing palette picker retains the personal site's saved preferences and System / Light / Dark icon behavior.
 
-Crona and Pebbles project overviews are adapted from existing content. Start dates and screenshots are unknown, so they remain optional with explicit TODOs in their source files. Pebbles is marked “In development”; active describes ongoing project work, not a production launch. No dates, screenshots, metrics, or implementation decisions have been invented.
+A compact sticky header keeps the wordmark, personal-site link, and theme picker on one row. Hero copy and projects follow a single reading column. Expertise uses three plain columns on desktop and stacked rows on mobile; experience groups dated roles beneath each employer to show the promotion. Project disclosures have descriptive labels and work without JavaScript. Native anchors and technical disclosures work without JavaScript. Reduced-motion preferences disable smooth scrolling and transitions.
 
-The Taptic scaffold is available directly at `/portfolio/work/reliable-interview-workflows`. It is `draft: true` and `visibility: unlisted`, carries noindex metadata, and is excluded from navigation, listings, related work, and the sitemap. It is a publicly accessible review scaffold, not an access-controlled page. Its TODOs cover context, constraints, architecture, implementation, trade-offs, outcomes, and lessons. Fill these in together and confirm public sharing before setting `draft: false` and `visibility: public`.
+The current multi-page implementation was preserved in local Git commit `8904781` before replacement. There are no backup copies or nested portfolio routes.
 
-The existing Crona engineering notes are retained as `/portfolio/work/local-first-work-tracking`. The existing Scanner Go notes remain unlisted at `/portfolio/work/in-house-document-conversion`; they are not a newly authored deep dive. No duplicate project/case-study URLs are created for the same content.
+## SEO and deployment
 
-The employment timeline retains the existing Taptic and Appyhigh information. Confirm any company-name or role changes before editing it. The example “Galent” in the plan does not supply enough evidence to replace a current employer.
+The shared SEO component supplies title, description, Open Graph, and Twitter metadata, using the existing `/og` image. Person structured data identifies the author and professional profiles. The sitemap contains only the portfolio's single canonical URL alongside the unchanged personal-site entries.
 
-The editorial content CLI and Pages CMS configuration still manage the personal site's collections, not these portfolio files. README remains unchanged.
-
-## SEO and future hostname
-
-Every portfolio page has its own title, description, canonical URL, and Open Graph metadata. Project pages use SoftwareSourceCode structured data; case studies use Article; the overview uses Person. Public routes are included in the sitemap; drafts and unlisted case studies are excluded.
-
-`src/lib/portfolio.ts` centralizes canonical generation. Defaults are `https://webxsid.com/portfolio/*`. At build time, `PUBLIC_PORTFOLIO_BASE_URL=https://portfolio.webxsid.com/` changes portfolio canonicals and sitemap locations to the new origin without editing individual pages. Routes and internal navigation remain under `/portfolio/*` for now; hostname routing and redirects are a separate deployment task. A CNAME alone cannot map a hostname to a path.
+Canonical generation remains centralized in `src/lib/portfolio.ts`. It defaults to `https://webxsid.com/portfolio`; `PUBLIC_PORTFOLIO_BASE_URL=https://portfolio.webxsid.com/` changes metadata and the sitemap at build time. It does not configure subdomain routing, Workers, or redirects.
 
 ## Verification
 
-Run `pnpm build`, then `node scripts/check-portfolio.mjs`. The artifact check verifies all portfolio routes, local links/fragments, unique SEO metadata, structured data, sitemap visibility, and absence of client framework hydration. Preview desktop and mobile layouts, breadcrumbs, navigation, project/case-study relationships, and theme preferences.
+Run `pnpm build`, followed by `node scripts/check-portfolio.mjs`. The checker verifies a single generated route, section order, anchors, existing project/article links, canonical metadata, sitemap entries, structured data, résumé behavior, and native disclosures.
+
+Preview at 1440px, 768px, 375px, and 320px. Check keyboard focus, sticky-header anchor offsets, expanded notes, light/dark appearance, theme persistence, reduced motion, and navigation without JavaScript. README is intentionally unchanged.
