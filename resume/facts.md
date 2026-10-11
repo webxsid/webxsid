@@ -6,11 +6,17 @@ Scope: factual source for the professional portfolio. This update records the us
 
 ## Positioning and employment
 
-- Galent / Taptic.ai · Platform Developer · February 2024–April 2025 · source: user's finalized title clarification, October 11, 2026.
-- Galent / Taptic.ai · Senior Platform Developer · May 2025–Present · source: same clarification. Promotion confirmed in May 2025.
+- TITLE DECISION (user, October 11, 2026): use "Platform Engineer" → "Senior Platform Engineer", matching the user's own résumé. Earlier ledger entries below said "Developer"; they are updated to "Engineer". Formal HR designation was not independently verified.
+- Appyhigh locations (user): remote during the internship (May 2022 – May 2023); moved to Hyderabad after conversion to full time (May 2023 – February 2024). Galent / Taptic.ai: remote.
+- Verified by the user as accurate (from their résumé): the metadata-driven platform spans 29 backend-defined entities with dynamic UI generation; the generator produces CRUD modules and RBAC from a single configuration in under 2 minutes. This supersedes "no quantified time saving" for the generation step; there is still no measured percentage saved versus manual work.
+- Other details from the user's résumé: OpenTelemetry and CloudWatch observability; event-driven workflows on AWS Lambda and Step Functions; Crona release automation with GoReleaser; Scanner Go has 20+ PDF tools; skills Python, Express.js, Mongoose, Firebase, Vercel, Docker, MySQL, PostgreSQL, Git; B.Tech in Computer Science and Engineering, 2019–2023.
+- Keep the phone number off the public résumé; GitHub is github.com/webxsid (sm2101 is the old username).
+
+- Galent / Taptic.ai · Platform Engineer · February 2024–April 2025 · source: user's finalized title clarification, October 11, 2026.
+- Galent / Taptic.ai · Senior Platform Engineer · May 2025–Present · source: same clarification. Promotion confirmed in May 2025.
 - Appyhigh · Software Development Engineer I · May 2022–February 2024 · source: user's finalized answers and original portfolio specification.
 - CORRECTION: “Senior Software Engineer” is not the formal Taptic designation and must not be shown as the title held continuously since February 2024. Stack the two formal titles under the employer, with their respective dates.
-- “Senior Software Engineer — Backend & Infrastructure” can describe broader professional positioning or target roles; distinguish it from employment history. Formal-title positioning: “Senior Platform Developer”; domains: Backend Engineering · Infrastructure · Developer Tooling.
+- “Senior Software Engineer — Backend & Infrastructure” can describe broader professional positioning or target roles; distinguish it from employment history. Formal-title positioning: “Senior Platform Engineer”; domains: Backend Engineering · Infrastructure · Developer Tooling.
 - Personal-site titles “Sr. Platform Engineer” and “Full-stack Developer” are existing functional descriptions. Their exact relationship to formal HR designations is not established; leave personal-site content unchanged unless separately requested.
 - Over four years of professional experience as of October 2026 · source: employment dates above. Prefer dates over an age-sensitive duration in evergreen copy.
 - Email, GitHub and personal website · source: existing profile content. LinkedIn https://linkedin.com/in/webxsid explicitly confirmed by user.
@@ -121,6 +127,14 @@ Intern period ended May 2023 (user is sure): Backend Developer Intern May 2022 �
 - 55 GitHub stars as of September 17, 2026, and positive feedback on r/cli and r/tui · source: user's reported snapshot, not independently verified here. Omit star count from main portfolio to avoid stale social proof.
 - No verified active-user, installation, retention or revenue metrics. Stars indicate interest, not active usage.
 
+## Education and résumé choices
+
+Source: user's answers, October 11, 2026.
+
+- B.Tech, Bennett University, Greater Noida; CGPA 8.2 per the user (corrected from 8.4 on October 11, 2026), the figure on their LinkedIn. Their uploaded résumé (June 2026) says 8.13; the user does not remember the exact value and chose 8.2. Worth checking against a transcript if a recruiter asks. Scale assumed /10, written "CGPA 8.2/10". That résumé also gives Computer Science and Engineering, 2019–2023, not yet shown on the site résumé.
+- Location on the résumé: "India".
+- Do not put the Scanner Go download count on the résumé; describe it as a consumer PDF-scanning app. (The 10M+ figure from scannergo.net stays available for the portfolio.)
+
 ## Career preferences
 
 Source: user's finalized answers and later clarification, October 11, 2026.
@@ -150,7 +164,7 @@ Source: user's finalized answers and later clarification, October 11, 2026.
 - Follow with primary ownership across production and replacement backends, with accurate rollout status.
 - Use Crona as the independent architecture and release-engineering example.
 - Scheduling POC and Scanner Go demonstrate execution and optimization/production delivery respectively; keep their different maturity levels explicit.
-- Employment history must show Platform Developer → Senior Platform Developer, promoted May 2025.
+- Employment history must show Platform Engineer → Senior Platform Engineer, promoted May 2025.
 
 ## Remaining qualifications — no longer blocking
 

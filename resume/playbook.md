@@ -46,7 +46,7 @@ The finalized answers in facts.md supersede the open-question assessment above. 
 | Before | Portfolio draft after audit |
 |---|---|
 | General backend/migration contributor | Backend framework designer and primary backend owner across two platforms |
-| Senior Software Engineer shown for the whole Taptic period | Formal Platform Developer and Senior Platform Developer roles with May 2025 promotion |
+| Senior Software Engineer shown for the whole Taptic period | Formal Platform Engineer and Senior Platform Engineer roles with May 2025 promotion |
 | Mostly terminal-focused Crona | Shared daemon with CLI, TUI and native macOS interfaces; dated stable releases |
 | Conversion pipeline delivery stage unclear | PDF-to-Word shipped; PowerPoint remained a prototype |
 | Scheduling work absent | Approximate 90-to-20-second observed POC result, with period, test context and discontinuation in expanded notes |

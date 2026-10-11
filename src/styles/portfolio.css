@@ -263,13 +263,6 @@ summary:focus-visible {
 .contact-email:hover span {
   transform: translate(2px, -2px);
 }
-.resume-stub {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  color: var(--portfolio-muted);
-  font-size: 14px;
-}
 
 /* Sections: a small label, then content */
 .portfolio-section,

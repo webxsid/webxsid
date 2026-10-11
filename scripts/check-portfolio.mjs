@@ -51,6 +51,10 @@ for (const match of html.matchAll(/<a\b[^>]*href="([^"]+)"/g)) {
   else if (href.startsWith("/")) {
     assert(!href.startsWith("/portfolio/"), `Nested portfolio link: ${href}`);
     const [path, fragment] = href.split("#");
+    if (/\.\w+$/.test(path)) {
+      await access(join("dist", path));
+      continue;
+    }
     const target = await readFile(join("dist", path, "index.html"), "utf8");
     if (fragment) assert(target.includes(`id="${fragment}"`));
   }
@@ -79,8 +83,21 @@ assert.equal(person["@type"], "Person");
 assert.equal(person.url, canonical);
 assert(person.sameAs.includes("https://linkedin.com/in/webxsid"));
 assert(html.includes('href="https://webxsid.com/"'));
-assert(html.includes("Résumé — coming soon"));
-assert(!html.includes('download=""'), "Do not present a fake résumé download");
+assert(html.includes('href="/resume.pdf"'), "Link the built résumé");
+assert(
+  html.includes('download="Siddharth-Mittal-Resume.pdf"'),
+  "Name the downloaded résumé",
+);
+const pdf = await readFile("dist/resume.pdf");
+assert.equal(pdf.subarray(0, 5).toString(), "%PDF-", "Résumé is a PDF");
+const pdfText = pdf.toString("latin1");
+assert.equal(
+  (pdfText.match(/\/Type \/Page\b/g) || []).length,
+  1,
+  "Résumé fits one page",
+);
+assert(pdfText.includes("/FontFile2"), "Résumé embeds TrueType fonts");
+assert(!pdfText.includes("/Type3"), "No Type 3 fonts: ATS parsers cannot read them");
 assert(!html.includes("<astro-island"), "No framework hydration");
 assert(!html.includes("<form"), "No contact form");
 assert.equal(
@@ -93,8 +110,8 @@ for (const name of [
   "Crona",
   "Appyhigh",
   "Galent / Taptic.ai",
-  "Senior Platform Developer",
-  "Platform Developer",
+  "Senior Platform Engineer",
+  "Platform Engineer",
   "Software Development Engineer I",
   "May 2025 – Present",
   "February 2024 – April 2025",
@@ -103,7 +120,7 @@ for (const name of [
   "May 2023 – February 2024",
 ])
   assert(html.includes(name));
-assert.equal(person.jobTitle, "Senior Platform Developer");
+assert.equal(person.jobTitle, "Senior Platform Engineer");
 assert(
   !html.includes("Senior Software Engineer"),
   "Use formal employment titles",
@@ -143,5 +160,5 @@ assert(!css.includes("animation-timeline"));
 for (const match of html.matchAll(/(?:src|href)="(\/_astro\/[^\"]+)"/g))
   await access(join("dist", match[1]));
 console.log(
-  "Verified single-page portfolio: five sections, anchors, existing content links, SEO, sitemap, résumé stub, and native disclosures.",
+  "Verified single-page portfolio: five sections, anchors, existing content links, SEO, sitemap, built résumé PDF, and native disclosures.",
 );

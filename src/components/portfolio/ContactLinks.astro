@@ -14,13 +14,7 @@ const links = includeEmail
       </a>
     ))
   }
-  {
-    portfolio.resume.href ? (
-      <a class="text-link" href={portfolio.resume.href} download>
-        {portfolio.resume.label} <span aria-hidden="true">↓</span>
-      </a>
-    ) : (
-      <span class="resume-stub">{portfolio.resume.pendingLabel}</span>
-    )
-  }
+  <a class="text-link" href={portfolio.resume.href} download={portfolio.resume.fileName}>
+    {portfolio.resume.label} <span aria-hidden="true">↓</span>
+  </a>
 </div>

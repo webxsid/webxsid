@@ -18,7 +18,7 @@ export type WorkEntry = {
 // Professional claims and their qualifications: resume/facts.md.
 export const portfolio = {
   name: "Siddharth Mittal",
-  role: "Senior Platform Developer",
+  role: "Senior Platform Engineer",
   expertiseAreas: [
     "Backend Engineering",
     "Infrastructure",
@@ -33,14 +33,14 @@ export const portfolio = {
   github: "https://github.com/webxsid",
   linkedin: "https://linkedin.com/in/webxsid",
   personalWebsite: "https://webxsid.com/",
-  // TODO: Supply a real résumé URL. Dynamic résumé generation is a separate task.
+  // Built from src/data/resume.ts at build time; see src/pages/resume.pdf.ts.
   resume: {
-    href: null as string | null,
+    href: "/resume.pdf",
     label: "Résumé",
-    pendingLabel: "Résumé — coming soon",
+    fileName: "Siddharth-Mittal-Resume.pdf",
   },
   seo: {
-    title: "Siddharth Mittal — Senior Platform Developer",
+    title: "Siddharth Mittal — Senior Platform Engineer",
     description:
       "Backend engineering, infrastructure, and developer tooling. Backend frameworks and platform ownership at Taptic, production document processing at Appyhigh, and Crona.",
   },
@@ -72,8 +72,8 @@ export const portfolio = {
       category: "Professional work",
       employer: "Galent / Taptic.ai · Interview platform",
       roles: [
-        { title: "Senior Platform Developer", period: "May 2025 – Present" },
-        { title: "Platform Developer", period: "February 2024 – April 2025" },
+        { title: "Senior Platform Engineer", period: "May 2025 – Present" },
+        { title: "Platform Engineer", period: "February 2024 – April 2025" },
       ],
       description:
         "Backend work that stays out of the way: generated code that keeps evolving next to hand-written logic.",
