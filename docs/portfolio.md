@@ -22,7 +22,7 @@ The current multi-page implementation was preserved in local Git commit `8904781
 
 ## SEO and deployment
 
-The shared SEO component supplies title, description, Open Graph, and Twitter metadata, using the existing `/og` image. Person structured data identifies the author and professional profiles. The sitemap contains only the portfolio's single canonical URL alongside the unchanged personal-site entries.
+The shared SEO component supplies title, description, Open Graph, and Twitter metadata, with its own share image at `/portfolio/og.png`. `src/lib/portfolio-og.ts` draws it at build time from `src/data/portfolio.ts` (name, role, headline, expertise areas), converting text to glyph outlines so the build host needs no installed fonts. Person structured data identifies the author and professional profiles. The sitemap contains only the portfolio's single canonical URL alongside the unchanged personal-site entries.
 
 Canonical generation remains centralized in `src/lib/portfolio.ts`. It defaults to `https://webxsid.com/portfolio`; `PUBLIC_PORTFOLIO_BASE_URL=https://portfolio.webxsid.com/` changes metadata and the sitemap at build time. It does not configure subdomain routing, Workers, or redirects.
 

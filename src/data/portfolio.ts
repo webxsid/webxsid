@@ -40,7 +40,7 @@ export const portfolio = {
     fileName: "Siddharth-Mittal-Resume.pdf",
   },
   seo: {
-    title: "Siddharth Mittal — Senior Platform Engineer",
+    title: "Siddharth Mittal — Portfolio, Senior Platform Engineer",
     description:
       "Backend engineering, infrastructure, and developer tooling. Backend frameworks and platform ownership at Taptic, production document processing at Appyhigh, and Crona.",
   },

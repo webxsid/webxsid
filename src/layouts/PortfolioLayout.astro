@@ -5,6 +5,7 @@ import SeoHead from "../components/shell/SeoHead.astro";
 import PortfolioHeader from "../components/portfolio/PortfolioHeader.astro";
 import { portfolio } from "../data/portfolio";
 import { portfolioCanonical } from "../lib/portfolio";
+import { portfolioOgImagePath } from "../lib/portfolio-og";
 const canonical = portfolioCanonical();
 const structuredData = {
   "@context": "https://schema.org",
@@ -33,7 +34,7 @@ const structuredData = {
       title={portfolio.seo.title}
       description={portfolio.seo.description}
       pathname="/portfolio"
-      seo={{ canonical, image: "/og", imageWidth: 1200, imageHeight: 630 }}
+      seo={{ canonical, image: portfolioOgImagePath, imageWidth: 1200, imageHeight: 630 }}
     /><script
       is:inline
       type="application/ld+json"

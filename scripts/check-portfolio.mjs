@@ -74,6 +74,14 @@ for (const tag of [
   'name="twitter:image"',
 ])
   assert(html.includes(tag));
+assert(
+  html.includes('property="og:image" content="https://webxsid.com/portfolio/og.png"'),
+  "Portfolio uses its own share image",
+);
+assert(
+  (await readFile("dist/portfolio/og.png")).subarray(1, 4).toString() === "PNG",
+  "Share image is built",
+);
 const person = JSON.parse(
   html.match(
     /<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/s,
