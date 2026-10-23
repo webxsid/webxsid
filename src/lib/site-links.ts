@@ -1,7 +1,4 @@
-export const footerClosingNote = "Still building. Still learning.";
-
-export const footerColophon =
-  "Built with Astro. Written in Markdown. Updated through regular use.";
+export const footerColophon = "built with Astro, written in Markdown";
 
 export const globalNavItems = [
   { href: "/", label: "Home", icon: "house" },
@@ -36,17 +33,24 @@ export const footerSocialLinks = [
 ] as const;
 
 export const footerLinkColumns = [
-  [
-    { href: "/projects", label: "Projects" },
-    { href: "/writing", label: "Writing" },
-    { href: "/notes", label: "Notes" },
-    { href: "/references", label: "References" },
-  ],
-  [
-    { href: "/portfolio", label: "Portfolio" },
-    { href: "/now", label: "Now" },
-    { href: "/colophon", label: "Colophon" },
-  ],
+  {
+    label: "site",
+    links: [
+      { href: "/projects", label: "Projects" },
+      { href: "/writing", label: "Writing" },
+      { href: "/notes", label: "Notes" },
+      { href: "/references", label: "References" },
+    ],
+  },
+  {
+    label: "elsewhere",
+    links: [
+      { href: "/portfolio", label: "Portfolio" },
+      { href: "/now", label: "Now" },
+      { href: "/colophon", label: "Colophon" },
+      { href: "/rss", label: "RSS" },
+    ],
+  },
 ] as const;
 
 type SharedNavVisibility = {

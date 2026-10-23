@@ -17,24 +17,31 @@ const [references, notes, nowEntries] = await Promise.all([
   getCollection("notes"),
   getCollection("now"),
 ]);
-const footerColumns = footerLinkColumns.map((column) =>
-  filterSharedNavItems(column as readonly { href: string; label: string }[], {
-    hasReferences: references.length > 0,
-    hasNotes: notes.length > 0,
-    hasNow: nowEntries.length > 0,
-  }),
-);
+const footerColumns = footerLinkColumns.map((column) => ({
+  label: column.label,
+  links: filterSharedNavItems(
+    column.links as readonly { href: string; label: string }[],
+    {
+      hasReferences: references.length > 0,
+      hasNotes: notes.length > 0,
+      hasNow: nowEntries.length > 0,
+    },
+  ),
+}));
 ---
 
 <footer class="mt-24 border-t border-border/45 sm:mt-28">
-  <Container class="py-14 sm:py-16 lg:py-20">
+  {/* Below lg the floating dock sits over the page end, so leave room for it. */}
+  <Container
+    class="pt-14 pb-[calc(6.5rem+env(safe-area-inset-bottom))] sm:pt-16 lg:py-20"
+  >
     <div
       class="grid gap-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-20"
     >
       <div class="max-w-md space-y-7">
-        <p class="footer-title max-w-md tracking-[-0.04em] text-text">
-          Still Building,<br />
-          Still Learning.
+        <p class="footer-title max-w-md tracking-tight text-text">
+          Still building,<br />
+          still learning.
         </p>
 
         <nav aria-label="Social links">
@@ -76,20 +83,18 @@ const footerColumns = footerLinkColumns.map((column) =>
             }
           </ul>
         </nav>
-        <p class="ui-meta font-mono leading-6 text-text-muted">
-          &copy; Siddharth Mittal {currentYear}
-        </p>
       </div>
 
-      <div class="space-y-10">
-        <nav
-          aria-label="Footer links"
-          class="grid grid-cols-2 gap-x-10 gap-y-8"
-        >
-          {
-            footerColumns.map((column) => (
+      <nav
+        aria-label="Footer links"
+        class="grid grid-cols-2 gap-x-10 gap-y-8 self-start"
+      >
+        {
+          footerColumns.map((column) => (
+            <section class="space-y-4">
+              <h2 class="link-footer-label ui-label font-mono">{column.label}</h2>
               <ul class="space-y-3">
-                {column.map((link) => (
+                {column.links.map((link) => (
                   <li>
                     <a
                       href={link.href}
@@ -100,14 +105,18 @@ const footerColumns = footerLinkColumns.map((column) =>
                   </li>
                 ))}
               </ul>
-            ))
-          }
-        </nav>
-
-        <p class="ui-prose max-w-sm leading-6 text-text-muted">
-          {footerColophon}
-        </p>
-      </div>
+            </section>
+          ))
+        }
+      </nav>
     </div>
+
+    <p
+      class="site-footer-bar index-row-meta ui-meta font-mono mt-14 border-t border-dashed border-border/45 pt-6"
+    >
+      <span>&copy; {currentYear} Siddharth Mittal</span>
+      <span>{footerColophon}</span>
+      <a class="index-row-meta-link" href="/colophon">colophon →</a>
+    </p>
   </Container>
 </footer>

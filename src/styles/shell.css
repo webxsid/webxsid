@@ -101,6 +101,18 @@
     }
   }
 
+  /* On phones the footer bar stacks; "·" separators only read on one line. */
+  @media (max-width: 39.99rem) {
+    .site-footer-bar.index-row-meta {
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .site-footer-bar.index-row-meta > * + *::before {
+      content: none;
+    }
+  }
+
   .shell-header-back-slot {
     width: 0;
     margin-right: -0.75rem;
