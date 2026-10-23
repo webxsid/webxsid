@@ -26,7 +26,6 @@
     gap: 0.65rem;
     margin: 0;
     padding: 0.55rem 0;
-    border-bottom: 1px solid rgb(var(--border-default) / 0.45);
     background: rgb(var(--surface-page) / 0.82);
     backdrop-filter: blur(10px);
     color: rgb(var(--text-primary));
@@ -49,8 +48,9 @@
     font: inherit;
   }
 
+  /* Sits after the trailing rule (see the section label rules below). */
   .index-group-link {
-    margin-left: auto;
+    order: 2;
     color: rgb(var(--text-muted));
     font-weight: 400;
     text-decoration: none;
@@ -62,11 +62,29 @@
     color: rgb(var(--text-primary));
   }
 
-  .index-group-label::before {
+  /* Section labels: an accent dot, the label, then a hairline to the right
+     edge, matching the callouts' notched top edge. */
+  .index-group-label::before,
+  .link-footer-label::before,
+  .now-body.now-body > h2::before {
     content: "";
-    width: 3px;
-    height: 1.1em;
+    flex: none;
+    width: 0.4rem;
+    height: 0.4rem;
+    margin-right: -0.15rem;
+    border-radius: 9999px;
     background: rgb(var(--accent-primary));
+  }
+
+  .index-group-label::after,
+  .link-footer-label::after,
+  .now-body.now-body > h2::after {
+    content: "";
+    order: 1;
+    flex: 1;
+    min-width: 1.5rem;
+    height: 1px;
+    background: rgb(var(--border-default) / 0.45);
   }
 
   .index-row {
@@ -365,14 +383,6 @@
     line-height: inherit;
   }
 
-  .now-body.now-body > h2::before {
-    content: "";
-    flex: none;
-    width: 3px;
-    height: 1.1em;
-    background: rgb(var(--accent-primary));
-  }
-
   /* Callouts: a hairline frame with the label set into its top edge. The top
      edge is two line segments either side of the label, so the gap works on
      textured backgrounds (no background patch behind the label). */
@@ -517,13 +527,6 @@
     margin: 0;
     color: rgb(var(--text-primary));
     font-weight: 600;
-  }
-
-  .link-footer-label::before {
-    content: "";
-    width: 3px;
-    height: 1.1em;
-    background: rgb(var(--accent-primary));
   }
 
   .link-footer-items {
