@@ -9,16 +9,18 @@
   --portfolio-surface: rgb(var(--surface-elevated));
   --portfolio-text: rgb(var(--text-primary));
   --portfolio-muted: rgb(var(--text-muted));
-  --portfolio-body: color-mix(in srgb, var(--portfolio-text) 80%, var(--portfolio-bg));
+  --portfolio-body: var(--portfolio-text);
   --portfolio-line: rgb(var(--border-default));
   --portfolio-accent: rgb(var(--accent-primary));
   --portfolio-underline: color-mix(in srgb, var(--portfolio-text) 28%, transparent);
+  --portfolio-hairline: color-mix(in srgb, var(--portfolio-line) 70%, transparent);
   /* Fonts follow the active theme; graphite is Inter with Instrument Serif. */
   --font-sans: var(--font-sans-stack);
   --font-voice: var(--font-display-stack);
+  --font-mono: var(--font-mono-stack);
   --voice-scale: 1;
   --voice-leading: 1.1;
-  --col: 560px;
+  --col: 620px;
   --edge: 12px;
   --gutter: clamp(20px, 5vw, 32px);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -50,13 +52,6 @@
   --voice-scale: 0.86;
   --voice-leading: 1.2;
 }
-/* Site-wide muted text misses 4.5:1 on these two light palettes. */
-:root[data-theme="doodle"] {
-  --portfolio-muted: rgb(112 96 85);
-}
-:root[data-theme="retro"] {
-  --portfolio-muted: rgb(92 101 121);
-}
 *,
 *::before,
 *::after {
@@ -65,9 +60,9 @@
 body {
   margin: 0;
   min-height: 100svh;
-  font-size: 15px;
-  line-height: 1.6;
-  font-weight: 440;
+  font-size: 16.5px;
+  line-height: 1.65;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   background: linear-gradient(
     180deg,
@@ -179,22 +174,22 @@ summary:focus-visible {
   margin-top: clamp(40px, 9vh, 72px);
 }
 .hero h1 {
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 17px;
+  line-height: 24px;
   font-weight: 600;
   letter-spacing: -0.006em;
 }
 .hero-role {
   color: var(--portfolio-muted);
-  font-size: 13px;
+  font-size: 15px;
 }
 .availability {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 2px;
+  margin-top: 4px;
   color: var(--portfolio-muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 .availability > span {
   width: 6px;
@@ -248,7 +243,7 @@ summary:focus-visible {
   align-items: center;
   gap: 5px;
   min-height: 44px;
-  font-size: 14px;
+  font-size: 15px;
 }
 .text-link span,
 .beyond-links span,
@@ -272,75 +267,110 @@ summary:focus-visible {
 }
 .section-heading,
 .section-intro {
-  margin-bottom: 14px;
+  margin-bottom: 24px;
 }
+/* Section landmarks: accent dot, label, hairline to the edge (as on the
+   personal site). */
 .section-heading h2,
 .section-intro h2,
 .contact-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
   font-size: 13px;
   line-height: 20px;
   font-weight: 600;
-  letter-spacing: -0.005em;
+  letter-spacing: 0.02em;
+}
+.section-heading h2::before,
+.section-intro h2::before,
+.contact-section h2::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--portfolio-accent);
+}
+.section-heading h2::after,
+.section-intro h2::after,
+.contact-section h2::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--portfolio-hairline);
 }
 .body-copy {
   color: var(--portfolio-body);
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16.5px;
+  line-height: 1.65;
 }
 
 /* What I do: a plain definition-style list */
 .expertise-list {
   display: grid;
-  gap: 22px;
+  gap: 32px;
 }
 .expertise-row h3 {
-  font-size: 15px;
-  font-weight: 560;
-  line-height: 22px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 24px;
 }
 .expertise-focus {
+  margin-top: 2px;
   color: var(--portfolio-muted);
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
   line-height: 20px;
 }
 .expertise-row > .body-copy {
-  margin-top: 6px;
+  margin-top: 10px;
 }
 
 /* Selected work */
 .work-entry {
-  padding-block: 28px;
+  padding-block: 44px;
   border-top: 1px solid var(--portfolio-line);
 }
 .work-entry:first-of-type {
-  padding-top: 12px;
+  padding-top: 4px;
   border-top: 0;
+}
+/* Entry header in three spaced groups: identity, roles, stack. */
+.work-header {
+  display: grid;
+  gap: 18px;
 }
 .work-category {
   color: var(--portfolio-muted);
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
   line-height: 20px;
 }
 .work-identity h3 {
-  margin-top: 2px;
-  font-size: 22px;
-  line-height: 28px;
+  margin-top: 4px;
+  font-size: 26px;
+  line-height: 32px;
   font-weight: 600;
   letter-spacing: -0.015em;
 }
 .work-subtitle {
+  margin-top: 2px;
   color: var(--portfolio-muted);
-  font-size: 14px;
+  font-size: 15.5px;
 }
 .technologies {
   display: flex;
   flex-wrap: wrap;
   gap: 2px 10px;
   list-style: none;
-  padding: 0;
-  margin: 8px 0 0;
-  font-size: 12px;
-  line-height: 18px;
+  padding: 12px 0 0;
+  margin: 0;
+  border-top: 1px dashed var(--portfolio-hairline);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 20px;
   color: var(--portfolio-muted);
 }
 .technologies li:not(:last-child)::after {
@@ -349,35 +379,85 @@ summary:focus-visible {
   opacity: 0.55;
 }
 .work-description {
-  margin-top: 18px;
+  margin-top: 26px;
 }
 .work-lead {
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: 17.5px;
+  line-height: 1.5;
   font-weight: 500;
   letter-spacing: -0.005em;
 }
 .work-description > .body-copy {
-  margin-top: 12px;
+  margin-top: 14px;
+}
+/* Notched hairline frame, as the personal site's callouts: the label sits
+   in the top edge, drawn as two segments so no background patch is needed. */
+.portfolio-callout {
+  --callout-legend-h: 24px;
+  --callout-radius: 10px;
+  position: relative;
+  padding: 0 18px 16px;
+}
+.portfolio-callout::before {
+  content: "";
+  position: absolute;
+  inset: var(--callout-legend-h) 0 0;
+  border: 1px solid var(--portfolio-hairline);
+  border-top: 0;
+  border-radius: 0 0 var(--callout-radius) var(--callout-radius);
+  pointer-events: none;
+}
+.portfolio-callout-legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--callout-legend-h);
+  margin: 0 -18px 6px;
+  color: var(--portfolio-muted);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+.portfolio-callout-legend::before,
+.portfolio-callout-legend::after {
+  content: "";
+  align-self: flex-end;
+  height: calc(var(--callout-legend-h) / 2);
+  border-top: 1px solid var(--portfolio-hairline);
+}
+.portfolio-callout-legend::before {
+  flex: none;
+  width: 10px;
+  border-left: 1px solid var(--portfolio-hairline);
+  border-top-left-radius: var(--callout-radius);
+}
+.portfolio-callout-legend::after {
+  flex: 1;
+  border-right: 1px solid var(--portfolio-hairline);
+  border-top-right-radius: var(--callout-radius);
+}
+.portfolio-callout-legend > i {
+  width: 6px;
+  height: 6px;
+  margin-right: -2px;
+  border-radius: 50%;
+  background: var(--portfolio-accent);
 }
 .work-supporting {
-  margin-top: 14px;
-  padding-left: 14px;
-  border-left: 2px solid var(--portfolio-line);
+  margin-top: 20px;
   color: var(--portfolio-body);
-  font-size: 14px;
+  font-size: 15.5px;
   line-height: 1.6;
 }
 .work-details {
-  margin-top: 16px;
+  margin-top: 20px;
 }
 .work-details summary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 36px;
+  min-height: 40px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15.5px;
   list-style: none;
   text-decoration: underline dashed;
   text-decoration-thickness: 1px;
@@ -399,39 +479,40 @@ summary:focus-visible {
 .technical-notes {
   display: grid;
   gap: 18px;
-  margin-top: 10px;
-  padding: 4px 0 8px 14px;
-  border-left: 2px solid var(--portfolio-line);
+  margin-top: 12px;
+}
+.technical-notes .portfolio-callout-legend {
+  margin-bottom: -6px;
 }
 .technical-notes h4 {
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 15.5px;
+  line-height: 22px;
   font-weight: 600;
 }
 .technical-notes .body-copy {
-  margin-top: 2px;
-  font-size: 14px;
+  margin-top: 4px;
+  font-size: 15.5px;
 }
 .work-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 18px;
-  margin-top: 6px;
+  gap: 0 20px;
+  margin-top: 10px;
 }
 
 /* Roles under each employer: dated, so a real sequence */
 .work-employer {
-  margin-top: 2px;
   color: var(--portfolio-muted);
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
   line-height: 20px;
 }
 .work-roles {
   list-style: none;
   padding: 0;
-  margin: 10px 0 0;
+  margin: 6px 0 0;
   display: grid;
-  gap: 2px;
+  gap: 4px;
 }
 .work-roles > li {
   display: flex;
@@ -440,18 +521,20 @@ summary:focus-visible {
   gap: 4px 20px;
 }
 .work-role {
-  font-size: 14px;
+  font-size: 15.5px;
+  font-weight: 500;
 }
 .work-period {
   color: var(--portfolio-muted);
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
 /* Beyond work */
 .beyond-content > .work-lead {
-  font-size: 16px;
+  font-size: 17.5px;
 }
 .beyond-content > .body-copy {
   margin-top: 10px;
@@ -466,15 +549,15 @@ summary:focus-visible {
   gap: 16px;
   width: fit-content;
   max-width: 100%;
-  min-height: 36px;
-  font-size: 15px;
+  min-height: 40px;
+  font-size: 16px;
 }
 .personal-site-link {
   display: inline-flex;
   align-items: baseline;
   gap: 8px;
   min-height: 44px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -490,6 +573,9 @@ summary:focus-visible {
   letter-spacing: -0.01em;
   line-height: 1.3;
   white-space: nowrap;
+}
+.contact-section h2 {
+  margin-bottom: 16px;
 }
 .contact-section .contact-links {
   margin-top: 12px;

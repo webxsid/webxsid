@@ -9,20 +9,26 @@ import { portfolio } from "../../data/portfolio";
   {
     portfolio.work.map((work) => (
       <article class="work-entry" aria-labelledby={`work-${work.id}`}>
-        <div class="work-identity">
-          <p class="work-category">{work.category}</p>
-          <h3 id={`work-${work.id}`}>{work.name}</h3>
-          <p class="work-subtitle">{work.subtitle}</p>
-          {work.employer && <p class="work-employer">{work.employer}</p>}
-          {work.roles && (
-            <ol class="work-roles" role="list" aria-label={`Roles at ${work.name}`}>
-              {work.roles.map((role) => (
-                <li>
-                  <p class="work-role">{role.title}</p>
-                  <p class="work-period">{role.period}</p>
-                </li>
-              ))}
-            </ol>
+        <header class="work-header">
+          <div class="work-identity">
+            <p class="work-category">{work.category}</p>
+            <h3 id={`work-${work.id}`}>{work.name}</h3>
+            <p class="work-subtitle">{work.subtitle}</p>
+          </div>
+          {(work.employer || work.roles) && (
+            <div class="work-facts">
+              {work.employer && <p class="work-employer">{work.employer}</p>}
+              {work.roles && (
+                <ol class="work-roles" role="list" aria-label={`Roles at ${work.name}`}>
+                  {work.roles.map((role) => (
+                    <li>
+                      <p class="work-role">{role.title}</p>
+                      <p class="work-period">{role.period}</p>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </div>
           )}
           <ul
             class="technologies"
@@ -33,16 +39,22 @@ import { portfolio } from "../../data/portfolio";
               <li>{technology}</li>
             ))}
           </ul>
-        </div>
+        </header>
         <div class="work-description">
           <p class="work-lead">{work.description}</p>
           <p class="body-copy">{work.contribution}</p>
-          {work.supporting && <p class="work-supporting">{work.supporting}</p>}
+          {work.supporting && (
+            <aside class="work-supporting portfolio-callout">
+              <span class="portfolio-callout-legend" aria-hidden="true"><i></i>aside</span>
+              <p>{work.supporting}</p>
+            </aside>
+          )}
           <details class="work-details">
             <summary>
               {work.detailsLabel} <span aria-hidden="true">+</span>
             </summary>
-            <div class="technical-notes">
+            <div class="technical-notes portfolio-callout">
+              <span class="portfolio-callout-legend" aria-hidden="true"><i></i>notes</span>
               {work.details.map((detail) => (
                 <div>
                   <h4>{detail.title}</h4>
