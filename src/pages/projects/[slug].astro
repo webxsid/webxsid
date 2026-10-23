@@ -103,8 +103,10 @@ const tags = [...new Set(entry.data.tags.map((tag) => tag.trim()).filter(Boolean
           }
           {
             tags.length > 0 && (
-              <ul class="index-row-meta ui-meta font-mono" aria-label="Tags">
-                {tags.map((tag) => <li>{tag.toLowerCase()}</li>)}
+              <ul class="index-row-meta ui-meta font-mono" data-plain aria-label="Tags">
+                {tags.map((tag) => (
+                  <li>#{tag.toLowerCase().replace(/\s+/g, "-")}</li>
+                ))}
               </ul>
             )
           }

@@ -427,6 +427,15 @@
     list-style: none;
   }
 
+  /* Hashtag-style lists separate items with space, not "·". */
+  .index-row-meta[data-plain] {
+    column-gap: 0.85rem;
+  }
+
+  .index-row-meta[data-plain] > * + *::before {
+    content: none;
+  }
+
   /* "Mentioned in" / "References" footer shared by content pages. */
   .link-footer {
     display: grid;
