@@ -11,6 +11,7 @@
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
     "check": "ASTRO_TELEMETRY_DISABLED=1 astro check",
     "check:portfolio": "node scripts/check-portfolio.mjs",
+    "check:agents": "node scripts/check-agents.mjs",
     "prose:check": "cspell --no-progress \"README.md\" \"docs/**/*.md\" \"src/**/*.md\" \"src/**/*.astro\"",
     "content:sync": "node scripts/content-manager.mjs sync",
     "content:new": "node scripts/content-manager.mjs new",
