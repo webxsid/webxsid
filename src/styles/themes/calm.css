@@ -26,14 +26,15 @@
   --link-hover-decoration-color: rgb(var(--accent-primary));
 }
 
-/* Pixel faces are wide at small sizes, so they get smaller labels. */
+/* Retro sets small text in VT323 (Press Start 2P stays on headings), which
+   has a small x-height, so labels and meta go up. */
 :root[data-theme-family="retro"] {
   --ui-heading-size: 0.78rem;
-  --ui-meta-size: 0.68rem;
-  --ui-tag-size: 0.95rem;
-  --ui-label-size: 0.66rem;
-  --ui-shell-size: 0.64rem;
-  --ui-table-size: 0.66rem;
-  --ui-rail-meta-size: 0.64rem;
-  --content-label-size: 0.58rem;
+  --ui-meta-size: 1.2rem;
+  --ui-tag-size: 1.2rem;
+  --ui-label-size: 1.2rem;
+  --ui-shell-size: 1.1rem;
+  --ui-table-size: 1.1rem;
+  --ui-rail-meta-size: 1.1rem;
+  --content-label-size: 1.1rem;
 }

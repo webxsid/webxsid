@@ -1,7 +1,7 @@
 [data-theme="retro"],
 [data-theme="retro-dark"] {
   --font-sans-stack: "VT323", "IBM Plex Mono", "JetBrains Mono", monospace;
-  --font-mono-stack: "Press Start 2P", "VT323", "IBM Plex Mono", monospace;
+  --font-mono-stack: "VT323", "IBM Plex Mono", monospace;
   --font-display-stack: "Press Start 2P", "VT323", monospace;
 
   --radius-shell: 0.45rem;
