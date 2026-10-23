@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { createPortal } from "react-dom";
 import { isActivePath } from "./header-utils";
 import type { GlobalNavItem } from "../../../lib/site-links";
+import { headerMenuExtras } from "../../../lib/site-links";
 import type { RefObject } from "react";
 
 type Props = {
@@ -56,6 +57,42 @@ export function ShellHeaderMenu({
 
   if (!open) return null;
 
+  const renderItem = (item: { href: string; label: string }) => {
+    const active = isActivePath(activePath, item.href);
+
+    return (
+      <li key={item.href}>
+        <motion.a
+          href={item.href}
+          initial={false}
+          onClick={onClose}
+          aria-current={active ? "page" : undefined}
+          className={[
+            "shell-menu-item motion-surface ui-shell flex items-center justify-between border px-3 py-2 font-mono ",
+            active
+              ? "shell-item-active"
+              : "border-transparent bg-bg text-text-muted hover:border-border/60 hover:bg-bg-elevated hover:text-text",
+          ].join(" ")}
+        >
+          <span>{item.label}</span>
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.9"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-[11px] w-[11px]"
+            aria-hidden="true"
+          >
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </motion.a>
+      </li>
+    );
+  };
+
   const panel = (
     <div
       data-shell-popup="true"
@@ -69,40 +106,13 @@ export function ShellHeaderMenu({
     >
       <nav aria-label="Primary">
         <ul className="space-y-1">
-          {navItems.map((item) => {
-            const active = isActivePath(activePath, item.href);
-
-            return (
-              <li key={item.href}>
-                <motion.a
-                  href={item.href}
-                  initial={false}
-                  onClick={onClose}
-                  className={[
-                    "shell-menu-item motion-surface ui-shell flex items-center justify-between border px-3 py-2 font-mono ",
-                    active
-                      ? "shell-item-active"
-                      : "border-transparent bg-bg text-text-muted hover:border-border/60 hover:bg-bg-elevated hover:text-text",
-                  ].join(" ")}
-                >
-                  <span>{item.label}</span>
-
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.9"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-[11px] w-[11px]"
-                    aria-hidden="true"
-                  >
-                    <path d="M9 18l6-6-6-6" />
-                  </svg>
-                </motion.a>
-              </li>
-            );
-          })}
+          {navItems.map((item) => renderItem(item))}
+        </ul>
+        <h2 className="shell-menu-group-label link-footer-label ui-label font-mono">
+          elsewhere
+        </h2>
+        <ul className="space-y-1">
+          {headerMenuExtras.map((item) => renderItem(item))}
         </ul>
       </nav>
     </div>

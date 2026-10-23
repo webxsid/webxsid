@@ -345,6 +345,24 @@
   border-color: rgb(var(--border-default) / var(--shell-item-active-border-opacity));
 }
 
+/* The header menu follows the rail: only the current page is boxed. */
+[data-theme="doodle"] .shell-menu-item:not(.shell-item-active),
+[data-theme="doodle-dark"] .shell-menu-item:not(.shell-item-active) {
+  background: transparent;
+  border-color: transparent;
+}
+
+[data-theme="doodle"] .shell-menu-item:not(.shell-item-active):hover,
+[data-theme="doodle-dark"] .shell-menu-item:not(.shell-item-active):hover {
+  border-color: rgb(var(--border-default) / 0.6);
+}
+
+[data-theme="doodle"] .shell-menu-item.shell-item-active,
+[data-theme="doodle-dark"] .shell-menu-item.shell-item-active {
+  background: var(--shell-item-active-background);
+  border-color: rgb(var(--border-default) / var(--shell-item-active-border-opacity));
+}
+
 [data-theme="doodle"] .status-badge,
 [data-theme="doodle-dark"] .status-badge {
   padding: 0.18rem 0.46rem 0.14rem;

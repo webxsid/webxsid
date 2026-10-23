@@ -101,6 +101,12 @@
     }
   }
 
+  .shell-menu-panel .shell-menu-group-label {
+    margin: 0.5rem 0.25rem 0.4rem;
+    padding: 0.7rem 0.5rem 0;
+    border-top: 1px dashed rgb(var(--border-default) / 0.45);
+  }
+
   /* The header floats over the page; a scrim behind it fades content out
      before it reaches the pills. Retro cuts it off hard instead. */
   /* translate, not transform: the motion-page entrance animation holds

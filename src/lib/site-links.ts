@@ -11,6 +11,12 @@ export const globalNavItems = [
 
 export type GlobalNavItem = (typeof globalNavItems)[number];
 
+/** Pages outside the main sections, listed under the header menu's sections. */
+export const headerMenuExtras = [
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/colophon", label: "Colophon" },
+] as const;
+
 export const footerSocialLinks = [
   { href: "https://github.com/webxsid", label: "GitHub", icon: "github" },
   {
