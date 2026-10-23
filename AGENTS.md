@@ -30,7 +30,7 @@ pnpm content:sync|new|delete|list|doctor   # Obsidian mirror management
 - `src/components/` – `shell/`, `rail/`, `content/`, `notes/`, `portfolio/`, `icons/`, `react/`.
 - `src/lib/` – helpers: SEO, OG images (Satori + resvg, templates in `src/templates/`), link previews and the backlink graph (`content-links.ts`, `link-preview.ts`), résumé PDF (PDFKit).
 - `src/data/portfolio.ts` – single source for the portfolio page. `src/data/resume.ts` builds on it.
-- `src/styles/themes/` – six theme families (graphite, e-ink, phosphor, retro, doodle, calm), each with light and dark modes.
+- `src/styles/themes/` – five theme families (graphite, e-ink, phosphor, retro, doodle), each with light and dark modes, plus `calm.css`, a quieting layer applied over all of them.
 - `docs/` – `portfolio.md` and `content-workflow.md`. Read these before changing those areas.
 - `resume/facts.md` – the claim ledger. `resume/playbook.md` – portfolio audit notes.
 
