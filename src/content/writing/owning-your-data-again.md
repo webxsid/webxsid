@@ -1,6 +1,6 @@
 ---
 title: Owning your data again
-summary: Software have shifted from ownership to permissions. Here's why it matters and why we should all care about the shift.
+summary: Software has shifted from ownership to permissions. Here's why it matters and why we should all care about the shift.
 kind: blog
 publishedAt: 2026-07-05
 featured: true
