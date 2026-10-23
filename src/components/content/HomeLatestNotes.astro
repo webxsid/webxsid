@@ -1,5 +1,5 @@
 ---
-import Section from "./Section.astro";
+import IndexGroup from "./IndexGroup.astro";
 import {
   formatNoteShortDay,
   formatNoteTime,
@@ -18,8 +18,8 @@ const { notes } = Astro.props as Props;
 ---
 
 {notes.length > 0 && (
-  <Section title="Latest Notes">
-    <ol class="home-notes-log list-none" aria-label="Latest notes">
+  <IndexGroup label="Latest notes" id="home-notes" href="/notes" linkLabel="all notes →" pinned={false}>
+    <ol class="home-notes-log list-none">
       {
         notes.map((note) => (
           <li>
@@ -44,8 +44,5 @@ const { notes } = Astro.props as Props;
       }
     </ol>
 
-    <a href="/notes" class="primary-button ui-shell inline-flex items-center transition">
-      View all notes
-    </a>
-  </Section>
+  </IndexGroup>
 )}

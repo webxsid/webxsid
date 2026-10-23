@@ -2,19 +2,23 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Container from "../components/shell/Container.astro";
-import HomePreviewItem from "../components/content/HomePreviewItem.astro";
 import ContentLinkPreview from "../components/content/ContentLinkPreview.astro";
-import Section from "../components/content/Section.astro";
-import { getProjectHref } from "../lib/projects";
+import IndexGroup from "../components/content/IndexGroup.astro";
+import IndexRow from "../components/content/IndexRow.astro";
+import StatusBadge from "../components/content/StatusBadge.astro";
+import HomeLatestNotes from "../components/content/HomeLatestNotes.astro";
+import { portfolio } from "../data/portfolio";
+import { formatDate } from "../lib/dates";
+import { getProjectHref, getProjectStackLabel } from "../lib/projects";
 import {
   getWritingPath,
+  getWritingReadTime,
   sortWritingEntries,
   filterPublicWritingEntries,
 } from "../lib/writing";
 import { getStaticOgImagePath } from "../lib/og-image";
 import { withAutoOgImage } from "../lib/seo";
 import { formatNowUpdatedAt, getLatestNowEntry } from "../lib/now";
-import HomeLatestNotes from "../components/content/HomeLatestNotes.astro";
 import { sortNotes } from "../lib/notes";
 
 const [projects, writing, nowEntries, notes] = await Promise.all([
@@ -27,12 +31,19 @@ const [projects, writing, nowEntries, notes] = await Promise.all([
 const featuredProjects = [...projects]
   .sort((a, b) => a.data.order - b.data.order)
   .filter((project) => project.data.featured)
-  .slice(0, 2);
+  .slice(0, 3);
 
 const latestWriting = sortWritingEntries(filterPublicWritingEntries(writing)).slice(0, 3);
 const latestNotes = sortNotes(notes).slice(0, 3);
 
 const latestNow = getLatestNowEntry(nowEntries);
+
+const heroLinks = [
+  { label: "portfolio", href: "/portfolio" },
+  { label: "résumé", href: portfolio.resume.href },
+  { label: "github", href: portfolio.github, external: true },
+  { label: "email", href: `mailto:${portfolio.email}` },
+];
 
 const seo = withAutoOgImage(
   {
@@ -50,126 +61,132 @@ const seo = withAutoOgImage(
   description="Sid's portfolio: projects, writing, references, and work."
   seo={seo}
 >
-  <Container class="min-h-[80dvh]">
-    <div class="py-4 lg:py-6">
-      <Section>
-        <div class="space-y-8">
-          <div class="space-y-5">
-            <div id="intro-head" class="space-y-1">
-              <h1
-                class="ui-title max-w-2xl font-display font-semibold tracking-tight text-text"
-              >
-                Siddharth Mittal
-              </h1>
-            </div>
-            <div id="intro-copy" class="ui-body max-w-[62ch] space-y-5 text-text">
-              <p>
-                I'm the guy behind the scenes, keeping systems moving. Most days
-                that means tracing failures, simplifying workflows, making
-                trade-offs, and trying to leave things a little easier to reason
-                about than I found them.
-              </p>
-              <p>
-                Right now building &amp; maintaining the backend systems behind
-                remote technical interviews at <a
-                  href="/work/taptic"
-                  class="inline-link text-text">Taptic</a
-                >
-                working on everything from scheduling workflows and automation to
-                recording infrastructure and the operational tooling around it.
-              </p>
-              <p>
-                Outside of work, I spend my time experimenting with ideas,
-                building projects, lifting weights and occasionally shouting
-                into the void <a
-                  href="https://threads.com/@webxsid"
-                  target="_blank"
-                  class="inline-link text-text">@webxsid</a
-                >{" "}<a
-                  href="/gifs/old-man-yells-at-clouds.gif"
-                  class="inline-link text-text"
-                  aria-label="Open gif preview"
-                >(evidence)</a>.
-              </p>
-            </div>
-          </div>
+  <Container>
+    <div class="home space-y-14 py-4 lg:space-y-16 lg:py-6">
+      <section class="motion-page space-y-6" aria-labelledby="intro-head">
+        <div class="space-y-2">
+          <h1
+            id="intro-head"
+            class="ui-title max-w-2xl font-display font-semibold tracking-tight text-text"
+          >
+            Siddharth Mittal
+          </h1>
+          <p class="ui-meta font-mono text-text-muted">
+            {portfolio.role} ·{" "}
+            <a href="/work/taptic" class="index-row-meta-link">Taptic</a>
+          </p>
         </div>
 
-        <hr class="my-12 border-border/45" />
-        <div class="grid gap-10 lg:grid-cols-2 lg:gap-8">
-          <Section title="Featured Projects">
-            <ul class="border-t border-border/45">
-              {
-                featuredProjects.map((project, idx) => (
-                  <li class={idx === 0 ? "" : "border-t border-border/45"}>
-                    <HomePreviewItem
-                      href={getProjectHref(project) ?? undefined}
-                      title={project.data.title}
-                      previewType="project"
-                      projectStatus={project.data.status}
-                      projectStack={project.data.stack}
-                      summary={project.data.summary}
-                    />
-                  </li>
-                ))
-              }
-            </ul>
-
-            <a
-              href="/projects"
-              class="primary-button ui-shell inline-flex items-center transition"
-            >
-              View all projects
-            </a>
-          </Section>
-
-          <Section title="Latest Writing">
-            <ul class="border-t border-border/45">
-              {
-                latestWriting.map((entry, idx) => (
-                  <li class={idx === 0 ? "" : "border-t border-border/45"}>
-                    <HomePreviewItem
-                      href={getWritingPath(entry)}
-                      title={entry.data.title}
-                      summary={entry.data.summary}
-                    />
-                  </li>
-                ))
-              }
-            </ul>
-
-            <a
-              href="/writing"
-              class="primary-button ui-shell inline-flex items-center transition"
-            >
-              View all writing
-            </a>
-          </Section>
+        <div id="intro-copy" class="ui-body max-w-[62ch] space-y-5 text-text">
+          <p>
+            I'm the guy behind the scenes, keeping systems moving. Most days
+            that means tracing failures, simplifying workflows, making
+            trade-offs, and trying to leave things a little easier to reason
+            about than I found them.
+          </p>
+          <p>
+            Right now building &amp; maintaining the backend systems behind
+            remote technical interviews at <a
+              href="/work/taptic"
+              class="inline-link text-text">Taptic</a
+            >, working on everything from scheduling workflows and automation
+            to recording infrastructure and the operational tooling around it.
+          </p>
+          <p>
+            Outside of work, I spend my time experimenting with ideas,
+            building projects, lifting weights and occasionally shouting into
+            the void <a
+              href="https://threads.com/@webxsid"
+              target="_blank"
+              class="inline-link text-text">@webxsid</a
+            >{" "}<a
+              href="/gifs/old-man-yells-at-clouds.gif"
+              class="inline-link text-text"
+              aria-label="Open gif preview"
+            >(evidence)</a>.
+          </p>
         </div>
-      </Section>
-    </div>
-    <HomeLatestNotes notes={latestNotes} />
-    {
-      latestNow && (
-        <Section title="Now">
-          <div class="space-y-4">
-            <p class="ui-body">{latestNow.data.summary}</p>
 
-            <div class="flex items-center gap-3">
-              <span class="ui-body text-text-muted">
-                Updated {formatNowUpdatedAt(latestNow.data.updatedAt)}
+        <nav class="index-row-meta ui-meta font-mono" aria-label="Elsewhere">
+          {
+            heroLinks.map((link) => (
+              <a
+                class="index-row-meta-link"
+                href={link.href}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
+              >{link.external ? `${link.label} ↗` : link.label}</a>
+            ))
+          }
+        </nav>
+
+        {
+          latestNow && (
+            <a class="home-now" href="/now">
+              <span class="home-now-label ui-label font-mono">now</span>
+              <span class="home-now-summary ui-prose">
+                {latestNow.data.summary}
               </span>
+              <span class="home-now-meta ui-meta font-mono">
+                updated {formatNowUpdatedAt(latestNow.data.updatedAt)} →
+              </span>
+            </a>
+          )
+        }
+      </section>
 
-              <span class="text-border">/</span>
+      <IndexGroup
+        label="Latest writing"
+        id="home-writing"
+        href="/writing"
+        linkLabel="all writing →"
+        pinned={false}
+      >
+        {
+          latestWriting.map((entry) => (
+            <IndexRow href={getWritingPath(entry)} title={entry.data.title} clamp>
+              {entry.data.summary}
+              <Fragment slot="meta">
+                <time datetime={entry.data.publishedAt.toISOString()}>
+                  {formatDate(entry.data.publishedAt)}
+                </time>
+                <span>{getWritingReadTime(entry)}</span>
+              </Fragment>
+            </IndexRow>
+          ))
+        }
+      </IndexGroup>
 
-              <a href="/now" class="inline-link">
-                Read more
-              </a>
-            </div>
-          </div>
-        </Section>
-      )
-    }
+      <IndexGroup
+        label="Featured projects"
+        id="home-projects"
+        href="/projects"
+        linkLabel="all projects →"
+        pinned={false}
+      >
+        {
+          featuredProjects.map((project) => (
+            <IndexRow
+              href={getProjectHref(project)}
+              title={project.data.title}
+              clamp
+            >
+              <StatusBadge
+                slot="badge"
+                status={project.data.status}
+                class="shrink-0"
+              />
+              {project.data.summary}
+              <Fragment slot="meta">
+                <span>{getProjectStackLabel(project)}</span>
+              </Fragment>
+            </IndexRow>
+          ))
+        }
+      </IndexGroup>
+
+      <HomeLatestNotes notes={latestNotes} />
+    </div>
     <ContentLinkPreview previewLinks={[]} />
   </Container>
 </BaseLayout>

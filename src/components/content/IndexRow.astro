@@ -3,9 +3,10 @@ type Props = {
   href?: string | null;
   title: string;
   muted?: boolean;
+  clamp?: boolean;
 };
 
-const { href, title, muted = false } = Astro.props as Props;
+const { href, title, muted = false, clamp = false } = Astro.props as Props;
 const hasAside = Astro.slots.has("aside");
 ---
 
@@ -39,7 +40,7 @@ const hasAside = Astro.slots.has("aside");
       </h3>
       <slot name="badge" />
     </div>
-    <div class="index-row-summary ui-prose">
+    <div class="index-row-summary ui-prose" data-clamp={clamp ? "true" : undefined}>
       <slot />
     </div>
     {

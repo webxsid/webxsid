@@ -1,4 +1,5 @@
 import type { CollectionEntry } from "astro:content";
+import { formatDate, monthNames } from "./dates";
 
 export type NowEntry = CollectionEntry<"now">;
 
@@ -18,16 +19,9 @@ export function getLatestNowEntry(entries: NowEntry[]) {
 }
 
 export function formatNowUpdatedAt(date: Date) {
-  return new Intl.DateTimeFormat("en-IN", {
-    month: "short",
-    year: "numeric",
-  }).format(date);
+  return `${monthNames[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
 export function formatNowRailDate(id: string) {
-  return new Intl.DateTimeFormat("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  }).format(parseNowDate(id));
+  return formatDate(parseNowDate(id));
 }

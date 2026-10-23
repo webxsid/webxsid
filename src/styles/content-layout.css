@@ -64,6 +64,30 @@
     font-weight: 600;
   }
 
+  .index-group-label[data-pinned="false"] {
+    position: static;
+    background: none;
+    backdrop-filter: none;
+  }
+
+  .index-group-title {
+    margin: 0;
+    font: inherit;
+  }
+
+  .index-group-link {
+    margin-left: auto;
+    color: rgb(var(--text-muted));
+    font-weight: 400;
+    text-decoration: none;
+    transition: color var(--motion-duration-soft) var(--ease-smooth);
+  }
+
+  .index-group-link:hover,
+  .index-group-link:focus-visible {
+    color: rgb(var(--text));
+  }
+
   .index-group-label::before {
     content: "";
     width: 3px;
@@ -139,6 +163,14 @@
   .index-row-summary {
     max-width: 62ch;
     color: rgb(var(--text-muted));
+  }
+
+  .index-row-summary[data-clamp="true"] {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
   }
 
   .index-row-meta {
@@ -274,18 +306,17 @@
   .home-notes-log {
     margin: 0;
     padding: 0;
-    border-top: 1px solid rgb(var(--border-default) / 0.45);
   }
 
-  .home-notes-log > li {
-    border-bottom: 1px solid rgb(var(--border-default) / 0.45);
+  .home-notes-log > li + li {
+    border-top: 1px dashed rgb(var(--border-default) / 0.45);
   }
 
   .home-notes-log-row {
     display: grid;
     grid-template-columns: 3.5rem minmax(0, 1fr);
     gap: 0 1rem;
-    padding: 0.9rem 0;
+    padding: 1.25rem 0;
     color: inherit;
     text-decoration: none;
   }
@@ -309,6 +340,38 @@
   }
 
   .home-notes-log-row:hover .home-notes-log-excerpt {
+    color: rgb(var(--text));
+  }
+
+  /* Landing "now" status line. */
+  .home-now {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.35rem;
+    max-width: 62ch;
+    padding: 0.85rem 1rem;
+    border-left: 3px solid rgb(var(--accent-primary));
+    background: rgb(var(--surface-elevated) / 0.45);
+    color: inherit;
+    text-decoration: none;
+    transition: background-color var(--motion-duration-soft) var(--ease-smooth);
+  }
+
+  .home-now:hover {
+    background: rgb(var(--surface-elevated) / 0.8);
+  }
+
+  .home-now:focus-visible {
+    outline: 2px solid rgb(var(--border-strong));
+    outline-offset: 3px;
+  }
+
+  .home-now-label,
+  .home-now-meta {
+    color: rgb(var(--text-muted));
+  }
+
+  .home-now-summary {
     color: rgb(var(--text));
   }
 
