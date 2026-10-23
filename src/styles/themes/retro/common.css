@@ -103,7 +103,6 @@
 
   --footer-title-size: clamp(1.2rem, 2.6vw, 1.6rem);
   --footer-title-line-height: 1.1;
-  --footer-title-font-family: "Press Start 2P", "VT323", monospace;
 
   --footer-nav-link-size: clamp(0.5rem, 2.5vw, 0.8rem);
   --footer-nav-link-line-height: 1.3;

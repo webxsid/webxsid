@@ -160,7 +160,6 @@
 
   --footer-title-size: clamp(1.65rem, 3.7vw, 2.45rem);
   --footer-title-line-height: 1.1;
-  --footer-title-font-family: serif;
 
   --footer-nav-link-size: clamp(0.88rem, 2.5vw, 1.1rem);
   --footer-nav-link-line-height: 1.3;

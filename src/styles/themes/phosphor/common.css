@@ -125,7 +125,6 @@
 
   --footer-title-size: clamp(1.42rem, 2.9vw, 2rem);
   --footer-title-line-height: 1.08;
-  --footer-title-font-family: "IBM Plex Mono", "IBM Plex Sans", ui-monospace, monospace;
 
   --footer-nav-link-size: clamp(0.76rem, 1.9vw, 0.92rem);
   --footer-nav-link-line-height: 1.25;

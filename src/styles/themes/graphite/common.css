@@ -122,7 +122,6 @@
 
   --footer-title-size: clamp(1.78rem, 3.8vw, 2.6rem);
   --footer-title-line-height: 1.1;
-  --footer-title-font-family: "Fraunces", "Iowan Old Style", serif;
 
   --footer-nav-link-size: clamp(0.84rem, 2.2vw, 1rem);
   --footer-nav-link-line-height: 1.3;
