@@ -44,6 +44,7 @@ Source for all claims in this section: user's finalized answers, October 11, 202
 - Coordinated integration and issue resolution with frontend developers and testing with QA · source: user's finalized answers.
 - Introduced tracing/telemetry, automated manual operational processes and investigated production failures · source: existing src/content/work/taptic.md and prior portfolio content.
 - Replacement platform was preparing for production rollout and user migration as of October 11, 2026 · source: user's finalized answers. Do not describe the replacement as already launched or the migration as completed.
+- UPDATE (user, October 23, 2026): rollout of the replacement platform and user migration are underway · source: user's answer while writing the October Now entry. Underway, not completed; still no launch date, adoption share or post-migration measurements.
 - Overall migration credit: major contributor with substantial backend ownership. Organization-wide migration leadership is not established.
 - Internal staffing departures explain the ownership change but should not appear in public copy. Use “assumed primary backend ownership across the existing and next-generation platforms.”
 - Migration motivations: difficulty maintaining the Serverless architecture, safety concerns in the JavaScript codebase, and cold-start latency · source: user clarification, October 11, 2026. These explain the decision to migrate; they do not establish measured improvements after migration. Do not reinterpret “unsafe” as a confirmed security vulnerability.
