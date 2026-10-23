@@ -187,6 +187,7 @@ export const getSectionLabel = (value: string, fallback = "Page") => {
   if (normalized === "/writing" || normalized.startsWith("/writing/")) {
     return "Writing";
   }
+  if (normalized === "/colophon") return "Colophon";
 
   return fallback;
 };
