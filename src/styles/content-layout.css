@@ -60,7 +60,7 @@
     border-bottom: 1px solid rgb(var(--border-default) / 0.45);
     background: rgb(var(--surface-page) / 0.82);
     backdrop-filter: blur(10px);
-    color: rgb(var(--text));
+    color: rgb(var(--text-primary));
     font-weight: 600;
   }
 
@@ -85,7 +85,7 @@
 
   .index-group-link:hover,
   .index-group-link:focus-visible {
-    color: rgb(var(--text));
+    color: rgb(var(--text-primary));
   }
 
   .index-group-label::before {
@@ -156,7 +156,7 @@
   }
 
   .index-row:has(.index-row-link:focus-visible) {
-    outline: 2px solid rgb(var(--border-strong));
+    outline: 2px solid rgb(var(--border-default) / var(--border-strong-opacity));
     outline-offset: 4px;
   }
 
@@ -200,7 +200,7 @@
 
   .index-row-meta-link:hover,
   .index-row-meta-link:focus-visible {
-    color: rgb(var(--text));
+    color: rgb(var(--text-primary));
     text-decoration-color: currentColor;
   }
 
@@ -235,13 +235,13 @@
 
   .notes-log-time:hover,
   .notes-log-time[aria-current="page"] {
-    color: rgb(var(--text));
+    color: rgb(var(--text-primary));
   }
 
   .notes-log-time:focus-visible,
   .notes-log-pager a:focus-visible,
   .home-notes-log-row:focus-visible {
-    outline: 2px solid rgb(var(--border-strong));
+    outline: 2px solid rgb(var(--border-default) / var(--border-strong-opacity));
     outline-offset: 3px;
   }
 
@@ -300,7 +300,7 @@
   }
 
   .notes-log-pager a:hover {
-    color: rgb(var(--text));
+    color: rgb(var(--text-primary));
   }
 
   .home-notes-log {
@@ -340,7 +340,7 @@
   }
 
   .home-notes-log-row:hover .home-notes-log-excerpt {
-    color: rgb(var(--text));
+    color: rgb(var(--text-primary));
   }
 
   /* Landing "now" status line. */
@@ -362,7 +362,7 @@
   }
 
   .home-now:focus-visible {
-    outline: 2px solid rgb(var(--border-strong));
+    outline: 2px solid rgb(var(--border-default) / var(--border-strong-opacity));
     outline-offset: 3px;
   }
 
@@ -372,7 +372,7 @@
   }
 
   .home-now-summary {
-    color: rgb(var(--text));
+    color: rgb(var(--text-primary));
   }
 
   @media (min-width: 40rem) {
