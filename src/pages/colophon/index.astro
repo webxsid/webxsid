@@ -1,10 +1,16 @@
 ---
+import { execSync } from "node:child_process";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Container from "../../components/shell/Container.astro";
-import Section from "../../components/content/Section.astro";
-import ContentDocument from "../../components/content/ContentDocument.astro";
+import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
+import IndexGroup from "../../components/content/IndexGroup.astro";
+import IndexHeader from "../../components/content/IndexHeader.astro";
+import pkg from "../../../package.json";
+import { formatDate } from "../../lib/dates";
 import { getStaticOgImagePath } from "../../lib/og-image";
 import { withAutoOgImage } from "../../lib/seo";
+
+const intro =
+  "A compact record of how this site is built, what constraints shape it, and which tools are doing the real work.";
 
 const seo = withAutoOgImage(
   {
@@ -14,6 +20,173 @@ const seo = withAutoOgImage(
   },
   getStaticOgImagePath(),
 );
+
+const versions: Record<string, string> = {
+  ...pkg.dependencies,
+  ...pkg.devDependencies,
+};
+const version = (name: string) => versions[name]?.replace(/^[^\d]*/, "");
+
+const readCommit = () => {
+  try {
+    return execSync("git rev-parse --short HEAD", { stdio: ["ignore", "pipe", "ignore"] })
+      .toString()
+      .trim();
+  } catch {
+    return process.env.CF_PAGES_COMMIT_SHA?.slice(0, 7);
+  }
+};
+
+const commit = readCommit();
+const repoUrl = "https://github.com/webxsid/webxsid";
+
+type Tool = { name: string; href: string; pkg?: string };
+
+const stack: Array<{ role: string; tools: Tool[]; note: string }> = [
+  {
+    role: "framework",
+    tools: [{ name: "Astro", href: "https://astro.build", pkg: "astro" }],
+    note: "Static output. I wanted something that treated content as content, not another React application pretending to be one.",
+  },
+  {
+    role: "language",
+    tools: [
+      { name: "TypeScript", href: "https://www.typescriptlang.org", pkg: "typescript" },
+    ],
+    note: "Keeps the content model, build tooling and page generation honest as the site grows.",
+  },
+  {
+    role: "styling",
+    tools: [
+      { name: "Tailwind CSS", href: "https://tailwindcss.com", pkg: "tailwindcss" },
+    ],
+    note: "Utilities and typography on top of CSS variables. Beyond a handful of shared components, it stays out of the way.",
+  },
+  {
+    role: "content",
+    tools: [
+      { name: "Markdown", href: "https://commonmark.org" },
+      { name: "MDX", href: "https://mdxjs.com", pkg: "@astrojs/mdx" },
+      { name: "Zod", href: "https://zod.dev", pkg: "zod" },
+    ],
+    note: "Markdown by default, MDX only when a page needs components. Every collection has an explicit, typed schema.",
+  },
+  {
+    role: "interactivity",
+    tools: [{ name: "React", href: "https://react.dev", pkg: "react" }],
+    note: "Only the header hydrates. Everything else is static HTML with a few small inline scripts.",
+  },
+  {
+    role: "code",
+    tools: [{ name: "Shiki", href: "https://shiki.style", pkg: "shiki" }],
+    note: "Highlighting happens at build time and takes its colours from the active theme.",
+  },
+  {
+    role: "type",
+    tools: [{ name: "Fontsource", href: "https://fontsource.org" }],
+    note: "Every typeface is self-hosted. See the themes below for which ones.",
+  },
+  {
+    role: "icons",
+    tools: [{ name: "Lucide", href: "https://lucide.dev", pkg: "lucide-astro" }],
+    note: "The icons scattered throughout the site.",
+  },
+  {
+    role: "images",
+    tools: [
+      { name: "Sharp", href: "https://sharp.pixelplumbing.com", pkg: "sharp" },
+      { name: "Satori", href: "https://github.com/vercel/satori", pkg: "satori" },
+    ],
+    note: "Open Graph images are rendered at build time, one per page.",
+  },
+  {
+    role: "résumé",
+    tools: [{ name: "PDFKit", href: "https://pdfkit.org", pkg: "pdfkit" }],
+    note: "The résumé PDF is generated from the same data as the portfolio page.",
+  },
+  {
+    role: "hosting",
+    tools: [{ name: "Cloudflare Pages", href: "https://pages.cloudflare.com" }],
+    note: "Static files and nothing else, hosting I rarely have to think about.",
+  },
+  {
+    role: "editing",
+    tools: [
+      { name: "Pages CMS", href: "https://pagescms.org" },
+      { name: "Obsidian", href: "https://obsidian.md" },
+    ],
+    note: "Both write to the same Markdown files in git, which stays the source of truth.",
+  },
+];
+
+const principles = [
+  "Static unless there's a good reason not to be.",
+  "Markdown before databases.",
+  "Client-side JavaScript earns its place.",
+  "Fast before clever.",
+  "Content first, animation second.",
+  "Stable URLs should stay stable.",
+  "Readable without JavaScript wherever possible.",
+  "Progressive enhancement over framework magic.",
+  "If something feels decorative, it probably doesn't belong.",
+];
+
+const themes = [
+  {
+    name: "Graphite",
+    font: '"Instrument Serif", Georgia, serif',
+    faces: ["Inter", "Instrument Serif", "JetBrains Mono"],
+  },
+  {
+    name: "E-Ink",
+    font: '"Literata Variable", Georgia, serif',
+    faces: ["Literata", "IBM Plex Mono"],
+  },
+  {
+    name: "Phosphor",
+    font: '"IBM Plex Mono", ui-monospace, monospace',
+    faces: ["IBM Plex Mono"],
+  },
+  {
+    name: "Retro",
+    font: '"Press Start 2P", monospace',
+    faces: ["VT323", "Press Start 2P"],
+  },
+  {
+    name: "Doodle",
+    font: '"Shantell Sans Variable", system-ui, sans-serif',
+    faces: ["Shantell Sans", "IBM Plex Mono"],
+  },
+];
+
+const pipeline = [
+  {
+    step: "content",
+    note: "Markdown files in git, validated against Zod schemas. Notes are timestamped files with no frontmatter.",
+  },
+  {
+    step: "links",
+    note: "A small link graph built from content bodies powers backlinks, external references and link previews.",
+  },
+  {
+    step: "metadata",
+    note: "Canonical URLs, Open Graph tags, RSS, the sitemap and structured data all come from the same sources as the pages.",
+  },
+  {
+    step: "themes",
+    note: "Five theme families, each with light and dark modes, driven by CSS variables. A tiny bootstrap script applies the saved theme before first paint.",
+  },
+  {
+    step: "fallbacks",
+    note: "Navigation and disclosures are native anchors and <details>, so reading works without JavaScript. Motion respects reduced-motion settings.",
+  },
+  {
+    step: "scripts",
+    note: "A few small scripts create new entries and keep an Obsidian mirror in sync, so writing stays file-first.",
+  },
+];
+
+const isExternal = (href: string) => href.startsWith("http");
 ---
 
 <BaseLayout
@@ -22,160 +195,122 @@ const seo = withAutoOgImage(
   seo={seo}
   backHref="/"
 >
-  <Container>
-    <div class="py-8 lg:py-14">
-      <div class="max-w-4xl space-y-14 lg:space-y-16">
-        <Section title="Colophon">
-          <div class="space-y-7">
-            <p class="ui-lead max-w-3xl font-semibold tracking-tight text-text">
-              A compact record of how this site is built, what constraints shape
-              it, and which tools are doing the real work.
+  <ContentPageFrame>
+    <div class="max-w-3xl space-y-12">
+      <IndexHeader title="Colophon" intro={intro} prompt="$ cat colophon">
+        <Fragment slot="meta">
+          <p class="index-row-meta ui-meta font-mono">
+            <span>built {formatDate(new Date())}</span>
+            {
+              commit && (
+                <a class="index-row-meta-link" href={`${repoUrl}/commit/${commit}`}>{commit}</a>
+              )
+            }
+          </p>
+        </Fragment>
+      </IndexHeader>
+
+      <div class="index-groups">
+        <IndexGroup label="Stack" id="colophon-stack" pinned={false}>
+          <dl class="colophon-list">
+            {
+              stack.map(({ role, tools, note }) => (
+                <div class="colophon-row">
+                  <dt class="colophon-key ui-meta font-mono">{role}</dt>
+                  <dd class="colophon-value">
+                    <p class="colophon-tools">
+                      {tools.map((tool) => (
+                        <span class="colophon-tool">
+                          <a class="index-row-meta-link" href={tool.href} target="_blank" rel="noopener noreferrer">{tool.name}</a>
+                          {tool.pkg && version(tool.pkg) && (
+                            <span class="colophon-version ui-meta font-mono">{version(tool.pkg)}</span>
+                          )}
+                        </span>
+                      ))}
+                    </p>
+                    <p class="colophon-note">{note}</p>
+                  </dd>
+                </div>
+              ))
+            }
+          </dl>
+        </IndexGroup>
+
+        <IndexGroup label="Principles" id="colophon-principles" pinned={false}>
+          <ol class="colophon-principles">
+            {
+              principles.map((line, index) => (
+                <li>
+                  <span class="colophon-key ui-meta font-mono" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span>{line}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </IndexGroup>
+
+        <IndexGroup label="Design" id="colophon-design" pinned={false}>
+          <div class="colophon-prose ui-prose">
+            <p>
+              I spend most of my day reading code, documentation, logs, and
+              terminal output. Unsurprisingly, that's the kind of interface I
+              enjoy spending time in.
             </p>
-            <ContentDocument class="mt-2">
-              <h2>Technology</h2>
-
-              <ul>
-                <li>
-                  <strong>Astro</strong> is the foundation of the site. I wanted something
-                  that treated content as content, not another React application pretending
-                  to be one.
-                </li>
-
-                <li>
-                  <strong>TypeScript</strong> keeps the content model, build tooling,
-                  and page generation honest as the site grows.
-                </li>
-
-                <li>
-                  <strong>Tailwind CSS v4</strong> handles almost all of the styling.
-                  Beyond a handful of shared components, most of the UI is just utilities
-                  and typography.
-                </li>
-
-                <li>
-                  <strong>Astro Content Collections</strong> and
-                  <strong>Zod</strong> keep every content type using explicit, typed
-                  schemas instead of relying on convention.
-                </li>
-
-                <li>
-                  Everything is written in <strong>Markdown</strong> by default.
-                  <strong>MDX</strong> only appears when a page genuinely benefits
-                  from interactive components.
-                </li>
-
-                <li>
-                  <strong>React</strong> is only used where interaction makes sense.
-                  Most pages never hydrate any client-side JavaScript.
-                </li>
-
-                <li>
-                  <strong>Cloudflare Pages</strong> hosts the site as static files.
-                  That keeps deployment simple and close to the shape of what actually
-                  gets built.
-                </li>
-              </ul>
-
-              <h2>Design Principles</h2>
-
-              <ul>
-                <li>Static unless there's a good reason not to be.</li>
-                <li>Markdown before databases.</li>
-                <li>Client-side JavaScript earns its place.</li>
-                <li>Fast before clever.</li>
-                <li>Content first, animation second.</li>
-                <li>Stable URLs should stay stable.</li>
-                <li>Readable without JavaScript wherever possible.</li>
-                <li>Progressive enhancement over framework magic.</li>
-                <li>
-                  If something feels decorative, it probably doesn't belong.
-                </li>
-              </ul>
-
-              <h2>Design</h2>
-
-              <p>
-                I spend most of my day reading code, documentation, logs, and
-                terminal output. Unsurprisingly, that's the kind of interface I
-                enjoy spending time in.
-              </p>
-
-              <p>
-                I wanted this site to feel closer to a notebook than a product
-                landing page. Typography, spacing, and structure do most of the
-                work. If the design disappears while you're reading, it's doing
-                exactly what I hoped it would.
-              </p>
-
-              <h2>Implementation Details</h2>
-
-              <ul>
-                <li>
-                  Open Graph images are generated automatically, including
-                  reading time for writing pages.
-                </li>
-                <li>
-                  Metadata is generated centrally so canonical URLs, Open Graph
-                  tags, RSS, and structured data all stay in sync.
-                </li>
-                <li>
-                  Writing, projects, work, references, and now pages all flow
-                  through content collections with typed frontmatter rather than
-                  ad-hoc parsing.
-                </li>
-                <li>
-                  The theme system is driven by CSS variables, multiple theme
-                  families, and an early bootstrap script so theme choice
-                  applies before the page settles.
-                </li>
-                <li>
-                  RSS and sitemap output are generated from the same content
-                  sources as the pages, so syndication and indexing do not need
-                  separate maintenance.
-                </li>
-                <li>
-                  The site builds a small internal link and reference graph from
-                  content bodies, which powers connected writing, external
-                  references, preview data, and resource hints.
-                </li>
-                <li>
-                  A few small scripts automate creating new entries, keeping
-                  lists in sync, and handling content mirrors so writing stays
-                  file-first.
-                </li>
-              </ul>
-
-              <h2>Credits</h2>
-              <ul>
-                <li>
-                  <strong>Astro</strong> for making content-first websites fun again.
-                </li>
-
-                <li>
-                  <strong>Tailwind CSS</strong> for staying out of the way.
-                </li>
-
-                <li>
-                  <strong>Cloudflare Pages</strong> for hosting that I rarely have
-                  to think about.
-                </li>
-
-                <li>
-                  <strong>Lucide</strong> for the icons scattered throughout the site.
-                </li>
-
-                <li>
-                  <strong>Sharp</strong> for the Open Graph image pipeline.
-                </li>
-
-                <li>
-                  <strong>IBM Plex</strong> for giving the site most of its voice.
-                </li>
-              </ul>
-            </ContentDocument>
+            <p>
+              I wanted this site to feel closer to a notebook than a product
+              landing page. Typography, spacing, and structure do most of the
+              work. If the design disappears while you're reading, it's doing
+              exactly what I hoped it would.
+            </p>
           </div>
-        </Section>
+
+          <ul class="colophon-themes" aria-label="Theme families">
+            {
+              themes.map(({ name, font, faces }) => (
+                <li class="colophon-theme">
+                  <span class="colophon-theme-name" data-family={name.toLowerCase()} style={`font-family: ${font}`}>{name}</span>
+                  <span class="index-row-meta ui-meta font-mono">
+                    {faces.map((face) => <span>{face}</span>)}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
+        </IndexGroup>
+
+        <IndexGroup label="How it works" id="colophon-pipeline" pinned={false}>
+          <dl class="colophon-list">
+            {
+              pipeline.map(({ step, note }) => (
+                <div class="colophon-row">
+                  <dt class="colophon-key ui-meta font-mono">{step}</dt>
+                  <dd class="colophon-value">
+                    <p class="colophon-note">{note}</p>
+                  </dd>
+                </div>
+              ))
+            }
+          </dl>
+        </IndexGroup>
       </div>
+
+      <footer class="link-footer">
+        <section class="link-footer-group">
+          <h2 class="link-footer-label ui-label font-mono">Source</h2>
+          <p class="index-row-meta ui-meta font-mono">
+            <a
+              class="index-row-meta-link"
+              href={repoUrl}
+              {...(isExternal(repoUrl)
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >{"webxsid/webxsid ↗"}</a>
+            <span>Astro + Markdown, in git</span>
+          </p>
+        </section>
+      </footer>
     </div>
-  </Container>
+  </ContentPageFrame>
 </BaseLayout>
