@@ -1,5 +1,9 @@
 ---
 import { SITE_URL } from "../../lib/site";
+import {
+  serializeStructuredData,
+  type StructuredData,
+} from "../../lib/structured-data";
 
 type SeoMeta = {
   title?: string;
@@ -23,6 +27,7 @@ type Props = {
   articleSection?: string;
   articlePublishedTime?: string;
   articleModifiedTime?: string;
+  structuredData?: StructuredData | StructuredData[];
 };
 
 const {
@@ -37,6 +42,7 @@ const {
   articleSection,
   articlePublishedTime,
   articleModifiedTime,
+  structuredData,
 } = Astro.props as Props;
 
 const pageTitle = seo?.title ?? title;
@@ -61,6 +67,7 @@ const normalizedArticleTags = [...new Set(articleTags.map((value) => value.trim(
 {keywordContent && <meta name="keywords" content={keywordContent} />}
 <link rel="canonical" href={canonical} />
 <link rel="alternate" type="application/rss+xml" title="Webxsid" href={rssUrl} />
+<link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 <meta name="robots" content={robots} />
 <meta property="og:locale" content="en_US" />
 <meta property="og:site_name" content="Webxsid" />
@@ -125,4 +132,13 @@ const normalizedArticleTags = [...new Set(articleTags.map((value) => value.trim(
       </>
     );
   })
+}
+{
+  structuredData && (
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={serializeStructuredData(structuredData)}
+    />
+  )
 }

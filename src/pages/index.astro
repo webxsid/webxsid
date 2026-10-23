@@ -20,6 +20,7 @@ import { getStaticOgImagePath } from "../lib/og-image";
 import { withAutoOgImage } from "../lib/seo";
 import { formatNowUpdatedAt, getLatestNowEntry } from "../lib/now";
 import { sortNotes } from "../lib/notes";
+import { personSchema, websiteSchema } from "../lib/structured-data";
 
 const [projects, writing, nowEntries, notes] = await Promise.all([
   getCollection("projects"),
@@ -47,7 +48,7 @@ const heroLinks = [
 
 const seo = withAutoOgImage(
   {
-    title: "Webxsid",
+    title: "Webxsid · Siddharth Mittal",
     description:
       "Backend engineer building systems that value clarity, ownership, and thoughtful design. Writing about software, developer tools, and the ideas behind them.",
     canonical: "/",
@@ -60,6 +61,7 @@ const seo = withAutoOgImage(
   title="Webxsid"
   description="Sid's portfolio: projects, writing, references, and work."
   seo={seo}
+  structuredData={[websiteSchema(), personSchema()]}
 >
   <Container>
     <div class="home space-y-14 py-4 lg:space-y-16 lg:py-6">

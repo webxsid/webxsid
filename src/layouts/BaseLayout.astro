@@ -13,6 +13,7 @@ import SiteFooter from "../components/shell/SiteFooter.astro";
 import { ClientRouter, fade } from "astro:transitions";
 import { ShellHeader } from "../components/react/header/ShellHeader";
 import type { SeoMeta } from "../lib/seo";
+import type { StructuredData } from "../lib/structured-data";
 import SiteIcon from "../../assets/SiteIcon.png";
 
 type Props = {
@@ -26,6 +27,7 @@ type Props = {
   articleSection?: string;
   articlePublishedTime?: string;
   articleModifiedTime?: string;
+  structuredData?: StructuredData | StructuredData[];
   backHref?: string;
   backLabel?: string;
   fullBleed?: boolean;
@@ -43,6 +45,7 @@ const {
   articleSection,
   articlePublishedTime,
   articleModifiedTime,
+  structuredData,
   backHref,
   backLabel = "Back",
   fullBleed = false,
@@ -89,6 +92,7 @@ const brandIcon = await getImage({
       articleSection={articleSection}
       articlePublishedTime={articlePublishedTime}
       articleModifiedTime={articleModifiedTime}
+      structuredData={structuredData}
     />
     <ClientRouter />
     <ThemeBootstrap />

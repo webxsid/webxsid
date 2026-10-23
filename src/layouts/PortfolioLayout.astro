@@ -6,17 +6,8 @@ import PortfolioHeader from "../components/portfolio/PortfolioHeader.astro";
 import { portfolio } from "../data/portfolio";
 import { portfolioCanonical } from "../lib/portfolio";
 import { portfolioOgImagePath } from "../lib/portfolio-og";
+import { personSchema } from "../lib/structured-data";
 const canonical = portfolioCanonical();
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: portfolio.name,
-  jobTitle: portfolio.role,
-  knowsAbout: portfolio.expertiseAreas,
-  email: portfolio.email,
-  url: canonical,
-  sameAs: [portfolio.github, portfolio.linkedin],
-};
 ---
 
 <!doctype html>
@@ -35,10 +26,7 @@ const structuredData = {
       description={portfolio.seo.description}
       pathname="/portfolio"
       seo={{ canonical, image: portfolioOgImagePath, imageWidth: 1200, imageHeight: 630 }}
-    /><script
-      is:inline
-      type="application/ld+json"
-      set:html={JSON.stringify(structuredData).replace(/</g, "\\u003c")}
+      structuredData={personSchema(canonical)}
     /></head
   >
   <body
