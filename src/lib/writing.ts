@@ -49,3 +49,13 @@ export function groupWritingByYear(entries: WritingEntry[]) {
 
   return years;
 }
+
+export function getAdjacentWriting(entries: WritingEntry[], id: string) {
+  const sorted = sortWritingEntries(entries);
+  const index = sorted.findIndex((entry) => entry.id === id);
+
+  return {
+    newer: index > 0 ? sorted[index - 1] : undefined,
+    older: index >= 0 ? sorted[index + 1] : undefined,
+  };
+}

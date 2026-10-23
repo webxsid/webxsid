@@ -6,12 +6,15 @@ type Props = {
   // Links the page already shows elsewhere (e.g. a project's source/site).
   declaredUrls?: string[];
   showConnectedWriting?: boolean;
+  // Render only the groups, inside a caller's .link-footer.
+  embedded?: boolean;
 };
 
 const {
   profile,
   declaredUrls = [],
   showConnectedWriting = true,
+  embedded = false,
 } = Astro.props as Props;
 
 const maxPathLength = 32;
@@ -67,11 +70,13 @@ const references = (profile?.references ?? []).filter((item) => {
   seenReferenceUrls.add(normalized);
   return true;
 });
+const Wrapper = embedded ? Fragment : "footer";
+const wrapperProps = embedded ? {} : { class: "link-footer motion-page" };
 ---
 
 {
   (backlinks.length > 0 || references.length > 0) && (
-    <footer class="link-footer motion-page">
+    <Wrapper {...wrapperProps}>
       {backlinks.length > 0 && (
         <section class="link-footer-group">
           <h2 class="link-footer-label ui-label font-mono">Mentioned in</h2>
@@ -103,6 +108,6 @@ const references = (profile?.references ?? []).filter((item) => {
           </ul>
         </section>
       )}
-    </footer>
+    </Wrapper>
   )
 }

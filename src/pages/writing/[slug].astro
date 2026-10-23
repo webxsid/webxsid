@@ -3,7 +3,12 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
 import WritingArticle from "../../components/content/WritingArticle.astro";
-import { getWritingPath, filterPublicWritingEntries } from "../../lib/writing";
+import {
+  filterPublicWritingEntries,
+  getAdjacentWriting,
+  getWritingPath,
+  getWritingReadTime,
+} from "../../lib/writing";
 import {
   getContentLinkProfiles,
   getEmptyContentLinkProfile,
@@ -14,13 +19,17 @@ import { withAutoOgImage } from "../../lib/seo";
 export async function getStaticPaths() {
   const writing = await getCollection("writing");
 
-  return filterPublicWritingEntries(writing).map((entry) => ({
+  const published = filterPublicWritingEntries(writing);
+
+  return published.map((entry) => ({
     params: { slug: entry.id },
-    props: { entry },
+    props: { entry, ...getAdjacentWriting(published, entry.id) },
   }));
 }
 
-const { entry } = Astro.props;
+const { entry, older, newer } = Astro.props;
+const toPagerLink = (target?: typeof entry) =>
+  target ? { href: getWritingPath(target), title: target.data.title } : undefined;
 const { Content } = await render(entry);
 const allWriting = filterPublicWritingEntries(await getCollection("writing"));
 const linkProfiles = await getContentLinkProfiles();
@@ -84,10 +93,14 @@ const seo = withAutoOgImage(entry.data.seo, getWritingOgImagePath(entry.id));
 >
   <ContentPageFrame>
     <WritingArticle
+      slug={entry.id}
       title={entry.data.title}
       summary={entry.data.summary}
       publishedAt={entry.data.publishedAt}
+      readTime={getWritingReadTime(entry)}
       tags={entry.data.tags}
+      older={toPagerLink(older)}
+      newer={toPagerLink(newer)}
       linkProfile={linkProfile}
       showConnectedWriting={false}
       relatedArticles={relatedArticles}

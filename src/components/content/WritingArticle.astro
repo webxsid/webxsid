@@ -1,21 +1,22 @@
 ---
 import ContentDocument from "./ContentDocument.astro";
-import ArticleFooter from "./ArticleFooter.astro";
-import ContentHeader from "./ContentHeader.astro";
-import ContentMetadata from "./ContentMetadata.astro";
-import ContentTags from "./ContentTags.astro";
 import ContentLinkFooter from "./ContentLinkFooter.astro";
 import ContentLinkPreview from "./ContentLinkPreview.astro";
-import RelatedArticles from "./RelatedArticles.astro";
+import IndexHeader from "./IndexHeader.astro";
 import type { ContentLinkProfile } from "../../lib/content-links";
 import { formatDate } from "../../lib/dates";
+import { footerSocialLinks } from "../../lib/site-links";
+
+type PagerLink = { href: string; title: string };
 
 type Props = {
-  eyebrow?: string;
+  slug: string;
   title: string;
   summary: string;
   publishedAt: Date;
+  readTime: string;
   tags?: string[];
+  draft?: boolean;
   linkProfile?: ContentLinkProfile;
   showConnectedWriting?: boolean;
   relatedArticles?: Array<{
@@ -25,47 +26,138 @@ type Props = {
     sharedTags: string[];
     linked: boolean;
   }>;
+  older?: PagerLink;
+  newer?: PagerLink;
 };
 
 const {
-  eyebrow,
+  slug,
   title,
   summary,
   publishedAt,
+  readTime,
   tags = [],
+  draft = false,
   linkProfile,
   showConnectedWriting = true,
   relatedArticles = [],
+  older,
+  newer,
 } = Astro.props as Props;
+
+const hashtags = [
+  ...new Set(tags.map((tag) => tag.trim().toLowerCase().replace(/\s+/g, "-"))),
+].filter(Boolean);
+
+const followLinks = footerSocialLinks.filter(
+  (link) =>
+    link.label === "GitHub" || link.label === "Threads" || link.label === "RSS",
+);
+const isExternal = (href: string) => href.startsWith("http");
 ---
 
-<div
-  class="motion-page max-w-3xl space-y-12 lg:space-y-16"
-  data-content-preview-scope
->
-  <ContentHeader
-    eyebrow={eyebrow}
-    title={title}
-    summary={summary}
-    metaClass="space-y-2"
-  >
-    <div slot="meta" class="space-y-2">
-      <ContentMetadata
-        items={[{ label: "Published", value: formatDate(publishedAt) }]}
-      />
-      <ContentTags tags={tags} />
-    </div>
-  </ContentHeader>
+<div class="motion-page max-w-3xl space-y-12" data-content-preview-scope>
+  {
+    draft && (
+      <p class="now-snapshot-banner ui-meta font-mono">
+        Draft, not published or indexed.
+      </p>
+    )
+  }
 
-  <ContentDocument note class="space-y-4">
+  <IndexHeader
+    title={title}
+    intro={summary}
+    prompt={`$ writing ${draft ? "--draft" : "--read"} ${slug}`}
+  >
+    <Fragment slot="meta">
+      <p class="index-row-meta ui-meta font-mono">
+        <time datetime={publishedAt.toISOString()}>{formatDate(publishedAt)}</time>
+        <span>{readTime}</span>
+      </p>
+      {
+        hashtags.length > 0 && (
+          <ul class="index-row-meta ui-meta font-mono" data-plain aria-label="Tags">
+            {hashtags.map((tag) => <li>#{tag}</li>)}
+          </ul>
+        )
+      }
+    </Fragment>
+  </IndexHeader>
+
+  <ContentDocument class="writing-body">
     <slot />
   </ContentDocument>
 
-  <ArticleFooter />
-  <ContentLinkFooter
-    profile={linkProfile}
-    showConnectedWriting={showConnectedWriting}
-  />
+  <div class="link-footer motion-page">
+    {
+      relatedArticles.length > 0 && (
+        <section class="link-footer-group">
+          <h2 class="link-footer-label ui-label font-mono">Related</h2>
+          <ul class="link-footer-items">
+            {relatedArticles.map((article) => (
+              <li class="ui-meta font-mono">
+                <span class="link-footer-kind">
+                  {formatDate(article.publishedAt)}
+                </span>
+                <a class="index-row-meta-link" href={article.href}>{article.title}</a>
+                {(article.linked || article.sharedTags.length > 0) && (
+                  <span class="link-footer-note">
+                    {" · "}
+                    {[
+                      ...(article.linked ? ["linked"] : []),
+                      ...article.sharedTags.map((tag) => `#${tag.toLowerCase()}`),
+                    ].join(" ")}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <ContentLinkFooter
+      profile={linkProfile}
+      showConnectedWriting={showConnectedWriting}
+      embedded
+    />
+
+    <section class="link-footer-group">
+      <h2 class="link-footer-label ui-label font-mono">Follow</h2>
+      <p class="index-row-meta ui-meta font-mono">
+        {
+          followLinks.map((link) => (
+            <a
+              class="index-row-meta-link"
+              href={link.href}
+              {...(isExternal(link.href)
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >{isExternal(link.href) ? `${link.label.toLowerCase()} ↗` : link.label.toLowerCase()}</a>
+          ))
+        }
+      </p>
+    </section>
+  </div>
+
+  {
+    !draft && (
+      <nav class="content-pager ui-meta font-mono" aria-label="More writing">
+        {older ? (
+          <a href={older.href} rel="prev">← {older.title}</a>
+        ) : (
+          <span />
+        )}
+        <a href="/writing">all writing</a>
+        {newer ? (
+          <a href={newer.href} rel="next">{newer.title} →</a>
+        ) : (
+          <span />
+        )}
+      </nav>
+    )
+  }
+
   <ContentLinkPreview previewLinks={linkProfile?.previewLinks ?? []} />
-  <RelatedArticles articles={relatedArticles} />
 </div>

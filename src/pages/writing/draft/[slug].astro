@@ -3,7 +3,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import ContentPageFrame from "../../../components/shell/ContentPageFrame.astro";
 import WritingArticle from "../../../components/content/WritingArticle.astro";
-import { getWritingPath } from "../../../lib/writing";
+import { getWritingPath, getWritingReadTime } from "../../../lib/writing";
 import {
   getContentLinkProfiles,
   getEmptyContentLinkProfile,
@@ -51,10 +51,12 @@ const seo = withAutoOgImage(
 >
   <ContentPageFrame>
     <WritingArticle
-      eyebrow="Draft Writing"
+      slug={entry.id}
+      draft
       title={entry.data.title}
       summary={entry.data.summary}
       publishedAt={entry.data.publishedAt}
+      readTime={getWritingReadTime(entry)}
       tags={entry.data.tags}
       linkProfile={linkProfile}
     >
