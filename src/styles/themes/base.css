@@ -123,6 +123,8 @@
   --shell-back-background: var(--shell-item-background);
   --shell-back-text: rgb(var(--text-muted));
   --shell-back-border-opacity: var(--shell-nav-border-opacity);
+  --shell-scrim-solid: 60%;
+  --shell-scrim-extend: 1.75rem;
   --shell-back-hover-text: rgb(var(--text-primary));
   --shell-back-shadow: var(--shadow-nav);
 

@@ -70,7 +70,7 @@
   --loader-route-scale-end: 0.24;
 
   --shell-nav-background:
-    linear-gradient(180deg, rgb(var(--surface-elevated) / 0.94), rgb(var(--surface-page) / 0.92));
+    linear-gradient(180deg, rgb(var(--surface-elevated) / 0.98), rgb(var(--surface-page) / 0.97));
   --shell-nav-border-opacity: 0.88;
   --shell-dock-background:
     linear-gradient(180deg, rgb(var(--surface-elevated) / 0.92), rgb(var(--surface-page) / 0.9));

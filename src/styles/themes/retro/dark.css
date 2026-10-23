@@ -61,6 +61,8 @@
     linear-gradient(180deg, rgb(54 66 111) 0%, rgb(40 50 86) 100%);
   --shell-back-text: rgb(185 191 205);
   --shell-back-border-opacity: 1;
+  --shell-scrim-solid: 100%;
+  --shell-scrim-extend: 0.5rem;
   --shell-back-hover-text: rgb(246 243 222);
   --shell-back-shadow:
     0 0 0 2px rgba(191, 201, 233, 0.16),

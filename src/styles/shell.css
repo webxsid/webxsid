@@ -101,6 +101,21 @@
     }
   }
 
+  /* The header floats over the page; a scrim behind it fades content out
+     before it reaches the pills. Retro cuts it off hard instead. */
+  .shell-header-bar::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 calc(var(--shell-scrim-extend) * -1);
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgb(var(--surface-page)) var(--shell-scrim-solid),
+      rgb(var(--surface-page) / 0)
+    );
+  }
+
   /* On phones the footer bar stacks; "·" separators only read on one line. */
   @media (max-width: 39.99rem) {
     .site-footer-bar.index-row-meta {
