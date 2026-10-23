@@ -7,6 +7,10 @@
     transition: width var(--motion-duration-surface) var(--ease-smooth);
   }
 
+  .shell-mobile-nav-frame[data-animating="true"] {
+    overflow: clip;
+  }
+
   .shell-mobile-nav-rail {
     position: relative;
     z-index: 0;

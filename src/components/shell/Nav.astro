@@ -133,6 +133,23 @@ const ActiveIcon = activeNavItem
       : null;
   };
 
+  const applyState = (
+    { frame, expanded, toggle }: NonNullable<ReturnType<typeof getMobileNav>>,
+    collapsed: boolean,
+  ) => {
+    frame.dataset.collapsed = String(collapsed);
+    toggle.setAttribute("aria-expanded", String(!collapsed));
+    toggle.setAttribute("aria-hidden", String(!collapsed));
+    toggle.tabIndex = collapsed ? 0 : -1;
+    expanded.toggleAttribute("inert", collapsed);
+    expanded.setAttribute("aria-hidden", String(collapsed));
+  };
+
+  const finishResize = (frame: HTMLElement) => {
+    delete frame.dataset.animating;
+    frame.style.removeProperty("width");
+  };
+
   const setCollapsed = (shouldCollapse: boolean) => {
     const elements = getMobileNav();
     if (!elements) return;
@@ -140,58 +157,38 @@ const ActiveIcon = activeNavItem
     const { frame, expanded, toggle } = elements;
     const collapsed = mobileViewport.matches && shouldCollapse;
     if ((frame.dataset.collapsed === "true") === collapsed) return;
-    if (frame.dataset.expanding === "true") return;
 
     if (
       !mobileViewport.matches ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
-      frame.dataset.collapsed = String(collapsed);
-      frame.style.removeProperty("width");
-      toggle.setAttribute("aria-expanded", String(!collapsed));
-      toggle.setAttribute("aria-hidden", String(!collapsed));
-      toggle.tabIndex = collapsed ? 0 : -1;
-      expanded.toggleAttribute("inert", collapsed);
-      expanded.setAttribute("aria-hidden", String(collapsed));
+      applyState(elements, collapsed);
+      finishResize(frame);
       return;
     }
 
+    // Both directions swap content at once and let the width follow, so the
+    // icons and the pill crossfade while the frame (clipped) resizes around them.
     const currentWidth = frame.getBoundingClientRect().width;
-    const targetWidth = collapsed
-      ? toggle.offsetWidth + 10
-      : expanded.scrollWidth + 10;
-
     frame.style.width = `${currentWidth}px`;
+    frame.dataset.animating = "true";
     void frame.offsetWidth;
 
-    if (collapsed) {
-      frame.dataset.collapsed = "true";
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.setAttribute("aria-hidden", "false");
-      toggle.tabIndex = 0;
-      expanded.setAttribute("inert", "");
-      expanded.setAttribute("aria-hidden", "true");
-    } else {
-      frame.dataset.expanding = "true";
-      toggle.disabled = true;
-    }
-
+    // Measure after the swap: the rail only has its natural width once it is
+    // back in flow.
+    applyState(elements, collapsed);
+    const targetWidth = (collapsed ? toggle : expanded).offsetWidth + 10;
     frame.style.width = `${targetWidth}px`;
+
+    if (Math.abs(targetWidth - currentWidth) < 1) finishResize(frame);
   };
 
   const resetMobileNav = () => {
     const elements = getMobileNav();
     if (!elements) return;
 
-    elements.frame.dataset.collapsed = "false";
-    delete elements.frame.dataset.expanding;
-    elements.frame.style.removeProperty("width");
-    elements.toggle.setAttribute("aria-expanded", "true");
-    elements.toggle.setAttribute("aria-hidden", "true");
-    elements.toggle.tabIndex = -1;
-    elements.toggle.disabled = false;
-    elements.expanded.removeAttribute("inert");
-    elements.expanded.setAttribute("aria-hidden", "false");
+    applyState(elements, false);
+    finishResize(elements.frame);
     previousScrollY = window.scrollY;
     direction = 0;
     directionDistance = 0;
@@ -206,6 +203,10 @@ const ActiveIcon = activeNavItem
 
     event.preventDefault();
     setCollapsed(false);
+    toggle
+      .closest(mobileNavQuery)
+      ?.querySelector<HTMLElement>('[aria-current="page"]')
+      ?.focus({ preventScroll: true });
   });
 
   window.addEventListener(
@@ -251,22 +252,6 @@ const ActiveIcon = activeNavItem
     if (!(target instanceof HTMLElement)) return;
     if (!target.matches(mobileNavFrameQuery) || event.propertyName !== "width") return;
 
-    if (target.dataset.expanding === "true") {
-      target.dataset.collapsed = "false";
-      delete target.dataset.expanding;
-
-      const expanded = target.querySelector<HTMLElement>(expandedNavQuery);
-      const toggle = target.querySelector<HTMLButtonElement>(toggleNavQuery);
-      expanded?.removeAttribute("inert");
-      expanded?.setAttribute("aria-hidden", "false");
-      toggle?.setAttribute("aria-expanded", "true");
-      toggle?.setAttribute("aria-hidden", "true");
-      if (toggle) {
-        toggle.tabIndex = -1;
-        toggle.disabled = false;
-      }
-    }
-
-    target.style.removeProperty("width");
+    finishResize(target);
   });
 </script>
