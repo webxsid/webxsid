@@ -59,9 +59,10 @@ const isExternal = (href: string) => href.startsWith("http");
 <div class="motion-page max-w-3xl space-y-12" data-content-preview-scope>
   {
     draft && (
-      <p class="now-snapshot-banner ui-meta font-mono">
-        Draft, not published or indexed.
-      </p>
+      <div class="now-snapshot-banner callout-frame ui-meta font-mono">
+        <span class="callout-legend ui-label font-mono"><span class="callout-dot" aria-hidden="true"></span>draft</span>
+        <span>Not published or indexed yet.</span>
+      </div>
     )
   }
 

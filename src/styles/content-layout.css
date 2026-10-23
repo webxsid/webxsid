@@ -373,17 +373,88 @@
     background: rgb(var(--accent-primary));
   }
 
-  .now-snapshot-banner {
-    display: block;
-    padding: 0.75rem 1rem;
-    border-left: 3px solid rgb(var(--accent-primary));
-    background: rgb(var(--surface-elevated) / 0.45);
-    color: rgb(var(--text-muted));
+  /* Callouts: a hairline frame with the label set into its top edge. The top
+     edge is two line segments either side of the label, so the gap works on
+     textured backgrounds (no background patch behind the label). */
+  .callout-frame {
+    --callout-legend-h: 1.5rem;
+    --callout-radius: min(var(--radius-control), 0.7rem);
+    --callout-line: rgb(var(--border-default) / 0.7);
+    position: relative;
+    display: grid;
+    gap: 0.35rem;
+    padding: 0 1.1rem 0.95rem;
+    color: inherit;
     text-decoration: none;
   }
 
-  .now-snapshot-banner:hover,
-  .now-snapshot-banner:focus-visible {
+  .callout-frame::before {
+    content: "";
+    position: absolute;
+    inset: var(--callout-legend-h) 0 0;
+    border: 1px solid var(--callout-line);
+    border-top: 0;
+    border-radius: 0 0 var(--callout-radius) var(--callout-radius);
+    pointer-events: none;
+    transition: border-color var(--motion-duration-soft) var(--ease-smooth);
+  }
+
+  .callout-legend {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: var(--callout-legend-h);
+    margin: 0 -1.1rem;
+    color: rgb(var(--text-muted));
+  }
+
+  .callout-legend::before,
+  .callout-legend::after {
+    content: "";
+    align-self: flex-end;
+    height: calc(var(--callout-legend-h) / 2);
+    border-top: 1px solid var(--callout-line);
+    transition: border-color var(--motion-duration-soft) var(--ease-smooth);
+  }
+
+  .callout-legend::before {
+    flex: none;
+    width: 0.65rem;
+    border-left: 1px solid var(--callout-line);
+    border-top-left-radius: var(--callout-radius);
+  }
+
+  .callout-legend::after {
+    flex: 1;
+    border-right: 1px solid var(--callout-line);
+    border-top-right-radius: var(--callout-radius);
+  }
+
+  .callout-dot {
+    flex: none;
+    width: 0.4rem;
+    height: 0.4rem;
+    margin-right: -0.15rem;
+    border-radius: 9999px;
+    background: rgb(var(--accent-primary));
+  }
+
+  a.callout-frame:hover,
+  a.callout-frame:focus-visible {
+    --callout-line: rgb(var(--border-default) / var(--border-strong-opacity));
+  }
+
+  a.callout-frame:focus-visible {
+    outline: 2px solid rgb(var(--border-default) / var(--border-strong-opacity));
+    outline-offset: 4px;
+  }
+
+  .now-snapshot-banner {
+    color: rgb(var(--text-muted));
+  }
+
+  a.now-snapshot-banner:hover,
+  a.now-snapshot-banner:focus-visible {
     color: rgb(var(--text-primary));
   }
 
@@ -547,28 +618,9 @@
 
   /* Landing "now" status line. */
   .home-now {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.35rem;
     max-width: 62ch;
-    padding: 0.85rem 1rem;
-    border-left: 3px solid rgb(var(--accent-primary));
-    background: rgb(var(--surface-elevated) / 0.45);
-    color: inherit;
-    text-decoration: none;
-    transition: background-color var(--motion-duration-soft) var(--ease-smooth);
   }
 
-  .home-now:hover {
-    background: rgb(var(--surface-elevated) / 0.8);
-  }
-
-  .home-now:focus-visible {
-    outline: 2px solid rgb(var(--border-default) / var(--border-strong-opacity));
-    outline-offset: 3px;
-  }
-
-  .home-now-label,
   .home-now-meta {
     color: rgb(var(--text-muted));
   }

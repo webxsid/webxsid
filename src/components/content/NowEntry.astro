@@ -40,8 +40,9 @@ const showPager = Boolean(newer || older);
 <div class="motion-page space-y-12" data-content-preview-scope>
   {
     isSnapshot && latest && (
-      <a class="now-snapshot-banner ui-meta font-mono" href="/now">
-        An older snapshot from {updated}. See what I'm up to now →
+      <a class="now-snapshot-banner callout-frame ui-meta font-mono" href="/now">
+        <span class="callout-legend ui-label font-mono"><span class="callout-dot" aria-hidden="true"></span>snapshot</span>
+        <span>An older snapshot from {updated}. See what I'm up to now →</span>
       </a>
     )
   }
