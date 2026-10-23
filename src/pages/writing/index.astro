@@ -2,9 +2,14 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
-import Section from "../../components/content/Section.astro";
+import IndexGroup from "../../components/content/IndexGroup.astro";
+import IndexHeader from "../../components/content/IndexHeader.astro";
+import IndexRow from "../../components/content/IndexRow.astro";
+import { formatDayMonth } from "../../lib/dates";
 import {
   getWritingPath,
+  getWritingReadTime,
+  groupWritingByYear,
   sortWritingEntries,
   filterPublicWritingEntries,
 } from "../../lib/writing";
@@ -13,11 +18,16 @@ import { withAutoOgImage } from "../../lib/seo";
 
 const writing = await getCollection("writing");
 const entries = sortWritingEntries(filterPublicWritingEntries(writing));
+const years = groupWritingByYear(entries);
+const maxTags = 3;
+
+const intro =
+  "Essays and notes on software, developer tools, and the work of building them.";
 
 const seo = withAutoOgImage(
   {
     title: "Writing · Webxsid",
-    description: "Essays and notes on software, developer tools, and the work of building them.",
+    description: intro,
     canonical: "/writing",
   },
   getListOgImagePath("writing"),
@@ -26,102 +36,43 @@ const seo = withAutoOgImage(
 
 <BaseLayout
   title="Writing · Webxsid"
-  description="Essays and notes on software, developer tools, and the work of building them."
+  description={intro}
   seo={seo}
   backHref="/"
 >
   <ContentPageFrame>
     <div class="space-y-10">
-        <Section>
-          <div class="space-y-5 text-text-muted">
-            <p
-              class="ui-title max-w-2xl font-display font-semibold tracking-tight text-text"
-            >
-              Writing
-            </p>
-            <p class="ui-prose">
-              Essays and notes on software, developer tools, and the work of
-              building them.
-            </p>
-          </div>
-        </Section>
+      <IndexHeader
+        title="Writing"
+        intro={intro}
+        meta={`${entries.length} ${entries.length === 1 ? "post" : "posts"}`}
+      />
 
-        <div class="overflow-x-auto border-y border-border/45">
-          <div class="divide-y divide-border/70 md:hidden">
-            {
-              entries.map((entry) => (
-                <article class="space-y-4 py-5">
-                  <div class="space-y-2.5">
-                    <a
-                      href={getWritingPath(entry)}
-                      class="title-link ui-link motion-soft"
-                    >
-                      {entry.data.title}
-                    </a>
-                    <p class="ui-tag text-text-muted">
-                      {entry.data.publishedAt.toLocaleDateString(undefined, {
-                        month: "short",
-                        day: "2-digit",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </div>
-
-                  <p class="ui-prose text-text-muted">{entry.data.summary}</p>
-                </article>
-              ))
-            }
-          </div>
-
-          <div class="hidden md:block">
-            <table class="min-w-[44rem] w-full table-fixed border-collapse">
-              <thead class="border-b border-border/45">
-                <tr class="ui-table font-mono text-text-muted">
-                  <th class="w-[28%] py-3 pr-6 text-left font-medium">Title</th>
-                  <th class="w-[52%] py-3 pr-6 text-left font-medium"
-                    >Summary</th
+      <div class="index-groups">
+        {
+          years.map(({ year, entries }) => (
+            <IndexGroup label={String(year)} id={`writing-${year}`}>
+              {entries.map((entry) => (
+                <IndexRow href={getWritingPath(entry)} title={entry.data.title}>
+                  <time
+                    slot="aside"
+                    datetime={entry.data.publishedAt.toISOString()}
                   >
-                  <th class="w-[20%] py-3 text-left font-medium">Published</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  entries.map((entry) => (
-                    <tr class="border-b border-border/45 last:border-b-0">
-                      <td class="align-top py-5 pr-6">
-                        <a
-                          href={getWritingPath(entry)}
-                          class="title-link ui-link motion-soft"
-                        >
-                          {entry.data.title}
-                        </a>
-                      </td>
-
-                      <td class="align-top py-5 pr-6">
-                        <p class="ui-prose max-w-3xl text-text-muted">
-                          {entry.data.summary}
-                        </p>
-                      </td>
-
-                      <td class="align-top py-5">
-                        <p class="ui-tag text-text-muted">
-                          {entry.data.publishedAt.toLocaleDateString(
-                            undefined,
-                            {
-                              month: "short",
-                              day: "2-digit",
-                              year: "numeric",
-                            },
-                          )}
-                        </p>
-                      </td>
-                    </tr>
-                  ))
-                }
-              </tbody>
-            </table>
-          </div>
-        </div>
+                    {formatDayMonth(entry.data.publishedAt)}
+                  </time>
+                  {entry.data.summary}
+                  <Fragment slot="meta">
+                    {[
+                      getWritingReadTime(entry),
+                      ...entry.data.tags.slice(0, maxTags),
+                    ].join(" · ")}
+                  </Fragment>
+                </IndexRow>
+              ))}
+            </IndexGroup>
+          ))
+        }
+      </div>
     </div>
   </ContentPageFrame>
 </BaseLayout>

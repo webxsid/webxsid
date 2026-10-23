@@ -1,0 +1,53 @@
+---
+type Props = {
+  href?: string | null;
+  title: string;
+  muted?: boolean;
+};
+
+const { href, title, muted = false } = Astro.props as Props;
+const hasAside = Astro.slots.has("aside");
+---
+
+<article
+  class="index-row"
+  data-has-aside={hasAside ? "true" : undefined}
+  data-muted={muted ? "true" : undefined}
+  data-linked={href ? "true" : undefined}
+>
+  {
+    hasAside && (
+      <div class="index-row-aside ui-meta font-mono">
+        <slot name="aside" />
+      </div>
+    )
+  }
+  <div class="index-row-main">
+    <div class="index-row-head">
+      <h3 class="index-row-title">
+        {
+          href ? (
+            <a href={href} class="index-row-link title-link ui-link">
+              {title}
+            </a>
+          ) : (
+            <span class="ui-link font-semibold tracking-tight text-text">
+              {title}
+            </span>
+          )
+        }
+      </h3>
+      <slot name="badge" />
+    </div>
+    <div class="index-row-summary ui-prose">
+      <slot />
+    </div>
+    {
+      Astro.slots.has("meta") && (
+        <p class="index-row-meta ui-meta font-mono">
+          <slot name="meta" />
+        </p>
+      )
+    }
+  </div>
+</article>

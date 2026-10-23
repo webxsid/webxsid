@@ -22,6 +22,23 @@ export const projectStatusLabels: Record<ProjectStatus, string> = {
 
 export type ProjectEntry = CollectionEntry<"projects">;
 
+// Live work first, retired work last; `order` breaks ties.
+const projectStatusRank: Record<ProjectStatus, number> = {
+  active: 0,
+  building: 1,
+  maintained: 2,
+  experimental: 3,
+  prototype: 4,
+  archived: 5,
+};
+
+export const sortProjectsByStatus = (entries: ProjectEntry[]) =>
+  [...entries].sort(
+    (a, b) =>
+      projectStatusRank[a.data.status] - projectStatusRank[b.data.status] ||
+      a.data.order - b.data.order,
+  );
+
 const normalizeWhitespace = (value: string) => value.replace(/\s+/g, " ").trim();
 
 const stripMarkdown = (value: string) =>

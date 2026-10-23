@@ -1,0 +1,15 @@
+---
+type Props = {
+  label: string;
+  id?: string;
+};
+
+const { label, id } = Astro.props as Props;
+---
+
+<section class="index-group" aria-labelledby={id}>
+  <h2 id={id} class="index-group-label ui-label font-mono">{label}</h2>
+  <div class="index-group-items">
+    <slot />
+  </div>
+</section>

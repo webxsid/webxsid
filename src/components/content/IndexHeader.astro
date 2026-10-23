@@ -1,0 +1,25 @@
+---
+type Props = {
+  title: string;
+  intro: string;
+  prompt?: string;
+  meta?: string;
+};
+
+const { title, intro, prompt, meta } = Astro.props as Props;
+---
+
+<header class="motion-page space-y-5 text-text-muted">
+  {
+    prompt && (
+      <p class="index-prompt ui-label font-mono" aria-hidden="true">
+        {prompt}
+      </p>
+    )
+  }
+  <h1 class="ui-title max-w-2xl font-display font-semibold tracking-tight text-text">
+    {title}
+  </h1>
+  <p class="ui-prose">{intro}</p>
+  {meta && <p class="ui-meta font-mono">{meta}</p>}
+</header>

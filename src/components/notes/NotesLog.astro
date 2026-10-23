@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from "astro:content";
 import ContentLinkPreview from "../content/ContentLinkPreview.astro";
+import IndexGroup from "../content/IndexGroup.astro";
+import IndexHeader from "../content/IndexHeader.astro";
 import NoteLogEntry from "./NoteLogEntry.astro";
 import { getContentLinkProfiles } from "../../lib/content-links";
 import { getNotePath, groupNotesByDay, sortNotes } from "../../lib/notes";
@@ -19,32 +21,22 @@ const previewLinks = notes.flatMap(
 const entryCount = `${notes.length} ${notes.length === 1 ? "entry" : "entries"}`;
 ---
 
-<section class="notes-log space-y-10" aria-labelledby="notes-title">
-  <header class="motion-page space-y-5 text-text-muted">
-    <p class="notes-log-prompt ui-label font-mono" aria-hidden="true">
-      $ notes --log
-    </p>
-    <h1
-      id="notes-title"
-      class="ui-title max-w-2xl font-display font-semibold tracking-tight text-text"
-    >
-      Notes
-    </h1>
-    <p class="ui-prose">Short notes and ideas I want to come back to.</p>
-    <p class="ui-meta font-mono">{entryCount}</p>
-  </header>
+<section class="notes-log space-y-10">
+  <IndexHeader
+    title="Notes"
+    intro="Short notes and ideas I want to come back to."
+    prompt="$ notes --log"
+    meta={entryCount}
+  />
 
-  <div class="notes-log-days">
+  <div class="index-groups">
     {
       days.map((day) => (
-        <section class="notes-log-day" aria-label={day.label}>
-          <h2 class="notes-log-day-label ui-label font-mono">{day.label}</h2>
-          <div class="notes-log-entries">
-            {day.notes.map((entry) => (
-              <NoteLogEntry entry={entry} Content={contentById.get(entry.id)!} />
-            ))}
-          </div>
-        </section>
+        <IndexGroup label={day.label} id={`notes-${day.key}`}>
+          {day.notes.map((entry) => (
+            <NoteLogEntry entry={entry} Content={contentById.get(entry.id)!} />
+          ))}
+        </IndexGroup>
       ))
     }
   </div>

@@ -31,8 +31,8 @@
     list-style: none;
   }
 
-  /* Notes logbook: day groups → timestamped entries. */
-  .notes-log-prompt::after {
+  /* Index pages (notes, writing, projects): pinned group labels → rows. */
+  .index-prompt::after {
     content: "";
     display: inline-block;
     width: 0.55em;
@@ -43,12 +43,12 @@
     animation: notes-cursor 1.1s step-end infinite;
   }
 
-  .notes-log-days {
+  .index-groups {
     display: grid;
     gap: 2.75rem;
   }
 
-  .notes-log-day-label {
+  .index-group-label {
     position: sticky;
     top: var(--notes-log-sticky-top, 4.75rem);
     z-index: 5;
@@ -64,11 +64,122 @@
     font-weight: 600;
   }
 
-  .notes-log-day-label::before {
+  .index-group-label::before {
     content: "";
     width: 3px;
     height: 1.1em;
     background: rgb(var(--accent-primary));
+  }
+
+  .index-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0 0.85rem;
+    padding: 1.25rem 0;
+  }
+
+  .index-row[data-has-aside="true"] {
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+  }
+
+  .index-row + .index-row {
+    border-top: 1px dashed rgb(var(--border-default) / 0.45);
+  }
+
+  .index-row-aside {
+    padding-top: 0.3rem;
+    color: rgb(var(--text-muted));
+  }
+
+  .index-row-main {
+    display: grid;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+
+  .index-row-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .index-row-title {
+    margin: 0;
+    font: inherit;
+  }
+
+  /* The title link covers the whole row; secondary links sit above it. */
+  .index-row-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .index-row .index-row-link:hover {
+    transform: none;
+  }
+
+  .index-row[data-linked="true"]:hover .index-row-link {
+    color: var(--link-hover-text-color);
+    text-decoration-color: var(--link-hover-decoration-color);
+    text-decoration-style: solid;
+  }
+
+  .index-row-link:focus-visible {
+    outline: none;
+  }
+
+  .index-row:has(.index-row-link:focus-visible) {
+    outline: 2px solid rgb(var(--border-strong));
+    outline-offset: 4px;
+  }
+
+  .index-row-summary {
+    max-width: 62ch;
+    color: rgb(var(--text-muted));
+  }
+
+  .index-row-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem 0.5rem;
+    margin: 0;
+    color: rgb(var(--text-muted));
+  }
+
+  /* inline-block keeps link underlines off the separator. */
+  .index-row-meta > * + *::before {
+    content: "·";
+    display: inline-block;
+    margin-right: 0.5rem;
+    color: rgb(var(--text-muted));
+  }
+
+  .index-row-meta-link {
+    position: relative;
+    z-index: 1;
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgb(var(--border-default));
+    text-underline-offset: 0.2em;
+  }
+
+  .index-row-meta-link:hover,
+  .index-row-meta-link:focus-visible {
+    color: rgb(var(--text));
+    text-decoration-color: currentColor;
+  }
+
+  .index-row[data-muted="true"] {
+    opacity: 0.68;
+    transition: opacity var(--motion-duration-soft) var(--ease-smooth);
+  }
+
+  .index-row[data-muted="true"]:hover,
+  .index-row[data-muted="true"]:focus-within {
+    opacity: 1;
   }
 
   .notes-log-entry {
@@ -202,7 +313,8 @@
   }
 
   @media (min-width: 40rem) {
-    .notes-log-entry {
+    .notes-log-entry,
+    .index-row[data-has-aside="true"] {
       grid-template-columns: 4rem minmax(0, 1fr);
       gap: 0 1.25rem;
     }

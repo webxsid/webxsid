@@ -54,15 +54,15 @@ const seo = withAutoOgImage(
 >
   <ContentPageFrame>
     <section class="notes-log space-y-10" aria-labelledby="note-day">
-      <p class="notes-log-prompt ui-label font-mono" aria-hidden="true">
+      <p class="index-prompt ui-label font-mono" aria-hidden="true">
         $ notes --show {entry.id}
       </p>
 
-      <section class="notes-log-day">
-        <h1 id="note-day" class="notes-log-day-label ui-label font-mono">
+      <section class="index-group">
+        <h1 id="note-day" class="index-group-label ui-label font-mono">
           {formatNoteDay(entry)}
         </h1>
-        <div class="notes-log-entries">
+        <div class="index-group-items">
           <NoteLogEntry entry={entry} Content={Content} current />
         </div>
       </section>

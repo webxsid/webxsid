@@ -2,182 +2,122 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
-import Section from "../../components/content/Section.astro";
+import IndexGroup from "../../components/content/IndexGroup.astro";
+import IndexHeader from "../../components/content/IndexHeader.astro";
+import IndexRow from "../../components/content/IndexRow.astro";
 import StatusBadge from "../../components/content/StatusBadge.astro";
 import {
+  getProjectCompanyHref,
   getProjectExcerpt,
   getProjectHref,
   getProjectStackLabel,
+  sortProjectsByStatus,
+  type ProjectEntry,
 } from "../../lib/projects";
 import { getListOgImagePath } from "../../lib/og-image";
 import { withAutoOgImage } from "../../lib/seo";
 
-const projects = (await getCollection("projects")).sort(
-  (a, b) => a.data.order - b.data.order,
-);
+const projects = sortProjectsByStatus(await getCollection("projects"));
+const groups = [
+  {
+    id: "personal",
+    label: "Personal projects",
+    entries: projects.filter((project) => !project.data.company),
+  },
+  {
+    id: "professional",
+    label: "Professional work",
+    entries: projects.filter((project) => project.data.company),
+  },
+].filter((group) => group.entries.length > 0);
+
+const intro =
+  "Tools and apps I've built, with notes on how they work and why I made them.";
 
 const seo = withAutoOgImage(
   {
     title: "Projects · Webxsid",
-    description: "Tools and apps I've built, with notes on how they work and why I made them.",
+    description: intro,
     canonical: "/projects",
   },
   getListOgImagePath("projects"),
 );
 
-const introCopy =
-  "Tools and apps I've built, with notes on how they work and why I made them.";
+const getSummary = (project: ProjectEntry) =>
+  project.data.detailsPage === false
+    ? getProjectExcerpt(project.body ?? "") || project.data.summary
+    : project.data.summary;
+
+const getDisplayHost = (url: string) =>
+  new URL(url).hostname.replace(/^www\./, "");
+
+const getExternalLinks = (project: ProjectEntry) =>
+  [
+    project.data.source && { label: "source", href: project.data.source },
+    project.data.website && {
+      label: getDisplayHost(project.data.website),
+      href: project.data.website,
+    },
+    project.data.demo && { label: "demo", href: project.data.demo },
+  ].filter((link): link is { label: string; href: string } => Boolean(link));
 ---
 
 <BaseLayout
   title="Projects · Webxsid"
-  description="Tools and apps I've built, with notes on how they work and why I made them."
+  description={intro}
   seo={seo}
   backHref="/"
 >
   <ContentPageFrame>
     <div class="space-y-10">
-        <Section>
-          <div class="space-y-5 text-text-muted">
-            <p
-              class="ui-title max-w-2xl font-display font-semibold tracking-tight text-text"
-            >
-              Projects
-            </p>
-            <p class="ui-prose">{introCopy}</p>
-          </div>
-        </Section>
+      <IndexHeader title="Projects" intro={intro} />
 
-        <div class="overflow-x-auto border-y border-border/45">
-          <div class="divide-y divide-border/70 md:hidden">
-            {
-              projects.map((project) => {
-                const href = getProjectHref(project);
+      <div class="index-groups">
+        {
+          groups.map((group) => (
+            <IndexGroup label={group.label} id={`projects-${group.id}`}>
+              {group.entries.map((project) => {
                 const stackLabel = getProjectStackLabel(project);
-                const bodyExcerpt =
-                  project.data.detailsPage === false
-                    ? getProjectExcerpt(project.body ?? "") ||
-                      project.data.summary
-                    : project.data.summary;
+                const company = project.data.company;
+                const companyHref = getProjectCompanyHref(project);
+                const links = getExternalLinks(project);
 
                 return (
-                  <article id={project.id} class="space-y-4 py-5">
-                    <div class="space-y-2.5">
-                      <div class="flex items-start justify-between gap-4">
-                        <div class="min-w-0 space-y-2">
-                          {href ? (
-                            <a
-                              href={href}
-                              class="title-link ui-link motion-soft"
-                            >
-                              {project.data.title}
-                            </a>
-                          ) : (
-                            <span class="ui-link font-semibold tracking-tight text-text">
-                              {project.data.title}
-                            </span>
-                          )}
-                          {stackLabel && (
-                            <p class="ui-tag font-mono text-text-muted">
-                              {stackLabel}
-                            </p>
-                          )}
-                        </div>
-
-                        <StatusBadge
-                          status={project.data.status}
-                          class="shrink-0 pt-0.5"
-                        />
-                      </div>
-                    </div>
-
-                    <p class="ui-prose text-text-muted">{bodyExcerpt}</p>
-                  </article>
+                  <IndexRow
+                    href={getProjectHref(project)}
+                    title={project.data.title}
+                    muted={project.data.status === "archived"}
+                  >
+                    <StatusBadge
+                      slot="badge"
+                      status={project.data.status}
+                      class="shrink-0"
+                    />
+                    {getSummary(project)}
+                    <Fragment slot="meta">
+                      {company && companyHref && (
+                        <span>
+                          at{" "}
+                          <a class="index-row-meta-link" href={companyHref}>{company.name}</a>
+                        </span>
+                      )}
+                      {stackLabel && <span>{stackLabel}</span>}
+                      {links.map((link) => (
+                        <a
+                          class="index-row-meta-link"
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >{`${link.label} ↗`}</a>
+                      ))}
+                    </Fragment>
+                  </IndexRow>
                 );
-              })
-            }
-          </div>
-
-          <div class="hidden md:block">
-            <table class="min-w-[44rem] w-full table-fixed border-collapse">
-              <thead class="border-b border-border/45">
-                <tr class="ui-table font-mono text-text-muted">
-                  <th class="w-[21%] py-3 pr-6 text-left font-medium"
-                    >Project</th
-                  >
-                  <th class="w-[18%] py-3 pr-6 text-left font-medium"
-                    >Built With</th
-                  >
-                  <th class="w-[16%] py-3 pr-6 text-left font-medium">Status</th
-                  >
-                  <th class="w-[45%] py-3 pr-6 text-left font-medium"
-                    >Summary</th
-                  >
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  projects.map((project) => {
-                    const href = getProjectHref(project);
-                    const stackLabel = getProjectStackLabel(project);
-                    const bodyExcerpt =
-                      project.data.detailsPage === false
-                        ? getProjectExcerpt(project.body ?? "") ||
-                          project.data.summary
-                        : project.data.summary;
-
-                    return (
-                      <tr
-                        id={project.id}
-                        class="border-b border-border/45 last:border-b-0"
-                      >
-                        <td class="align-top py-5 pr-6">
-                          <div class="space-y-2.5">
-                            {href ? (
-                              <a
-                                href={href}
-                                class="title-link ui-link motion-soft"
-                              >
-                                {project.data.title}
-                              </a>
-                            ) : (
-                              <span class="ui-link font-semibold tracking-tight text-text">
-                                {project.data.title}
-                              </span>
-                            )}
-                          </div>
-                        </td>
-
-                        <td class="align-top py-5 pr-6">
-                          <div class="space-y-2.5">
-                            {stackLabel ? (
-                              <p class="ui-tag text-text-muted">{stackLabel}</p>
-                            ) : (
-                              <span class="ui-prose text-text-muted">—</span>
-                            )}
-                          </div>
-                        </td>
-                        <td class="align-top py-5 pr-6">
-                          <div class="pt-0.5">
-                            <StatusBadge status={project.data.status} />
-                          </div>
-                        </td>
-
-                        <td class="align-top py-5 pr-6">
-                          <div class="space-y-2">
-                            <p class="ui-prose max-w-3xl text-text-muted">
-                              {bodyExcerpt}
-                            </p>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })
-                }
-              </tbody>
-            </table>
-          </div>
-        </div>
+              })}
+            </IndexGroup>
+          ))
+        }
+      </div>
     </div>
   </ContentPageFrame>
 </BaseLayout>
