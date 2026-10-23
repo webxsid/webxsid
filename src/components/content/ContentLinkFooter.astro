@@ -3,6 +3,7 @@ import type { ContentLinkProfile } from "../../lib/content-links";
 
 type Props = {
   profile?: ContentLinkProfile;
+  // Links the page already shows elsewhere (e.g. a project's source/site).
   declaredUrls?: string[];
   showConnectedWriting?: boolean;
 };
@@ -12,6 +13,9 @@ const {
   declaredUrls = [],
   showConnectedWriting = true,
 } = Astro.props as Props;
+
+const maxPathLength = 32;
+const mediaPattern = /\.(gif|png|jpe?g|webp|avif|svg|mp4|webm|mov)$/i;
 
 const normalizeExternalLink = (value: string) => {
   try {
@@ -23,143 +27,82 @@ const normalizeExternalLink = (value: string) => {
   }
 };
 
-const getDisplayUrl = (value: string) => {
+// "media0.giphy.com/media/v1.Y2lk…/giphy.gif" style: host plus a capped path.
+const getShortUrl = (value: string) => {
   try {
     const url = new URL(value);
-    const pathname = url.pathname.replace(/\/+$/, "");
-    return `${url.hostname.replace(/^www\./, "")}${pathname}${url.search}`;
+    const host = url.hostname.replace(/^www\./, "");
+    const path = url.pathname.replace(/\/+$/, "");
+    if (!path) return host;
+
+    return path.length > maxPathLength
+      ? `${host}${path.slice(0, maxPathLength - 1)}…`
+      : `${host}${path}`;
   } catch {
     return value;
   }
 };
 
-const groupItems = <T,>(items: T[], getKey: (item: T) => string) => {
-  const groups = new Map<string, T[]>();
+const isMediaLink = (href: string, kind: string) => {
+  if (kind === "image" || kind === "video") return true;
 
-  for (const item of items) {
-    const key = getKey(item);
-    const bucket = groups.get(key);
-
-    if (bucket) {
-      bucket.push(item);
-      continue;
-    }
-
-    groups.set(key, [item]);
+  try {
+    return mediaPattern.test(new URL(href).pathname);
+  } catch {
+    return false;
   }
-
-  return [...groups.entries()].map(([label, items]) => ({ label, items }));
 };
 
-const backlinkGroups = groupItems(profile?.backlinks ?? [], (item) => item.section).map(
-  (group) => ({
-    ...group,
-    count: group.items.length,
-  }),
-);
+const backlinks = showConnectedWriting ? (profile?.backlinks ?? []) : [];
 
 const declaredUrlSet = new Set(declaredUrls.map(normalizeExternalLink));
-const filteredReferences = (profile?.references ?? []).filter(
-  (item) => !declaredUrlSet.has(normalizeExternalLink(item.href)),
-);
-
 const seenReferenceUrls = new Set<string>();
-const externalReferences = filteredReferences.filter((item) => {
+const references = (profile?.references ?? []).filter((item) => {
   const normalized = normalizeExternalLink(item.href);
-  if (seenReferenceUrls.has(normalized)) return false;
+  if (declaredUrlSet.has(normalized) || seenReferenceUrls.has(normalized)) {
+    return false;
+  }
+  if (isMediaLink(item.href, item.kind)) return false;
+
   seenReferenceUrls.add(normalized);
   return true;
 });
-
-const hasConnectedWriting = showConnectedWriting && backlinkGroups.length > 0;
-const hasExternalReferences = externalReferences.length > 0;
 ---
+
 {
-  (hasConnectedWriting || hasExternalReferences) && (
-    <footer class="motion-page max-w-4xl border-t border-border/45 pt-8 sm:pt-10 lg:pt-12">
-      <div class="space-y-8 sm:space-y-10">
-        {
-          hasConnectedWriting && (
-            <section class="space-y-4">
-              <p class="ui-label font-mono text-text-muted">
-                Connected Writing
-              </p>
+  (backlinks.length > 0 || references.length > 0) && (
+    <footer class="link-footer motion-page">
+      {backlinks.length > 0 && (
+        <section class="link-footer-group">
+          <h2 class="link-footer-label ui-label font-mono">Mentioned in</h2>
+          <ul class="link-footer-items">
+            {backlinks.map((item) => (
+              <li class="ui-meta font-mono">
+                <span class="link-footer-kind">{item.section.toLowerCase()}</span>
+                <a class="index-row-meta-link" href={item.href}>{item.label}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
-              <div class="overflow-x-auto">
-                <table class="w-full border-separate border-spacing-0">
-                  <tbody>
-                    {backlinkGroups.map((group) => (
-                      <tr class="align-top">
-                        <td class="ui-table block w-full pb-2 pr-0 font-mono text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
-                          {group.label} ({group.count})
-                        </td>
-                        <td class="block pb-5 md:table-cell md:pb-4">
-                          <div class="space-y-1.5">
-                            {group.items.map((item) => (
-                              <div>
-                              <a
-                                href={item.href}
-                                class="meta-link text-text"
-                              >
-                                {item.label}
-                              </a>
-                              </div>
-                            ))}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )
-        }
-
-        {
-          hasExternalReferences && (
-            <section class="space-y-4">
-              <p class="ui-label font-mono text-text-muted">
-                External References
-              </p>
-
-              <div class="overflow-x-auto">
-                <table class="w-full border-separate border-spacing-0">
-                  <tbody>
-                    {externalReferences.map((item) => (
-                      <tr class="align-top">
-                        <td class="ui-table block w-full pb-2 pr-0 font-mono text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
-                          {item.origin}
-                        </td>
-                        <td class="block pb-5 md:table-cell md:pb-4">
-                          <div class="space-y-1.5">
-                            <p class="ui-prose text-text">
-                              <a
-                                href={item.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="meta-link"
-                              >
-                                {item.displayUrl || getDisplayUrl(item.href)}
-                              </a>
-                            </p>
-
-                            {item.description && (
-                              <p class="ui-rail-summary max-w-xl text-text-muted">
-                                {item.description}
-                              </p>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )
-        }
-      </div>
+      {references.length > 0 && (
+        <section class="link-footer-group">
+          <h2 class="link-footer-label ui-label font-mono">References</h2>
+          <ul class="link-footer-items">
+            {references.map((item) => (
+              <li class="ui-meta font-mono">
+                <a
+                  class="index-row-meta-link"
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >{`${getShortUrl(item.href)} ↗`}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </footer>
   )
 }

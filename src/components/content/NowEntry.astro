@@ -99,7 +99,7 @@ const showPager = Boolean(newer || older);
 
   {
     showPager && (
-      <nav class="notes-log-pager ui-meta font-mono" aria-label="More updates">
+      <nav class="content-pager ui-meta font-mono" aria-label="More updates">
         {older ? (
           <a href={getNowPath(older)} rel="prev">
             ← older · {formatDate(older.data.updatedAt)}
