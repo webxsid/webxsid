@@ -19,6 +19,7 @@
   .index-group-label {
     position: sticky;
     top: var(--notes-log-sticky-top, 4.75rem);
+    transition: top var(--motion-duration-surface) var(--ease-smooth);
     z-index: 5;
     display: flex;
     align-items: center;
@@ -30,6 +31,11 @@
     backdrop-filter: blur(10px);
     color: rgb(var(--text-primary));
     font-weight: 600;
+  }
+
+  /* With the header slid away, pinned labels move up to the top edge. */
+  :root[data-shell-header-hidden="true"] .index-group-label {
+    top: 0.75rem;
   }
 
   .index-group-label[data-pinned="false"] {

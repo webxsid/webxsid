@@ -103,6 +103,12 @@
 
   /* The header floats over the page; a scrim behind it fades content out
      before it reaches the pills. Retro cuts it off hard instead. */
+  /* translate, not transform: the motion-page entrance animation holds
+     transform with fill-mode both. */
+  .shell-header-bar {
+    transition: translate var(--motion-duration-surface) var(--ease-smooth);
+  }
+
   .shell-header-bar::before {
     content: "";
     position: absolute;
@@ -114,6 +120,10 @@
       rgb(var(--surface-page)) var(--shell-scrim-solid),
       rgb(var(--surface-page) / 0)
     );
+  }
+
+  .shell-header-bar[data-hidden="true"]:not(:focus-within) {
+    translate: 0 calc(-100% - var(--shell-scrim-extend));
   }
 
   /* On phones the footer bar stacks; "·" separators only read on one line. */

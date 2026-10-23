@@ -98,6 +98,7 @@ const brandIcon = await getImage({
   >
     <ShellLoadUX />
     <header
+      data-shell-header
       class="shell-header-bar motion-page sticky top-0 z-50 pt-3"
       transition:animate="none"
     >
@@ -167,5 +168,73 @@ const brandIcon = await getImage({
 
     <SiteFooter transition:persist transition:name="site-footer" />
 
+    <script>
+      // Slide the header away while reading down, bring it back on any scroll
+      // up. It stays put near the top, while a menu is open, and under
+      // reduced motion; CSS keeps it visible while it holds focus.
+      const headerQuery = "[data-shell-header]";
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      let previousScrollY = window.scrollY;
+      let direction = 0;
+      let directionDistance = 0;
+
+      const setHidden = (hidden: boolean) => {
+        const header = document.querySelector<HTMLElement>(headerQuery);
+        if (!header) return;
+        if (hidden && (reducedMotion.matches || hasOpenMenu(header))) return;
+        if ((header.dataset.hidden === "true") === hidden) return;
+
+        header.dataset.hidden = String(hidden);
+        document.documentElement.dataset.shellHeaderHidden = String(hidden);
+      };
+
+      const hasOpenMenu = (header: HTMLElement) =>
+        Boolean(
+          header.querySelector('[aria-expanded="true"], details[open]') ||
+            document.querySelector("[data-shell-popup]"),
+        );
+
+      const resetHeader = () => {
+        previousScrollY = window.scrollY;
+        direction = 0;
+        directionDistance = 0;
+        document.querySelector<HTMLElement>(headerQuery)?.removeAttribute("data-hidden");
+        delete document.documentElement.dataset.shellHeaderHidden;
+      };
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          const scrollY = Math.max(0, window.scrollY);
+          const delta = scrollY - previousScrollY;
+          previousScrollY = scrollY;
+
+          if (scrollY <= 24) {
+            direction = 0;
+            directionDistance = 0;
+            setHidden(false);
+            return;
+          }
+
+          if (Math.abs(delta) < 2) return;
+
+          const nextDirection = Math.sign(delta);
+          if (nextDirection !== direction) {
+            direction = nextDirection;
+            directionDistance = 0;
+          }
+
+          directionDistance += Math.abs(delta);
+          if (direction < 0 && directionDistance >= 8) {
+            setHidden(false);
+          } else if (direction > 0 && scrollY >= 120 && directionDistance >= 24) {
+            setHidden(true);
+          }
+        },
+        { passive: true },
+      );
+
+      document.addEventListener("astro:after-swap", resetHeader);
+    </script>
   </body>
 </html>
