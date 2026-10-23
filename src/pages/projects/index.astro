@@ -10,6 +10,7 @@ import {
   getProjectCompanyHref,
   getProjectExcerpt,
   getProjectHref,
+  getProjectLinks,
   getProjectStackLabel,
   sortProjectsByStatus,
   type ProjectEntry,
@@ -48,18 +49,6 @@ const getSummary = (project: ProjectEntry) =>
     ? getProjectExcerpt(project.body ?? "") || project.data.summary
     : project.data.summary;
 
-const getDisplayHost = (url: string) =>
-  new URL(url).hostname.replace(/^www\./, "");
-
-const getExternalLinks = (project: ProjectEntry) =>
-  [
-    project.data.source && { label: "source", href: project.data.source },
-    project.data.website && {
-      label: getDisplayHost(project.data.website),
-      href: project.data.website,
-    },
-    project.data.demo && { label: "demo", href: project.data.demo },
-  ].filter((link): link is { label: string; href: string } => Boolean(link));
 ---
 
 <BaseLayout
@@ -80,7 +69,7 @@ const getExternalLinks = (project: ProjectEntry) =>
                 const stackLabel = getProjectStackLabel(project);
                 const company = project.data.company;
                 const companyHref = getProjectCompanyHref(project);
-                const links = getExternalLinks(project);
+                const links = getProjectLinks(project);
 
                 return (
                   <IndexRow

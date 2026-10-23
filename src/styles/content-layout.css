@@ -422,6 +422,11 @@
     }
   }
 
+  ul.index-row-meta {
+    padding: 0;
+    list-style: none;
+  }
+
   /* "Mentioned in" / "References" footer shared by content pages. */
   .link-footer {
     display: grid;

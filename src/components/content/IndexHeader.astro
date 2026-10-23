@@ -22,4 +22,11 @@ const { title, intro, prompt, meta } = Astro.props as Props;
   </h1>
   <p class="ui-prose">{intro}</p>
   {meta && <p class="ui-meta font-mono">{meta}</p>}
+  {
+    Astro.slots.has("meta") && (
+      <div class="space-y-2">
+        <slot name="meta" />
+      </div>
+    )
+  }
 </header>

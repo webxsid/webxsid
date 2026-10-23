@@ -112,3 +112,18 @@ export const getProjectExcerpt = (body: string) => {
 
   return normalizeWhitespace(stripMarkdown(firstParagraph));
 };
+
+export type ProjectLink = { label: string; href: string };
+
+const getDisplayHost = (url: string) =>
+  new URL(url).hostname.replace(/^www\./, "");
+
+export const getProjectLinks = (entry: ProjectEntry): ProjectLink[] =>
+  [
+    entry.data.source && { label: "source", href: entry.data.source },
+    entry.data.website && {
+      label: getDisplayHost(entry.data.website),
+      href: entry.data.website,
+    },
+    entry.data.demo && { label: "demo", href: entry.data.demo },
+  ].filter((link): link is ProjectLink => Boolean(link));

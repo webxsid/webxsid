@@ -3,50 +3,53 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
 import ContentDocument from "../../components/content/ContentDocument.astro";
-import ProjectMetadataFooter from "../../components/content/ProjectMetadataFooter.astro";
-import ContentMetadata from "../../components/content/ContentMetadata.astro";
-import ContentTags from "../../components/content/ContentTags.astro";
+import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro";
 import ContentLinkPreview from "../../components/content/ContentLinkPreview.astro";
+import IndexHeader from "../../components/content/IndexHeader.astro";
 import StatusBadge from "../../components/content/StatusBadge.astro";
 import {
   getEmptyContentLinkProfile,
   getContentLinkProfiles,
 } from "../../lib/content-links";
 import {
-  getProjectCompanyLabel,
   getProjectCompanyHref,
+  getProjectHref,
+  getProjectLinks,
   getProjectStackLabel,
   isProjectDetailPage,
+  sortProjectsByStatus,
 } from "../../lib/projects";
 import { getProjectOgImagePath } from "../../lib/og-image";
 import { withAutoOgImage } from "../../lib/seo";
 import { formatDate } from "../../lib/dates";
 
 export async function getStaticPaths() {
-  const projects = await getCollection("projects");
+  // Same order as the /projects index, so the pager walks the list.
+  const projects = sortProjectsByStatus(
+    (await getCollection("projects")).filter(isProjectDetailPage),
+  );
 
-  return projects
-    .filter((entry) => isProjectDetailPage(entry))
-    .map((entry) => ({
-      params: { slug: entry.id },
-      props: { entry },
-    }));
+  return projects.map((entry, index) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      previous: projects[index - 1],
+      next: projects[index + 1],
+    },
+  }));
 }
 
-const { entry } = Astro.props;
+const { entry, previous, next } = Astro.props;
 const { Content } = await render(entry);
 const seo = withAutoOgImage(entry.data.seo, getProjectOgImagePath(entry.id));
 const linkProfiles = await getContentLinkProfiles();
 const linkProfile =
   linkProfiles.get(`/projects/${entry.id}`) ?? getEmptyContentLinkProfile();
-const companyLabel = getProjectCompanyLabel(entry);
 const stackLabel = getProjectStackLabel(entry);
+const company = entry.data.company;
 const companyHref = getProjectCompanyHref(entry);
-const declaredProjectUrls = [
-  entry.data.source,
-  entry.data.website,
-  entry.data.demo,
-].filter((url): url is string => Boolean(url));
+const links = getProjectLinks(entry);
+const tags = [...new Set(entry.data.tags.map((tag) => tag.trim()).filter(Boolean))];
 ---
 
 <BaseLayout
@@ -62,90 +65,83 @@ const declaredProjectUrls = [
   backLabel="Back to projects"
 >
   <ContentPageFrame>
-    <div class="max-w-4xl space-y-12 lg:space-y-14" data-content-preview-scope>
-      <header class="motion-page max-w-3xl space-y-7">
-        <div class="space-y-4">
-          <div
-            class="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between"
-          >
-            <h1 class="ui-title font-display font-semibold tracking-tight text-text">
-              {entry.data.title}
-            </h1>
-
-            <StatusBadge
-              status={entry.data.status}
-              class="rounded-full px-2.5 py-1 text-[0.7rem] tracking-[0.14em]"
-            />
-          </div>
-
-          <p class="ui-lead max-w-xl text-text">
-            {entry.data.summary}
+    <div class="max-w-3xl space-y-12" data-content-preview-scope>
+      <IndexHeader
+        title={entry.data.title}
+        intro={entry.data.summary}
+        prompt={`$ projects --show ${entry.id}`}
+      >
+        <Fragment slot="meta">
+          <p class="index-row-meta ui-meta font-mono">
+            <StatusBadge status={entry.data.status} />
+            {stackLabel && <span>{stackLabel}</span>}
+            <span>updated {formatDate(entry.data.updatedAt)}</span>
           </p>
-        </div>
-
-        {
-          <ContentMetadata
-            items={[
-              ...(companyLabel
-                ? [{ label: "Company", value: companyLabel, href: companyHref ?? undefined }]
-                : []),
-              ...(stackLabel ? [{ label: "Built with", value: stackLabel }] : []),
-              { label: "Updated", value: formatDate(entry.data.updatedAt) },
-            ]}
-          />
-        }
-
-        {
-          declaredProjectUrls.length > 0 && (
-            <nav
-              aria-label="Project links"
-              class="flex flex-wrap gap-x-6 gap-y-3 border-t border-border/45 pt-5"
-            >
-              {entry.data.source && (
-                <a
-                  href={entry.data.source}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-link"
-                >
-                  Source code
-                </a>
-              )}
-              {entry.data.website && (
-                <a
-                  href={entry.data.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-link"
-                >
-                  Website
-                </a>
-              )}
-              {entry.data.demo && (
-                <a
-                  href={entry.data.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-link"
-                >
-                  Demo
-                </a>
-              )}
-            </nav>
-          )
-        }
-
-        <ContentTags tags={entry.data.tags} />
-      </header>
+          {
+            company && companyHref && (
+              <p class="index-row-meta ui-meta font-mono">
+                <span>
+                  professional work at{" "}
+                  <a class="index-row-meta-link" href={companyHref}>{`${company.name} →`}</a>
+                </span>
+              </p>
+            )
+          }
+          {
+            links.length > 0 && (
+              <nav class="index-row-meta ui-meta font-mono" aria-label="Project links">
+                {links.map((link) => (
+                  <a
+                    class="index-row-meta-link"
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >{`${link.label} ↗`}</a>
+                ))}
+              </nav>
+            )
+          }
+          {
+            tags.length > 0 && (
+              <ul class="index-row-meta ui-meta font-mono" aria-label="Tags">
+                {tags.map((tag) => <li>{tag.toLowerCase()}</li>)}
+              </ul>
+            )
+          }
+        </Fragment>
+      </IndexHeader>
 
       <ContentDocument class="space-y-4">
         <Content />
       </ContentDocument>
 
-      <ProjectMetadataFooter
+      <ContentLinkFooter
         profile={linkProfile}
-        declaredUrls={declaredProjectUrls}
+        declaredUrls={links.map((link) => link.href)}
       />
+
+      <nav class="content-pager ui-meta font-mono" aria-label="More projects">
+        {
+          previous ? (
+            <a href={getProjectHref(previous)} rel="prev">
+              ← {previous.data.title}
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        <a href="/projects">all projects</a>
+        {
+          next ? (
+            <a href={getProjectHref(next)} rel="next">
+              {next.data.title} →
+            </a>
+          ) : (
+            <span />
+          )
+        }
+      </nav>
+
       <ContentLinkPreview previewLinks={linkProfile.previewLinks} />
     </div>
   </ContentPageFrame>
