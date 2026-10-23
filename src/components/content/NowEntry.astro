@@ -1,102 +1,78 @@
 ---
 import ContentDocument from "./ContentDocument.astro";
-import ContentHeader from "./ContentHeader.astro";
-import ContentMetadata from "./ContentMetadata.astro";
-import ContentTags from "./ContentTags.astro";
 import ContentLinkFooter from "./ContentLinkFooter.astro";
 import ContentLinkPreview from "./ContentLinkPreview.astro";
+import IndexGroup from "./IndexGroup.astro";
+import IndexHeader from "./IndexHeader.astro";
+import IndexRow from "./IndexRow.astro";
 import type { ContentLinkProfile } from "../../lib/content-links";
-import { formatNowUpdatedAt } from "../../lib/now";
+import { formatDate } from "../../lib/dates";
+import { getNowPath, type NowEntry as NowCollectionEntry } from "../../lib/now";
 
 type Props = {
-  entry: {
-    id: string;
-    data: {
-      title: string;
-      summary: string;
-      updatedAt: Date;
-      tags?: string[];
-      links?: Array<{
-        heading?: string;
-        title: string;
-        url: string;
-      }>;
-    };
-  };
+  entry: NowCollectionEntry;
   linkProfile?: ContentLinkProfile;
-  showDetailMetadata?: boolean;
+  // Set on a past snapshot's page: shows a banner pointing at the latest.
+  latest?: NowCollectionEntry;
+  newer?: NowCollectionEntry;
+  older?: NowCollectionEntry;
+  earlier?: NowCollectionEntry[];
 };
 
-const { entry, linkProfile, showDetailMetadata = false } = Astro.props as Props;
-const relatedLinks = entry.data.links ?? [];
+const {
+  entry,
+  linkProfile,
+  latest,
+  newer,
+  older,
+  earlier = [],
+} = Astro.props as Props;
+const isSnapshot = Boolean(latest && latest.id !== entry.id);
+const updated = formatDate(entry.data.updatedAt);
+
+const relatedLinks = [...(entry.data.links ?? [])].sort((a, b) =>
+  (a.heading ?? "link").localeCompare(b.heading ?? "link"),
+);
+const isExternal = (url: string) => /^https?:\/\//.test(url);
+const showPager = Boolean(newer || older);
 ---
 
-<div class="motion-page max-w-3xl space-y-12 lg:space-y-16" data-content-preview-scope>
-  <ContentHeader
-    eyebrow="Now"
-    title={entry.data.title}
-    summary={entry.data.summary}
-    metaClass={showDetailMetadata ? "space-y-2" : "ui-tag text-text-muted"}
-  >
-    {
-      showDetailMetadata ? (
-        <div slot="meta" class="space-y-2">
-          <ContentMetadata
-            items={[{ label: "Updated", value: formatNowUpdatedAt(entry.data.updatedAt) }]}
-          />
-          <ContentTags tags={entry.data.tags} />
-        </div>
-      ) : (
-        <span slot="meta">updated {formatNowUpdatedAt(entry.data.updatedAt)}</span>
-      )
-    }
-  </ContentHeader>
+<div class="motion-page space-y-12" data-content-preview-scope>
+  {
+    isSnapshot && latest && (
+      <a class="now-snapshot-banner ui-meta font-mono" href="/now">
+        An older snapshot from {updated}. See what I'm up to now →
+      </a>
+    )
+  }
 
-  <ContentDocument class="space-y-4">
+  <IndexHeader
+    title={isSnapshot ? `Now · ${updated}` : "Now"}
+    intro={entry.data.summary}
+    prompt={isSnapshot ? `$ now --at ${entry.id}` : "$ now"}
+    meta={`updated ${updated}`}
+  />
+
+  <ContentDocument class="now-body">
     <slot />
   </ContentDocument>
 
   {
     relatedLinks.length > 0 && (
-      <section class="motion-page max-w-4xl border-t border-border/45 pt-8 sm:pt-10 lg:pt-12">
-        <div class="space-y-4">
-          <p class="ui-label font-mono text-text-muted">
-            Related Links
-          </p>
-
-          <div class="overflow-x-auto">
-            <table class="w-full border-separate border-spacing-0">
-              <tbody>
-                {relatedLinks.map((item) => {
-                  const isExternal = /^https?:\/\//.test(item.url);
-
-                  return (
-                    <tr class="align-top">
-                      <td class="ui-table block w-full pb-2 pr-0 font-mono text-text-muted md:table-cell md:w-[11rem] md:pb-4 md:pr-8">
-                        {item.heading ?? "Link"}
-                      </td>
-                      <td class="block pb-5 md:table-cell md:pb-4">
-                        <a
-                          href={item.url}
-                          {...(isExternal
-                            ? {
-                                target: "_blank",
-                                rel: "noopener noreferrer",
-                              }
-                            : {})}
-                          class="meta-link text-text"
-                        >
-                          {item.title}
-                        </a>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+      <nav class="now-links index-row-meta ui-meta font-mono" aria-label="Related links">
+        {relatedLinks.map((item) => (
+          <span>
+            {(item.heading ?? "link").toLowerCase()}{" "}
+            <a
+              class="index-row-meta-link"
+              href={item.url}
+              {...(isExternal(item.url)
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >{isExternal(item.url) ? `${item.title} ↗` : item.title}</a>
+          </span>
+        ))}
+      </nav>
     )
   }
 
@@ -104,5 +80,44 @@ const relatedLinks = entry.data.links ?? [];
     profile={linkProfile}
     declaredUrls={relatedLinks.map((item) => item.url)}
   />
+
+  {
+    earlier.length > 0 && (
+      <IndexGroup label="Earlier updates" id="now-earlier" pinned={false}>
+        {earlier.map((snapshot) => (
+          <IndexRow
+            href={getNowPath(snapshot)}
+            title={formatDate(snapshot.data.updatedAt)}
+            clamp
+          >
+            {snapshot.data.summary}
+          </IndexRow>
+        ))}
+      </IndexGroup>
+    )
+  }
+
+  {
+    showPager && (
+      <nav class="notes-log-pager ui-meta font-mono" aria-label="More updates">
+        {older ? (
+          <a href={getNowPath(older)} rel="prev">
+            ← older · {formatDate(older.data.updatedAt)}
+          </a>
+        ) : (
+          <span />
+        )}
+        <a href="/now">latest</a>
+        {newer ? (
+          <a href={getNowPath(newer)} rel="next">
+            newer · {formatDate(newer.data.updatedAt)} →
+          </a>
+        ) : (
+          <span />
+        )}
+      </nav>
+    )
+  }
+
   <ContentLinkPreview previewLinks={linkProfile?.previewLinks ?? []} />
 </div>

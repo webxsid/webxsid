@@ -343,6 +343,85 @@
     color: rgb(var(--text-primary));
   }
 
+  /* Now page: section headings become labels; on wide screens they sit
+     in a column beside their paragraphs. Doubled class beats prose. */
+  .now-body.now-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 2rem;
+    max-width: 48rem;
+  }
+
+  .now-body.now-body > * {
+    grid-column: 1 / -1;
+    margin-block: 0.9rem 0;
+  }
+
+  .now-body.now-body > :first-child {
+    margin-top: 0;
+  }
+
+  .now-body.now-body > h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    border: 0;
+    color: rgb(var(--text-primary));
+    font-family: var(--font-mono);
+    font-size: var(--ui-label-size);
+    font-weight: 600;
+    letter-spacing: var(--ui-label-tracking);
+    line-height: inherit;
+  }
+
+  .now-body.now-body > h2::before {
+    content: "";
+    flex: none;
+    width: 3px;
+    height: 1.1em;
+    background: rgb(var(--accent-primary));
+  }
+
+  .now-snapshot-banner {
+    display: block;
+    padding: 0.75rem 1rem;
+    border-left: 3px solid rgb(var(--accent-primary));
+    background: rgb(var(--surface-elevated) / 0.45);
+    color: rgb(var(--text-muted));
+    text-decoration: none;
+  }
+
+  .now-snapshot-banner:hover,
+  .now-snapshot-banner:focus-visible {
+    color: rgb(var(--text-primary));
+  }
+
+  @media (min-width: 48rem) {
+    .now-body.now-body {
+      grid-template-columns: 11rem minmax(0, 1fr);
+    }
+
+    .now-body.now-body > :not(h2) {
+      grid-column: 2;
+    }
+
+    .now-body.now-body > :first-child:not(h2) {
+      grid-column: 1 / -1;
+    }
+
+    .now-body.now-body > h2 {
+      grid-column: 1;
+      align-self: start;
+      padding-top: 0.35rem;
+    }
+
+    .now-body.now-body > h2 + * {
+      margin-top: 2.5rem;
+    }
+  }
+
   /* Landing "now" status line. */
   .home-now {
     display: grid;

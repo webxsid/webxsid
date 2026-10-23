@@ -3,14 +3,22 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
 import NowEntry from "../../components/content/NowEntry.astro";
-import { getLatestNowEntry } from "../../lib/now";
+import {
+  getContentLinkProfiles,
+  getEmptyContentLinkProfile,
+} from "../../lib/content-links";
+import { getNowPath, sortNowEntries } from "../../lib/now";
 import { getStaticOgImagePath } from "../../lib/og-image";
 import { withAutoOgImage } from "../../lib/seo";
 
 const nowEntries = await getCollection("now");
-const latest = getLatestNowEntry(nowEntries);
+const [latest, ...earlier] = sortNowEntries(nowEntries);
 const hasNowEntries = Boolean(latest);
 const { Content } = hasNowEntries ? await render(latest) : { Content: null };
+const linkProfile = latest
+  ? ((await getContentLinkProfiles()).get(getNowPath(latest)) ??
+    getEmptyContentLinkProfile())
+  : undefined;
 const pageDescription = latest?.data.summary ?? "A current snapshot of what has my attention.";
 
 const seo = withAutoOgImage(
@@ -35,7 +43,7 @@ const seo = withAutoOgImage(
   <ContentPageFrame>
     {
       hasNowEntries && Content ? (
-        <NowEntry entry={latest}>
+        <NowEntry entry={latest} linkProfile={linkProfile} earlier={earlier}>
           <Content />
         </NowEntry>
       ) : (

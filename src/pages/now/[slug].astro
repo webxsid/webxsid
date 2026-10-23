@@ -7,17 +7,18 @@ import {
   getContentLinkProfiles,
   getEmptyContentLinkProfile,
 } from "../../lib/content-links";
+import { getAdjacentNowEntries } from "../../lib/now";
 
 export async function getStaticPaths() {
   const nowEntries = await getCollection("now");
 
   return nowEntries.map((entry) => ({
     params: { slug: entry.id },
-    props: { entry },
+    props: { entry, ...getAdjacentNowEntries(nowEntries, entry.id) },
   }));
 }
 
-const { entry } = Astro.props;
+const { entry, latest, newer, older } = Astro.props;
 const { Content } = await render(entry);
 const linkProfiles = await getContentLinkProfiles();
 const linkProfile =
@@ -37,7 +38,13 @@ const linkProfile =
   backLabel="Back home"
 >
   <ContentPageFrame>
-    <NowEntry entry={entry} linkProfile={linkProfile} showDetailMetadata>
+    <NowEntry
+      entry={entry}
+      linkProfile={linkProfile}
+      latest={latest}
+      newer={newer}
+      older={older}
+    >
       <Content />
     </NowEntry>
   </ContentPageFrame>

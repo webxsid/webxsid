@@ -25,3 +25,18 @@ export function formatNowUpdatedAt(date: Date) {
 export function formatNowRailDate(id: string) {
   return formatDate(parseNowDate(id));
 }
+
+export function getNowPath(entry: NowEntry) {
+  return `/now/${entry.id}`;
+}
+
+export function getAdjacentNowEntries(entries: NowEntry[], id: string) {
+  const sorted = sortNowEntries(entries);
+  const index = sorted.findIndex((entry) => entry.id === id);
+
+  return {
+    latest: sorted[0],
+    newer: index > 0 ? sorted[index - 1] : undefined,
+    older: index >= 0 ? sorted[index + 1] : undefined,
+  };
+}
