@@ -11,9 +11,7 @@ type Options = {
 export function useShellHeaderBehavior({ currentPath, pageTitle }: Options) {
   const reduceMotion = useReducedMotion();
   const shellRef = useRef<HTMLDivElement | null>(null);
-  const rafRef = useRef<number | null>(null);
   const [open, setOpen] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [activePath, setActivePath] = useState(() => normalizePath(currentPath));
   const [activeTitle, setActiveTitle] = useState(() =>
     getSectionLabel(currentPath, pageTitle),
@@ -34,7 +32,6 @@ export function useShellHeaderBehavior({ currentPath, pageTitle }: Options) {
       setActivePath(pathname);
       setActiveTitle(getSectionLabel(pathname, pageTitle));
       setOpen(false);
-      setHidden(false);
     };
 
     const handlePointerDown = (event: PointerEvent) => {
@@ -71,10 +68,6 @@ export function useShellHeaderBehavior({ currentPath, pageTitle }: Options) {
       document.removeEventListener("astro:after-swap", syncState);
       window.removeEventListener("pageshow", syncState);
       window.removeEventListener("popstate", syncState);
-
-      if (rafRef.current !== null) {
-        window.cancelAnimationFrame(rafRef.current);
-      }
     };
   }, [pageTitle]);
 
@@ -84,7 +77,6 @@ export function useShellHeaderBehavior({ currentPath, pageTitle }: Options) {
     setActivePath(pathname);
     setActiveTitle(getSectionLabel(pathname, pageTitle));
     setOpen(false);
-    setHidden(false);
 
   }, [currentPath, pageTitle]);
 
@@ -92,7 +84,6 @@ export function useShellHeaderBehavior({ currentPath, pageTitle }: Options) {
     shellRef,
     open,
     setOpen,
-    hidden,
     activePath,
     activeTitle,
     spring,
