@@ -143,6 +143,11 @@
     @apply mt-9 mb-3 font-mono font-semibold tracking-normal text-text-muted;
   }
 
+  /* Keep reading lines to a comfortable length (~65-75 characters). */
+  .content-note :is(p, ul, ol, blockquote) {
+    max-width: var(--content-measure, 66ch);
+  }
+
   .content-note p {
     font-size: var(--content-note-body-size);
     line-height: var(--content-note-body-line-height);

@@ -70,6 +70,13 @@
   cursor: var(--cursor-interactive);
 }
 
+/* Index row titles anchor each row when scanning; summaries sit back. */
+.index-row-title .title-link {
+  font-size: var(--index-title-size);
+  font-weight: var(--index-title-weight, 600);
+  letter-spacing: -0.005em;
+}
+
 .title-link:hover {
   color: var(--link-hover-text-color);
   text-decoration-color: var(--link-hover-decoration-color);

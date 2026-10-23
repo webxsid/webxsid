@@ -118,7 +118,7 @@
   --ui-title-line-height: 1.08;
   --ui-lead-size: 0.98rem;
   --ui-lead-line-height: 1.6;
-  --ui-prose-size: 0.95rem;
+  --ui-prose-size: 1rem;
   --ui-prose-line-height: 1.74;
   --ui-heading-size: 0.84rem;
   --ui-body-size: 0.95rem;
@@ -164,6 +164,6 @@
   --content-note-heading-line-height: 1.26;
   --content-note-subheading-size: 0.58rem;
   --content-note-subheading-line-height: 1.32;
-  --content-note-body-size: 0.88rem;
+  --content-note-body-size: 1.0625rem;
   --content-note-body-line-height: 1.7;
 }

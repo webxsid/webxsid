@@ -3,13 +3,13 @@
    background effects; only the loudness comes down. Loaded after the themes. */
 :root[data-theme] {
   --ui-meta-size: 0.78rem;
-  --ui-meta-tracking: 0.05em;
+  --ui-meta-tracking: 0.02em;
   --ui-tag-size: 0.8rem;
   --ui-tag-tracking: 0.02em;
   --ui-label-size: 0.78rem;
-  --ui-label-tracking: 0.04em;
+  --ui-label-tracking: 0.02em;
   --ui-shell-size: 0.78rem;
-  --ui-shell-tracking: 0.04em;
+  --ui-shell-tracking: 0.03em;
   --ui-table-size: 0.74rem;
   --ui-table-tracking: 0.04em;
   --ui-rail-meta-size: 0.76rem;

@@ -83,6 +83,8 @@
   --ui-body-size: clamp(1.1rem, 2.5vw, 1.4rem);
   --ui-body-line-height: 1.48;
   --ui-link-size: clamp(1.2rem, 2.51vw, 1.5rem);
+  --index-title-size: var(--ui-link-size);
+  --index-title-weight: 400;
   --ui-meta-link-size: clamp(0.8rem, 1.8vw, 1rem);
   --ui-meta-link-line-height: 1.38;
   --ui-meta-link-tracking: 0.08em;

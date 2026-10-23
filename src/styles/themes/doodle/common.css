@@ -79,6 +79,8 @@
   --ui-body-size: 0.98rem;
   --ui-body-line-height: 1.74;
   --ui-link-size: 0.98rem;
+  --index-title-size: 1.04rem;
+  --content-measure: 36.5em;
   --ui-meta-link-size: 0.84rem;
   --ui-meta-link-line-height: 1.46;
   --ui-meta-link-tracking: 0.04em;
@@ -119,6 +121,6 @@
   --content-note-heading-line-height: 1.28;
   --content-note-subheading-size: 0.62rem;
   --content-note-subheading-line-height: 1.32;
-  --content-note-body-size: 0.92rem;
+  --content-note-body-size: 1.03rem;
   --content-note-body-line-height: 1.7;
 }

@@ -153,7 +153,7 @@
   }
 
   .index-row-summary {
-    max-width: 62ch;
+    max-width: min(62ch, var(--content-measure, 62ch));
     color: rgb(var(--text-muted));
   }
 
