@@ -1,4 +1,5 @@
 import type { CollectionEntry } from "astro:content";
+import { monthNames } from "./dates";
 
 export type NoteEntry = CollectionEntry<"notes">;
 
@@ -94,11 +95,6 @@ const notePartsFormat = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   timeZone: "Asia/Kolkata",
 });
-
-const monthNames = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-];
 
 // Locale formats disagree on "Sep"/"Sept" and commas; assemble labels by hand.
 const getNoteDateParts = (id: string) => {

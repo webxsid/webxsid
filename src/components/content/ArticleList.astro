@@ -1,4 +1,5 @@
 ---
+import { formatDate } from "../../lib/dates";
 type Entry = {
   id: string;
   data: {
@@ -33,11 +34,7 @@ const { entries } = Astro.props as Props;
               </div>
 
               <span class="ui-meta shrink-0 font-mono text-text-muted">
-                {entry.data.publishedAt.toLocaleDateString(undefined, {
-                  month: "short",
-                  day: "2-digit",
-                  year: "numeric",
-                })}
+                {formatDate(entry.data.publishedAt)}
               </span>
             </div>
 

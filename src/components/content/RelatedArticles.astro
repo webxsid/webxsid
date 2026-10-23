@@ -1,4 +1,5 @@
 ---
+import { formatDate } from "../../lib/dates";
 type RelatedArticle = {
   href: string;
   title: string;
@@ -27,11 +28,7 @@ const { articles } = Astro.props as Props;
               </a>
               <div class="flex shrink-0 flex-wrap items-center gap-x-2 text-text-muted">
                 <time class="ui-tag" datetime={article.publishedAt.toISOString()}>
-                  {article.publishedAt.toLocaleDateString(undefined, {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric",
-                  })}
+                  {formatDate(article.publishedAt)}
                 </time>
                 {article.linked && (
                   <span class="ui-tag">· linked</span>
