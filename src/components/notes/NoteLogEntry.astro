@@ -1,0 +1,36 @@
+---
+import type { render } from "astro:content";
+import ContentDocument from "../content/ContentDocument.astro";
+import {
+  formatNoteTime,
+  formatNoteTimestamp,
+  getNotePath,
+  parseNoteTimestamp,
+  type NoteEntry,
+} from "../../lib/notes";
+
+type Props = {
+  entry: NoteEntry;
+  Content: Awaited<ReturnType<typeof render>>["Content"];
+  current?: boolean;
+};
+
+const { entry, Content, current = false } = Astro.props as Props;
+---
+
+<article class="notes-log-entry" id={`note-${entry.id}`}>
+  <a
+    class="notes-log-time ui-meta font-mono"
+    href={getNotePath(entry)}
+    aria-current={current ? "page" : undefined}
+    aria-label={`Permalink: note from ${formatNoteTimestamp(entry)}`}
+  >
+    <time datetime={parseNoteTimestamp(entry.id).toISOString()}>
+      {formatNoteTime(entry)}
+    </time>
+  </a>
+
+  <ContentDocument class="notes-log-body">
+    <Content />
+  </ContentDocument>
+</article>

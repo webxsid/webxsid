@@ -80,6 +80,101 @@ export function formatNoteTimestamp(entry: NoteEntry | string) {
   }).format(parseNoteTimestamp(id));
 }
 
+const noteDayKeyFormat = new Intl.DateTimeFormat("en-CA", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  timeZone: "Asia/Kolkata",
+});
+
+const notePartsFormat = new Intl.DateTimeFormat("en-US", {
+  weekday: "short",
+  day: "2-digit",
+  month: "numeric",
+  year: "numeric",
+  timeZone: "Asia/Kolkata",
+});
+
+const monthNames = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+// Locale formats disagree on "Sep"/"Sept" and commas; assemble labels by hand.
+const getNoteDateParts = (id: string) => {
+  const parts = Object.fromEntries(
+    notePartsFormat
+      .formatToParts(parseNoteTimestamp(id))
+      .map(({ type, value }) => [type, value]),
+  );
+
+  return {
+    weekday: parts.weekday,
+    day: parts.day,
+    month: monthNames[Number(parts.month) - 1],
+    year: parts.year,
+  };
+};
+
+const noteTimeFormat = new Intl.DateTimeFormat("en-IN", {
+  hour: "2-digit",
+  minute: "2-digit",
+  hourCycle: "h23",
+  timeZone: "Asia/Kolkata",
+});
+
+export function formatNoteDay(entry: NoteEntry | string) {
+  const id = typeof entry === "string" ? entry : entry.id;
+  const { weekday, day, month, year } = getNoteDateParts(id);
+  return `${weekday} ${day} ${month} ${year}`;
+}
+
+export function formatNoteShortDay(entry: NoteEntry | string) {
+  const id = typeof entry === "string" ? entry : entry.id;
+  const { day, month } = getNoteDateParts(id);
+  return `${day} ${month}`;
+}
+
+export function formatNoteTime(entry: NoteEntry | string) {
+  const id = typeof entry === "string" ? entry : entry.id;
+  return noteTimeFormat.format(parseNoteTimestamp(id));
+}
+
+export type NoteDay = {
+  key: string;
+  label: string;
+  notes: NoteEntry[];
+};
+
+// Expects notes already sorted with sortNotes.
+export function groupNotesByDay(entries: NoteEntry[]): NoteDay[] {
+  const days: NoteDay[] = [];
+
+  for (const entry of entries) {
+    const key = noteDayKeyFormat.format(parseNoteTimestamp(entry.id));
+    const current = days.at(-1);
+
+    if (current?.key === key) {
+      current.notes.push(entry);
+      continue;
+    }
+
+    days.push({ key, label: formatNoteDay(entry), notes: [entry] });
+  }
+
+  return days;
+}
+
+export function getAdjacentNotes(entries: NoteEntry[], id: string) {
+  const sorted = sortNotes(entries);
+  const index = sorted.findIndex((entry) => entry.id === id);
+
+  return {
+    newer: index > 0 ? sorted[index - 1] : undefined,
+    older: index >= 0 ? sorted[index + 1] : undefined,
+  };
+}
+
 export function getNoteLabel(entry: NoteEntry) {
   const line = (entry.body ?? "").split("\n").map(normalizeText).find(Boolean);
 

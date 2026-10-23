@@ -1,18 +1,6 @@
-@keyframes notes-expand {
-  from {
+@keyframes notes-cursor {
+  50% {
     opacity: 0;
-    transform: translateY(0.35rem);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .notes-details:not([hidden]) {
-    animation: none;
   }
 }
 

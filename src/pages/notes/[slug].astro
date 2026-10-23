@@ -1,9 +1,23 @@
 ---
-import { getCollection } from "astro:content";
-import NotesBoard from "../../components/notes/NotesBoard.astro";
+import { getCollection, render } from "astro:content";
+import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro";
+import ContentLinkPreview from "../../components/content/ContentLinkPreview.astro";
+import NoteLogEntry from "../../components/notes/NoteLogEntry.astro";
+import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  getContentLinkProfiles,
+  getEmptyContentLinkProfile,
+} from "../../lib/content-links";
 import { getStaticOgImagePath } from "../../lib/og-image";
-import { getNoteExcerpt, getNoteLabel, getNotePath } from "../../lib/notes";
+import {
+  formatNoteDay,
+  formatNoteShortDay,
+  getAdjacentNotes,
+  getNoteExcerpt,
+  getNoteLabel,
+  getNotePath,
+} from "../../lib/notes";
 import { withAutoOgImage } from "../../lib/seo";
 
 export async function getStaticPaths() {
@@ -11,11 +25,15 @@ export async function getStaticPaths() {
 
   return notes.map((entry) => ({
     params: { slug: entry.id },
-    props: { entry },
+    props: { entry, ...getAdjacentNotes(notes, entry.id) },
   }));
 }
 
-const { entry } = Astro.props;
+const { entry, newer, older } = Astro.props;
+const { Content } = await render(entry);
+const profile =
+  (await getContentLinkProfiles()).get(getNotePath(entry)) ??
+  getEmptyContentLinkProfile();
 const label = getNoteLabel(entry);
 const seo = withAutoOgImage(
   {
@@ -34,5 +52,46 @@ const seo = withAutoOgImage(
   backHref="/notes"
   backLabel="Back to notes"
 >
-  <NotesBoard selectedNoteId={entry.id} />
+  <ContentPageFrame>
+    <section class="notes-log space-y-10" aria-labelledby="note-day">
+      <p class="notes-log-prompt ui-label font-mono" aria-hidden="true">
+        $ notes --show {entry.id}
+      </p>
+
+      <section class="notes-log-day">
+        <h1 id="note-day" class="notes-log-day-label ui-label font-mono">
+          {formatNoteDay(entry)}
+        </h1>
+        <div class="notes-log-entries">
+          <NoteLogEntry entry={entry} Content={Content} current />
+        </div>
+      </section>
+
+      <ContentLinkFooter profile={profile} />
+
+      <nav class="notes-log-pager ui-meta font-mono" aria-label="More notes">
+        {
+          older ? (
+            <a href={getNotePath(older)} rel="prev">
+              ← older · {formatNoteShortDay(older)}
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        <a href="/notes">all notes</a>
+        {
+          newer ? (
+            <a href={getNotePath(newer)} rel="next">
+              newer · {formatNoteShortDay(newer)} →
+            </a>
+          ) : (
+            <span />
+          )
+        }
+      </nav>
+    </section>
+  </ContentPageFrame>
+
+  <ContentLinkPreview previewLinks={profile.previewLinks} />
 </BaseLayout>

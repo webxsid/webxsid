@@ -1,5 +1,6 @@
 ---
-import NotesBoard from "../../components/notes/NotesBoard.astro";
+import NotesLog from "../../components/notes/NotesLog.astro";
+import ContentPageFrame from "../../components/shell/ContentPageFrame.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getListOgImagePath } from "../../lib/og-image";
 import { withAutoOgImage } from "../../lib/seo";
@@ -20,5 +21,7 @@ const seo = withAutoOgImage(
   seo={seo}
   backHref="/"
 >
-  <NotesBoard />
+  <ContentPageFrame>
+    <NotesLog />
+  </ContentPageFrame>
 </BaseLayout>
