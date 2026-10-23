@@ -145,13 +145,13 @@ const isExternal = (href: string) => href.startsWith("http");
     !draft && (
       <nav class="content-pager ui-meta font-mono" aria-label="More writing">
         {older ? (
-          <a href={older.href} rel="prev">← {older.title}</a>
+          <a href={older.href} rel="prev"><span aria-hidden="true">←</span><span class="content-pager-title">{older.title}</span></a>
         ) : (
           <span />
         )}
         <a href="/writing">all writing</a>
         {newer ? (
-          <a href={newer.href} rel="next">{newer.title} →</a>
+          <a href={newer.href} rel="next"><span class="content-pager-title">{newer.title}</span><span aria-hidden="true">→</span></a>
         ) : (
           <span />
         )}

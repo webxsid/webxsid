@@ -258,15 +258,23 @@
     border-top: 1px solid rgb(var(--border-default) / 0.45);
   }
 
-  /* Long titles (writing, projects) stay on one line. */
+  /* Long titles (writing, projects) stay on one line; only the title
+     truncates so the arrows always show. */
   .content-pager > * {
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: flex;
+    gap: 0.4rem;
+    min-width: 0;
     white-space: nowrap;
   }
 
   .content-pager > :last-child {
-    text-align: right;
+    justify-content: flex-end;
+  }
+
+  .content-pager-title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .content-pager a {

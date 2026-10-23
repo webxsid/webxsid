@@ -126,7 +126,8 @@ const tags = [...new Set(entry.data.tags.map((tag) => tag.trim()).filter(Boolean
         {
           previous ? (
             <a href={getProjectHref(previous)} rel="prev">
-              ← {previous.data.title}
+              <span aria-hidden="true">←</span>
+              <span class="content-pager-title">{previous.data.title}</span>
             </a>
           ) : (
             <span />
@@ -136,7 +137,8 @@ const tags = [...new Set(entry.data.tags.map((tag) => tag.trim()).filter(Boolean
         {
           next ? (
             <a href={getProjectHref(next)} rel="next">
-              {next.data.title} →
+              <span class="content-pager-title">{next.data.title}</span>
+              <span aria-hidden="true">→</span>
             </a>
           ) : (
             <span />
