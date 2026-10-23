@@ -76,14 +76,14 @@
   --loader-route-scale-end: 0.24;
 
   --shell-nav-background: rgb(var(--surface-page));
-  --shell-nav-border-opacity: 1;
+  --shell-nav-border-opacity: 0.5;
   --shell-dock-background: rgb(var(--surface-page));
-  --shell-dock-border-opacity: 1;
+  --shell-dock-border-opacity: 0.5;
   --shell-item-background: rgb(var(--surface-page));
   --shell-item-active-background: rgb(var(--surface-elevated));
   --shell-item-active-text: rgb(var(--text-primary));
-  --shell-item-border-opacity: 0.86;
-  --shell-item-active-border-opacity: 1;
+  --shell-item-border-opacity: 0.5;
+  --shell-item-active-border-opacity: 0.8;
   --shell-item-label-background: rgb(var(--surface-elevated));
   --shell-back-background: rgb(var(--surface-page));
   --shell-back-text: rgb(var(--text-muted));

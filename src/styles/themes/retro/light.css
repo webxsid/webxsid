@@ -53,6 +53,8 @@
   --shell-item-active-text: rgb(252 252 245);
   --shell-item-border-opacity: 1;
   --shell-item-active-border-opacity: 1;
+  --shell-rail-item-background: var(--shell-item-background);
+  --shell-rail-item-border-opacity: 1;
   --shell-item-label-background:
     linear-gradient(180deg, rgb(252 252 247) 0%, rgb(240 242 228) 100%);
   --shell-back-background:

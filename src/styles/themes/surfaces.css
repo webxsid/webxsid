@@ -174,14 +174,6 @@
   background: var(--shell-dock-background);
 }
 
-[data-theme="phosphor"] .shell-control,
-[data-theme="phosphor"] .shell-menu-item,
-[data-theme="phosphor-light"] .shell-control,
-[data-theme="phosphor-light"] .shell-menu-item {
-  outline: 1px solid rgb(var(--border-default) / 0.16);
-  outline-offset: -1px;
-}
-
 [data-theme="phosphor"] .shell-back-button,
 [data-theme="phosphor-light"] .shell-back-button {
   background: var(--shell-back-background);

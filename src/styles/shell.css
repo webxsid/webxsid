@@ -131,6 +131,17 @@
     border-color: rgb(var(--border-default) / var(--shell-item-border-opacity));
   }
 
+  /* Inside the rail only the current page is boxed; the rest sit flat so the
+     frame is the single outline. Themes opt back in with --shell-rail-item-*. */
+  .shell-nav-frame .shell-item:not(.shell-item-active) {
+    background: var(--shell-rail-item-background, transparent);
+    border-color: rgb(var(--border-default) / var(--shell-rail-item-border-opacity, 0));
+  }
+
+  .shell-nav-frame .shell-item:not(.shell-item-active):hover {
+    border-color: rgb(var(--border-default) / var(--shell-item-border-opacity));
+  }
+
   .shell-item-active {
     background: var(--shell-item-active-background);
     border-color: rgb(var(--border-default) / var(--shell-item-active-border-opacity));
