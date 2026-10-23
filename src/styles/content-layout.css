@@ -1,36 +1,4 @@
 @layer components {
-  .content-meta-list {
-    display: grid;
-    justify-items: start;
-    gap: 0.4rem;
-    margin: 0;
-  }
-
-  .content-meta-row {
-    display: flex;
-    max-width: 100%;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0 0.45rem;
-  }
-
-  .content-meta-value {
-    overflow-wrap: anywhere;
-  }
-
-  .content-meta-row dt:not(.sr-only)::after {
-    content: ":";
-  }
-
-  .content-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem 0.9rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
   /* Index pages (notes, writing, projects): pinned group labels → rows. */
   .index-prompt::after {
     content: "";
