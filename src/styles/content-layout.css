@@ -19,7 +19,7 @@
   .index-group-label {
     position: sticky;
     top: var(--notes-log-sticky-top, 4.75rem);
-    transition: top var(--motion-duration-surface) var(--ease-smooth);
+    transition: top 340ms cubic-bezier(0.65, 0, 0.35, 1);
     z-index: 5;
     display: flex;
     align-items: center;

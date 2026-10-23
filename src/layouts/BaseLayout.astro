@@ -99,7 +99,7 @@ const brandIcon = await getImage({
     <ShellLoadUX />
     <header
       data-shell-header
-      class="shell-header-bar motion-page sticky top-0 z-50 pt-3"
+      class="shell-header-bar sticky top-0 z-50 pt-3"
       transition:animate="none"
     >
       <div
@@ -225,7 +225,7 @@ const brandIcon = await getImage({
           }
 
           directionDistance += Math.abs(delta);
-          if (direction < 0 && directionDistance >= 8) {
+          if (direction < 0 && directionDistance >= 16) {
             setHidden(false);
           } else if (direction > 0 && scrollY >= 120 && directionDistance >= 24) {
             setHidden(true);

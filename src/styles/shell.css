@@ -109,10 +109,14 @@
 
   /* The header floats over the page; a scrim behind it fades content out
      before it reaches the pills. Retro cuts it off hard instead. */
-  /* translate, not transform: the motion-page entrance animation holds
-     transform with fill-mode both. */
+  /* Showing eases out quickly; hiding drifts up and fades, so it never reads
+     as a slab snapping away. The entrance only fills backwards (unlike
+     .motion-page) so it does not pin opacity and translate once played. */
   .shell-header-bar {
-    transition: translate var(--motion-duration-surface) var(--ease-smooth);
+    animation: page-rise var(--motion-duration-page) var(--ease-smooth) backwards;
+    transition:
+      translate 300ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 220ms ease-out;
   }
 
   .shell-header-bar::before {
@@ -129,7 +133,12 @@
   }
 
   .shell-header-bar[data-hidden="true"]:not(:focus-within) {
-    translate: 0 calc(-100% - var(--shell-scrim-extend));
+    translate: 0 -65%;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      translate 380ms cubic-bezier(0.65, 0, 0.35, 1),
+      opacity 300ms cubic-bezier(0.4, 0, 1, 1) 60ms;
   }
 
   /* On phones the footer bar stacks; "·" separators only read on one line. */
