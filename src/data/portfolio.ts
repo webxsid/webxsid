@@ -25,7 +25,7 @@ export const portfolio = {
     "Developer Tooling",
   ],
   specialism: "Backend Engineering · Infrastructure · Developer Tooling",
-  headline: "I build software that works, and keeps working.",
+  headline: "I build what the rest of the team builds\u00a0on, and keep it boring on purpose.",
   introduction:
     "I’m a backend engineer at Taptic, where I build the frameworks the rest of the team works on and look after the platform they run on. On the side, I make Crona, an open-source work tracker for the terminal and macOS.",
   availability: "Open to backend & infrastructure roles",

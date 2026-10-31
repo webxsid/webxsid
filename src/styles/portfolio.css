@@ -338,19 +338,12 @@ summary:focus-visible {
   padding-top: 4px;
   border-top: 0;
 }
-/* Entry header in three spaced groups: identity, roles, stack. */
+/* Entry header: identity, then where and when. The stack closes the entry. */
 .work-header {
   display: grid;
   gap: 18px;
 }
-.work-category {
-  color: var(--portfolio-muted);
-  font-family: var(--font-sans);
-  font-size: 12.5px;
-  line-height: 20px;
-}
 .work-identity h3 {
-  margin-top: 4px;
   font-size: 26px;
   line-height: 32px;
   font-weight: 600;
@@ -366,9 +359,8 @@ summary:focus-visible {
   flex-wrap: wrap;
   gap: 2px 10px;
   list-style: none;
-  padding: 12px 0 0;
-  margin: 0;
-  border-top: 1px dashed var(--portfolio-hairline);
+  padding: 0;
+  margin: 14px 0 0;
   font-family: var(--font-mono);
   font-size: 12.5px;
   line-height: 20px;

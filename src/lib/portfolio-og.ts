@@ -85,7 +85,7 @@ const wrap = (face: Face, text: string, size: number, maxWidth: number) => {
   const lines: string[] = [];
   let line = "";
 
-  for (const word of text.split(/\s+/).filter(Boolean)) {
+  for (const word of text.split(/[ \t\n]+/).filter(Boolean)) {
     const next = line ? `${line} ${word}` : word;
 
     if (line && measure(face, next, size) > maxWidth) {
@@ -130,19 +130,23 @@ const buildSvg = async () => {
     drawText(sans, portfolio.role, left, 272, { size: 26, fill: colors.muted }),
   );
 
-  // The tagline carries the card.
-  const taglineSize = 86;
-  const taglineLeading = 94;
-  wrap(serif, portfolio.headline, taglineSize, right - left).forEach(
-    (line, index) => {
-      parts.push(
-        drawText(serif, line, left - 3, 384 + index * taglineLeading, {
-          size: taglineSize,
-          fill: colors.text,
-        }),
-      );
-    },
-  );
+  // The tagline carries the card: the largest size that fits in two lines.
+  const taglineSize =
+    [86, 76, 68, 60].find(
+      (size) => wrap(serif, portfolio.headline, size, right - left).length <= 2,
+    ) ?? 60;
+  const taglineLeading = Math.round(taglineSize * 1.1);
+  const taglineLines = wrap(serif, portfolio.headline, taglineSize, right - left);
+  // Bottom-align the block so it always clears the expertise line.
+  const taglineTop = 484 - (taglineLines.length - 1) * taglineLeading;
+  taglineLines.forEach((line, index) => {
+    parts.push(
+      drawText(serif, line, left - 3, taglineTop + index * taglineLeading, {
+        size: taglineSize,
+        fill: colors.text,
+      }),
+    );
+  });
 
   // What, along the foot.
   let x = left;

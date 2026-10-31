@@ -11,34 +11,22 @@ import { portfolio } from "../../data/portfolio";
       <article class="work-entry" aria-labelledby={`work-${work.id}`}>
         <header class="work-header">
           <div class="work-identity">
-            <p class="work-category">{work.category}</p>
             <h3 id={`work-${work.id}`}>{work.name}</h3>
             <p class="work-subtitle">{work.subtitle}</p>
           </div>
-          {(work.employer || work.roles) && (
-            <div class="work-facts">
-              {work.employer && <p class="work-employer">{work.employer}</p>}
-              {work.roles && (
-                <ol class="work-roles" role="list" aria-label={`Roles at ${work.name}`}>
-                  {work.roles.map((role) => (
-                    <li>
-                      <p class="work-role">{role.title}</p>
-                      <p class="work-period">{role.period}</p>
-                    </li>
-                  ))}
-                </ol>
-              )}
-            </div>
-          )}
-          <ul
-            class="technologies"
-            role="list"
-            aria-label={`${work.name} technologies`}
-          >
-            {work.technologies.map((technology) => (
-              <li>{technology}</li>
-            ))}
-          </ul>
+          <div class="work-facts">
+            <p class="work-employer">{work.employer ?? work.category}</p>
+            {work.roles && (
+              <ol class="work-roles" role="list" aria-label={`Roles at ${work.name}`}>
+                {work.roles.map((role) => (
+                  <li>
+                    <p class="work-role">{role.title}</p>
+                    <p class="work-period">{role.period}</p>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </div>
         </header>
         <div class="work-description">
           <p class="work-lead">{work.description}</p>
@@ -73,6 +61,15 @@ import { portfolio } from "../../data/portfolio";
               </a>
             ))}
           </div>
+          <ul
+            class="technologies"
+            role="list"
+            aria-label={`${work.name} technologies`}
+          >
+            {work.technologies.map((technology) => (
+              <li>{technology}</li>
+            ))}
+          </ul>
         </div>
       </article>
     ))
