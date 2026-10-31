@@ -1,6 +1,20 @@
 ---
 title: "Taptic"
 summary: Backend infrastructure for a remote technical interview platform.
+artifacts:
+  - kind: generator
+    caption: Code generator
+    alt: "Sketch of the code generator: a single entity config feeds a generator, which fans out into a grid of 29 modules, one per entity. One module is opened as a file: its generated lines sit around a block of hand-written code that stays in place when the generator is rerun."
+    count: 29
+    labels:
+      source: entity config
+      generator: generator
+      output: one module per entity
+      kept: your code survives a rerun
+  - kind: redacted
+    caption: The platform
+    alt: "An abstract wireframe of the interview platform with its details blacked out, taped over with a strip reading under NDA."
+    title: interview platform
 status: active
 order: 2
 stack:

@@ -10,7 +10,7 @@ import ProjectShotStack from "../components/content/ProjectShotStack.astro";
 import HomeLatestNotes from "../components/content/HomeLatestNotes.astro";
 import { portfolio } from "../data/portfolio";
 import { formatDate } from "../lib/dates";
-import { getProjectHref, getProjectStackLabel } from "../lib/projects";
+import { getProjectHref, getProjectMedia, getProjectStackLabel } from "../lib/projects";
 import {
   getWritingPath,
   getWritingReadTime,
@@ -161,8 +161,8 @@ const seo = withAutoOgImage(
               <Fragment slot="meta">
                 <span>{getProjectStackLabel(project)}</span>
               </Fragment>
-              {project.data.shots.length > 0 && (
-  <ProjectShotStack slot="media" shots={project.data.shots} />
+              {getProjectMedia(project).length > 0 && (
+  <ProjectShotStack slot="media" items={getProjectMedia(project)} />
 )}
             </IndexRow>
           ))

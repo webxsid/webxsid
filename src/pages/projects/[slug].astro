@@ -9,6 +9,7 @@ import IndexHeader from "../../components/content/IndexHeader.astro";
 import StatusBadge from "../../components/content/StatusBadge.astro";
 import ProjectShot from "../../components/content/ProjectShot.astro";
 import ProjectShotDeck from "../../components/content/ProjectShotDeck.astro";
+import ProjectArtifact from "../../components/content/ProjectArtifact.astro";
 import {
   getEmptyContentLinkProfile,
   getContentLinkProfiles,
@@ -17,6 +18,7 @@ import {
   getProjectCompanyHref,
   getProjectHref,
   getProjectLinks,
+  getProjectMedia,
   getProjectStackLabel,
   isProjectDetailPage,
   sortProjectsByStatus,
@@ -51,6 +53,7 @@ const stackLabel = getProjectStackLabel(entry);
 const company = entry.data.company;
 const companyHref = getProjectCompanyHref(entry);
 const links = getProjectLinks(entry);
+const media = getProjectMedia(entry);
 const tags = [...new Set(entry.data.tags.map((tag) => tag.trim()).filter(Boolean))];
 ---
 
@@ -116,15 +119,15 @@ const tags = [...new Set(entry.data.tags.map((tag) => tag.trim()).filter(Boolean
       </IndexHeader>
 
       {
-        entry.data.shots.length > 1 ? (
-          <ProjectShotDeck shots={entry.data.shots} label={entry.data.title} />
-        ) : entry.data.shots[0] && (
-          <ProjectShot
-            src={entry.data.shots[0].src}
-            alt={entry.data.shots[0].alt}
-            loading="eager"
-          />
-        )
+        media.length > 1 ? (
+          <ProjectShotDeck items={media} label={entry.data.title} />
+        ) : media[0]?.type === "image" ? (
+          <ProjectShot src={media[0].src} alt={media[0].alt} loading="eager" />
+        ) : media[0]?.type === "artifact" ? (
+          <figure class="project-shot">
+            <ProjectArtifact artifact={media[0].artifact} />
+          </figure>
+        ) : null
       }
 
       <ContentDocument class="space-y-4">

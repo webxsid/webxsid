@@ -1,0 +1,676 @@
+---
+import type { ProjectArtifact } from "../../lib/projects";
+
+// Drawn stand-ins for work that can't be screenshotted. Same proportions as
+// the screenshots so they stack and deck alongside them; colours come from
+// the active theme.
+type Props = {
+  artifact: ProjectArtifact;
+  label?: string;
+};
+
+const { artifact, label } = Astro.props as Props;
+
+const W = 1600;
+const H = 945;
+const uid = `art-${Math.random().toString(36).slice(2, 8)}`;
+
+// Deterministic "random" widths, so a card looks the same on every build.
+const seeded = (seed: string) => {
+  let h = 2166136261;
+  for (const c of seed) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+  return () => {
+    h = Math.imul(h ^ (h >>> 15), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    return ((h ^= h >>> 16) >>> 0) / 4294967296;
+  };
+};
+
+// Sketch layout
+const sketch = artifact.kind === "sketch" ? artifact : null;
+const pad = 110;
+const gap = 78;
+const stepCount = sketch?.steps.length ?? 0;
+const boxW = stepCount ? (W - pad * 2 - gap * (stepCount - 1)) / stepCount : 0;
+const boxH = 170;
+const centerY = 410;
+const boxY = centerY - boxH / 2;
+const boxX = (index: number) => pad + index * (boxW + gap);
+const splitLabel = (text: string) => text.split("\n");
+
+// A step with `fanOut` draws one small tile per output instead of a single
+// box, so the scale of what it produces is visible at a glance.
+const tileGap = 10;
+const tileCols = 6;
+const fan = (count: number) => {
+  const tile = (boxW - tileGap * (tileCols - 1)) / tileCols;
+  const rows = Math.ceil(count / tileCols);
+  const height = rows * tile + (rows - 1) * tileGap;
+  const top = centerY - height / 2;
+  return {
+    tile,
+    top,
+    bottom: top + height,
+    tiles: Array.from({ length: count }, (_, i) => ({
+      col: i % tileCols,
+      row: Math.floor(i / tileCols),
+    })),
+  };
+};
+const stepFan = (index: number) => {
+  const count = sketch?.steps[index]?.fanOut;
+  return count ? fan(count) : null;
+};
+const stepTop = (index: number) => stepFan(index)?.top ?? boxY;
+// Fanned steps carry their label underneath, so they end lower.
+const stepBottom = (index: number) => {
+  const f = stepFan(index);
+  return f ? f.bottom + 30 + splitLabel(sketch!.steps[index].label).length * 42 : boxY + boxH;
+};
+const loopDepth = sketch?.loop
+  ? Math.max(stepBottom(sketch.loop.from), stepBottom(sketch.loop.to)) + 170
+  : 0;
+
+// Generator layout: config → node → a fan of threads into a grid of modules,
+// one of which opens up as a file.
+const generator = artifact.kind === "generator" ? artifact : null;
+const genMidY = 500;
+const hub = { x: 520, y: genMidY, r: 34 };
+const grid = { x: 660, cols: 6, tile: 52, gap: 12 };
+const gridRows = generator ? Math.ceil(generator.count / grid.cols) : 0;
+const gridH = gridRows * grid.tile + (gridRows - 1) * grid.gap;
+const gridY = genMidY - gridH / 2;
+const gridW = grid.cols * grid.tile + (grid.cols - 1) * grid.gap;
+const genTiles = generator
+  ? Array.from({ length: generator.count }, (_, i) => {
+      const col = i % grid.cols;
+      const row = Math.floor(i / grid.cols);
+      return {
+        x: grid.x + col * (grid.tile + grid.gap),
+        y: gridY + row * (grid.tile + grid.gap),
+      };
+    })
+  : [];
+// The module that gets opened: middle of the grid, towards the file.
+// Right-hand column, so the zoom lines reach the file without crossing tiles.
+const pickedIndex = generator ? Math.min(generator.count - 1, Math.floor(gridRows / 2) * grid.cols + grid.cols - 1) : 0;
+const picked = genTiles[pickedIndex];
+const file = { x: 1130, y: genMidY - 190, w: 350, h: 380 };
+const genLabelY = genMidY + 236;
+// Code lines: indent and length; `own` marks hand-written lines.
+const codeLines = [
+  { indent: 0, w: 0.55 },
+  { indent: 1, w: 0.7 },
+  { indent: 1, w: 0.5 },
+  { indent: 0, w: 0.3 },
+  { indent: 0, w: 0.62, own: true },
+  { indent: 1, w: 0.72, own: true },
+  { indent: 1, w: 0.48, own: true },
+  { indent: 0, w: 0.25, own: true },
+  { indent: 0, w: 0.58 },
+  { indent: 1, w: 0.66 },
+];
+
+// Access layout: stacked sieves, each mesh finer than the last. Records
+// too coarse for a check are caught on its mesh; what falls through every
+// layer lands in the tray as what the user can see.
+const access = artifact.kind === "access" ? artifact : null;
+const sieveLeft = 560;
+const sieveRight = 1100;
+const sieveTop = 300;
+const sieveStep = 140;
+const sieveY = (i: number) => sieveTop + i * sieveStep;
+const meshWire = 10;
+const meshHole = (i: number) => 34 - i * 7;
+const beadRadii = [18, 7, 13, 5, 16, 9, 4, 19, 11, 6, 15, 3, 8, 12, 17, 5, 10, 14, 7, 18, 4, 3];
+const layerCount = access?.gates.length ?? 0;
+// The first layer whose holes are too small for the bead, or -1 if it passes all.
+const caughtAt = (r: number) => {
+  for (let i = 0; i < layerCount; i++) if (r * 2 >= meshHole(i)) return i;
+  return -1;
+};
+const sieveRand = seeded(`${artifact.caption}-sieve`);
+const spread = (count: number, from: number, to: number, jitter: number) =>
+  Array.from({ length: count }, (_, k) =>
+    from + ((k + 0.5) * (to - from)) / count + (sieveRand() - 0.5) * jitter,
+  );
+const sieveLayers = Array.from({ length: layerCount }, (_, i) => {
+  const caught = beadRadii.filter((r) => caughtAt(r) === i);
+  const falling = beadRadii.filter((r) => { const at = caughtAt(r); return at === -1 || at > i; });
+  return {
+    y: sieveY(i),
+    caught: ((xs) => caught.map((r, k) => ({ r, x: xs[k] })))(spread(caught.length, sieveLeft + 30, sieveRight - 30, 24)),
+    falling: ((xs) => falling.map((r, k) => ({ r, x: xs[k] })))(spread(falling.length, sieveLeft + 50, sieveRight - 50, 30)),
+  };
+});
+const passed = beadRadii.filter((r) => caughtAt(r) === -1);
+const trayY = sieveY(layerCount) + 10;
+
+// Conversion layout: a batch of PDF pages split across worker threads, each
+// lane carrying a page through XML and HTML, merging into one page in the
+// browser with editing tools injected on top.
+const conversion = artifact.kind === "conversion" ? artifact : null;
+const convMidY = 500;
+const convLabelY = convMidY + 280;
+const convLanes = [-150, -50, 50, 150].map((d) => convMidY + d);
+const convStack = { x: 120, y: convMidY - 125, w: 190, h: 250 };
+const convXmlX = 600;
+const convHtmlX = 840;
+const convLaneEnd = 1000;
+// Pages are mid-flight at different stages, as in a running batch.
+const convStage: ("xml" | "html")[] = ["html", "xml", "html", "xml"];
+const convToken = { w: 96, h: 66 };
+const convDoc = { x: 1120, y: convMidY - 200, w: 370, h: 400 };
+const convRand = seeded(`${artifact.caption}-conversion`);
+const convPageLines = Array.from({ length: 7 }, () => 0.45 + convRand() * 0.5);
+const convDocLines = Array.from({ length: 7 }, () => 0.4 + convRand() * 0.55);
+
+// Redacted and work-in-progress layouts
+const redacted = artifact.kind === "redacted" ? artifact : null;
+const wip = artifact.kind === "wip" ? artifact : null;
+const rand = seeded(`${artifact.caption}-${redacted?.title ?? wip?.title ?? ""}`);
+const lines = (count: number, maxWidth: number, minWidth = 0.35) =>
+  Array.from({ length: count }, () => {
+    const width = maxWidth * (minWidth + rand() * (1 - minWidth));
+    return { width, hidden: rand() > 0.62 };
+  });
+---
+
+<svg
+  class="artifact"
+  data-kind={artifact.kind}
+  viewBox={`0 0 ${W} ${H}`}
+  role="img"
+  aria-label={label ?? artifact.alt}
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <pattern id={`${uid}-grid`} width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="2" class="artifact-grid" />
+    </pattern>
+    <marker
+      id={`${uid}-arrow`}
+      viewBox="0 0 12 12"
+      refX="10"
+      refY="6"
+      markerWidth="12"
+      markerHeight="12"
+      orient="auto-start-reverse"
+    >
+      <path d="M1 1 L11 6 L1 11" class="artifact-arrowhead" />
+    </marker>
+    <filter id={`${uid}-wobble`}>
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="3" />
+      <feDisplacementMap in="SourceGraphic" scale="7" />
+    </filter>
+  </defs>
+
+  <rect width={W} height={H} class="artifact-paper" />
+  <rect width={W} height={H} fill={`url(#${uid}-grid)`} />
+
+  {
+    sketch && (
+      <g class="artifact-ink" style={`--wobble: url(#${uid}-wobble)`}>
+        <text x={pad} y={150} class="artifact-caption">{sketch.caption}</text>
+        {sketch.steps.map((step, index) => {
+          const f = stepFan(index);
+          const cx = boxX(index) + boxW / 2;
+          const labelLines = splitLabel(step.label);
+          return (
+            <g>
+              {f ? (
+                <>
+                  {f.tiles.map(({ col, row }) => (
+                    <g>
+                      <rect
+                        x={boxX(index) + col * (f.tile + tileGap)}
+                        y={f.top + row * (f.tile + tileGap)}
+                        width={f.tile}
+                        height={f.tile}
+                        rx="8"
+                        class="artifact-tile"
+                      />
+                      <rect
+                        x={boxX(index) + col * (f.tile + tileGap) + f.tile * 0.2}
+                        y={f.top + row * (f.tile + tileGap) + f.tile * 0.42}
+                        width={f.tile * 0.6}
+                        height={f.tile * 0.16}
+                        rx="3"
+                        class="artifact-tile-mark"
+                      />
+                    </g>
+                  ))}
+                  <text x={cx} y={f.bottom + 56} class="artifact-label is-under">
+                    {labelLines.map((line, lineIndex) => (
+                      <tspan x={cx} dy={lineIndex === 0 ? 0 : 42}>
+                        {line}
+                      </tspan>
+                    ))}
+                  </text>
+                </>
+              ) : (
+                <>
+                  <rect
+                    x={boxX(index)}
+                    y={boxY}
+                    width={boxW}
+                    height={boxH}
+                    rx="18"
+                    class={index === sketch.steps.length - 1 ? "artifact-box is-end" : "artifact-box"}
+                  />
+                  <text
+                    x={cx}
+                    y={centerY - (labelLines.length - 1) * 21}
+                    class="artifact-label"
+                  >
+                    {labelLines.map((line, lineIndex) => (
+                      <tspan x={cx} dy={lineIndex === 0 ? 0 : 42}>
+                        {line}
+                      </tspan>
+                    ))}
+                  </text>
+                </>
+              )}
+              {step.note && (
+                <text x={cx} y={stepTop(index) - 34} class="artifact-note">
+                  {step.note}
+                </text>
+              )}
+              {index < sketch.steps.length - 1 && (
+                <line
+                  x1={boxX(index) + boxW + 10}
+                  y1={centerY}
+                  x2={boxX(index + 1) - 12}
+                  y2={centerY}
+                  class="artifact-edge"
+                  marker-end={`url(#${uid}-arrow)`}
+                />
+              )}
+            </g>
+          );
+        })}
+        {sketch.loop && (
+          <g>
+            <path
+              d={`M ${boxX(sketch.loop.from) + boxW / 2} ${stepBottom(sketch.loop.from) + 12}
+                  C ${boxX(sketch.loop.from) + boxW / 2} ${loopDepth + 60},
+                    ${boxX(sketch.loop.to) + boxW / 2} ${loopDepth + 60},
+                    ${boxX(sketch.loop.to) + boxW / 2} ${stepBottom(sketch.loop.to) + 14}`}
+              class="artifact-edge is-loop"
+              marker-end={`url(#${uid}-arrow)`}
+            />
+            <text
+              x={(boxX(sketch.loop.from) + boxX(sketch.loop.to) + boxW) / 2}
+              y={loopDepth + 30}
+              class="artifact-loop-label"
+            >
+              {sketch.loop.label}
+            </text>
+          </g>
+        )}
+      </g>
+    )
+  }
+
+  {
+    generator && picked && (
+      <g class="artifact-ink" style={`--wobble: url(#${uid}-wobble)`}>
+        <text x={110} y={150} class="artifact-caption">{generator.caption}</text>
+
+        {/* Source: one config document */}
+        <rect x="120" y={genMidY - 140} width="230" height="280" rx="14" class="artifact-box" />
+        {Array.from({ length: 7 }, (_, i) => (
+          <g>
+            <rect x="148" y={genMidY - 108 + i * 34} width={40 + ((i * 37) % 50)} height="14" rx="7" class="artifact-bar is-strong" />
+            <rect x={200 + ((i * 37) % 50)} y={genMidY - 108 + i * 34} width={50 + ((i * 53) % 70)} height="14" rx="7" class="artifact-bar" />
+          </g>
+        ))}
+        <text x="235" y={genLabelY} class="artifact-note">{generator.labels.source}</text>
+
+        {/* Generator node */}
+        <line x1="352" y1={genMidY} x2={hub.x - hub.r - 6} y2={genMidY} class="artifact-edge" />
+        {genTiles.map((tile) => (
+          <path
+            d={`M ${hub.x + hub.r} ${hub.y} C ${hub.x + 90} ${hub.y}, ${tile.x - 70} ${tile.y + grid.tile / 2}, ${tile.x} ${tile.y + grid.tile / 2}`}
+            class="artifact-thread"
+          />
+        ))}
+        <circle cx={hub.x} cy={hub.y} r={hub.r} class="artifact-hub" />
+        <circle cx={hub.x} cy={hub.y} r="10" class="artifact-hub-core" />
+        <text x={hub.x} y={genLabelY} class="artifact-note">{generator.labels.generator}</text>
+
+        {/* Output: one module per entity */}
+        {genTiles.map((tile, i) => (
+          <rect
+            x={tile.x}
+            y={tile.y}
+            width={grid.tile}
+            height={grid.tile}
+            rx="8"
+            class={i === pickedIndex ? "artifact-tile is-picked" : "artifact-tile"}
+          />
+        ))}
+        <text x={grid.x + gridW / 2} y={genLabelY} class="artifact-note">{generator.labels.output}</text>
+
+        {/* Zoom from the picked module into its file */}
+        <line x1={picked.x + grid.tile} y1={picked.y} x2={file.x} y2={file.y} class="artifact-zoom" />
+        <line x1={picked.x + grid.tile} y1={picked.y + grid.tile} x2={file.x} y2={file.y + file.h} class="artifact-zoom" />
+
+        <rect x={file.x} y={file.y} width={file.w} height={file.h} rx="14" class="artifact-box is-end" />
+        <line x1={file.x} y1={file.y + 46} x2={file.x + file.w} y2={file.y + 46} class="artifact-rule" />
+        {[0, 1, 2].map((i) => (
+          <circle cx={file.x + 26 + i * 22} cy={file.y + 23} r="6" class="artifact-light" />
+        ))}
+        {codeLines.map((line, i) => (
+          <rect
+            x={file.x + 40 + line.indent * 32}
+            y={file.y + 74 + i * 29}
+            width={(file.w - 80) * line.w}
+            height="13"
+            rx="6.5"
+            class={line.own ? "artifact-code is-own" : "artifact-code"}
+          />
+        ))}
+        <rect x={file.x + 22} y={file.y + 68} width="5" height={4 * 29 - 4} rx="2.5" class="artifact-code is-own" transform={`translate(0 ${4 * 29})`} />
+
+        {/* Rerun arc over the file */}
+        <path
+          d={`M ${file.x + 40} ${file.y - 18} C ${file.x + 90} ${file.y - 110}, ${file.x + file.w - 90} ${file.y - 110}, ${file.x + file.w - 40} ${file.y - 18}`}
+          class="artifact-edge is-loop"
+          marker-end={`url(#${uid}-arrow)`}
+        />
+        <text x={file.x + file.w / 2} y={file.y - 104} class="artifact-note">rerun</text>
+        <text x={file.x + file.w / 2} y={genLabelY} class="artifact-note">{generator.labels.kept}</text>
+      </g>
+    )
+  }
+
+  {
+    access && (
+      <g class="artifact-ink" style={`--wobble: url(#${uid}-wobble)`}>
+        <text x={110} y={150} class="artifact-caption">{access.caption}</text>
+        <text x={(sieveLeft + sieveRight) / 2} y={sieveTop - 70} class="artifact-note">
+          {access.labels.request}
+        </text>
+
+        {sieveLayers.map((layer, i) => (
+          <g>
+            {/* Falling through this mesh toward the next */}
+            {layer.falling.map((bead) => (
+              <g>
+                <circle cx={bead.x} cy={layer.y + 70} r={bead.r} class="artifact-bead is-falling" />
+              </g>
+            ))}
+            {/* Rim and mesh */}
+            <path
+              d={`M ${sieveLeft - 20} ${layer.y - 34} L ${sieveLeft} ${layer.y} M ${sieveRight + 20} ${layer.y - 34} L ${sieveRight} ${layer.y}`}
+              class="artifact-rim"
+            />
+            <line
+              x1={sieveLeft}
+              y1={layer.y}
+              x2={sieveRight}
+              y2={layer.y}
+              class="artifact-mesh"
+              stroke-dasharray={`${meshWire} ${meshHole(i)}`}
+            />
+            {/* Caught on top of the mesh */}
+            {layer.caught.map((bead) => (
+              <circle cx={bead.x} cy={layer.y - bead.r - 4} r={bead.r} class="artifact-bead" />
+            ))}
+            <text x={sieveLeft - 50} y={layer.y + 8} class="artifact-note is-end">
+              {access.gates[i]}
+            </text>
+          </g>
+        ))}
+
+        {/* The tray: what falls through every layer */}
+        <path
+          d={`M ${sieveLeft + 120} ${trayY} Q ${(sieveLeft + sieveRight) / 2} ${trayY + 70} ${sieveRight - 120} ${trayY}`}
+          class="artifact-rim"
+        />
+        {passed.map((r, k) => (
+          <circle
+            cx={(sieveLeft + sieveRight) / 2 + (k - (passed.length - 1) / 2) * 30}
+            cy={trayY + 28}
+            r={r + 2}
+            class="artifact-bead is-pass"
+          />
+        ))}
+        <text x={sieveRight - 80} y={trayY + 40} class="artifact-note is-start">
+          {access.labels.result}
+        </text>
+      </g>
+    )
+  }
+
+  {
+    conversion && (
+      <g class="artifact-ink" style={`--wobble: url(#${uid}-wobble)`}>
+        <text x={110} y={150} class="artifact-caption">{conversion.caption}</text>
+
+        {/* The PDF batch */}
+        <rect x={convStack.x + 20} y={convStack.y - 20} width={convStack.w} height={convStack.h} rx="6" class="artifact-box" />
+        <rect x={convStack.x + 10} y={convStack.y - 10} width={convStack.w} height={convStack.h} rx="6" class="artifact-box" />
+        <path
+          d={`M ${convStack.x} ${convStack.y} H ${convStack.x + convStack.w - 40} L ${convStack.x + convStack.w} ${convStack.y + 40} V ${convStack.y + convStack.h} H ${convStack.x} Z`}
+          class="artifact-box"
+        />
+        <path
+          d={`M ${convStack.x + convStack.w - 40} ${convStack.y} V ${convStack.y + 40} H ${convStack.x + convStack.w}`}
+          class="artifact-lane-fold"
+        />
+        {convPageLines.map((w, k) => (
+          <rect
+            x={convStack.x + 24}
+            y={convStack.y + 66 + k * 24}
+            width={(convStack.w - 48) * w}
+            height="10"
+            rx="5"
+            class="artifact-code"
+          />
+        ))}
+        <text x={convStack.x + convStack.w / 2} y={convLabelY} class="artifact-note">{conversion.labels.source}</text>
+
+        {/* Stage columns */}
+        {[convXmlX, convHtmlX].map((x) => (
+          <rect
+            x={x - 80}
+            y={convLanes[0] - 62}
+            width="160"
+            height={convLanes[3] - convLanes[0] + 124}
+            rx="18"
+            class="artifact-outline is-faint"
+          />
+        ))}
+        <text x={convXmlX} y={convLabelY} class="artifact-note">{conversion.labels.intermediate}</text>
+        <text x={convHtmlX} y={convLabelY} class="artifact-note">{conversion.labels.markup}</text>
+        <text x={convXmlX - 80} y={convLanes[0] - 92} class="artifact-note is-start">{conversion.labels.workers}</text>
+
+        {/* Lanes: fan out from the batch, merge into the page */}
+        {convLanes.map((y) => (
+          <g>
+            <path
+              d={`M ${convStack.x + convStack.w + 24} ${convMidY} C ${convStack.x + convStack.w + 90} ${convMidY}, ${convStack.x + convStack.w + 90} ${y}, ${convXmlX - 110} ${y} L ${convLaneEnd} ${y} C ${convLaneEnd + 70} ${y}, ${convLaneEnd + 70} ${convMidY}, ${convDoc.x - 14} ${convMidY}`}
+              class="artifact-lane"
+            />
+          </g>
+        ))}
+
+        {/* Pages in flight */}
+        {convLanes.map((y, k) => {
+          const x = (convStage[k] === "xml" ? convXmlX : convHtmlX) - convToken.w / 2;
+          const top = y - convToken.h / 2;
+          return (
+            <g>
+              <rect x={x} y={top} width={convToken.w} height={convToken.h} rx="6" class="artifact-box" />
+              {convStage[k] === "xml"
+                ? [0, 1, 1, 2].map((depth, row) => (
+                    <rect x={x + 12 + depth * 16} y={top + 12 + row * 12} width={40 - depth * 6} height="6" rx="3" class="artifact-code" />
+                  ))
+                : [
+                    <rect x={x + 10} y={top + 10} width={convToken.w - 20} height="10" rx="3" class="artifact-code" />,
+                    <rect x={x + 10} y={top + 30} width={convToken.w - 36} height="6" rx="3" class="artifact-code" />,
+                    <rect x={x + 10} y={top + 44} width={convToken.w - 28} height="6" rx="3" class="artifact-code" />,
+                  ]}
+            </g>
+          );
+        })}
+
+        {/* The page in the browser, with editing tools injected */}
+        <rect x={convDoc.x} y={convDoc.y} width={convDoc.w} height={convDoc.h} rx="16" class="artifact-box is-end" />
+        <rect x={convDoc.x + 18} y={convDoc.y + 18} width={convDoc.w - 36} height="54" rx="10" class="artifact-toolbar" />
+        {[0, 1, 2, 3, 4].map((k) => (
+          <rect x={convDoc.x + 34 + k * 50} y={convDoc.y + 32} width="26" height="26" rx="6" class="artifact-code is-own" />
+        ))}
+        {convDocLines.map((w, k) => (
+          <rect
+            x={convDoc.x + 36}
+            y={convDoc.y + 112 + k * 36}
+            width={(convDoc.w - 72) * w}
+            height="12"
+            rx="6"
+            class="artifact-code"
+          />
+        ))}
+        {/* A line being edited */}
+        <rect x={convDoc.x + 26} y={convDoc.y + 112 + 3 * 36 - 10} width={(convDoc.w - 72) * convDocLines[3] + 20} height="32" rx="6" class="artifact-selection" />
+        <line
+          x1={convDoc.x + 36 + (convDoc.w - 72) * convDocLines[3] + 4}
+          y1={convDoc.y + 112 + 3 * 36 - 14}
+          x2={convDoc.x + 36 + (convDoc.w - 72) * convDocLines[3] + 4}
+          y2={convDoc.y + 112 + 3 * 36 + 26}
+          class="artifact-caret"
+        />
+        <text x={convDoc.x + convDoc.w} y={convDoc.y - 24} class="artifact-note is-end">{conversion.labels.injected}</text>
+        <text x={convDoc.x + convDoc.w / 2} y={convLabelY} class="artifact-note">{conversion.labels.result}</text>
+      </g>
+    )
+  }
+
+  {
+    redacted && redacted.frame === "desktop" && (
+      <g class="artifact-ink" style={`--wobble: url(#${uid}-wobble)`}>
+        <rect x="150" y="110" width="1300" height="725" rx="22" class="artifact-window" />
+        <line x1="150" y1="170" x2="1450" y2="170" class="artifact-rule" />
+        {[0, 1, 2].map((i) => (
+          <circle cx={190 + i * 32} cy="140" r="9" class="artifact-light" />
+        ))}
+        <text x="300" y="148" class="artifact-window-title">{redacted.title}</text>
+        <line x1="420" y1="170" x2="420" y2="835" class="artifact-rule" />
+        {lines(9, 210, 0.45).map((line, i) => (
+          <rect x="190" y={225 + i * 62} width={line.width} height="22" rx="11" class="artifact-bar" />
+        ))}
+        <rect x="470" y="220" width="420" height="40" rx="8" class="artifact-bar is-strong" />
+        <rect x="1180" y="218" width="220" height="46" rx="23" class="artifact-redact" />
+        {lines(8, 900).map((line, i) => (
+          <rect
+            x="470"
+            y={310 + i * 62}
+            width={line.width}
+            height="24"
+            rx={line.hidden ? 4 : 12}
+            class={line.hidden ? "artifact-redact" : "artifact-bar"}
+          />
+        ))}
+      </g>
+    )
+  }
+
+  {
+    redacted && redacted.frame === "phone" && (
+      <g class="artifact-ink" style={`--wobble: url(#${uid}-wobble)`}>
+        {[0, 1].map((phone) => {
+          const x = 470 + phone * 380 + (phone ? 40 : 0);
+          const y = 95 + phone * 40;
+          return (
+            <g transform={`rotate(${phone ? 4 : -3} ${x + 160} ${y + 380})`}>
+              <rect x={x} y={y} width="320" height="760" rx="44" class="artifact-window" />
+              <rect x={x + 120} y={y + 22} width="80" height="16" rx="8" class="artifact-light" />
+              <text x={x + 34} y={y + 100} class="artifact-window-title">{phone ? "" : redacted.title}</text>
+              {phone === 0 &&
+                Array.from({ length: 4 }, (_, row) =>
+                  [0, 1].map((col) => (
+                    <rect
+                      x={x + 34 + col * 132}
+                      y={y + 140 + row * 140}
+                      width="118"
+                      height="118"
+                      rx="18"
+                      class={rand() > 0.6 ? "artifact-redact" : "artifact-bar"}
+                    />
+                  )),
+                )}
+              {phone === 1 && (
+                <>
+                  <rect x={x + 34} y={y + 120} width="252" height="330" rx="14" class="artifact-bar" />
+                  {lines(6, 252).map((line, i) => (
+                    <rect
+                      x={x + 34}
+                      y={y + 480 + i * 42}
+                      width={line.width}
+                      height="18"
+                      rx={line.hidden ? 3 : 9}
+                      class={line.hidden ? "artifact-redact" : "artifact-bar"}
+                    />
+                  ))}
+                </>
+              )}
+            </g>
+          );
+        })}
+      </g>
+    )
+  }
+
+  {
+    wip && (
+      <g class="artifact-ink" style={`--wobble: url(#${uid}-wobble)`}>
+        <rect x="150" y="110" width="1300" height="725" rx="22" class="artifact-window" />
+        <line x1="150" y1="170" x2="1450" y2="170" class="artifact-rule" />
+        {[0, 1, 2].map((i) => (
+          <circle cx={190 + i * 32} cy="140" r="9" class="artifact-light" />
+        ))}
+        <text x="300" y="148" class="artifact-window-title">{wip.title}</text>
+        {/* A feed of cards, the first finished, the rest still being drawn. */}
+        {[0, 1, 2].map((col) => {
+          const x = 210 + col * 410;
+          const done = col === 0;
+          return (
+            <g class={done ? "" : "artifact-pencil"}>
+              <rect x={x} y="220" width="370" height="230" rx="16" class={done ? "artifact-bar" : "artifact-outline"} />
+              <circle cx={x + 30} cy="500" r="20" class={done ? "artifact-bar is-strong" : "artifact-outline"} />
+              {lines(3, 300, 0.5).map((line, i) => (
+                <rect
+                  x={x + (i === 0 ? 64 : 0)}
+                  y={490 + i * 46}
+                  width={i === 0 ? line.width * 0.7 : line.width}
+                  height="20"
+                  rx="10"
+                  class={done ? "artifact-bar" : "artifact-outline"}
+                />
+              ))}
+            </g>
+          );
+        })}
+        {[0, 1, 2].map((col) => (
+          <rect x={210 + col * 410} y="680" width="370" height="110" rx="16" class="artifact-outline is-faint" />
+        ))}
+        {/* The pencil, mid-stroke. */}
+        <g transform="rotate(38 1060 470)" class="artifact-pencil-tool">
+          <rect x="1000" y="455" width="190" height="30" rx="4" />
+          <path d="M1000 455 L960 470 L1000 485 Z" />
+        </g>
+      </g>
+    )
+  }
+
+  {
+    (redacted || wip) && (
+      <g transform="rotate(-8 1260 120)" class="artifact-tape">
+        <rect x="1080" y="88" width="380" height="66" />
+        <text x="1270" y="132" class="artifact-tape-label">{wip ? "in progress" : "under NDA"}</text>
+      </g>
+    )
+  }
+</svg>

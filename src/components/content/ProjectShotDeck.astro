@@ -1,51 +1,56 @@
 ---
 import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
+import ProjectArtifact from "./ProjectArtifact.astro";
+import type { ProjectMedia } from "../../lib/projects";
 
-// A deck of screenshots: the current one on top, the rest peeking out
+// A deck of screenshots or drawn cards: the current one on top, the rest peeking out
 // behind it. Picking another view tucks the top card under the pile.
 type Props = {
-  shots: { src: ImageMetadata; alt: string; caption?: string }[];
+  items: ProjectMedia[];
   label: string;
 };
 
-const { shots, label } = Astro.props as Props;
+const { items, label } = Astro.props as Props;
 ---
 
 <section
   class="shot-deck"
   data-shot-deck
   aria-roledescription="carousel"
-  aria-label={`${label} screenshots`}
-  style={`--count: ${shots.length}`}
+  aria-label={`${label}: views of the work`}
+  style={`--count: ${items.length}`}
 >
   <div class="shot-deck-pile">
     {
-      shots.map((shot, index) => (
+      items.map((shot, index) => (
         <figure
           class="shot-deck-card"
           data-shot-card
           data-pos={index}
           aria-roledescription="slide"
-          aria-label={`${index + 1} of ${shots.length}${shot.caption ? `: ${shot.caption}` : ""}`}
+          aria-label={`${index + 1} of ${items.length}${shot.caption ? `: ${shot.caption}` : ""}`}
           aria-hidden={index === 0 ? undefined : "true"}
         >
-          <Image
-            src={shot.src}
-            alt={shot.alt}
-            widths={[640, 960, 1280, 1600]}
-            sizes="(min-width: 56rem) 48rem, 100vw"
-            loading={index === 0 ? "eager" : "lazy"}
-            decoding="async"
-          />
+          {shot.type === "image" ? (
+            <Image
+              src={shot.src}
+              alt={shot.alt}
+              widths={[640, 960, 1280, 1600]}
+              sizes="(min-width: 56rem) 48rem, 100vw"
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+            />
+          ) : (
+            <ProjectArtifact artifact={shot.artifact} />
+          )}
         </figure>
       ))
     }
   </div>
 
-  <div class="shot-deck-controls" role="group" aria-label="Choose a screenshot">
+  <div class="shot-deck-controls" role="group" aria-label="Choose a view">
     {
-      shots.map((shot, index) => (
+      items.map((shot, index) => (
         <button
           type="button"
           class="shot-deck-tab"
@@ -53,7 +58,11 @@ const { shots, label } = Astro.props as Props;
           aria-pressed={index === 0 ? "true" : "false"}
         >
           <span class="shot-deck-tab-thumb" aria-hidden="true">
-            <Image src={shot.src} alt="" widths={[160]} sizes="5rem" loading="lazy" />
+            {shot.type === "image" ? (
+              <Image src={shot.src} alt="" widths={[160]} sizes="5rem" loading="lazy" />
+            ) : (
+              <ProjectArtifact artifact={shot.artifact} label="" />
+            )}
           </span>
           <span class="shot-deck-tab-label ui-meta">
             {shot.caption ?? `View ${index + 1}`}
@@ -62,7 +71,7 @@ const { shots, label } = Astro.props as Props;
       ))
     }
     <span class="shot-deck-count ui-meta font-mono" aria-live="polite">
-      <span data-shot-current>1</span> / {shots.length}
+      <span data-shot-current>1</span> / {items.length}
     </span>
   </div>
 </section>

@@ -1,6 +1,22 @@
 ---
 title: "Scanner Go"
 summary: "Backend infrastructure and document processing for a PDF editing platform."
+artifacts:
+  - kind: conversion
+    caption: In-house conversion
+    alt: "Sketch of the in-house PDF pipeline: a batch of PDF pages fans out across Node.js worker threads, each page passing through XML and then HTML, and the lanes merge into one page in the browser, where an injected script adds an editing toolbar and a line is being edited."
+    labels:
+      source: PDF batch
+      workers: worker threads
+      intermediate: XML
+      markup: HTML
+      result: editable page
+      injected: injected editing tools
+  - kind: redacted
+    caption: The app
+    alt: "Abstract wireframes of two phone screens from the Scanner Go app, a tool grid and a document view, with details blacked out and taped over with a strip reading under NDA."
+    frame: phone
+    title: scanner go
 status: archived
 stack:
   - Javascript

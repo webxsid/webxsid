@@ -127,3 +127,21 @@ export const getProjectLinks = (entry: ProjectEntry): ProjectLink[] =>
     },
     entry.data.demo && { label: "demo", href: entry.data.demo },
   ].filter((link): link is ProjectLink => Boolean(link));
+
+type ProjectData = ProjectEntry["data"];
+export type ProjectArtifact = ProjectData["artifacts"][number];
+
+// Everything a project can show: real screenshots first, then drawn cards.
+export type ProjectMedia =
+  | ({ type: "image" } & ProjectData["shots"][number])
+  | { type: "artifact"; caption: string; alt: string; artifact: ProjectArtifact };
+
+export const getProjectMedia = (entry: ProjectEntry): ProjectMedia[] => [
+  ...entry.data.shots.map((shot) => ({ type: "image" as const, ...shot })),
+  ...entry.data.artifacts.map((artifact) => ({
+    type: "artifact" as const,
+    caption: artifact.caption,
+    alt: artifact.alt,
+    artifact,
+  })),
+];

@@ -1,6 +1,11 @@
 ---
 title: Pebbles
 summary: A personalised entertainment feed, curated by your friends and family.
+artifacts:
+  - kind: wip
+    caption: Being built
+    alt: "A half-drawn wireframe of the Pebbles feed: one finished recommendation card, the others still dashed outlines with a pencil mid-stroke, taped over with a strip reading in progress."
+    title: pebbles
 status: building
 stack:
   - TypeScript
