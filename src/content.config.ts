@@ -35,31 +35,11 @@ const projects = defineCollection({
       )
       .default([]),
     // For work that can't be shown: drawn cards that follow the site's theme.
-    // A sketch is a left-to-right flow of steps, with an optional loop back;
     // a redacted card is an abstract wireframe with the details blacked out;
     // a wip card is a half-drawn wireframe for work that isn't ready to show.
     artifacts: z
       .array(
         z.discriminatedUnion("kind", [
-          z.object({
-            kind: z.literal("sketch"),
-            caption: z.string(),
-            alt: z.string(),
-            steps: z
-              .array(
-                z.object({
-                  label: z.string(),
-                  note: z.string().optional(),
-                  // Draw one tile per output instead of a box, to show scale.
-                  fanOut: z.number().int().min(2).max(60).optional(),
-                }),
-              )
-              .min(2)
-              .max(5),
-            loop: z
-              .object({ from: z.number().int(), to: z.number().int(), label: z.string() })
-              .optional(),
-          }),
           // One config through a generator into many modules, with one module
           // opened to show hand-written code surviving a rerun.
           z.object({
@@ -72,18 +52,6 @@ const projects = defineCollection({
               generator: z.string(),
               output: z.string(),
               kept: z.string(),
-            }),
-          }),
-          // Stacked sieves, each check a finer mesh; what falls through every
-          // layer is what the user sees.
-          z.object({
-            kind: z.literal("access"),
-            caption: z.string(),
-            alt: z.string(),
-            gates: z.array(z.string()).min(2).max(5),
-            labels: z.object({
-              request: z.string(),
-              result: z.string(),
             }),
           }),
           // A batch of pages split across workers, through XML and HTML, into

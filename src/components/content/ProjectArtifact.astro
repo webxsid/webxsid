@@ -26,51 +26,6 @@ const seeded = (seed: string) => {
   };
 };
 
-// Sketch layout
-const sketch = artifact.kind === "sketch" ? artifact : null;
-const pad = 110;
-const gap = 78;
-const stepCount = sketch?.steps.length ?? 0;
-const boxW = stepCount ? (W - pad * 2 - gap * (stepCount - 1)) / stepCount : 0;
-const boxH = 170;
-const centerY = 410;
-const boxY = centerY - boxH / 2;
-const boxX = (index: number) => pad + index * (boxW + gap);
-const splitLabel = (text: string) => text.split("\n");
-
-// A step with `fanOut` draws one small tile per output instead of a single
-// box, so the scale of what it produces is visible at a glance.
-const tileGap = 10;
-const tileCols = 6;
-const fan = (count: number) => {
-  const tile = (boxW - tileGap * (tileCols - 1)) / tileCols;
-  const rows = Math.ceil(count / tileCols);
-  const height = rows * tile + (rows - 1) * tileGap;
-  const top = centerY - height / 2;
-  return {
-    tile,
-    top,
-    bottom: top + height,
-    tiles: Array.from({ length: count }, (_, i) => ({
-      col: i % tileCols,
-      row: Math.floor(i / tileCols),
-    })),
-  };
-};
-const stepFan = (index: number) => {
-  const count = sketch?.steps[index]?.fanOut;
-  return count ? fan(count) : null;
-};
-const stepTop = (index: number) => stepFan(index)?.top ?? boxY;
-// Fanned steps carry their label underneath, so they end lower.
-const stepBottom = (index: number) => {
-  const f = stepFan(index);
-  return f ? f.bottom + 30 + splitLabel(sketch!.steps[index].label).length * 42 : boxY + boxH;
-};
-const loopDepth = sketch?.loop
-  ? Math.max(stepBottom(sketch.loop.from), stepBottom(sketch.loop.to)) + 170
-  : 0;
-
 // Generator layout: config → node → a fan of threads into a grid of modules,
 // one of which opens up as a file.
 const generator = artifact.kind === "generator" ? artifact : null;
@@ -110,41 +65,6 @@ const codeLines = [
   { indent: 0, w: 0.58 },
   { indent: 1, w: 0.66 },
 ];
-
-// Access layout: stacked sieves, each mesh finer than the last. Records
-// too coarse for a check are caught on its mesh; what falls through every
-// layer lands in the tray as what the user can see.
-const access = artifact.kind === "access" ? artifact : null;
-const sieveLeft = 560;
-const sieveRight = 1100;
-const sieveTop = 300;
-const sieveStep = 140;
-const sieveY = (i: number) => sieveTop + i * sieveStep;
-const meshWire = 10;
-const meshHole = (i: number) => 34 - i * 7;
-const beadRadii = [18, 7, 13, 5, 16, 9, 4, 19, 11, 6, 15, 3, 8, 12, 17, 5, 10, 14, 7, 18, 4, 3];
-const layerCount = access?.gates.length ?? 0;
-// The first layer whose holes are too small for the bead, or -1 if it passes all.
-const caughtAt = (r: number) => {
-  for (let i = 0; i < layerCount; i++) if (r * 2 >= meshHole(i)) return i;
-  return -1;
-};
-const sieveRand = seeded(`${artifact.caption}-sieve`);
-const spread = (count: number, from: number, to: number, jitter: number) =>
-  Array.from({ length: count }, (_, k) =>
-    from + ((k + 0.5) * (to - from)) / count + (sieveRand() - 0.5) * jitter,
-  );
-const sieveLayers = Array.from({ length: layerCount }, (_, i) => {
-  const caught = beadRadii.filter((r) => caughtAt(r) === i);
-  const falling = beadRadii.filter((r) => { const at = caughtAt(r); return at === -1 || at > i; });
-  return {
-    y: sieveY(i),
-    caught: ((xs) => caught.map((r, k) => ({ r, x: xs[k] })))(spread(caught.length, sieveLeft + 30, sieveRight - 30, 24)),
-    falling: ((xs) => falling.map((r, k) => ({ r, x: xs[k] })))(spread(falling.length, sieveLeft + 50, sieveRight - 50, 30)),
-  };
-});
-const passed = beadRadii.filter((r) => caughtAt(r) === -1);
-const trayY = sieveY(layerCount) + 10;
 
 // Conversion layout: a batch of PDF pages split across worker threads, each
 // lane carrying a page through XML and HTML, merging into one page in the
@@ -207,110 +127,6 @@ const lines = (count: number, maxWidth: number, minWidth = 0.35) =>
 
   <rect width={W} height={H} class="artifact-paper" />
   <rect width={W} height={H} fill={`url(#${uid}-grid)`} />
-
-  {
-    sketch && (
-      <g class="artifact-ink" style={`--wobble: url(#${uid}-wobble)`}>
-        <text x={pad} y={150} class="artifact-caption">{sketch.caption}</text>
-        {sketch.steps.map((step, index) => {
-          const f = stepFan(index);
-          const cx = boxX(index) + boxW / 2;
-          const labelLines = splitLabel(step.label);
-          return (
-            <g>
-              {f ? (
-                <>
-                  {f.tiles.map(({ col, row }) => (
-                    <g>
-                      <rect
-                        x={boxX(index) + col * (f.tile + tileGap)}
-                        y={f.top + row * (f.tile + tileGap)}
-                        width={f.tile}
-                        height={f.tile}
-                        rx="8"
-                        class="artifact-tile"
-                      />
-                      <rect
-                        x={boxX(index) + col * (f.tile + tileGap) + f.tile * 0.2}
-                        y={f.top + row * (f.tile + tileGap) + f.tile * 0.42}
-                        width={f.tile * 0.6}
-                        height={f.tile * 0.16}
-                        rx="3"
-                        class="artifact-tile-mark"
-                      />
-                    </g>
-                  ))}
-                  <text x={cx} y={f.bottom + 56} class="artifact-label is-under">
-                    {labelLines.map((line, lineIndex) => (
-                      <tspan x={cx} dy={lineIndex === 0 ? 0 : 42}>
-                        {line}
-                      </tspan>
-                    ))}
-                  </text>
-                </>
-              ) : (
-                <>
-                  <rect
-                    x={boxX(index)}
-                    y={boxY}
-                    width={boxW}
-                    height={boxH}
-                    rx="18"
-                    class={index === sketch.steps.length - 1 ? "artifact-box is-end" : "artifact-box"}
-                  />
-                  <text
-                    x={cx}
-                    y={centerY - (labelLines.length - 1) * 21}
-                    class="artifact-label"
-                  >
-                    {labelLines.map((line, lineIndex) => (
-                      <tspan x={cx} dy={lineIndex === 0 ? 0 : 42}>
-                        {line}
-                      </tspan>
-                    ))}
-                  </text>
-                </>
-              )}
-              {step.note && (
-                <text x={cx} y={stepTop(index) - 34} class="artifact-note">
-                  {step.note}
-                </text>
-              )}
-              {index < sketch.steps.length - 1 && (
-                <line
-                  x1={boxX(index) + boxW + 10}
-                  y1={centerY}
-                  x2={boxX(index + 1) - 12}
-                  y2={centerY}
-                  class="artifact-edge"
-                  marker-end={`url(#${uid}-arrow)`}
-                />
-              )}
-            </g>
-          );
-        })}
-        {sketch.loop && (
-          <g>
-            <path
-              d={`M ${boxX(sketch.loop.from) + boxW / 2} ${stepBottom(sketch.loop.from) + 12}
-                  C ${boxX(sketch.loop.from) + boxW / 2} ${loopDepth + 60},
-                    ${boxX(sketch.loop.to) + boxW / 2} ${loopDepth + 60},
-                    ${boxX(sketch.loop.to) + boxW / 2} ${stepBottom(sketch.loop.to) + 14}`}
-              class="artifact-edge is-loop"
-              marker-end={`url(#${uid}-arrow)`}
-            />
-            <text
-              x={(boxX(sketch.loop.from) + boxX(sketch.loop.to) + boxW) / 2}
-              y={loopDepth + 30}
-              class="artifact-loop-label"
-            >
-              {sketch.loop.label}
-            </text>
-          </g>
-        )}
-      </g>
-    )
-  }
 
   {
     generator && picked && (
@@ -381,65 +197,6 @@ const lines = (count: number, maxWidth: number, minWidth = 0.35) =>
         />
         <text x={file.x + file.w / 2} y={file.y - 104} class="artifact-note">rerun</text>
         <text x={file.x + file.w / 2} y={genLabelY} class="artifact-note">{generator.labels.kept}</text>
-      </g>
-    )
-  }
-
-  {
-    access && (
-      <g class="artifact-ink" style={`--wobble: url(#${uid}-wobble)`}>
-        <text x={110} y={150} class="artifact-caption">{access.caption}</text>
-        <text x={(sieveLeft + sieveRight) / 2} y={sieveTop - 70} class="artifact-note">
-          {access.labels.request}
-        </text>
-
-        {sieveLayers.map((layer, i) => (
-          <g>
-            {/* Falling through this mesh toward the next */}
-            {layer.falling.map((bead) => (
-              <g>
-                <circle cx={bead.x} cy={layer.y + 70} r={bead.r} class="artifact-bead is-falling" />
-              </g>
-            ))}
-            {/* Rim and mesh */}
-            <path
-              d={`M ${sieveLeft - 20} ${layer.y - 34} L ${sieveLeft} ${layer.y} M ${sieveRight + 20} ${layer.y - 34} L ${sieveRight} ${layer.y}`}
-              class="artifact-rim"
-            />
-            <line
-              x1={sieveLeft}
-              y1={layer.y}
-              x2={sieveRight}
-              y2={layer.y}
-              class="artifact-mesh"
-              stroke-dasharray={`${meshWire} ${meshHole(i)}`}
-            />
-            {/* Caught on top of the mesh */}
-            {layer.caught.map((bead) => (
-              <circle cx={bead.x} cy={layer.y - bead.r - 4} r={bead.r} class="artifact-bead" />
-            ))}
-            <text x={sieveLeft - 50} y={layer.y + 8} class="artifact-note is-end">
-              {access.gates[i]}
-            </text>
-          </g>
-        ))}
-
-        {/* The tray: what falls through every layer */}
-        <path
-          d={`M ${sieveLeft + 120} ${trayY} Q ${(sieveLeft + sieveRight) / 2} ${trayY + 70} ${sieveRight - 120} ${trayY}`}
-          class="artifact-rim"
-        />
-        {passed.map((r, k) => (
-          <circle
-            cx={(sieveLeft + sieveRight) / 2 + (k - (passed.length - 1) / 2) * 30}
-            cy={trayY + 28}
-            r={r + 2}
-            class="artifact-bead is-pass"
-          />
-        ))}
-        <text x={sieveRight - 80} y={trayY + 40} class="artifact-note is-start">
-          {access.labels.result}
-        </text>
       </g>
     )
   }

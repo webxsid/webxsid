@@ -506,7 +506,6 @@
 
   .artifact-caption,
   .artifact-note,
-  .artifact-loop-label,
   .artifact-window-title {
     font-family: var(--font-mono);
     fill: rgb(var(--text-muted));
@@ -516,8 +515,7 @@
     font-size: 34px;
   }
 
-  .artifact-note,
-  .artifact-loop-label {
+  .artifact-note {
     font-size: 28px;
     text-anchor: middle;
   }
@@ -536,18 +534,7 @@
     stroke: rgb(var(--accent-primary));
   }
 
-  .artifact-label {
-    font-family: var(--font-sans);
-    font-size: 36px;
-    font-weight: 600;
-    fill: rgb(var(--text-primary));
-    text-anchor: middle;
-    dominant-baseline: middle;
-  }
 
-  .artifact-label.is-under {
-    dominant-baseline: auto;
-  }
 
   .artifact-tile {
     fill: rgb(var(--surface-page));
@@ -555,9 +542,6 @@
     stroke-width: 2.5;
   }
 
-  .artifact-tile-mark {
-    fill: rgb(var(--accent-primary) / 0.45);
-  }
 
   .artifact-thread {
     fill: none;
@@ -619,33 +603,10 @@
     stroke-linecap: round;
   }
 
-  .artifact-mesh {
-    stroke: rgb(var(--text-primary) / 0.8);
-    stroke-width: 6;
-  }
 
-  .artifact-rim {
-    fill: none;
-    stroke: rgb(var(--text-primary) / 0.8);
-    stroke-width: 4;
-    stroke-linecap: round;
-  }
 
-  .artifact-bead {
-    fill: rgb(var(--text-muted) / 0.45);
-    stroke: rgb(var(--text-muted) / 0.8);
-    stroke-width: 2;
-  }
 
-  .artifact-bead.is-falling {
-    fill: rgb(var(--text-muted) / 0.15);
-    stroke-dasharray: 4 4;
-  }
 
-  .artifact-bead.is-pass {
-    fill: rgb(var(--accent-primary));
-    stroke: rgb(var(--accent-primary));
-  }
 
   .artifact-note.is-start {
     text-anchor: start;
@@ -665,6 +626,7 @@
   .artifact-edge.is-loop {
     stroke-dasharray: 2 14;
   }
+
 
   .artifact-arrowhead {
     fill: none;
