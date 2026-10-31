@@ -1,6 +1,7 @@
 @import "./fonts.css";
 @import "./themes/index.css";
 @import "./theme-picker.css";
+@import "./themes/link-hover.css";
 
 /* Loaded only by PortfolioLayout; the personal site's stylesheet is separate.
    One calm reading column on a sheet, colours driven by the shared themes. */
@@ -277,7 +278,7 @@ summary:focus-visible {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 13px;
   line-height: 20px;
   font-weight: 600;
@@ -320,7 +321,7 @@ summary:focus-visible {
 .expertise-focus {
   margin-top: 2px;
   color: var(--portfolio-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 12.5px;
   line-height: 20px;
 }
@@ -344,7 +345,7 @@ summary:focus-visible {
 }
 .work-category {
   color: var(--portfolio-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 12.5px;
   line-height: 20px;
 }
@@ -503,7 +504,7 @@ summary:focus-visible {
 /* Roles under each employer: dated, so a real sequence */
 .work-employer {
   color: var(--portfolio-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 12.5px;
   line-height: 20px;
 }

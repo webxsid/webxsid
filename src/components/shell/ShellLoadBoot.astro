@@ -1,7 +1,12 @@
 <script is:inline>
   (() => {
     const root = document.documentElement;
-    root.dataset.splash = "active";
+    // The splash greets the first load of a session; later full loads skip it.
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem("webxsid-splash-seen") === "1";
+    } catch {}
+    root.dataset.splash = seen ? "done" : "active";
     root.dataset.routeLoading = "false";
     window.__webxsidSplashStartedAt = performance.now();
   })();

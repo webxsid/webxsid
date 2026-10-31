@@ -26,6 +26,9 @@
 
       window.setTimeout(() => {
         root.dataset.splash = "done";
+        try {
+          sessionStorage.setItem("webxsid-splash-seen", "1");
+        } catch {}
       }, delay);
     };
 

@@ -108,7 +108,7 @@ export function ShellHeaderMenu({
         <ul className="space-y-1">
           {navItems.map((item) => renderItem(item))}
         </ul>
-        <h2 className="shell-menu-group-label link-footer-label ui-label font-mono">
+        <h2 className="shell-menu-group-label link-footer-label ui-label">
           elsewhere
         </h2>
         <ul className="space-y-1">

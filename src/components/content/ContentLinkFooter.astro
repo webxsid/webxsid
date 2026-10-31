@@ -79,7 +79,7 @@ const wrapperProps = embedded ? {} : { class: "link-footer motion-page" };
     <Wrapper {...wrapperProps}>
       {backlinks.length > 0 && (
         <section class="link-footer-group">
-          <h2 class="link-footer-label ui-label font-mono">Mentioned in</h2>
+          <h2 class="link-footer-label ui-label">Mentioned in</h2>
           <ul class="link-footer-items">
             {backlinks.map((item) => (
               <li class="ui-meta font-mono">
@@ -93,7 +93,7 @@ const wrapperProps = embedded ? {} : { class: "link-footer motion-page" };
 
       {references.length > 0 && (
         <section class="link-footer-group">
-          <h2 class="link-footer-label ui-label font-mono">References</h2>
+          <h2 class="link-footer-label ui-label">References</h2>
           <ul class="link-footer-items">
             {references.map((item) => (
               <li class="ui-meta font-mono">

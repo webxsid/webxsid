@@ -1,0 +1,100 @@
+/* Link hover, per theme: links stay quiet at rest and show the theme's
+   character only when pointed at. Shared by the personal site and portfolio. */
+:root[data-theme-family] :is(
+    .title-link:hover,
+    .inline-link:hover,
+    .meta-link:hover,
+    .content-document a:hover,
+    .content-note a:hover,
+    .index-row[data-linked="true"]:hover .index-row-link,
+    .text-link:hover,
+    .beyond-links a:hover,
+    .personal-site-link:hover,
+    .contact-email:hover
+  ) {
+  transition:
+    color var(--motion-duration-soft, 160ms) ease,
+    text-decoration-color var(--motion-duration-soft, 160ms) ease,
+    text-shadow var(--motion-duration-soft, 160ms) ease,
+    background-color var(--motion-duration-soft, 160ms) ease;
+}
+
+/* Phosphor: the text glows like a lit trace. */
+:root[data-theme-family="phosphor"] :is(
+    .title-link:hover,
+    .inline-link:hover,
+    .meta-link:hover,
+    .content-document a:hover,
+    .content-note a:hover,
+    .index-row[data-linked="true"]:hover .index-row-link,
+    .text-link:hover,
+    .beyond-links a:hover,
+    .personal-site-link:hover,
+    .contact-email:hover
+  ) {
+  text-shadow:
+    0 0 6px rgb(var(--accent-primary) / 0.55),
+    0 0 14px rgb(var(--accent-primary) / 0.25);
+}
+
+/* Retro: a selection-style highlight block. */
+:root[data-theme-family="retro"] :is(
+    .title-link:hover,
+    .inline-link:hover,
+    .meta-link:hover,
+    .content-document a:hover,
+    .content-note a:hover,
+    .index-row[data-linked="true"]:hover .index-row-link,
+    .text-link:hover,
+    .beyond-links a:hover,
+    .personal-site-link:hover,
+    .contact-email:hover
+  ) {
+  background-color: rgb(var(--accent-primary) / 0.2);
+  box-shadow: 0 0 0 2px rgb(var(--accent-primary) / 0.2);
+  text-decoration-color: transparent;
+}
+
+/* Doodle: the wavy underline thickens and takes the accent, still wavy. */
+:root[data-theme-family="doodle"] :is(
+    .title-link:hover,
+    .inline-link:hover,
+    .meta-link:hover,
+    .content-document a:hover,
+    .content-note a:hover,
+    .index-row[data-linked="true"]:hover .index-row-link,
+    .text-link:hover,
+    .beyond-links a:hover,
+    .personal-site-link:hover,
+    .contact-email:hover
+  ) {
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgb(var(--accent-primary));
+}
+
+/* E-ink: ink inverts under the pointer, like a marked passage. */
+:root[data-theme-family="e-ink"] :is(
+    .title-link:hover,
+    .inline-link:hover,
+    .meta-link:hover,
+    .content-document a:hover,
+    .content-note a:hover,
+    .index-row[data-linked="true"]:hover .index-row-link,
+    .text-link:hover,
+    .beyond-links a:hover,
+    .personal-site-link:hover,
+    .contact-email:hover
+  ) {
+  color: rgb(var(--surface-page));
+  background-color: rgb(var(--text-primary));
+  box-shadow: 0 0 0 2px rgb(var(--text-primary));
+  text-decoration-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme-family] :is(.title-link, .inline-link, .meta-link, .text-link) {
+    transition: none;
+  }
+}

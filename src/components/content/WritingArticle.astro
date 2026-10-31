@@ -94,7 +94,7 @@ const isExternal = (href: string) => href.startsWith("http");
     {
       relatedArticles.length > 0 && (
         <section class="link-footer-group">
-          <h2 class="link-footer-label ui-label font-mono">Related</h2>
+          <h2 class="link-footer-label ui-label">Related</h2>
           <ul class="link-footer-items">
             {relatedArticles.map((article) => (
               <li class="ui-meta font-mono">
@@ -125,7 +125,7 @@ const isExternal = (href: string) => href.startsWith("http");
     />
 
     <section class="link-footer-group">
-      <h2 class="link-footer-label ui-label font-mono">Follow</h2>
+      <h2 class="link-footer-label ui-label">Follow</h2>
       <p class="index-row-meta ui-meta font-mono">
         {
           followLinks.map((link) => (
