@@ -7,6 +7,8 @@ import ContentLinkFooter from "../../components/content/ContentLinkFooter.astro"
 import ContentLinkPreview from "../../components/content/ContentLinkPreview.astro";
 import IndexHeader from "../../components/content/IndexHeader.astro";
 import StatusBadge from "../../components/content/StatusBadge.astro";
+import ProjectShot from "../../components/content/ProjectShot.astro";
+import ProjectShotDeck from "../../components/content/ProjectShotDeck.astro";
 import {
   getEmptyContentLinkProfile,
   getContentLinkProfiles,
@@ -112,6 +114,18 @@ const tags = [...new Set(entry.data.tags.map((tag) => tag.trim()).filter(Boolean
           }
         </Fragment>
       </IndexHeader>
+
+      {
+        entry.data.shots.length > 1 ? (
+          <ProjectShotDeck shots={entry.data.shots} label={entry.data.title} />
+        ) : entry.data.shots[0] && (
+          <ProjectShot
+            src={entry.data.shots[0].src}
+            alt={entry.data.shots[0].alt}
+            loading="eager"
+          />
+        )
+      }
 
       <ContentDocument class="space-y-4">
         <Content />

@@ -6,6 +6,7 @@ import IndexGroup from "../../components/content/IndexGroup.astro";
 import IndexHeader from "../../components/content/IndexHeader.astro";
 import IndexRow from "../../components/content/IndexRow.astro";
 import StatusBadge from "../../components/content/StatusBadge.astro";
+import ProjectShotStack from "../../components/content/ProjectShotStack.astro";
 import {
   getProjectCompanyHref,
   getProjectExcerpt,
@@ -100,6 +101,9 @@ const getSummary = (project: ProjectEntry) =>
                         >{`${link.label} ↗`}</a>
                       ))}
                     </Fragment>
+                    {project.data.shots.length > 0 && (
+  <ProjectShotStack slot="media" shots={project.data.shots} />
+)}
                   </IndexRow>
                 );
               })}

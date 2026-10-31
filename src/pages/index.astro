@@ -6,6 +6,7 @@ import ContentLinkPreview from "../components/content/ContentLinkPreview.astro";
 import IndexGroup from "../components/content/IndexGroup.astro";
 import IndexRow from "../components/content/IndexRow.astro";
 import StatusBadge from "../components/content/StatusBadge.astro";
+import ProjectShotStack from "../components/content/ProjectShotStack.astro";
 import HomeLatestNotes from "../components/content/HomeLatestNotes.astro";
 import { portfolio } from "../data/portfolio";
 import { formatDate } from "../lib/dates";
@@ -138,28 +139,6 @@ const seo = withAutoOgImage(
       </section>
 
       <IndexGroup
-        label="Latest writing"
-        id="home-writing"
-        href="/writing"
-        linkLabel="all writing →"
-        pinned={false}
-      >
-        {
-          latestWriting.map((entry) => (
-            <IndexRow href={getWritingPath(entry)} title={entry.data.title} clamp>
-              {entry.data.summary}
-              <Fragment slot="meta">
-                <time datetime={entry.data.publishedAt.toISOString()}>
-                  {formatDate(entry.data.publishedAt)}
-                </time>
-                <span>{getWritingReadTime(entry)}</span>
-              </Fragment>
-            </IndexRow>
-          ))
-        }
-      </IndexGroup>
-
-      <IndexGroup
         label="Featured projects"
         id="home-projects"
         href="/projects"
@@ -181,6 +160,31 @@ const seo = withAutoOgImage(
               {project.data.summary}
               <Fragment slot="meta">
                 <span>{getProjectStackLabel(project)}</span>
+              </Fragment>
+              {project.data.shots.length > 0 && (
+  <ProjectShotStack slot="media" shots={project.data.shots} />
+)}
+            </IndexRow>
+          ))
+        }
+      </IndexGroup>
+
+      <IndexGroup
+        label="Latest writing"
+        id="home-writing"
+        href="/writing"
+        linkLabel="all writing →"
+        pinned={false}
+      >
+        {
+          latestWriting.map((entry) => (
+            <IndexRow href={getWritingPath(entry)} title={entry.data.title} clamp>
+              {entry.data.summary}
+              <Fragment slot="meta">
+                <time datetime={entry.data.publishedAt.toISOString()}>
+                  {formatDate(entry.data.publishedAt)}
+                </time>
+                <span>{getWritingReadTime(entry)}</span>
               </Fragment>
             </IndexRow>
           ))

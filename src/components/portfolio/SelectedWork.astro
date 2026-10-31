@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { portfolio } from "../../data/portfolio";
 ---
 
@@ -30,6 +31,18 @@ import { portfolio } from "../../data/portfolio";
         </header>
         <div class="work-description">
           <p class="work-lead">{work.description}</p>
+          {work.image && (
+            <figure class="work-shot">
+              <Image
+                src={work.image.src}
+                alt={work.image.alt}
+                widths={[560, 840, 1120]}
+                sizes="(min-width: 600px) 560px, 100vw"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          )}
           <p class="body-copy">{work.contribution}</p>
           {work.supporting && (
             <aside class="work-supporting portfolio-callout">

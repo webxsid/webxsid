@@ -1,0 +1,41 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+type Props = {
+  src: ImageMetadata;
+  alt: string;
+  sizes?: string;
+  loading?: "eager" | "lazy";
+  class?: string;
+  /** "thumb" is the small taped-on card used in lists. */
+  variant?: "full" | "thumb";
+  style?: string;
+};
+
+const {
+  src,
+  alt,
+  sizes = "(min-width: 56rem) 48rem, 100vw",
+  loading = "lazy",
+  class: className = "",
+  variant = "full",
+  style,
+} = Astro.props as Props;
+const isThumb = variant === "thumb";
+---
+
+<figure
+  class={`project-shot ${className}`.trim()}
+  data-variant={variant}
+  style={style}
+>
+  <Image
+    src={src}
+    alt={alt}
+    widths={isThumb ? [320, 480, 640] : [640, 960, 1280, 1600]}
+    sizes={isThumb ? "14rem" : sizes}
+    loading={loading}
+    decoding="async"
+  />
+</figure>

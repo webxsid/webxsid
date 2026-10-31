@@ -19,9 +19,21 @@ const projects = defineCollection({
     pattern: "**/*.md",
     base: "./src/content/projects",
   }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     summary: z.string(),
+    // Real screenshots of the work. The first leads on the project page; lists
+    // show them all as a small stack.
+    shots: z
+      .array(
+        z.object({
+          src: image(),
+          alt: z.string(),
+          // Short name for the view, used to pick it on the project page.
+          caption: z.string().optional(),
+        }),
+      )
+      .default([]),
     status: z
       .enum(["active", "building", "maintained", "archived", "prototype", "experimental"])
       .default("active"),

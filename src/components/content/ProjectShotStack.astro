@@ -1,0 +1,26 @@
+---
+import ProjectShot from "./ProjectShot.astro";
+import type { ImageMetadata } from "astro";
+
+type Props = {
+  shots: { src: ImageMetadata; alt: string }[];
+};
+
+const { shots } = Astro.props as Props;
+---
+
+{
+  shots.length > 0 && (
+    <div class="shot-stack" style={`--count: ${shots.length}`}>
+      {shots.map((shot, index) => (
+        <ProjectShot
+          src={shot.src}
+          alt={shot.alt}
+          variant="thumb"
+          class="shot-stack-card"
+          style={`--i: ${index}`}
+        />
+      ))}
+    </div>
+  )
+}

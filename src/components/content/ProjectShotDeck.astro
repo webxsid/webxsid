@@ -1,0 +1,125 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+// A deck of screenshots: the current one on top, the rest peeking out
+// behind it. Picking another view tucks the top card under the pile.
+type Props = {
+  shots: { src: ImageMetadata; alt: string; caption?: string }[];
+  label: string;
+};
+
+const { shots, label } = Astro.props as Props;
+---
+
+<section
+  class="shot-deck"
+  data-shot-deck
+  aria-roledescription="carousel"
+  aria-label={`${label} screenshots`}
+  style={`--count: ${shots.length}`}
+>
+  <div class="shot-deck-pile">
+    {
+      shots.map((shot, index) => (
+        <figure
+          class="shot-deck-card"
+          data-shot-card
+          data-pos={index}
+          aria-roledescription="slide"
+          aria-label={`${index + 1} of ${shots.length}${shot.caption ? `: ${shot.caption}` : ""}`}
+          aria-hidden={index === 0 ? undefined : "true"}
+        >
+          <Image
+            src={shot.src}
+            alt={shot.alt}
+            widths={[640, 960, 1280, 1600]}
+            sizes="(min-width: 56rem) 48rem, 100vw"
+            loading={index === 0 ? "eager" : "lazy"}
+            decoding="async"
+          />
+        </figure>
+      ))
+    }
+  </div>
+
+  <div class="shot-deck-controls" role="group" aria-label="Choose a screenshot">
+    {
+      shots.map((shot, index) => (
+        <button
+          type="button"
+          class="shot-deck-tab"
+          data-shot-tab={index}
+          aria-pressed={index === 0 ? "true" : "false"}
+        >
+          <span class="shot-deck-tab-thumb" aria-hidden="true">
+            <Image src={shot.src} alt="" widths={[160]} sizes="5rem" loading="lazy" />
+          </span>
+          <span class="shot-deck-tab-label ui-meta">
+            {shot.caption ?? `View ${index + 1}`}
+          </span>
+        </button>
+      ))
+    }
+    <span class="shot-deck-count ui-meta font-mono" aria-live="polite">
+      <span data-shot-current>1</span> / {shots.length}
+    </span>
+  </div>
+</section>
+
+<script>
+  const initDecks = () => {
+    document.querySelectorAll<HTMLElement>("[data-shot-deck]").forEach((deck) => {
+      if (deck.dataset.ready) return;
+      deck.dataset.ready = "true";
+
+      const cards = [...deck.querySelectorAll<HTMLElement>("[data-shot-card]")];
+      const tabs = [...deck.querySelectorAll<HTMLButtonElement>("[data-shot-tab]")];
+      const current = deck.querySelector("[data-shot-current]");
+      const count = cards.length;
+      let active = 0;
+
+      const show = (next: number) => {
+        next = ((next % count) + count) % count;
+        if (next === active) return;
+
+        const previous = cards[active];
+        previous.classList.remove("is-tucking");
+        // Restart the tuck animation on the card leaving the top.
+        void previous.offsetWidth;
+        previous.classList.add("is-tucking");
+
+        active = next;
+        cards.forEach((card, index) => {
+          const pos = (index - active + count) % count;
+          card.dataset.pos = String(pos);
+          card.setAttribute("aria-hidden", pos === 0 ? "false" : "true");
+        });
+        tabs.forEach((tab, index) =>
+          tab.setAttribute("aria-pressed", index === active ? "true" : "false"),
+        );
+        if (current) current.textContent = String(active + 1);
+      };
+
+      tabs.forEach((tab, index) => tab.addEventListener("click", () => show(index)));
+
+      // Clicking the pile, or a card peeking out, moves to the next view.
+      deck.querySelector(".shot-deck-pile")?.addEventListener("click", () => show(active + 1));
+
+      deck.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight") show(active + 1);
+        else if (event.key === "ArrowLeft") show(active - 1);
+        else return;
+        event.preventDefault();
+        tabs[active]?.focus();
+      });
+
+      cards.forEach((card) =>
+        card.addEventListener("animationend", () => card.classList.remove("is-tucking")),
+      );
+    });
+  };
+
+  initDecks();
+  document.addEventListener("astro:page-load", initDecks);
+</script>

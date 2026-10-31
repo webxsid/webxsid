@@ -1,3 +1,6 @@
+import type { ImageMetadata } from "astro";
+import cronaFocus from "../assets/projects/crona/focus.webp";
+
 export type PortfolioLink = { label: string; href: string };
 export type WorkEntry = {
   id: string;
@@ -13,6 +16,7 @@ export type WorkEntry = {
   detailsLabel: string;
   details: { title: string; text: string }[];
   links: PortfolioLink[];
+  image?: { src: ImageMetadata; alt: string };
 };
 
 // Professional claims and their qualifications: resume/facts.md.
@@ -118,6 +122,10 @@ export const portfolio = {
       contribution:
         "I built and maintain Crona around a local daemon and a SQLite database. The daemon owns the state and the session logic, so timers keep running when an interface closes and you can switch clients without losing your place. Stable releases ship through Homebrew and GitHub.",
       technologies: ["Go", "Bubble Tea", "SQLite", "Local IPC"],
+      image: {
+        src: cronaFocus,
+        alt: "Crona's terminal UI in focus mode: a large pixel countdown reading 00:24:33 above the current task.",
+      },
       detailsLabel: "Architecture & released workflows",
       details: [
         {

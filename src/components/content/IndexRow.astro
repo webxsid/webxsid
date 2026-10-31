@@ -15,6 +15,7 @@ const hasAside = Astro.slots.has("aside");
   data-has-aside={hasAside ? "true" : undefined}
   data-muted={muted ? "true" : undefined}
   data-linked={href ? "true" : undefined}
+  data-has-media={Astro.slots.has("media") ? "true" : undefined}
 >
   {
     hasAside && (
@@ -48,6 +49,13 @@ const hasAside = Astro.slots.has("aside");
         <p class="index-row-meta ui-meta font-mono">
           <slot name="meta" />
         </p>
+      )
+    }
+    {
+      Astro.slots.has("media") && (
+        <div class="index-row-media">
+          <slot name="media" />
+        </div>
       )
     }
   </div>

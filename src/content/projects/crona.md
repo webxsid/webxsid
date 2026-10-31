@@ -1,6 +1,16 @@
 ---
 title: Crona
 summary: Local-first work tracker for developers.
+shots:
+  - src: ../../assets/projects/crona/focus.webp
+    caption: Focus mode
+    alt: "Crona's terminal UI in focus mode: a large pixel countdown reading 00:24:33 above the current task, Prepare rollout checklist."
+  - src: ../../assets/projects/crona/today.webp
+    caption: Today
+    alt: "Crona's Today view: planned tasks on the left, the selected task's notes and momentum on the right, and habits due below."
+  - src: ../../assets/projects/crona/insights.webp
+    caption: Insights
+    alt: "Crona's Insights view: a list of momentum goals, a 30-day chart of daily work against a one-hour target, and weekly buckets."
 status: active
 stack:
   - Go
