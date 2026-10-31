@@ -16,6 +16,8 @@
       "retro-dark": "#222945",
       doodle: "#f8f1df",
       "doodle-dark": "#24211d",
+      web99: "#c0c0c0",
+      "web99-dark": "#000000",
     };
 
     const families = {
@@ -38,6 +40,10 @@
       doodle: {
         light: "doodle",
         dark: "doodle-dark",
+      },
+      web99: {
+        light: "web99",
+        dark: "web99-dark",
       },
     };
 
@@ -123,6 +129,10 @@
         }
       }
 
+      // The hidden 1999 theme shows in the picker once it has been found.
+      if (readStored("theme-web99-unlocked") === "1") {
+        document.documentElement.dataset.themeUnlocked = "true";
+      }
       document.documentElement.dataset.themeFamily = resolvedFamily;
       document.documentElement.dataset.themeMode = resolvedMode;
       document.documentElement.dataset.theme = nextVariant;

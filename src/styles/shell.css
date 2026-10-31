@@ -152,6 +152,14 @@
     }
   }
 
+  /* The footer year doubles as a time machine (SiteFooter); fast taps should
+     count, not select text or zoom. */
+  .site-footer-year {
+    font-variant-numeric: tabular-nums;
+    touch-action: manipulation;
+    user-select: none;
+  }
+
   .shell-header-back-slot {
     width: 0;
     margin-right: -0.75rem;

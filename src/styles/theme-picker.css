@@ -127,6 +127,9 @@
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+:root:not([data-theme-unlocked]) .theme-palette[data-secret] {
+  display: none;
+}
 .theme-palette,
 .theme-modes label {
   position: relative;

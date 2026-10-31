@@ -35,6 +35,14 @@ export const themeFamilies = [
     lightVariant: "doodle",
     darkVariant: "doodle-dark",
   },
+  // Hidden until unlocked by tapping the footer year five times.
+  {
+    value: "web99",
+    label: "1999",
+    lightVariant: "web99",
+    darkVariant: "web99-dark",
+    secret: true,
+  },
 ] as const;
 
 export const themeColors = {
@@ -48,6 +56,8 @@ export const themeColors = {
   "retro-dark": "#222945",
   doodle: "#f8f1df",
   "doodle-dark": "#24211d",
+  web99: "#c0c0c0",
+  "web99-dark": "#000000",
 } as const;
 
 export type ThemeFamily = (typeof themeFamilies)[number]["value"];
@@ -63,6 +73,8 @@ export type ThemeMode = (typeof themeModes)[number]["value"];
 export const THEME_FAMILY_STORAGE_KEY = "theme-family";
 export const THEME_MODE_STORAGE_KEY = "theme-mode";
 export const LEGACY_THEME_STORAGE_KEY = "theme";
+export const THEME_UNLOCKED_STORAGE_KEY = "theme-web99-unlocked";
+export const THEME_BEFORE_UNLOCK_STORAGE_KEY = "theme-web99-previous";
 
 export const defaultThemeFamily: ThemeFamily = "graphite";
 export const defaultThemeMode: ThemeMode = "system";
@@ -118,6 +130,9 @@ export const resolveThemeFamilyFromVariant = (
     case "doodle":
     case "doodle-dark":
       return "doodle" as const;
+    case "web99":
+    case "web99-dark":
+      return "web99" as const;
     default:
       return defaultThemeFamily;
   }
@@ -132,12 +147,14 @@ export const resolveThemeModeFromVariant = (
     case "phosphor-light":
     case "retro":
     case "doodle":
+    case "web99":
       return "light" as const;
     case "graphite":
     case "e-ink-dark":
     case "phosphor":
     case "retro-dark":
     case "doodle-dark":
+    case "web99-dark":
       return "dark" as const;
     default:
       return defaultThemeMode;
@@ -204,4 +221,26 @@ export const isActivePath = (currentPath: string, href: string) => {
     normalizedCurrent === normalizedHref ||
     normalizedCurrent.startsWith(`${normalizedHref}/`)
   );
+};
+
+// Sets the theme and remembers it, as the picker does.
+export const applyThemePreference = (family: ThemeFamily, mode: ThemeMode) => {
+  const variant = resolveThemeVariant(
+    family,
+    mode,
+    window.matchMedia("(prefers-color-scheme: dark)").matches,
+  );
+  const root = document.documentElement;
+  root.dataset.themeFamily = family;
+  root.dataset.themeMode = mode;
+  root.dataset.theme = variant;
+  document
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute("content", getThemeColor(variant));
+  try {
+    localStorage.setItem(THEME_FAMILY_STORAGE_KEY, family);
+    localStorage.setItem(THEME_MODE_STORAGE_KEY, mode);
+  } catch {
+    /* The theme still applies for this page. */
+  }
 };

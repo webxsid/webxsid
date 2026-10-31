@@ -1,0 +1,39 @@
+[data-theme="web99-dark"] {
+  color-scheme: dark;
+  --surface-page: 0 0 0;
+  --surface-elevated: 0 0 96;
+  --surface-overlay: 0 0 0;
+  --surface-preview-media: 0 0 48;
+
+  --text-primary: 255 255 204;
+  --text-muted: 192 192 192;
+  --text-accent: 0 255 0;
+
+  --border-default: 128 128 160;
+  --border-subtle-opacity: 1;
+  --border-strong-opacity: 1;
+
+  --accent-primary: 255 255 0;
+  --accent-soft-opacity: 0.18;
+  --accent-strong-opacity: 1;
+  --selection-opacity: 0.4;
+
+  --color-status-active: 0 255 0;
+  --color-status-building: 255 165 0;
+  --color-status-maintained: 0 255 255;
+  --color-status-archived: 160 160 160;
+  --color-status-prototype: 135 206 250;
+  --color-status-experimental: 255 0 255;
+
+  --web99-bevel-out:
+    inset -1px -1px 0 rgb(0 0 0),
+    inset 1px 1px 0 rgb(128 128 255),
+    inset -2px -2px 0 rgb(0 0 48),
+    inset 2px 2px 0 rgb(64 64 192);
+  --shadow-nav: var(--web99-bevel-out);
+  --shadow-dock: var(--web99-bevel-out);
+  --shadow-preview: var(--web99-bevel-out), 2px 2px 0 rgb(255 255 0 / 0.35);
+  --shadow-active-inset:
+    inset 1px 1px 0 rgb(0 0 0),
+    inset -1px -1px 0 rgb(128 128 255);
+}

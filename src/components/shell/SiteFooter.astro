@@ -114,9 +114,129 @@ const footerColumns = footerLinkColumns.map((column) => ({
     <p
       class="site-footer-bar index-row-meta ui-meta font-mono mt-14 border-t border-dashed border-border/45 pt-6"
     >
-      <span>&copy; {currentYear} Siddharth Mittal</span>
+      <span>&copy; <span class="site-footer-year" data-time-year={currentYear}>{currentYear}</span> Siddharth Mittal</span>
       <span>{footerColophon}</span>
       <a class="index-row-meta-link" href="/colophon">colophon →</a>
     </p>
   </Container>
 </footer>
+
+<script>
+  // Easter egg: tap the year five times and it rolls back to 1999, along with
+  // the site (the hidden 1999 theme). In 1999, one tap returns to the present.
+  import {
+    applyThemePreference,
+    resolveThemeFamilyAndMode,
+    THEME_BEFORE_UNLOCK_STORAGE_KEY,
+    THEME_UNLOCKED_STORAGE_KEY,
+  } from "../react/header/header-utils";
+
+  const PAST = 1999;
+  const TAPS = 5;
+  const IDLE_MS = 2500;
+
+  const read = (key: string) => {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  };
+
+  const write = (key: string, value: string) => {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      /* The trip still works for this page. */
+    }
+  };
+
+  const inPast = () => document.documentElement.dataset.themeFamily === "web99";
+
+  const initTimeYear = () => {
+    const year = document.querySelector<HTMLElement>("[data-time-year]");
+    if (!year || year.dataset.ready) return;
+    year.dataset.ready = "true";
+
+    const present = Number(year.dataset.timeYear);
+    let taps = 0;
+    let idle: number | undefined;
+    let rolling = false;
+
+    const show = (value: number) => {
+      year.textContent = String(value);
+    };
+    show(inPast() ? PAST : present);
+
+    const travel = () => {
+      const root = document.documentElement;
+      const current = resolveThemeFamilyAndMode(root.dataset.themeFamily, root.dataset.themeMode);
+      write(THEME_BEFORE_UNLOCK_STORAGE_KEY, current.family);
+      write(THEME_UNLOCKED_STORAGE_KEY, "1");
+      root.dataset.themeUnlocked = "true";
+      applyThemePreference("web99", current.mode);
+      window.__webxsidTriggerThemeFx?.();
+    };
+
+    const returnToPresent = () => {
+      const root = document.documentElement;
+      const current = resolveThemeFamilyAndMode(root.dataset.themeFamily, root.dataset.themeMode);
+      const previous = resolveThemeFamilyAndMode(read(THEME_BEFORE_UNLOCK_STORAGE_KEY), current.mode);
+      applyThemePreference(previous.family === "web99" ? "graphite" : previous.family, current.mode);
+      window.__webxsidTriggerThemeFx?.();
+      show(present);
+    };
+
+    // The last tap spins the year down to 1999, then the site follows.
+    const roll = () => {
+      rolling = true;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let value = present - (TAPS - 1);
+      if (reduce) {
+        show(PAST);
+        travel();
+        rolling = false;
+        return;
+      }
+      const step = () => {
+        value -= 1;
+        show(value);
+        if (value > PAST) {
+          window.setTimeout(step, 45);
+        } else {
+          travel();
+          rolling = false;
+        }
+      };
+      step();
+    };
+
+    year.addEventListener("click", () => {
+      if (rolling) return;
+      window.clearTimeout(idle);
+
+      if (inPast()) {
+        taps = 0;
+        returnToPresent();
+        return;
+      }
+
+      taps += 1;
+      if (taps >= TAPS) {
+        taps = 0;
+        roll();
+        return;
+      }
+
+      show(present - taps);
+      idle = window.setTimeout(() => {
+        taps = 0;
+        show(present);
+      }, IDLE_MS);
+    });
+  };
+
+  initTimeYear();
+  document.addEventListener("astro:page-load", initTimeYear);
+</script>
+

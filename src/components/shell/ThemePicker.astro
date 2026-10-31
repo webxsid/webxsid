@@ -66,7 +66,10 @@ const { align = "end", triggerClass = "" } = Astro.props as Props;
       <div class="theme-palettes">
         {
           themeFamilies.map((theme) => (
-            <label class="theme-palette">
+            <label
+              class="theme-palette"
+              data-secret={"secret" in theme ? "true" : undefined}
+            >
               <input
                 type="radio"
                 name="theme-picker-palette"
