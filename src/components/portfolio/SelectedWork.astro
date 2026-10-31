@@ -1,6 +1,18 @@
 ---
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 import { portfolio } from "../../data/portfolio";
+import ProjectArtifact from "../content/ProjectArtifact.astro";
+
+const projects = await getCollection("projects");
+const artifactFor = (ref: (typeof portfolio.work)[number]["artifact"]) => {
+  if (!ref) return undefined;
+  const artifact = projects
+    .find((entry) => entry.id === ref.project)
+    ?.data.artifacts.find((item) => item.kind === ref.kind);
+  if (!artifact) throw new Error(`No ${ref.kind} card on project "${ref.project}"`);
+  return artifact;
+};
 ---
 
 <section id="work" class="portfolio-section" aria-labelledby="work-heading">
@@ -41,6 +53,11 @@ import { portfolio } from "../../data/portfolio";
                 loading="lazy"
                 decoding="async"
               />
+            </figure>
+          )}
+          {work.artifact && (
+            <figure class="work-shot">
+              <ProjectArtifact artifact={artifactFor(work.artifact)!} />
             </figure>
           )}
           <p class="body-copy">{work.contribution}</p>

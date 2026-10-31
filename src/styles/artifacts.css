@@ -1,0 +1,211 @@
+/* Shared by the site and the portfolio, which has its own stylesheet. */
+@layer components {
+  /* Drawn cards for work that can't be screenshotted (ProjectArtifact). */
+  .artifact {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .artifact-paper {
+    fill: rgb(var(--surface-elevated));
+  }
+
+  .artifact-grid {
+    fill: rgb(var(--border-default) / 0.55);
+  }
+
+  .artifact-caption,
+  .artifact-note,
+  .artifact-window-title {
+    font-family: var(--font-mono);
+    fill: rgb(var(--text-muted));
+  }
+
+  .artifact-caption {
+    font-size: 34px;
+  }
+
+  .artifact-note {
+    font-size: 28px;
+    text-anchor: middle;
+  }
+
+  .artifact-window-title {
+    font-size: 26px;
+  }
+
+  .artifact-box {
+    fill: rgb(var(--surface-page));
+    stroke: rgb(var(--border-default));
+    stroke-width: 3;
+  }
+
+  .artifact-box.is-end {
+    stroke: rgb(var(--accent-primary));
+  }
+
+
+
+  .artifact-tile {
+    fill: rgb(var(--surface-page));
+    stroke: rgb(var(--accent-primary) / 0.75);
+    stroke-width: 2.5;
+  }
+
+
+  .artifact-thread {
+    fill: none;
+    stroke: rgb(var(--accent-primary) / 0.32);
+    stroke-width: 1.6;
+  }
+
+  .artifact-hub {
+    fill: rgb(var(--surface-page));
+    stroke: rgb(var(--accent-primary));
+    stroke-width: 4;
+  }
+
+  .artifact-hub-core,
+  .artifact-tile.is-picked {
+    fill: rgb(var(--accent-primary));
+  }
+
+  .artifact-zoom {
+    stroke: rgb(var(--accent-primary) / 0.45);
+    stroke-width: 2;
+    stroke-dasharray: 4 8;
+  }
+
+  .artifact-code {
+    fill: rgb(var(--border-default));
+  }
+
+  .artifact-code.is-own {
+    fill: rgb(var(--accent-primary));
+  }
+
+  .artifact-lane {
+    fill: none;
+    stroke: rgb(var(--text-muted) / 0.55);
+    stroke-width: 2.5;
+    stroke-dasharray: 6 8;
+  }
+
+  .artifact-lane-fold {
+    fill: none;
+    stroke: rgb(var(--border-default));
+    stroke-width: 3;
+  }
+
+  .artifact-toolbar {
+    fill: rgb(var(--accent-primary) / 0.12);
+    stroke: rgb(var(--accent-primary) / 0.6);
+    stroke-width: 2;
+  }
+
+  .artifact-selection {
+    fill: rgb(var(--accent-primary) / 0.12);
+  }
+
+  .artifact-caret {
+    stroke: rgb(var(--accent-primary));
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+
+
+
+
+
+
+  .artifact-note.is-start {
+    text-anchor: start;
+  }
+
+  .artifact-note.is-end {
+    text-anchor: end;
+  }
+
+  .artifact-edge {
+    fill: none;
+    stroke: rgb(var(--accent-primary));
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+
+  .artifact-edge.is-loop {
+    stroke-dasharray: 2 14;
+  }
+
+
+  .artifact-arrowhead {
+    fill: none;
+    stroke: rgb(var(--accent-primary));
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .artifact-window {
+    fill: rgb(var(--surface-page));
+    stroke: rgb(var(--border-default));
+    stroke-width: 3;
+  }
+
+  .artifact-rule {
+    stroke: rgb(var(--border-default));
+    stroke-width: 3;
+  }
+
+  .artifact-light,
+  .artifact-bar {
+    fill: rgb(var(--border-default) / 0.7);
+  }
+
+  .artifact-bar.is-strong {
+    fill: rgb(var(--text-muted) / 0.6);
+  }
+
+  /* Work in progress: dashed, unfinished outlines and a pencil. */
+  .artifact-outline {
+    fill: none;
+    stroke: rgb(var(--text-muted) / 0.7);
+    stroke-width: 3;
+    stroke-dasharray: 10 10;
+  }
+
+  .artifact-outline.is-faint {
+    stroke: rgb(var(--border-default));
+  }
+
+  .artifact-pencil-tool {
+    fill: rgb(var(--accent-primary));
+  }
+
+  /* Redaction marker: the page's ink colour, so it reads in light and dark. */
+  .artifact-redact {
+    fill: rgb(var(--text-primary));
+  }
+
+  .artifact-tape rect {
+    fill: rgb(var(--accent-primary) / 0.45);
+  }
+
+  .artifact-tape-label {
+    font-family: var(--font-mono);
+    font-size: 34px;
+    font-weight: 600;
+    fill: rgb(var(--text-primary));
+    text-anchor: middle;
+  }
+
+  /* Doodle draws by hand; phosphor glows. */
+  :root[data-theme-family="doodle"] .artifact-ink {
+    filter: var(--wobble);
+  }
+
+  :root[data-theme-family="phosphor"] .artifact-ink {
+    filter: drop-shadow(0 0 6px rgb(var(--accent-primary) / 0.45));
+  }
+}

@@ -1,5 +1,6 @@
 import type { ImageMetadata } from "astro";
 import cronaFocus from "../assets/projects/crona/focus.webp";
+import type { ProjectArtifact } from "../lib/projects";
 
 export type PortfolioLink = { label: string; href: string };
 export type WorkEntry = {
@@ -17,6 +18,8 @@ export type WorkEntry = {
   details: { title: string; text: string }[];
   links: PortfolioLink[];
   image?: { src: ImageMetadata; alt: string };
+  // A drawn card from a project's content entry, for work with no screenshots.
+  artifact?: { project: string; kind: ProjectArtifact["kind"] };
 };
 
 // Professional claims and their qualifications: resume/facts.md.
@@ -75,6 +78,7 @@ export const portfolio = {
       subtitle: "Backend frameworks & interview infrastructure",
       category: "Professional work",
       employer: "Galent / Taptic.ai · Interview platform",
+      artifact: { project: "taptic", kind: "generator" },
       roles: [
         { title: "Senior Platform Engineer", period: "May 2025 – Present" },
         { title: "Platform Engineer", period: "February 2024 – April 2025" },
@@ -149,6 +153,7 @@ export const portfolio = {
       subtitle: "Document tools, desktop clients & a VPN backend",
       category: "Professional work",
       employer: "Appyhigh · Consumer apps & document tools",
+      artifact: { project: "scanner-go", kind: "conversion" },
       roles: [
         {
           title: "Software Development Engineer I",
