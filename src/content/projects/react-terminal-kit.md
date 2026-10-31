@@ -1,6 +1,16 @@
 ---
 title: "React Terminal Kit"
 summary: "A React library for building interactive terminal experiences on the web."
+shots:
+  - src: ../../assets/projects/react-terminal-kit/prompts.webp
+    caption: Prompts
+    alt: "A React Terminal Kit terminal in its dark theme: the help command lists custom commands, and a deploy command asks Where to? with production selected from a list."
+  - src: ../../assets/projects/react-terminal-kit/deploy.webp
+    caption: Loaders
+    alt: "The same terminal after the deploy finishes: a confirmation answered Ship it, then two ticked lines, Built in 1.6s and Live on production."
+  - src: ../../assets/projects/react-terminal-kit/light.webp
+    caption: Light theme
+    alt: "React Terminal Kit in its light theme: a login command asks for a username, then a masked password."
 status: maintained
 stack:
   - TypeScript
