@@ -97,16 +97,15 @@ const seo = withAutoOgImage(
           </p>
           <p>
             Outside of work, I spend my time experimenting with ideas,
-            building projects, lifting weights and occasionally shouting into
-            the void <a
+            building projects, lifting weights and occasionally <a
+              href="/gifs/old-man-yells-at-clouds.gif"
+              class="inline-link text-text"
+              data-cloud-egg>shouting</a
+            > into the void <a
               href="https://threads.com/@webxsid"
               target="_blank"
               class="inline-link text-text">@webxsid</a
-            >{" "}<a
-              href="/gifs/old-man-yells-at-clouds.gif"
-              class="inline-link text-text"
-              aria-label="Open gif preview"
-            >(evidence)</a>.
+            >.
           </p>
         </div>
 
@@ -196,3 +195,50 @@ const seo = withAutoOgImage(
     <ContentLinkPreview previewLinks={[]} />
   </Container>
 </BaseLayout>
+
+<script>
+  // Easter egg: a second look at the cloud (or any look on a return visit)
+  // shows the other old man. Without JavaScript, it stays the original.
+  const SEEN_KEY = "webxsid-cloud-seen";
+  const VARIANT = "/gifs/old-man-yells-at-clouds-pewdiepie.webp";
+
+  const readSeen = () => {
+    try {
+      return localStorage.getItem(SEEN_KEY) === "1";
+    } catch {
+      return false;
+    }
+  };
+
+  const markSeen = () => {
+    try {
+      localStorage.setItem(SEEN_KEY, "1");
+    } catch {
+      // Storage blocked: the swap still happens for this visit.
+    }
+  };
+
+  const initCloudEgg = () => {
+    const link = document.querySelector<HTMLAnchorElement>("[data-cloud-egg]");
+    if (!link || link.dataset.ready) return;
+    link.dataset.ready = "true";
+
+    if (readSeen()) {
+      link.href = VARIANT;
+      return;
+    }
+
+    // Swap after the first look, so the next hover is the variant.
+    const swap = () => {
+      markSeen();
+      link.href = VARIANT;
+      link.removeEventListener("pointerleave", swap);
+      link.removeEventListener("blur", swap);
+    };
+    link.addEventListener("pointerleave", swap);
+    link.addEventListener("blur", swap);
+  };
+
+  initCloudEgg();
+  document.addEventListener("astro:page-load", initCloudEgg);
+</script>
