@@ -4,13 +4,13 @@ import { portfolio } from "../../data/portfolio";
 // Small easter eggs that live on every page: a hello in the console, a toast
 // for indecisive theme switching, a late-night phosphor flicker and the
 // Konami code gym. Nothing here is needed to use the site.
-const github = portfolio.github;
+const source = `${portfolio.github}/webxsid`;
 ---
 
 <div class="egg-crt" aria-hidden="true"></div>
 <div class="egg-toast ui-meta font-mono" data-egg-toast role="status" aria-live="polite"></div>
 
-<script define:vars={{ github }}>
+<script define:vars={{ source }}>
   if (!window.__webxsidHello) {
     window.__webxsidHello = true;
     console.log(
@@ -23,7 +23,7 @@ const github = portfolio.github;
       ].join("\n"),
       "font-family: monospace; font-weight: bold;",
     );
-    console.log(`Looking under the hood? Say hi: ${github}`);
+    console.log(`Looking under the hood? The source is on GitHub: ${source}`);
   }
 </script>
 
