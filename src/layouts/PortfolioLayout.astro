@@ -2,6 +2,7 @@
 import "../styles/portfolio.css";
 import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 import SeoHead from "../components/shell/SeoHead.astro";
+import ImageLightbox from "../components/shell/ImageLightbox.astro";
 import PortfolioHeader from "../components/portfolio/PortfolioHeader.astro";
 import { portfolio } from "../data/portfolio";
 import { portfolioCanonical } from "../lib/portfolio";
@@ -38,6 +39,6 @@ const canonical = portfolioCanonical();
         class="text-link"
         href="#about">Back to top <span aria-hidden="true">↑</span></a
       >
-    </footer></div></div></body
+    </footer></div></div><ImageLightbox /></body
   >
 </html>

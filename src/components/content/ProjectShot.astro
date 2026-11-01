@@ -33,7 +33,7 @@ const isThumb = variant === "thumb";
   <Image
     src={src}
     alt={alt}
-    widths={isThumb ? [320, 480, 640] : [640, 960, 1280, 1600]}
+    widths={isThumb ? [320, 480, 640, 1280] : [640, 960, 1280, 1600]}
     sizes={isThumb ? "14rem" : sizes}
     loading={loading}
     decoding="async"

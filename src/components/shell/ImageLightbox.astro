@@ -1,0 +1,112 @@
+---
+// Click any content image, thumbnail or drawn card to see it large. Images inside links,
+// buttons and small icons are left alone. Without JavaScript nothing changes.
+---
+
+<script>
+  const ZOOMABLE = [
+    "[data-shell-main] img",
+    ".portfolio-col img",
+    ".project-shot > .artifact",
+    ".shot-deck-card > .artifact",
+    ".work-shot > .artifact",
+  ].join(", ");
+  const SKIP = "a, button, .shot-deck-tab-thumb, [data-no-lightbox]";
+  const MIN_SIZE = 120;
+
+  const isZoomable = (el: Element) => {
+    if (!el.matches(ZOOMABLE) || el.closest(SKIP)) return false;
+    if (el instanceof HTMLImageElement) {
+      const width = el.naturalWidth || el.width;
+      return !el.complete || width >= MIN_SIZE;
+    }
+    return true;
+  };
+
+  const getDialog = () => {
+    let dialog = document.getElementById("lightbox") as HTMLDialogElement | null;
+    if (dialog) return dialog;
+
+    dialog = document.createElement("dialog");
+    dialog.id = "lightbox";
+    dialog.className = "lightbox";
+    dialog.setAttribute("aria-label", "Image preview");
+    dialog.innerHTML = `
+      <button type="button" class="lightbox-close ui-meta font-mono" aria-label="Close preview">close ×</button>
+      <figure class="lightbox-figure">
+        <div class="lightbox-media"></div>
+        <figcaption class="lightbox-caption ui-meta"></figcaption>
+      </figure>`;
+    // Any click closes it: the backdrop, the image or the button.
+    dialog.addEventListener("click", () => dialog?.close());
+    dialog.addEventListener("close", () => {
+      dialog?.querySelector(".lightbox-media")?.replaceChildren();
+      document.documentElement.classList.remove("has-lightbox");
+    });
+    document.body.append(dialog);
+    return dialog;
+  };
+
+  const captionFor = (el: Element) => {
+    const figcaption = el.closest("figure")?.querySelector(":scope > figcaption");
+    return (
+      figcaption?.textContent?.trim() ||
+      el.getAttribute("alt") ||
+      el.getAttribute("aria-label") ||
+      ""
+    );
+  };
+
+  const open = (el: Element) => {
+    const dialog = getDialog();
+    const media = dialog.querySelector(".lightbox-media")!;
+    const caption = dialog.querySelector(".lightbox-caption")!;
+
+    if (el instanceof HTMLImageElement) {
+      const img = document.createElement("img");
+      if (el.srcset) {
+        img.srcset = el.srcset;
+        img.sizes = "100vw";
+      }
+      img.src = el.currentSrc || el.src;
+      img.alt = el.alt;
+      media.replaceChildren(img);
+    } else {
+      media.replaceChildren(el.cloneNode(true));
+    }
+
+    const text = captionFor(el);
+    caption.textContent = text;
+    caption.toggleAttribute("hidden", !text);
+    document.documentElement.classList.add("has-lightbox");
+    dialog.showModal();
+  };
+
+  const mark = () => {
+    document.querySelectorAll(ZOOMABLE).forEach((el) => {
+      if (!isZoomable(el) || el.hasAttribute("data-lightbox")) return;
+      el.setAttribute("data-lightbox", "");
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("aria-haspopup", "dialog");
+    });
+  };
+
+  document.addEventListener("click", (event) => {
+    const el = (event.target as Element).closest?.("[data-lightbox]");
+    if (!el || !isZoomable(el)) return;
+    event.preventDefault();
+    open(el);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    const el = (event.target as Element).closest?.("[data-lightbox]");
+    if (!el) return;
+    event.preventDefault();
+    open(el);
+  });
+
+  mark();
+  document.addEventListener("astro:page-load", mark);
+  document.addEventListener("astro:before-swap", () => getDialog().close());
+</script>

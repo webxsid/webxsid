@@ -1,0 +1,113 @@
+/* Large preview for content images (ImageLightbox). Shared with the portfolio. */
+@layer components {
+  [data-lightbox] {
+    cursor: zoom-in;
+  }
+
+  [data-lightbox]:focus-visible {
+    outline: 2px solid rgb(var(--accent-primary));
+    outline-offset: 3px;
+  }
+
+  :root.has-lightbox {
+    overflow: hidden;
+  }
+
+  .lightbox {
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: clamp(1rem, 4vw, 3rem);
+    border: 0;
+    background: transparent;
+    color: rgb(var(--text-primary));
+    cursor: zoom-out;
+  }
+
+  .lightbox[open] {
+    display: grid;
+    place-items: center;
+  }
+
+  .lightbox::backdrop {
+    background: rgb(var(--surface-page) / 0.92);
+    backdrop-filter: blur(6px);
+  }
+
+  .lightbox-figure {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: center;
+    max-width: min(100%, 1600px);
+    margin: 0;
+  }
+
+  .lightbox-media {
+    display: grid;
+    place-items: center;
+  }
+
+  .lightbox-media img,
+  .lightbox-media .artifact {
+    width: auto;
+    max-width: 100%;
+    max-height: calc(100dvh - 8rem);
+    border: 1px solid rgb(var(--border-default));
+    border-radius: var(--radius-preview);
+    background: rgb(var(--surface-elevated));
+    object-fit: contain;
+  }
+
+  .lightbox-media .artifact {
+    width: min(calc(100vw - 2 * clamp(1rem, 4vw, 3rem)), 1600px, calc((100dvh - 8rem) * 1600 / 945));
+    height: auto;
+  }
+
+  .lightbox-caption {
+    max-width: 62ch;
+    color: rgb(var(--text-muted));
+    text-align: center;
+  }
+
+  .lightbox-close {
+    position: fixed;
+    top: max(1rem, env(safe-area-inset-top));
+    right: 1rem;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid rgb(var(--border-default));
+    border-radius: var(--radius-control);
+    background: rgb(var(--surface-elevated));
+    color: rgb(var(--text-muted));
+    cursor: pointer;
+  }
+
+  .lightbox-close:hover,
+  .lightbox-close:focus-visible {
+    color: rgb(var(--text-primary));
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lightbox[open],
+    .lightbox[open]::backdrop {
+      animation: lightbox-in 160ms ease-out;
+    }
+
+    .lightbox[open] .lightbox-figure {
+      animation: lightbox-zoom 200ms ease-out;
+    }
+  }
+
+  @keyframes lightbox-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes lightbox-zoom {
+    from {
+      transform: scale(0.96);
+    }
+  }
+}

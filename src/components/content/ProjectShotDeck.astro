@@ -112,8 +112,12 @@ const { items, label } = Astro.props as Props;
 
       tabs.forEach((tab, index) => tab.addEventListener("click", () => show(index)));
 
-      // Clicking the pile, or a card peeking out, moves to the next view.
-      deck.querySelector(".shot-deck-pile")?.addEventListener("click", () => show(active + 1));
+      // Clicking a card peeking out moves to the next view; the top card opens
+      // the large preview (ImageLightbox).
+      deck.querySelector(".shot-deck-pile")?.addEventListener("click", (event) => {
+        if ((event.target as Element).closest('[data-pos="0"] [data-lightbox]')) return;
+        show(active + 1);
+      });
 
       deck.addEventListener("keydown", (event) => {
         if (event.key === "ArrowRight") show(active + 1);

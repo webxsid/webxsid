@@ -3,6 +3,7 @@
 @import "./theme-picker.css";
 @import "./themes/link-hover.css";
 @import "./artifacts.css";
+@import "./lightbox.css";
 
 /* Loaded only by PortfolioLayout; the personal site's stylesheet is separate.
    One calm reading column on a sheet, colours driven by the shared themes. */
