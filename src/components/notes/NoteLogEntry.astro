@@ -2,6 +2,7 @@
 import type { render } from "astro:content";
 import ContentDocument from "../content/ContentDocument.astro";
 import {
+  formatNoteShortDay,
   formatNoteTime,
   formatNoteTimestamp,
   getNotePath,
@@ -13,12 +14,18 @@ type Props = {
   entry: NoteEntry;
   Content: Awaited<ReturnType<typeof render>>["Content"];
   current?: boolean;
+  /** Show the day above the time, for feeds that aren't grouped by day. */
+  showDay?: boolean;
 };
 
-const { entry, Content, current = false } = Astro.props as Props;
+const { entry, Content, current = false, showDay = false } = Astro.props as Props;
 ---
 
-<article class="notes-log-entry" id={`note-${entry.id}`}>
+<article
+  class="notes-log-entry"
+  id={`note-${entry.id}`}
+  data-show-day={showDay ? "true" : undefined}
+>
   <a
     class="notes-log-time ui-meta font-mono"
     href={getNotePath(entry)}
@@ -26,7 +33,8 @@ const { entry, Content, current = false } = Astro.props as Props;
     aria-label={`Permalink: note from ${formatNoteTimestamp(entry)}`}
   >
     <time datetime={parseNoteTimestamp(entry.id).toISOString()}>
-      {formatNoteTime(entry)}
+      {showDay && <span>{formatNoteShortDay(entry)}</span>}
+      <span>{formatNoteTime(entry)}</span>
     </time>
   </a>
 
