@@ -6,7 +6,6 @@ import BlueskyIcon from "../icons/BlueskyIcon.astro";
 import ThreadsIcon from "../icons/ThreadsIcon.astro";
 import {
   filterSharedNavItems,
-  footerColophon,
   footerLinkColumns,
   footerSocialLinks,
 } from "../../lib/site-links";
@@ -115,7 +114,6 @@ const footerColumns = footerLinkColumns.map((column) => ({
       class="site-footer-bar index-row-meta ui-meta font-mono mt-14 border-t border-dashed border-border/45 pt-6"
     >
       <span>&copy; <span class="site-footer-year" data-time-year={currentYear}>{currentYear}</span> Siddharth Mittal</span>
-      <span>{footerColophon}</span>
       <a class="index-row-meta-link" href="/colophon">colophon →</a>
     </p>
   </Container>

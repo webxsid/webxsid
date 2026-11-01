@@ -1,4 +1,3 @@
-export const footerColophon = "built with Astro, written in Markdown";
 
 export const globalNavItems = [
   { href: "/", label: "Home", icon: "house" },
