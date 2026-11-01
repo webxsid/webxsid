@@ -1,0 +1,111 @@
+---
+import { portfolio } from "../../data/portfolio";
+
+// Small easter eggs that live on every page: a hello in the console, a toast
+// for indecisive theme switching, a late-night phosphor flicker and the
+// Konami code gym. Nothing here is needed to use the site.
+const github = portfolio.github;
+---
+
+<div class="egg-crt" aria-hidden="true"></div>
+<div class="egg-toast ui-meta font-mono" data-egg-toast role="status" aria-live="polite"></div>
+
+<script define:vars={{ github }}>
+  if (!window.__webxsidHello) {
+    window.__webxsidHello = true;
+    console.log(
+      [
+        "%c ____  ",
+        "/ ___| ",
+        "\\___ \\ ",
+        " ___) |",
+        "|____/ ",
+      ].join("\n"),
+      "font-family: monospace; font-weight: bold;",
+    );
+    console.log(`Looking under the hood? Say hi: ${github}`);
+  }
+</script>
+
+<script>
+  const toastTimer = { id: 0 };
+
+  const say = (text: string) => {
+    const toast = document.querySelector<HTMLElement>("[data-egg-toast]");
+    if (!toast) return;
+    toast.textContent = text;
+    toast.dataset.show = "true";
+    window.clearTimeout(toastTimer.id);
+    toastTimer.id = window.setTimeout(() => delete toast.dataset.show, 2400);
+  };
+
+  const root = document.documentElement;
+
+  // Five theme changes inside three seconds.
+  const FLIPS = 5;
+  const FLIP_WINDOW_MS = 3000;
+  let flips: number[] = [];
+  new MutationObserver((records) => {
+    // Page swaps rewrite the attribute with the same value; only count real changes.
+    if (!records.some((record) => record.oldValue !== root.dataset.themeFamily)) return;
+    const now = Date.now();
+    flips = [...flips.filter((time) => now - time < FLIP_WINDOW_MS), now];
+    if (flips.length >= FLIPS) {
+      flips = [];
+      say("make up your mind");
+    }
+  }).observe(root, {
+    attributes: true,
+    attributeFilter: ["data-theme-family"],
+    attributeOldValue: true,
+  });
+
+  // Phosphor after midnight gets a faint CRT flicker.
+  function markLateNight() {
+    const hour = new Date().getHours();
+    root.toggleAttribute("data-late-night", hour < 5);
+  }
+  markLateNight();
+  window.setInterval(markLateNight, 10 * 60 * 1000);
+
+  // ↑↑↓↓←→←→BA turns the cursor into a dumbbell; every click is a rep.
+  const KONAMI = [
+    "ArrowUp",
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowRight",
+    "b",
+    "a",
+  ];
+  const SET = 12;
+  let progress = 0;
+  let reps = 0;
+  let lifting = false;
+
+  // Page swaps replace the attributes on <html>, so put ours back.
+  document.addEventListener("astro:after-swap", () => {
+    markLateNight();
+    root.toggleAttribute("data-gym", lifting);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+    progress = key === KONAMI[progress] ? progress + 1 : key === KONAMI[0] ? 1 : 0;
+    if (progress < KONAMI.length) return;
+    progress = 0;
+
+    lifting = root.toggleAttribute("data-gym");
+    reps = 0;
+    say(lifting ? "gym mode. every click is a rep." : "gym closed. good session.");
+  });
+
+  document.addEventListener("click", () => {
+    if (!root.hasAttribute("data-gym")) return;
+    reps += 1;
+    say(reps % SET === 0 ? `that's set ${reps / SET}. rest up.` : `rep ${reps % SET}`);
+  });
+</script>

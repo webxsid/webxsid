@@ -4,6 +4,30 @@ import SeoHead from "../components/shell/SeoHead.astro";
 import ShellLoadBoot from "../components/shell/ShellLoadBoot.astro";
 import ShellLoadUX from "../components/shell/ShellLoadUX.astro";
 import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
+import { getCollection } from "astro:content";
+import { getProjectHref, isProjectDetailPage } from "../lib/projects";
+import { filterPublicWritingEntries, getWritingPath } from "../lib/writing";
+
+// Every real route, so the page can suggest the nearest one to a typo.
+const [projects, writing, work] = await Promise.all([
+  getCollection("projects"),
+  getCollection("writing"),
+  getCollection("work"),
+]);
+const routes = [
+  "/",
+  "/projects",
+  "/writing",
+  "/notes",
+  "/now",
+  "/references",
+  "/colophon",
+  "/portfolio",
+  "/resume.pdf",
+  ...projects.filter(isProjectDetailPage).map(getProjectHref),
+  ...filterPublicWritingEntries(writing).map(getWritingPath),
+  ...work.map((entry) => `/work/${entry.id}`),
+];
 
 const seo = {
   title: "404 · Webxsid",
@@ -159,6 +183,52 @@ const seo = {
         line-height: 1.45;
       }
 
+      .error-term {
+        display: grid;
+        gap: 0.3rem;
+        margin: 1.4rem auto 0;
+        width: fit-content;
+        max-width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid rgb(var(--border-default) / 0.7);
+        border-radius: var(--radius-code);
+        background: rgb(var(--surface-elevated) / 0.65);
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        text-align: left;
+        color: rgb(var(--text-muted));
+        overflow-wrap: anywhere;
+      }
+
+      .error-term > span:first-child {
+        color: rgb(var(--text-primary));
+      }
+
+      .error-suggest-link {
+        font-family: var(--font-mono);
+        color: rgb(var(--text-primary));
+        text-decoration: underline;
+        text-decoration-color: rgb(var(--accent-primary) / 0.6);
+        text-underline-offset: 3px;
+      }
+
+      .error-past {
+        margin-top: 2.5rem;
+        padding: 0.25rem;
+        border: 0;
+        background: none;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: rgb(var(--text-muted) / 0.35);
+        cursor: pointer;
+        transition: color 200ms ease;
+      }
+
+      .error-past:hover,
+      .error-past:focus-visible {
+        color: rgb(var(--text-primary));
+      }
+
       .error-actions {
         margin-top: 2rem;
         display: flex;
@@ -235,16 +305,82 @@ const seo = {
       <section class="error-shell" aria-labelledby="error-title">
         <div class="error-kicker">404</div>
         <h1 id="error-title" class="error-title">Nothing to see here.</h1>
-        <p class="error-copy">
-          The page wandered off somewhere else. You can head back to the
-          homepage and start fresh.
+        <p class="error-term">
+          <span>$ cd <span data-missing-path>this-page</span></span>
+          <span>cd: no such file or directory</span>
+        </p>
+        <p class="error-copy" data-suggest hidden>
+          Did you mean <a class="error-suggest-link" href="/"></a>?
         </p>
         <div class="error-actions">
           <a href="/" class="error-home">Return home</a>
           <a href="/sitemap.xml" class="error-home">Sitemap</a>
           <a href="/llms.txt" class="error-home">llms.txt</a>
         </div>
+        <button type="button" class="error-past" data-error-past>
+          or take the long way round, through 1999
+        </button>
       </section>
     </main>
+    <script is:inline type="application/json" id="error-routes" set:html={JSON.stringify(routes)} />
+    <script>
+      import {
+        applyThemePreference,
+        resolveThemeFamilyAndMode,
+        THEME_BEFORE_UNLOCK_STORAGE_KEY,
+        THEME_UNLOCKED_STORAGE_KEY,
+      } from "../components/react/header/header-utils";
+
+      const path = decodeURI(location.pathname).replace(/\/+$/, "") || "/";
+      const missing = document.querySelector("[data-missing-path]");
+      if (missing) missing.textContent = path;
+
+      // Edit distance, to suggest the nearest real route to a typo.
+      const distance = (a: string, b: string) => {
+        const row = Array.from({ length: b.length + 1 }, (_, i) => i);
+        for (let i = 1; i <= a.length; i++) {
+          let previous = row[0];
+          row[0] = i;
+          for (let j = 1; j <= b.length; j++) {
+            const current = row[j];
+            row[j] = Math.min(row[j] + 1, row[j - 1] + 1, previous + (a[i - 1] === b[j - 1] ? 0 : 1));
+            previous = current;
+          }
+        }
+        return row[b.length];
+      };
+
+      const routes: string[] = JSON.parse(
+        document.getElementById("error-routes")?.textContent ?? "[]",
+      );
+      const needle = path.toLowerCase();
+      const best = routes
+        .map((route) => ({ route, score: distance(needle, route) }))
+        .sort((a, b) => a.score - b.score)[0];
+      if (best && best.score > 0 && best.score <= Math.max(2, Math.floor(needle.length / 3))) {
+        const link = document.querySelector<HTMLAnchorElement>(".error-suggest-link");
+        if (link) {
+          link.href = best.route;
+          link.textContent = best.route;
+          link.closest<HTMLElement>("[data-suggest]")?.removeAttribute("hidden");
+        }
+      }
+
+      // The quiet way into the 1999 theme, as the footer year does it.
+      document.querySelector("[data-error-past]")?.addEventListener("click", () => {
+        const root = document.documentElement;
+        const current = resolveThemeFamilyAndMode(root.dataset.themeFamily, root.dataset.themeMode);
+        try {
+          if (current.family !== "web99") {
+            localStorage.setItem(THEME_BEFORE_UNLOCK_STORAGE_KEY, current.family);
+          }
+          localStorage.setItem(THEME_UNLOCKED_STORAGE_KEY, "1");
+        } catch {
+          /* The theme still applies for this visit. */
+        }
+        applyThemePreference("web99", current.mode);
+        location.href = "/";
+      });
+    </script>
   </body>
 </html>

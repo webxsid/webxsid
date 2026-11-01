@@ -11,6 +11,7 @@ import ThemeBootstrap from "../components/shell/ThemeBootstrap.astro";
 import SeoHead from "../components/shell/SeoHead.astro";
 import SiteFooter from "../components/shell/SiteFooter.astro";
 import ImageLightbox from "../components/shell/ImageLightbox.astro";
+import SiteEggs from "../components/shell/SiteEggs.astro";
 import { ClientRouter, fade } from "astro:transitions";
 import { ShellHeader } from "../components/react/header/ShellHeader";
 import type { SeoMeta } from "../lib/seo";
@@ -173,6 +174,7 @@ const brandIcon = await getImage({
 
     <SiteFooter transition:persist transition:name="site-footer" />
     <ImageLightbox />
+    <SiteEggs />
 
     <script>
       // Slide the header away while reading down, bring it back on any scroll

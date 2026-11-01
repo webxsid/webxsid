@@ -1,0 +1,83 @@
+/* Site-wide easter eggs (SiteEggs.astro). */
+@layer components {
+  .egg-toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(6.5rem + env(safe-area-inset-bottom));
+    z-index: 60;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid rgb(var(--border-default));
+    border-radius: var(--radius-control);
+    background: rgb(var(--surface-elevated));
+    color: rgb(var(--text-primary));
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 0.5rem);
+    transition:
+      opacity 160ms ease-out,
+      transform 160ms ease-out;
+  }
+
+  .egg-toast[data-show] {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  @media (min-width: 64rem) {
+    .egg-toast {
+      bottom: 2rem;
+    }
+  }
+
+  /* A dumbbell, outlined so it reads on light and dark pages. */
+  :root[data-gym],
+  :root[data-gym] * {
+    cursor:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg stroke='%23fff' stroke-width='3' stroke-linejoin='round'%3E%3Crect x='3' y='9' width='5' height='14' rx='1'/%3E%3Crect x='24' y='9' width='5' height='14' rx='1'/%3E%3Crect x='8' y='14' width='16' height='4'/%3E%3C/g%3E%3Cg fill='%23222'%3E%3Crect x='3' y='9' width='5' height='14' rx='1'/%3E%3Crect x='24' y='9' width='5' height='14' rx='1'/%3E%3Crect x='8' y='14' width='16' height='4'/%3E%3C/g%3E%3C/svg%3E")
+        16 16,
+      pointer !important;
+  }
+
+  /* Late-night phosphor: a faint flicker over the page. */
+  .egg-crt {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :root[data-late-night][data-theme-family="phosphor"] .egg-crt {
+      position: fixed;
+      inset: 0;
+      z-index: 55;
+      display: block;
+      background: rgb(var(--surface-page));
+      opacity: 0;
+      pointer-events: none;
+      animation: egg-crt-flicker 7s steps(1, end) infinite;
+    }
+  }
+
+  @keyframes egg-crt-flicker {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    41% {
+      opacity: 0.08;
+    }
+    42% {
+      opacity: 0;
+    }
+    77% {
+      opacity: 0.05;
+    }
+    78% {
+      opacity: 0;
+    }
+    79% {
+      opacity: 0.07;
+    }
+    80% {
+      opacity: 0;
+    }
+  }
+}
