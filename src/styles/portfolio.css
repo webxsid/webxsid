@@ -571,6 +571,31 @@ summary:focus-visible {
   font-weight: 500;
 }
 
+/* Beyond work: a single award, set apart from the links. */
+.beyond-recognition {
+  margin-block: 20px 16px;
+  padding-top: 20px;
+  border-top: 1px solid var(--portfolio-hairline);
+}
+.beyond-recognition h3 {
+  color: var(--portfolio-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+.beyond-recognition-title {
+  margin-top: 8px;
+  font-size: 17.5px;
+  font-weight: 600;
+}
+.beyond-recognition-meta {
+  margin-top: 2px;
+  color: var(--portfolio-muted);
+  font-size: 15px;
+}
+.beyond-recognition .body-copy {
+  margin-top: 10px;
+}
+
 /* Contact */
 .contact-email {
   display: inline-flex;

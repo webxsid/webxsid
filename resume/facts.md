@@ -159,6 +159,18 @@ Source: user's finalized answers and later clarification, October 11, 2026.
 - Open-source development, personal experiments and technical writing · source: personal project and writing collections, plus user's finalized answers.
 - Pebbles is a recommendations project · source: src/content/projects/pebbles.md.
 
+## Recognition — Smart India Hackathon 2022
+
+Source: the user's LinkedIn post announcing the win (https://www.linkedin.com/posts/webxsid_sih2022-sih2022-team-share-6969590445483917312-K8mF/), plus the user's answers on November 11, 2026.
+
+- Winner, Smart India Hackathon 2022, software edition, with a team of six from Bennett University (team "Neo Techies"). The year is 2022, not 2020 (user correction).
+- Problem statement set by the Ministry of Electronics and Information Technology (MeitY).
+- Built a web app and browser extension that summarises a website's security threats, the cookies it uses and its privacy policy. The final round was a 36-hour build.
+- The user built the backend, using Node.js and Firebase.
+- The win was shared: team "Foxlint" was a joint winner alongside the user's team (user, November 11, 2026; the winner's cheque reads "Neotechies / Foxlint"). Public copy says "joint winner".
+- The prize amount appears on the cheque in the photo but is not to be stated in copy (user, November 11, 2026).
+- Do not name teammates or mentors in public copy (user, November 11, 2026). Link the LinkedIn post as the source.
+
 ## Narrative supported by the ledger
 
 - Lead with reusable backend infrastructure: metadata-driven generation, safe reconciliation and authorization.

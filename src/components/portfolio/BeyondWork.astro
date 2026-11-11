@@ -1,5 +1,8 @@
 ---
+import { Image } from "astro:assets";
 import { portfolio } from "../../data/portfolio";
+
+const { recognition } = portfolio.beyondWork;
 ---
 
 <section
@@ -25,6 +28,24 @@ import { portfolio } from "../../data/portfolio";
           </a>
         ))
       }
+    </div><div class="beyond-recognition">
+      <h3>Recognition</h3>
+      <p class="beyond-recognition-title">{recognition.title}</p>
+      <p class="beyond-recognition-meta">{recognition.meta}</p>
+      <figure class="work-shot">
+        <Image
+          src={recognition.image.src}
+          alt={recognition.image.alt}
+          widths={[560, 840]}
+          sizes="(min-width: 600px) 560px, 100vw"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <p class="body-copy">{recognition.description}</p>
+      <a class="text-link" href={recognition.link.href} target="_blank" rel="noopener noreferrer"
+        >{recognition.link.label} <span aria-hidden="true">↗</span></a
+      >
     </div><a class="personal-site-link" href={portfolio.personalWebsite}
       >Explore my personal website <span aria-hidden="true">↗</span></a>
   </div>

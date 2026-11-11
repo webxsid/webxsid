@@ -1,5 +1,6 @@
 import type { ImageMetadata } from "astro";
 import cronaFocus from "../assets/projects/crona/focus.webp";
+import sihFinale from "../assets/recognition/sih-2022.webp";
 import type { ProjectArtifact } from "../lib/projects";
 
 export type PortfolioLink = { label: string; href: string };
@@ -207,6 +208,20 @@ export const portfolio = {
       },
       { label: "Technical writing & engineering notes", href: "/writing" },
     ],
+    recognition: {
+      title: "Joint winner, Smart India Hackathon 2022",
+      meta: "Software edition · team of six",
+      image: {
+        src: sihFinale,
+        alt: "Four members of the team at the Smart India Hackathon 2022 software edition grand finale, holding the joint winners' cheque in front of the event banner.",
+      },
+      description:
+        "For a problem statement from India’s Ministry of Electronics and Information Technology, we built a web app and browser extension that summarises a website’s security threats, cookies and privacy policy. I built the backend in Node.js and Firebase.",
+      link: {
+        label: "The announcement on LinkedIn",
+        href: "https://www.linkedin.com/posts/webxsid_sih2022-sih2022-team-share-6969590445483917312-K8mF/",
+      },
+    },
   },
 };
 
