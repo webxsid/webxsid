@@ -1,0 +1,12 @@
+# atproto settings for this site (written by the app; see ADR 0016)
+did: did:plc:vw2gdoqzbvjkqfy6ulpn4cb3
+publication: at://did:plc:vw2gdoqzbvjkqfy6ulpn4cb3/site.standard.publication/3n2j2pib5rxkb
+url: https://webxsid.com
+key: atproto
+wellKnown: public/.well-known/site.standard.publication
+collections:
+    now: {publish: all, url: '/now/{slug}/'}
+    projects: {publish: all, url: '/projects/{slug}/'}
+    references: {publish: all, url: '/references/{slug}/'}
+    work: {publish: all, url: '/work/{slug}/'}
+    writing: {publish: all, url: '/writing/{slug}/'}
