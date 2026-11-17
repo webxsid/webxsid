@@ -1,4 +1,5 @@
 const exampleUrl = "https://example.com";
+const atprotoHint = "# atproto:\n#   uri: at://did:plc:example/site.standard.document/record-key";
 
 function yamlList(items, indent = 0) {
   const prefix = " ".repeat(indent);
@@ -53,6 +54,7 @@ order: 0
 updatedAt: ${dateOnly}
 featured: false
 detailsPage: true
+${atprotoHint}
 seo:
   title: ${JSON.stringify(title || "New Project")}
   description: ${JSON.stringify("What this project is and why it exists.")}
@@ -83,6 +85,7 @@ featured: false
 order: 0
 kind: blog
 draft: true
+${atprotoHint}
 seo:
   title: ${JSON.stringify(title || "New Writing")}
   description: ${JSON.stringify("SEO description for this piece.")}
@@ -106,6 +109,7 @@ ${commentedBlock([
   "creator: Author Name",
   "year: 2026",
 ])}
+${atprotoHint}
 seo:
   title: ${JSON.stringify(title || "New Reference")}
   description: ${JSON.stringify("SEO description for this reference.")}
@@ -125,6 +129,7 @@ url: ${exampleUrl}
 role: ${JSON.stringify("Role")}
 period: ${JSON.stringify("2026 - present")}
 order: 0
+${atprotoHint}
 seo:
   title: ${JSON.stringify(title || "New Work Entry")}
   description: ${JSON.stringify("SEO description for this work entry.")}
@@ -142,6 +147,7 @@ summary: ${JSON.stringify("Short-form status board for what is active right now.
 updatedAt: ${dateOnly}
 tags: ${yamlList([])}
 links: ${yamlList([])}
+${atprotoHint}
 seo:
   title: ${JSON.stringify(`Now · ${dateOnly}`)}
   description: ${JSON.stringify("The latest snapshot of what currently has my attention.")}

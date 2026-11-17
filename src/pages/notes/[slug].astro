@@ -46,6 +46,7 @@ const seo = withAutoOgImage(
 ---
 
 <BaseLayout
+  atprotoUri={entry.data.atproto?.uri}
   title={`${label} · Notes · Webxsid`}
   description={getNoteExcerpt(entry)}
   seo={seo}

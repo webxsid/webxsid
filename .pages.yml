@@ -7,6 +7,14 @@ media:
   rename: safe
 
 components:
+  atproto:
+    type: object
+    label: AT Protocol
+    fields:
+      - name: uri
+        label: Document URI
+        type: string
+
   seo:
     type: object
     label: SEO
@@ -84,6 +92,8 @@ content:
       - name: order
         type: number
         default: 0
+      - name: atproto
+        component: atproto
       - name: seo
         component: seo
       - name: body
@@ -177,6 +187,8 @@ content:
         label: Create project detail page
         type: boolean
         default: false
+      - name: atproto
+        component: atproto
       - name: seo
         component: seo
       - name: body
@@ -265,6 +277,8 @@ content:
           - name: url
             type: string
             required: true
+      - name: atproto
+        component: atproto
       - name: seo
         component: seo
       - name: body
@@ -331,6 +345,8 @@ content:
         required: true
         options:
           format: yyyy-MM-dd
+      - name: atproto
+        component: atproto
       - name: seo
         component: seo
       - name: body
@@ -384,6 +400,8 @@ content:
       - name: order
         type: number
         default: 0
+      - name: atproto
+        component: atproto
       - name: seo
         component: seo
       - name: body

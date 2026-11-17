@@ -31,6 +31,7 @@ const seo = withAutoOgImage(entry.data.seo, getStaticOgImagePath());
 ---
 
 <BaseLayout
+  atprotoUri={entry.data.atproto?.uri}
   title={`${entry.data.company} · Work · Webxsid`}
   description={entry.data.summary}
   seo={seo}

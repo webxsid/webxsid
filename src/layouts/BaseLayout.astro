@@ -22,6 +22,7 @@ type Props = {
   title?: string;
   description?: string;
   seo?: SeoMeta;
+  atprotoUri?: string;
   resourceHints?: string[];
   seoType?: "website" | "article";
   keywords?: string[];
@@ -40,6 +41,7 @@ const {
   title = "Webxsid",
   description = "Sid's personal portfolio.",
   seo,
+  atprotoUri,
   resourceHints = [],
   seoType = "website",
   keywords = [],
@@ -96,6 +98,7 @@ const brandIcon = await getImage({
       articleModifiedTime={articleModifiedTime}
       structuredData={structuredData}
     />
+    {atprotoUri && <link rel="site.standard.document" href={atprotoUri} />}
     <ClientRouter />
     <ThemeBootstrap />
   </head>

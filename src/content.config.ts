@@ -4,6 +4,10 @@ import { z } from "astro/zod";
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
 
+const atprotoSchema = z
+  .looseObject({ uri: z.string().optional() })
+  .optional();
+
 const seoSchema = z
   .object({
     title: z.string().optional(),
@@ -105,6 +109,7 @@ const projects = defineCollection({
     website: z.url().optional(),
     demo: z.url().optional(),
     detailsPage: z.boolean().default(false),
+    atproto: atprotoSchema,
     seo: seoSchema,
   }),
 });
@@ -123,6 +128,7 @@ const writing = defineCollection({
     publishedAt: z.coerce.date(),
     featured: z.boolean().default(false),
     order: z.number().default(0),
+    atproto: atprotoSchema,
     seo: seoSchema,
   }),
 });
@@ -146,6 +152,7 @@ const now = defineCollection({
         }),
       )
       .default([]),
+    atproto: atprotoSchema,
     seo: seoSchema,
   }),
 });
@@ -218,13 +225,14 @@ const references = defineCollection({
     summary: z.string(),
     featured: z.boolean().default(false),
     publishedAt: z.coerce.date(),
+    atproto: atprotoSchema,
     seo: seoSchema,
   }),
 });
 
 const notes = defineCollection({
   loader: optionalMarkdownCollectionLoader("notes", "./src/content/notes"),
-  schema: z.object({}),
+  schema: z.object({ atproto: atprotoSchema }),
 });
 
 const work = defineCollection({
@@ -240,6 +248,7 @@ const work = defineCollection({
     role: z.string(),
     period: z.string(),
     order: z.number().default(0),
+    atproto: atprotoSchema,
     seo: seoSchema,
   }),
 });

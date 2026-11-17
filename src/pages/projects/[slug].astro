@@ -58,6 +58,7 @@ const tags = [...new Set(entry.data.tags.map((tag) => tag.trim()).filter(Boolean
 ---
 
 <BaseLayout
+  atprotoUri={entry.data.atproto?.uri}
   title={`${entry.data.title} · Projects · Webxsid`}
   description={entry.data.summary}
   seo={seo}

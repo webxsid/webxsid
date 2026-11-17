@@ -79,6 +79,7 @@ const seo = withAutoOgImage(entry.data.seo, getWritingOgImagePath(entry.id));
 ---
 
 <BaseLayout
+  atprotoUri={entry.data.atproto?.uri}
   title={`${entry.data.title} · Writing · Webxsid`}
   description={entry.data.summary}
   seo={seo}
