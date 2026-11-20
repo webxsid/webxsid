@@ -60,6 +60,12 @@ collections:
           - {name: canonical, type: string, label: Canonical URL or path}
           - {name: noindex, type: boolean, label: Exclude from search indexes}
       - {name: body, type: markdown, required: true, media: images}
+  - name: notes
+    label: Notes
+    path: src/content/notes
+    filename: '{year}-{month}-{day}-{hour}{minute}{second}.md'
+    fields:
+      - {name: body, type: markdown, label: Body, required: true, media: images}
   - name: now
     path: src/content/now
     filename: '{updatedAt}.md'
