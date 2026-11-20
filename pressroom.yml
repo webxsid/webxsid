@@ -4,6 +4,13 @@ media:
   - name: images
     input: public/images
     output: /images
+  - name: CDN
+    storage: s3
+    s3:
+      endpoint: https://c6fcb29957fcc4918f91638c009b38cb.r2.cloudflarestorage.com
+      bucket: personal-site
+      publicUrl: https://r2.webxsid.com
+      prefix: '{year}/{month}'
 collections:
   - name: writing
     path: src/content/writing
