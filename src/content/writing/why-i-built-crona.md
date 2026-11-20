@@ -20,6 +20,8 @@ seo:
   description: How an over-engineered Obsidian setup became Crona, a local-first
     terminal work tracker built to track my time without changing how I work.
   noindex: false
+atproto:
+  uri: at://did:plc:vw2gdoqzbvjkqfy6ulpn4cb3/site.standard.document/3n2qbl6tqf4du
 ---
 It started about 10 months ago, end of 2025, however it wasn't a terminal app, or even a programming project.
 
@@ -65,4 +67,4 @@ I built this because I wanted a record of what I was doing without changing how 
 
 Ten months later, that's still the idea  
 
-[Website](https://crona.work) · [GitHub](https://github.com/webxsid/crona)
+[Website](https://crona.work) · [GitHub](https://github.com/crona-app/crona)
