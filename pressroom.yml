@@ -1,0 +1,127 @@
+# Content model for this site (see spec/pressroom.schema.json)
+version: 1
+media:
+  - name: images
+    input: public/images
+    output: /images
+collections:
+  - name: writing
+    path: src/content/writing
+    url: /writing/{slug}/
+    fields:
+      - {name: title, type: string, required: true}
+      - {name: summary, type: text, required: true}
+      - {name: publishedAt, type: date, label: Publication date, required: true}
+      - {name: tags, type: list}
+      - {name: kind, type: select, options: [blog, note]}
+      - {name: draft, type: boolean}
+      - {name: featured, type: boolean}
+      - {name: order, type: number}
+      - name: seo
+        type: object
+        label: SEO
+        fields:
+          - {name: title, type: string, label: SEO title}
+          - {name: description, type: text, label: SEO description}
+          - {name: image, type: string, label: SEO image path or URL}
+          - {name: canonical, type: string, label: Canonical URL or path}
+          - {name: noindex, type: boolean, label: Exclude from search indexes}
+      - {name: body, type: markdown, required: true, media: images}
+  - name: projects
+    path: src/content/projects
+    fields:
+      - {name: title, type: string, required: true}
+      - {name: summary, type: text, required: true}
+      - {name: status, type: select, options: [active, building, maintained, archived, prototype, experimental]}
+      - {name: stack, type: list}
+      - {name: tags, type: list}
+      - name: company
+        type: object
+        fields:
+          - {name: name, type: string, required: true}
+          - {name: slug, type: string, label: Work entry slug, required: true}
+      - {name: yearStarted, type: number, label: Year started}
+      - {name: yearEnded, type: number, label: Year ended}
+      - {name: order, type: number}
+      - {name: updatedAt, type: date, label: Updated date, required: true}
+      - {name: featured, type: boolean}
+      - {name: source, type: string, label: Source URL}
+      - {name: website, type: string, label: Website URL}
+      - {name: demo, type: string, label: Demo URL}
+      - {name: detailsPage, type: boolean, label: Create project detail page}
+      - name: seo
+        type: object
+        label: SEO
+        fields:
+          - {name: title, type: string, label: SEO title}
+          - {name: description, type: text, label: SEO description}
+          - {name: image, type: string, label: SEO image path or URL}
+          - {name: canonical, type: string, label: Canonical URL or path}
+          - {name: noindex, type: boolean, label: Exclude from search indexes}
+      - {name: body, type: markdown, required: true, media: images}
+  - name: now
+    path: src/content/now
+    filename: '{updatedAt}.md'
+    fields:
+      - {name: title, type: string}
+      - {name: summary, type: text, required: true}
+      - {name: updatedAt, type: date, label: Updated date, required: true}
+      - {name: tags, type: list}
+      - name: links
+        type: list
+        label: Related links
+        fields:
+          - {name: heading, type: string}
+          - {name: title, type: string, required: true}
+          - {name: url, type: string, required: true}
+      - name: seo
+        type: object
+        label: SEO
+        fields:
+          - {name: title, type: string, label: SEO title}
+          - {name: description, type: text, label: SEO description}
+          - {name: image, type: string, label: SEO image path or URL}
+          - {name: canonical, type: string, label: Canonical URL or path}
+          - {name: noindex, type: boolean, label: Exclude from search indexes}
+      - {name: body, type: markdown, label: Body (Markdown or MDX source), required: true}
+  - name: references
+    path: src/content/references
+    fields:
+      - {name: title, type: string, required: true}
+      - {name: type, type: select, required: true, options: [book, article, essay, paper, video, podcast, song, album, movie, other]}
+      - {name: creator, type: string}
+      - {name: year, type: number}
+      - {name: summary, type: text, required: true}
+      - {name: featured, type: boolean}
+      - {name: publishedAt, type: date, label: Publication date, required: true}
+      - name: seo
+        type: object
+        label: SEO
+        fields:
+          - {name: title, type: string, label: SEO title}
+          - {name: description, type: text, label: SEO description}
+          - {name: image, type: string, label: SEO image path or URL}
+          - {name: canonical, type: string, label: Canonical URL or path}
+          - {name: noindex, type: boolean, label: Exclude from search indexes}
+      - {name: body, type: markdown, required: true, media: images}
+  - name: work
+    path: src/content/work
+    filename: '{title}.md'
+    fields:
+      - {name: title, type: string, required: true}
+      - {name: summary, type: text, required: true}
+      - {name: company, type: string, required: true}
+      - {name: url, type: string, label: Company URL, required: true}
+      - {name: role, type: string, required: true}
+      - {name: period, type: string, required: true}
+      - {name: order, type: number}
+      - name: seo
+        type: object
+        label: SEO
+        fields:
+          - {name: title, type: string, label: SEO title}
+          - {name: description, type: text, label: SEO description}
+          - {name: image, type: string, label: SEO image path or URL}
+          - {name: canonical, type: string, label: Canonical URL or path}
+          - {name: noindex, type: boolean, label: Exclude from search indexes}
+      - {name: body, type: markdown, required: true, media: images}
