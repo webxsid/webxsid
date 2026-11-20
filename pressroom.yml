@@ -29,6 +29,7 @@ collections:
       - {name: body, type: markdown, required: true, media: images}
   - name: projects
     path: src/content/projects
+    url: /projects/{slug}/
     fields:
       - {name: title, type: string, required: true}
       - {name: summary, type: text, required: true}
@@ -62,6 +63,7 @@ collections:
   - name: now
     path: src/content/now
     filename: '{updatedAt}.md'
+    url: /now/{slug}/
     fields:
       - {name: title, type: string}
       - {name: summary, type: text, required: true}
@@ -86,6 +88,7 @@ collections:
       - {name: body, type: markdown, label: Body (Markdown or MDX source), required: true}
   - name: references
     path: src/content/references
+    url: /references/{slug}/
     fields:
       - {name: title, type: string, required: true}
       - {name: type, type: select, required: true, options: [book, article, essay, paper, video, podcast, song, album, movie, other]}
@@ -107,6 +110,7 @@ collections:
   - name: work
     path: src/content/work
     filename: '{title}.md'
+    url: /work/{slug}/
     fields:
       - {name: title, type: string, required: true}
       - {name: summary, type: text, required: true}
