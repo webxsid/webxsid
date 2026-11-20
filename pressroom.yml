@@ -39,8 +39,8 @@ collections:
       - name: company
         type: object
         fields:
-          - {name: name, type: string, required: true}
-          - {name: slug, type: string, label: Work entry slug, required: true}
+          - {name: name, type: string}
+          - {name: slug, type: string, label: Work entry slug}
       - {name: yearStarted, type: number, label: Year started}
       - {name: yearEnded, type: number, label: Year ended}
       - {name: order, type: number}
