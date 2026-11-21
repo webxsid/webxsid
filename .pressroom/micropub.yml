@@ -1,0 +1,11 @@
+# Micropub cross-post settings for this site (written by the app; see ADR 0058)
+endpoint: https://webxsid.micro.blog
+url: https://webxsid.com
+key: micropub
+collections:
+    notes: {post: auto, url: '/notes/{slug}/', template: '{body}', title: false, tags: false}
+    now: {post: "off", url: '/now/{slug}/', template: '{title} {url}', title: false, tags: false}
+    projects: {post: "off", url: '/projects/{slug}/', template: '{title} {url}', title: false, tags: false}
+    references: {post: "off", url: '/references/{slug}/', template: '{title} {url}', title: false, tags: false}
+    work: {post: "off", url: '/work/{slug}/', template: '{title} {url}', title: false, tags: false}
+    writing: {post: explicit, url: '/writing/{slug}/', template: '{body}', title: true, tags: true}
