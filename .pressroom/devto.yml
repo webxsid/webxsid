@@ -1,0 +1,10 @@
+# dev.to cross-post settings for this site (written by the app; see ADR 0059)
+url: https://webxsid.com
+key: devto
+collections:
+    notes: {post: "off", url: '/notes/{slug}/', publish: false, tags: false, cover: false}
+    now: {post: "off", url: '/now/{slug}/', publish: false, tags: false, cover: false}
+    projects: {post: "off", url: '/projects/{slug}/', publish: false, tags: false, cover: false}
+    references: {post: "off", url: '/references/{slug}/', publish: false, tags: false, cover: false}
+    work: {post: "off", url: '/work/{slug}/', publish: false, tags: false, cover: false}
+    writing: {post: explicit, url: '/writing/{slug}/', publish: true, tags: true, cover: true}
