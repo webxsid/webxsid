@@ -3,7 +3,7 @@ did: did:plc:vw2gdoqzbvjkqfy6ulpn4cb3
 url: https://webxsid.com
 key: bluesky
 collections:
-    notes: {post: auto, url: '/notes/{slug}/', template: '{body}{url}', linkCard: true}
+    notes: {post: auto, url: '/notes/{slug}/', template: '{body}', linkCard: true}
     now: {post: "off", url: '/now/{slug}/', template: '{title} {url}', linkCard: true}
     projects: {post: "off", url: '/projects/{slug}/', template: '{title} {url}', linkCard: true}
     references: {post: "off", url: '/references/{slug}/', template: '{title} {url}', linkCard: true}
