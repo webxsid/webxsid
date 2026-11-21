@@ -8,4 +8,4 @@ collections:
     projects: {post: "off", url: '/projects/{slug}/', template: '{title} {url}', linkCard: true}
     references: {post: "off", url: '/references/{slug}/', template: '{title} {url}', linkCard: true}
     work: {post: "off", url: '/work/{slug}/', template: '{title} {url}', linkCard: true}
-    writing: {post: "off", url: '/writing/{slug}/', template: '{title} {url}', linkCard: true}
+    writing: {post: explicit, url: '/writing/{slug}/', template: "{title} \n{summary}", linkCard: true}
