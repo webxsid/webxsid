@@ -4,7 +4,7 @@ instance: https://mastodon.social
 url: https://webxsid.com
 key: fediverse
 collections:
-    notes: {post: auto, url: '/notes/{slug}/', template: "{body}\n\n{url}", visibility: public}
+    notes: {post: auto, url: '/notes/{slug}/', template: "{body}\n", visibility: public}
     now: {post: "off", url: '/now/{slug}/', template: "{title}\n\n{url}", visibility: public}
     projects: {post: "off", url: '/projects/{slug}/', template: "{title}\n\n{url}", visibility: public}
     references: {post: "off", url: '/references/{slug}/', template: "{title}\n\n{url}", visibility: public}
