@@ -1,0 +1,12 @@
+# fediverse settings for this site (written by the app; see ADR 0054)
+acct: webxsid@mastodon.social
+instance: https://mastodon.social
+url: https://webxsid.com
+key: fediverse
+collections:
+    notes: {post: auto, url: '/notes/{slug}/', template: "{body}\n\n{url}", visibility: public}
+    now: {post: "off", url: '/now/{slug}/', template: "{title}\n\n{url}", visibility: public}
+    projects: {post: "off", url: '/projects/{slug}/', template: "{title}\n\n{url}", visibility: public}
+    references: {post: "off", url: '/references/{slug}/', template: "{title}\n\n{url}", visibility: public}
+    work: {post: "off", url: '/work/{slug}/', template: "{title}\n\n{url}", visibility: public}
+    writing: {post: explicit, url: '/writing/{slug}/', template: "{title} - {publishedAt}\n\n{summary}\n{url}", visibility: public}
