@@ -5,7 +5,7 @@ key: bluesky
 collections:
     notes: {post: auto, url: '/notes/{slug}/', template: '{body}', linkCard: true}
     now: {post: "off", url: '/now/{slug}/', template: '{title} {url}', linkCard: true}
-    projects: {post: "off", url: '/projects/{slug}/', template: '{title} {url}', linkCard: true}
+    projects: {post: explicit, url: '/projects/{slug}/', template: '{title} {url}', linkCard: true}
     references: {post: "off", url: '/references/{slug}/', template: '{title} {url}', linkCard: true}
     work: {post: "off", url: '/work/{slug}/', template: '{title} {url}', linkCard: true}
     writing: {post: explicit, url: '/writing/{slug}/', template: "{title} \n{summary}", linkCard: true}
